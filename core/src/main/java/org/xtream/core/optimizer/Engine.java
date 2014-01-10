@@ -50,7 +50,7 @@ public class Engine
 	{
 		// Prepare initial state
 		
-		SortedMap<Key, List<State>> previousGroups = Collections.synchronizedSortedMap(new TreeMap<Key, List<State>>());
+		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
 		
 		State start = new State(roots[0].portsRecursive.size(), roots[0].fieldsRecursive.size());
 		
@@ -110,14 +110,14 @@ public class Engine
 			
 			if (currentGroups.size() > 0)
 			{
-				for (Entry<Key, List<State>> currentGroup : currentGroups.entrySet())
+				previousGroups = new TreeMap<>(currentGroups);
+				
+				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
-					Collections.sort(currentGroup.getValue());
+					Collections.sort(previousGroup.getValue());
 					
-					validCount += currentGroup.getValue().size();
+					validCount += previousGroup.getValue().size();
 				}
-					
-				previousGroups = currentGroups;
 				
 				// Print result
 				
