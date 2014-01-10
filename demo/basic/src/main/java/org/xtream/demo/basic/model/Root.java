@@ -24,7 +24,7 @@ public class Root extends Component
 		@Override
 		protected Boolean evaluate(int timepoint)
 		{
-			return random.output.get(timepoint) < 2.;
+			return random.output.get(timepoint) < 3.;
 		}
 
 	};

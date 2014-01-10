@@ -9,7 +9,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 
-public class State
+public class State implements Comparable<State>
 {
 	
 	public Component root;
@@ -128,6 +128,80 @@ public class State
 			{
 				System.out.println(port.getKey().name + "." + value.getKey().getName() + " = " + value.getValue());
 			}
+		}
+	}
+	
+	public Integer compareDominanceTo(State other)
+	{
+		if (root.minDominancesRecursive.size() > 0 || root.maxDominancesRecursive.size() > 0)
+		{
+			// Check equivalence
+			
+			for (Port<?> port : root.equivalences)
+			{
+				if (!get(port, timepoint).equals(other.get(port, timepoint)))
+				{
+					return null; // Not comparable
+				}
+			}
+		
+			// Check min dominance
+			
+			double difference = 0;
+			
+			for (Port<Double> port : root.minDominancesRecursive)
+			{
+				double temp = get(port, timepoint) - other.get(port, timepoint);
+				
+				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
+				{
+					return null; // Not comparable
+				}
+			}
+			
+			// Check max dominance
+			
+			difference *= -1;
+			
+			for (Port<Double> port : root.maxDominancesRecursive)
+			{
+				double temp= get(port, timepoint) - other.get(port, timepoint);
+				
+				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
+				{
+					return null; // Not comparable
+				}
+			}
+			
+			// Return result
+			
+			return (int) Math.signum(difference);
+		}
+		else
+		{
+			return null; // Not comparable
+		}
+	}
+
+	@Override
+	public int compareTo(State other)
+	{
+		if (root.minObjectivesRecursive.size() == 1 || root.maxObjectivesRecursive.size() == 1)
+		{
+			for (Port<Double> port : root.minObjectivesRecursive)
+			{
+				return (int) Math.signum(get(port, timepoint) - other.get(port, timepoint));
+			}
+			for (Port<Double> port : root.maxObjectivesRecursive)
+			{
+				return (int) Math.signum(get(port, timepoint) - other.get(port, timepoint)) * -1;
+			}
+			
+			throw new IllegalStateException();
+		}
+		else
+		{
+			return 0;
 		}
 	}
 

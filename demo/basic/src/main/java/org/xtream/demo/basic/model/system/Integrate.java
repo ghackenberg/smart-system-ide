@@ -2,6 +2,8 @@ package org.xtream.demo.basic.model.system;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.annotations.Objective.Value;
 import org.xtream.core.model.ports.ConnectablePort;
 
 public class Integrate extends Component
@@ -9,6 +11,7 @@ public class Integrate extends Component
 	
 	public ConnectablePort<Double> input = new ConnectablePort<>();
 	
+	@Objective(Value.MIN)
 	public Port<Double> output = new Port<Double>()
 	{
 		public double previous = 0;
