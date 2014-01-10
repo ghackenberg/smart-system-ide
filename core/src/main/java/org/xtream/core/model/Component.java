@@ -19,17 +19,21 @@ public abstract class Component
 	public Collection<Component> components = new ArrayList<>();
 	public Collection<Channel<?>> channels = new ArrayList<>();
 	public Collection<Port<Boolean>> constraints= new ArrayList<>();
-	public Collection<Port<Double>> dominances= new ArrayList<>();
+	public Collection<Port<Double>> minDominances= new ArrayList<>();
+	public Collection<Port<Double>> maxDominances= new ArrayList<>();
 	public Collection<Port<?>> equivalences= new ArrayList<>();
-	public Collection<Port<Double>> objectives= new ArrayList<>();
+	public Collection<Port<Double>> minObjectives= new ArrayList<>();
+	public Collection<Port<Double>> maxObjectives= new ArrayList<>();
 	
 	public Collection<Port<?>> portsRecursive = new ArrayList<>();
 	public Collection<Component> componentsRecursive = new ArrayList<>();
 	public Collection<Channel<?>> channelsRecursive = new ArrayList<>();
 	public Collection<Port<Boolean>> constraintsRecursive= new ArrayList<>();
-	public Collection<Port<Double>> dominancesRecursive = new ArrayList<>();
+	public Collection<Port<Double>> minDominancesRecursive = new ArrayList<>();
+	public Collection<Port<Double>> maxDominancesRecursive = new ArrayList<>();
 	public Collection<Port<?>> equivalencesRecursive= new ArrayList<>();
-	public Collection<Port<Double>> objectivesRecursive= new ArrayList<>();
+	public Collection<Port<Double>> minObjectivesRecursive= new ArrayList<>();
+	public Collection<Port<Double>> maxObjectivesRecursive= new ArrayList<>();
 	
 	public void init()
 	{
@@ -59,7 +63,14 @@ public abstract class Component
 					}
 					else if (field.getAnnotation(Dominance.class) != null && (Port<Double>) port != null)
 					{
-						dominances.add((Port<Double>) port);
+						if (field.getAnnotation(Dominance.class).value() == Dominance.Value.MAX)
+						{
+							maxDominances.add((Port<Double>) port);
+						}
+						else
+						{
+							minDominances.add((Port<Double>) port);	
+						}
 					}
 					else if (field.getAnnotation(Equivalence.class) != null)
 					{
@@ -67,7 +78,14 @@ public abstract class Component
 					}
 					else if (field.getAnnotation(Objective.class) != null && (Port<Double>) port != null)
 					{
-						objectives.add((Port<Double>) port);
+						if (field.getAnnotation(Objective.class).value() == Objective.Value.MAX)
+						{
+							maxObjectives.add((Port<Double>) port);
+						}
+						else
+						{
+							minObjectives.add((Port<Double>) port);
+						}
 					}
 				}
 				else if (Component.class.isAssignableFrom(field.getType()))
@@ -82,9 +100,11 @@ public abstract class Component
 					componentsRecursive.addAll(component.componentsRecursive);
 					channelsRecursive.addAll(component.channelsRecursive);
 					constraintsRecursive.addAll(component.constraintsRecursive);
-					dominancesRecursive.addAll(component.dominancesRecursive);
+					minDominancesRecursive.addAll(component.minDominancesRecursive);
+					maxDominancesRecursive.addAll(component.maxDominancesRecursive);
 					equivalencesRecursive.addAll(component.equivalencesRecursive);
-					objectivesRecursive.addAll(component.objectivesRecursive);
+					minObjectivesRecursive.addAll(component.minObjectivesRecursive);
+					maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
 				}
 				else if (Channel.class.isAssignableFrom(field.getType()))
 				{
@@ -109,9 +129,11 @@ public abstract class Component
 		componentsRecursive.addAll(components);
 		channelsRecursive.addAll(channels);
 		constraintsRecursive.addAll(constraints);
-		dominancesRecursive.addAll(dominances);
+		minDominancesRecursive.addAll(minDominances);
+		maxDominancesRecursive.addAll(maxDominances);
 		equivalencesRecursive.addAll(equivalences);
-		objectivesRecursive.addAll(objectives);
+		minObjectivesRecursive.addAll(minObjectives);
+		maxObjectivesRecursive.addAll(maxObjectives);
 	}
 	
 	public void dump(PrintStream out)

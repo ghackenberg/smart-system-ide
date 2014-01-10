@@ -1,7 +1,10 @@
 package org.xtream.core.optimizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
@@ -47,6 +50,11 @@ public class Engine
 		{
 			List<State> allCurrent = new ArrayList<>();
 			
+			SortedMap<Key, List<State>> allGroups = new TreeMap<>();
+			
+			int invalidCount = 0;
+			int dominatedCount = 0;
+			
 			for (int sample = 0; sample < coverage; sample++)
 			{
 				// Select state
@@ -80,21 +88,82 @@ public class Engine
 					valid = valid && constraint.get(timepoint);
 				}
 				
-				// Save state
-				
 				if (valid)
 				{
-					current.save();
+					// Group state
 					
-					allCurrent.add(current);
+					Key key = new Key(root, timepoint);
+					
+					List<State> group = allGroups.get(key);
+					
+					if (group == null)
+					{
+						group = new ArrayList<>();
+						
+						allGroups.put(key, group);
+					}
+					
+					// Check state
+					
+					boolean dominant = true;
+					
+					for (int i = 0; i < group.size(); i++)
+					{
+						State alternative = group.get(i);
+						
+						Integer difference = current.compareDominanceTo(alternative);
+						
+						if (difference != null)
+						{
+							if (difference < 0)
+							{
+								dominant = false;
+								
+								break; // do not keep
+							}
+							else if (difference == 0)
+							{
+								dominant = false;
+								
+								break; // do not keep
+							}
+							else if (difference > 0)
+							{
+								group.remove(i--);
+								
+								dominatedCount++;
+							}
+						}
+					}
+					
+					// Save state
+					
+					if (dominant)
+					{
+						current.save();
+						
+						group.add(current);
+						
+						allCurrent.add(current);
+					}
+					else
+					{
+						dominatedCount++;
+					}
+				}
+				else
+				{
+					invalidCount++;
 				}
 			}
 			
-			System.out.println("Timepoint " + timepoint + " = " + allCurrent.size());
+			System.out.println("Timepoint " + timepoint + " = " + allCurrent.size() + " / " + invalidCount + " / " + dominatedCount);
 			
 			if (allCurrent.size() > 0)
 			{
 				allPrevious = allCurrent;
+				
+				Collections.sort(allPrevious);
 			}
 			else
 			{
