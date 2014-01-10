@@ -8,7 +8,6 @@ import org.xtream.core.model.annotations.Constant;
 
 public class State implements Comparable<State>
 {
-	
 	public Component root;
 	
 	public int timepoint;
@@ -19,19 +18,29 @@ public class State implements Comparable<State>
 	
 	public Object[] fields;
 	
-	public State(Component root)
+	public State(int portCount, int fieldCount)
 	{
-		this(root, -1, null);
+		this(portCount, fieldCount, -1, null);
 	}
 	
-	public State(Component root, int timepoint, State previous)
+	public State(int portCount, int fieldCount, int timepoint, State previous)
 	{
-		this.root = root;
 		this.timepoint = timepoint;
 		this.previous = previous;
 		
-		values = new Object[root.portsRecursive.size()];
-		fields = new Object[root.fieldsRecursive.size()];
+		if (portCount > 0)
+		{
+			values = new Object[portCount];
+		}
+		if (fieldCount > 0)
+		{
+			fields = new Object[fieldCount];
+		}
+	}
+	
+	public void connect(Component root)
+	{
+		this.root = root;
 		
 		for (Port<?> port : root.portsRecursive)
 		{
@@ -39,28 +48,34 @@ public class State implements Comparable<State>
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T> T get(Port<T> port, int timepoint)
+	public void restore(Component root)
 	{
-		if (this.timepoint == timepoint)
+		connect(root);
+		
+		int index = 0;
+		
+		for (Port<?> port : root.portsRecursive)
 		{
-			return (T) values[port.number];
-		}
-		else
-		{
-			return previous.get(port, timepoint);
-		}
-	}
-	
-	public <T> void set(Port<T> port, int timepoint, T value)
-	{
-		if (this.timepoint == timepoint)
-		{
-			values[port.number] = value;
-		}
-		else
-		{
-			previous.set(port, timepoint, value);
+			for (Field field : port.getClass().getFields())
+			{
+				try
+				{
+					field.setAccessible(true);
+					
+					if (field.getAnnotation(Constant.class) == null)
+					{
+						field.set(port, fields[index++]);
+					}
+				}
+				catch (IllegalArgumentException e)
+				{
+					e.printStackTrace();
+				}
+				catch (IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -93,32 +108,28 @@ public class State implements Comparable<State>
 		}
 	}
 	
-	public void load()
+	@SuppressWarnings("unchecked")
+	public <T> T get(Port<T> port, int timepoint)
 	{
-		int index = 0;
-		
-		for (Port<?> port : root.portsRecursive)
+		if (this.timepoint == timepoint)
 		{
-			for (Field field : port.getClass().getFields())
-			{
-				try
-				{
-					field.setAccessible(true);
-					
-					if (field.getAnnotation(Constant.class) == null)
-					{
-						field.set(port, fields[index++]);
-					}
-				}
-				catch (IllegalArgumentException e)
-				{
-					e.printStackTrace();
-				}
-				catch (IllegalAccessException e)
-				{
-					e.printStackTrace();
-				}
-			}
+			return (T) values[port.number];
+		}
+		else
+		{
+			return previous.get(port, timepoint);
+		}
+	}
+	
+	public <T> void set(Port<T> port, int timepoint, T value)
+	{
+		if (this.timepoint == timepoint)
+		{
+			values[port.number] = value;
+		}
+		else
+		{
+			previous.set(port, timepoint, value);
 		}
 	}
 	

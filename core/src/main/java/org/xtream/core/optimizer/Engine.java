@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
@@ -14,16 +16,25 @@ public class Engine
 {
 	
 	public Class<? extends Component> type;
-	public Component root;
+	public Thread[] threads;
+	public Worker[] workers;
+	public Component[] roots;
+	public int timepoint;
 	
 	public Engine(Class<? extends Component> type)
 	{
 		this.type = type;
+		this.threads = new Thread[Runtime.getRuntime().availableProcessors()];
+		this.workers = new Worker[Runtime.getRuntime().availableProcessors()];
+		this.roots = new Component[Runtime.getRuntime().availableProcessors()];
 		
 		try
 		{
-			root = type.newInstance();
-			root.init();
+			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
+			{
+				this.roots[i] = type.newInstance();
+				this.roots[i].init();
+			}
 		}
 		catch (InstantiationException e)
 		{
@@ -39,25 +50,24 @@ public class Engine
 	{
 		// Prepare initial state
 		
-		SortedMap<Key, List<State>> previousGroups = new TreeMap<>();
+		SortedMap<Key, List<State>> previousGroups = Collections.synchronizedSortedMap(new TreeMap<Key, List<State>>());
 		
-		State start = new State(root);
+		State start = new State(roots[0].portsRecursive.size(), roots[0].fieldsRecursive.size());
 		
+		start.connect(roots[0]);
 		start.save();
 		
 		List<State> initialGroup = new ArrayList<>();
 		
 		initialGroup.add(start);
 		
-		previousGroups.put(new Key(root, -1), initialGroup);
+		previousGroups.put(new Key(roots[0], -1), initialGroup);
 		
 		// Run optimization
 		
-		int timepoint;
-		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
-			SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
+			SortedMap<Key, List<State>> currentGroups = Collections.synchronizedSortedMap(new TreeMap<Key, List<State>>());
 			
 			// Prepare statistics
 			
@@ -66,118 +76,33 @@ public class Engine
 			int dominatedCount = 0;
 			int uncomparableCount = 0;
 			
-			// Interate through all equivalence classes
+			// Start threads
 			
-			for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
+			Queue<Key> queue = new LinkedBlockingQueue<>(previousGroups.keySet());
+			
+			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
 			{
-				// Generate the requested amount of samples for the equivalence class
+				workers[i] = new Worker(roots[i], timepoint, previousGroups.size(), coverage, randomness, previousGroups, currentGroups, queue);
 				
-				for (int sample = 0; sample < Math.max(1, (double) coverage / previousGroups.size()); sample++)
+				threads[i] = new Thread(workers[i]);
+				threads[i].start();
+			}
+			
+			// Join threads
+			
+			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
+			{
+				try
 				{
-					// Select state
+					threads[i].join();
 					
-					State previous = previousGroup.getValue().get(0);
-					
-					if (sample > Math.max(1, (double) coverage / previousGroups.size()) * (1 - randomness))
-					{
-						int random = (int) Math.floor(Math.random() * previousGroup.getValue().size());
-						
-						previous = previousGroup.getValue().get(random);
-					}
-					
-					previous.load();
-					
-					// Create state
-					
-					State current = new State(root, timepoint, previous);
-					
-					for (Port<?> port : root.portsRecursive)
-					{
-						port.get(timepoint);
-					}
-					
-					// Check state
-					
-					boolean valid = true;
-					
-					for (Port<Boolean> constraint : root.constraintsRecursive)
-					{
-						valid = valid && constraint.get(timepoint);
-					}
-					
-					if (valid)
-					{
-						// Group state
-						
-						Key key = new Key(root, timepoint);
-						
-						List<State> group = currentGroups.get(key);
-						
-						if (group == null)
-						{
-							group = new ArrayList<>();
-							
-							currentGroups.put(key, group);
-						}
-						
-						// Check state
-						
-						boolean dominant = true;
-						
-						for (int index = 0; index < group.size(); index++)
-						{
-							State alternative = group.get(index);
-							
-							Integer difference = current.compareDominanceTo(alternative);
-							
-							if (difference != null)
-							{
-								if (difference < 0)
-								{
-									dominant = false;
-									
-									break; // do not keep
-								}
-								else if (difference == 0)
-								{
-									dominant = false;
-									
-									break; // do not keep
-								}
-								else if (difference > 0)
-								{
-									group.remove(index--);
-									
-									dominatedCount++;
-									
-									continue;
-								}
-								
-								throw new IllegalStateException();
-							}
-							else
-							{
-								uncomparableCount++;
-							}
-						}
-						
-						// Save state
-						
-						if (dominant)
-						{
-							current.save();
-							
-							group.add(current);
-						}
-						else
-						{
-							dominatedCount++;
-						}
-					}
-					else
-					{
-						invalidCount++;
-					}
+					invalidCount += workers[i].invalidCount;
+					dominatedCount += workers[i].dominatedCount;
+					uncomparableCount += workers[i].uncomparableCount;
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
 				}
 			}
 			
@@ -210,14 +135,14 @@ public class Engine
 		
 		for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 		{
-			for (Port<Double> port : root.minObjectivesRecursive)
+			for (Port<Double> port : roots[0].minObjectivesRecursive)
 			{
 				if (best.get(port, timepoint - 1) > entry.getValue().get(0).get(port, timepoint - 1))
 				{
 					best = entry.getValue().get(0);
 				}
 			}
-			for (Port<Double> port : root.maxObjectivesRecursive)
+			for (Port<Double> port : roots[0].maxObjectivesRecursive)
 			{
 				if (best.get(port, timepoint - 1) < entry.getValue().get(0).get(port, timepoint - 1))
 				{
@@ -226,7 +151,7 @@ public class Engine
 			}
 		}
 		
-		best.load();
+		best.restore(roots[0]);
 		
 		// Print best
 		
@@ -236,7 +161,7 @@ public class Engine
 			System.out.println("Timepoint " + i);
 			System.out.println();
 			
-			for (Port<?> port : root.portsRecursive)
+			for (Port<?> port : roots[0].portsRecursive)
 			{
 				System.out.println(port.name + " = " + port.get(i));
 			}
