@@ -3,6 +3,7 @@ package org.xtream.core.optimizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -48,12 +49,11 @@ public class Engine
 		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
-			List<State> allCurrent = new ArrayList<>();
-			
 			SortedMap<Key, List<State>> allGroups = new TreeMap<>();
 			
 			int invalidCount = 0;
 			int dominatedCount = 0;
+			int uncomparableCount = 0;
 			
 			for (int sample = 0; sample < coverage; sample++)
 			{
@@ -107,9 +107,9 @@ public class Engine
 					
 					boolean dominant = true;
 					
-					for (int i = 0; i < group.size(); i++)
+					for (int index = 0; index < group.size(); index++)
 					{
-						State alternative = group.get(i);
+						State alternative = group.get(index);
 						
 						Integer difference = current.compareDominanceTo(alternative);
 						
@@ -129,10 +129,18 @@ public class Engine
 							}
 							else if (difference > 0)
 							{
-								group.remove(i--);
+								group.remove(index--);
 								
 								dominatedCount++;
+								
+								continue;
 							}
+							
+							throw new IllegalStateException();
+						}
+						else
+						{
+							uncomparableCount++;
 						}
 					}
 					
@@ -143,8 +151,6 @@ public class Engine
 						current.save();
 						
 						group.add(current);
-						
-						allCurrent.add(current);
 					}
 					else
 					{
@@ -157,13 +163,20 @@ public class Engine
 				}
 			}
 			
-			System.out.println("Timepoint " + timepoint + " = " + allCurrent.size() + " / " + invalidCount + " / " + dominatedCount);
+			// Prepare next iteration
 			
-			if (allCurrent.size() > 0)
+			if (allGroups.size() > 0)
 			{
-				allPrevious = allCurrent;
+				allPrevious.clear();
+				
+				for (Entry<Key, List<State>> entry : allGroups.entrySet())
+				{
+					allPrevious.addAll(entry.getValue());
+				}
 				
 				Collections.sort(allPrevious);
+				
+				System.out.println("Timepoint " + timepoint + " = " + invalidCount + " / " + dominatedCount + " / " + uncomparableCount + " / " + allGroups.size() + " / " + allPrevious.size());
 			}
 			else
 			{
