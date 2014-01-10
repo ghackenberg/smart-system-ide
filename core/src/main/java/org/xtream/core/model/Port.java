@@ -9,7 +9,6 @@ public abstract class Port<T>
 	@Constant
 	public String name;
 	
-	@Constant
 	public State state = null;
 	
 	public final T get(int timepoint)

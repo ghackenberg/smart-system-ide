@@ -37,146 +37,158 @@ public class Engine
 	
 	public void run(int duration, int coverage, double randomness)
 	{
-		List<State> allPrevious = new ArrayList<>();
+		SortedMap<Key, List<State>> previousGroups = new TreeMap<>();
 		
 		State start = new State(root);
 		
 		start.save();
 		
-		allPrevious.add(start);
+		List<State> initialGroup = new ArrayList<>();
+		
+		initialGroup.add(start);
+		
+		previousGroups.put(new Key(root, -1), initialGroup);
 		
 		int timepoint;
 		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
-			SortedMap<Key, List<State>> allGroups = new TreeMap<>();
+			SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
 			
+			int validCount = 0;
 			int invalidCount = 0;
 			int dominatedCount = 0;
 			int uncomparableCount = 0;
 			
-			for (int sample = 0; sample < coverage; sample++)
+			// Interate through all equivalence classes
+			
+			for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 			{
-				// Select state
+				// Generate the requested amount of samples for the equivalence class
 				
-				State previous = allPrevious.get(0);
-				
-				if (sample < coverage * randomness)
+				for (int sample = 0; sample < Math.max(1, (double) coverage / previousGroups.size()); sample++)
 				{
-					int random = (int) Math.floor(Math.random() * allPrevious.size());
+					// Select state
 					
-					previous = allPrevious.get(random);
-				}
-				
-				previous.load();
-				
-				// Create state
-				
-				State current = new State(root, timepoint, previous);
-				
-				for (Port<?> port : root.portsRecursive)
-				{
-					port.get(timepoint);
-				}
-				
-				// Check state
-				
-				boolean valid = true;
-				
-				for (Port<Boolean> constraint : root.constraintsRecursive)
-				{
-					valid = valid && constraint.get(timepoint);
-				}
-				
-				if (valid)
-				{
-					// Group state
+					State previous = previousGroup.getValue().get(0);
 					
-					Key key = new Key(root, timepoint);
-					
-					List<State> group = allGroups.get(key);
-					
-					if (group == null)
+					if (sample > Math.max(1, (double) coverage / previousGroups.size()) * (1 - randomness))
 					{
-						group = new ArrayList<>();
+						int random = (int) Math.floor(Math.random() * previousGroup.getValue().size());
 						
-						allGroups.put(key, group);
+						previous = previousGroup.getValue().get(random);
+					}
+					
+					previous.load();
+					
+					// Create state
+					
+					State current = new State(root, timepoint, previous);
+					
+					for (Port<?> port : root.portsRecursive)
+					{
+						port.get(timepoint);
 					}
 					
 					// Check state
 					
-					boolean dominant = true;
+					boolean valid = true;
 					
-					for (int index = 0; index < group.size(); index++)
+					for (Port<Boolean> constraint : root.constraintsRecursive)
 					{
-						State alternative = group.get(index);
+						valid = valid && constraint.get(timepoint);
+					}
+					
+					if (valid)
+					{
+						// Group state
 						
-						Integer difference = current.compareDominanceTo(alternative);
+						Key key = new Key(root, timepoint);
 						
-						if (difference != null)
+						List<State> group = currentGroups.get(key);
+						
+						if (group == null)
 						{
-							if (difference < 0)
-							{
-								dominant = false;
-								
-								break; // do not keep
-							}
-							else if (difference == 0)
-							{
-								dominant = false;
-								
-								break; // do not keep
-							}
-							else if (difference > 0)
-							{
-								group.remove(index--);
-								
-								dominatedCount++;
-								
-								continue;
-							}
+							group = new ArrayList<>();
 							
-							throw new IllegalStateException();
+							currentGroups.put(key, group);
+						}
+						
+						// Check state
+						
+						boolean dominant = true;
+						
+						for (int index = 0; index < group.size(); index++)
+						{
+							State alternative = group.get(index);
+							
+							Integer difference = current.compareDominanceTo(alternative);
+							
+							if (difference != null)
+							{
+								if (difference < 0)
+								{
+									dominant = false;
+									
+									break; // do not keep
+								}
+								else if (difference == 0)
+								{
+									dominant = false;
+									
+									break; // do not keep
+								}
+								else if (difference > 0)
+								{
+									group.remove(index--);
+									
+									dominatedCount++;
+									
+									continue;
+								}
+								
+								throw new IllegalStateException();
+							}
+							else
+							{
+								uncomparableCount++;
+							}
+						}
+						
+						// Save state
+						
+						if (dominant)
+						{
+							current.save();
+							
+							group.add(current);
 						}
 						else
 						{
-							uncomparableCount++;
+							dominatedCount++;
 						}
-					}
-					
-					// Save state
-					
-					if (dominant)
-					{
-						current.save();
-						
-						group.add(current);
 					}
 					else
 					{
-						dominatedCount++;
+						invalidCount++;
 					}
-				}
-				else
-				{
-					invalidCount++;
 				}
 			}
 			
 			// Prepare next iteration
 			
-			if (allGroups.size() > 0)
+			if (currentGroups.size() > 0)
 			{
-				allPrevious.clear();
-				
-				for (Entry<Key, List<State>> entry : allGroups.entrySet())
+				for (Entry<Key, List<State>> currentGroup : currentGroups.entrySet())
 				{
-					allPrevious.addAll(entry.getValue());
+					Collections.sort(currentGroup.getValue());
+					
+					validCount += currentGroup.getValue().size();
 				}
+					
+				previousGroups = currentGroups;
 				
-				Collections.sort(allPrevious);
-				
-				System.out.println("Timepoint " + timepoint + " = " + invalidCount + " / " + dominatedCount + " / " + uncomparableCount + " / " + allGroups.size() + " / " + allPrevious.size());
+				System.out.println("Timepoint " + timepoint + " = " + validCount + " / " + invalidCount + " / " + dominatedCount + " / " + uncomparableCount + " / " + previousGroups.size());
 			}
 			else
 			{
@@ -184,24 +196,41 @@ public class Engine
 			}
 		}
 		
-		dump(allPrevious.get(0));
-	}
-	
-	public void dump(State state)
-	{
-		if (state.previous != null)
+		// Select best
+		
+		State best = previousGroups.get(previousGroups.firstKey()).get(0);
+		
+		for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 		{
-			dump(state.previous);
-			
+			for (Port<Double> port : root.minObjectivesRecursive)
+			{
+				if (best.get(port, timepoint - 1) > entry.getValue().get(0).get(port, timepoint - 1))
+				{
+					best = entry.getValue().get(0);
+				}
+			}
+			for (Port<Double> port : root.maxObjectivesRecursive)
+			{
+				if (best.get(port, timepoint - 1) < entry.getValue().get(0).get(port, timepoint - 1))
+				{
+					best = entry.getValue().get(0);
+				}
+			}
+		}
+		
+		best.load();
+		
+		// Print best
+		
+		for (int i = 0; i < timepoint; i++)
+		{
 			System.out.println();
-			System.out.println("Timepoint " + state.timepoint);
+			System.out.println("Timepoint " + i);
 			System.out.println();
-			
-			state.load();
 			
 			for (Port<?> port : root.portsRecursive)
 			{
-				System.out.println(port.name + " = " + port.get(state.timepoint));
+				System.out.println(port.name + " = " + port.get(i));
 			}
 		}
 	}
