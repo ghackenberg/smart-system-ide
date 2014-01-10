@@ -16,6 +16,7 @@ public class Engine
 {
 	
 	public Class<? extends Component> type;
+	public int processors;
 	public Thread[] threads;
 	public Worker[] workers;
 	public Component[] roots;
@@ -23,14 +24,20 @@ public class Engine
 	
 	public Engine(Class<? extends Component> type)
 	{
+		this(type, Runtime.getRuntime().availableProcessors());
+	}
+	
+	public Engine(Class<? extends Component> type, int processors)
+	{
 		this.type = type;
-		this.threads = new Thread[Runtime.getRuntime().availableProcessors()];
-		this.workers = new Worker[Runtime.getRuntime().availableProcessors()];
-		this.roots = new Component[Runtime.getRuntime().availableProcessors()];
+		this.processors = processors;
+		this.threads = new Thread[processors];
+		this.workers = new Worker[processors];
+		this.roots = new Component[processors];
 		
 		try
 		{
-			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
+			for (int i = 0; i < processors; i++)
 			{
 				this.roots[i] = type.newInstance();
 				this.roots[i].init();
@@ -80,7 +87,7 @@ public class Engine
 			
 			Queue<Key> queue = new LinkedBlockingQueue<>(previousGroups.keySet());
 			
-			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
+			for (int i = 0; i < processors; i++)
 			{
 				workers[i] = new Worker(roots[i], timepoint, previousGroups.size(), coverage, randomness, previousGroups, currentGroups, queue);
 				
@@ -90,7 +97,7 @@ public class Engine
 			
 			// Join threads
 			
-			for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++)
+			for (int i = 0; i < processors; i++)
 			{
 				try
 				{

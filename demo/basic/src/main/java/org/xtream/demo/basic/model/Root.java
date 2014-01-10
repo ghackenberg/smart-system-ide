@@ -18,7 +18,7 @@ public class Root extends Component
 
 	public static void main(String[] args)
 	{
-		new Engine(Root.class).run(96, 10000, 0.5);
+		new Engine(Root.class).run(96, 100, 0.5);
 	}
 	
 	// Ports
