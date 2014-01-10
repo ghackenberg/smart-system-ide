@@ -10,39 +10,38 @@ import org.xtream.core.model.ports.SimpleRandomPort;
 public class Random extends Component
 {
 	
-	//
-	// PORTS
-	//
+	///////////
+	// PORTS //
+	///////////
 	
+	// CONNECTABLE PORTS
 	
+	/* none */
+	
+	// NON-CONNECTABLE PORTS
 	
 	public Port<Double> output = new SimpleRandomPort<Double>()
 	{
-		@Override
-		protected Set<Double> evaluateSet(int timepoint)
+		@Override protected Set<Double> evaluateSet(int timepoint)
 		{
 			Set<Double> set = new HashSet<>();
-			
 			set.add(1.);
 			set.add(2.);
 			set.add(3.);
-			
 			return set;
 		}
 	};
 	
+	////////////////
+	// COMPONENTS //
+	////////////////
 	
+	/* none */
 	
-	//
-	// COMPONENTS
-	//
+	//////////////
+	// CHANNELS //
+	//////////////
 	
-	
-	
-	//
-	// CHANNELS
-	//
-	
-	
+	/* none */
 	
 }

@@ -9,40 +9,36 @@ import org.xtream.core.model.ports.ConnectablePort;
 public class Integrate extends Component
 {
 	
+	///////////
+	// PORTS //
+	///////////
 	
-	
-	//
-	// PORTS
-	//
-	
-	
+	// CONNECTABLE PORTS
 	
 	public ConnectablePort<Double> input = new ConnectablePort<>();
 	
-	@Objective(Direction.MIN)
-	public Port<Double> output = new Port<Double>()
+	// NON-CONNECTABLE PORTS
+	
+	@Objective(Direction.MIN) public Port<Double> output = new Port<Double>()
 	{
 		public double previous = 0;
 		
-		@Override
-		protected Double evaluate(int timepoint)
+		@Override protected Double evaluate(int timepoint)
 		{
 			return previous += input.get(timepoint);
 		}
 	};
 	
+	////////////////
+	// COMPONENTS //
+	////////////////
 	
+	/* none */
 	
-	//
-	// COMPONENTS
-	//
-	
-	
-	
-	//
-	// CHANNELS
-	//
-	
-	
+	//////////////
+	// CHANNELS //
+	//////////////
+
+	/* none */
 	
 }

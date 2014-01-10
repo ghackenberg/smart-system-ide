@@ -15,27 +15,27 @@ import org.xtream.demo.basic.model.system.Random;
 
 public class Root extends Component
 {
+	
 	public static void main(String[] args)
 	{
 		new Engine(Root.class).run(96, 100, 0.5);
 	}
 	
+	///////////
+	// PORTS //
+	///////////
+
+	// CONNECTABLE PORTS
 	
+	/* none */
 	
-	//
-	// PORTS
-	//
+	// NON-CONNECTABLE PORTS
 	
-	
-	
-	@Equivalence
-	public Port<Double> test = new SimpleRandomPort<Double>()
+	@Equivalence public Port<Double> test = new SimpleRandomPort<Double>()
 	{
-		@Override
-		protected Set<Double> evaluateSet(int timepoint)
+		@Override protected Set<Double> evaluateSet(int timepoint)
 		{
 			Set<Double> set = new HashSet<>();
-			
 			set.add(1.0);
 			set.add(2.0);
 			set.add(3.0);
@@ -44,42 +44,33 @@ public class Root extends Component
 			set.add(6.0);
 			set.add(7.0);
 			set.add(8.0);
-			
 			return set;
 		}
-		
 	};
 	
-	@Constraint
-	public Port<Boolean> maximum = new Port<Boolean>()
+	@Constraint public Port<Boolean> maximum = new Port<Boolean>()
 	{
-		@Override
-		protected Boolean evaluate(int timepoint)
+		@Override protected Boolean evaluate(int timepoint)
 		{
 			return random.output.get(timepoint) < 3.;
 		}
-
 	};
 	
-	
-	
-	//
-	// COMPONENTS
-	//
-	
-	
+	////////////////
+	// COMPONENTS //
+	////////////////
 	
 	public Random random = new Random();
 	
+	public Random random1 = new Random();
+	
+	public Random random2 = new Random();
+	
 	public Integrate integrate = new Integrate();
 	
-	
-	
-	//
-	// CHANNELS
-	//
-	
-	
+	//////////////
+	// CHANNELS //
+	//////////////
 	
 	public Channel<Double> channel = new Channel<Double>(random.output, integrate.input);
 	
