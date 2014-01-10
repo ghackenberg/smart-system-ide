@@ -15,13 +15,18 @@ import org.xtream.demo.basic.model.system.Random;
 
 public class Root extends Component
 {
-
 	public static void main(String[] args)
 	{
 		new Engine(Root.class).run(96, 100, 0.5);
 	}
 	
-	// Ports
+	
+	
+	//
+	// PORTS
+	//
+	
+	
 	
 	@Equivalence
 	public Port<Double> test = new SimpleRandomPort<Double>()
@@ -56,12 +61,25 @@ public class Root extends Component
 
 	};
 	
-	// Components
+	
+	
+	//
+	// COMPONENTS
+	//
+	
+	
 	
 	public Random random = new Random();
+	
 	public Integrate integrate = new Integrate();
 	
-	// Channels
+	
+	
+	//
+	// CHANNELS
+	//
+	
+	
 	
 	public Channel<Double> channel = new Channel<Double>(random.output, integrate.input);
 	

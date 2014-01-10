@@ -9,6 +9,14 @@ import org.xtream.core.model.ports.ConnectablePort;
 public class Integrate extends Component
 {
 	
+	
+	
+	//
+	// PORTS
+	//
+	
+	
+	
 	public ConnectablePort<Double> input = new ConnectablePort<>();
 	
 	@Objective(Direction.MIN)
@@ -22,5 +30,19 @@ public class Integrate extends Component
 			return previous += input.get(timepoint);
 		}
 	};
-
+	
+	
+	
+	//
+	// COMPONENTS
+	//
+	
+	
+	
+	//
+	// CHANNELS
+	//
+	
+	
+	
 }
