@@ -157,6 +157,10 @@ public class State implements Comparable<State>
 				{
 					return null; // Not comparable
 				}
+				else
+				{
+					difference = temp;
+				}
 			}
 			
 			// Check max dominance
@@ -165,11 +169,15 @@ public class State implements Comparable<State>
 			
 			for (Port<Double> port : root.maxDominancesRecursive)
 			{
-				double temp= get(port, timepoint) - other.get(port, timepoint);
+				double temp = get(port, timepoint) - other.get(port, timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
 					return null; // Not comparable
+				}
+				else
+				{
+					difference = temp;
 				}
 			}
 			
