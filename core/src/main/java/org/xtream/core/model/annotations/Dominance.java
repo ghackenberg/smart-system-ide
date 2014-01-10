@@ -5,16 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.xtream.core.model.enumerations.Direction;
+
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dominance
 {
 	
-	public enum Value
-	{
-		MIN, MAX
-	}
-	
-	public Value value();
+	public Direction value();
 	
 }

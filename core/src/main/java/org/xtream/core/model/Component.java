@@ -10,6 +10,7 @@ import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Dominance;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.enumerations.Direction;
 
 public abstract class Component
 {
@@ -75,7 +76,7 @@ public abstract class Component
 					}
 					else if (componentField.getAnnotation(Dominance.class) != null && (Port<Double>) port != null)
 					{
-						if (componentField.getAnnotation(Dominance.class).value() == Dominance.Value.MAX)
+						if (componentField.getAnnotation(Dominance.class).value() ==Direction.MAX)
 						{
 							maxDominances.add((Port<Double>) port);
 						}
@@ -90,7 +91,7 @@ public abstract class Component
 					}
 					else if (componentField.getAnnotation(Objective.class) != null && (Port<Double>) port != null)
 					{
-						if (componentField.getAnnotation(Objective.class).value() == Objective.Value.MAX)
+						if (componentField.getAnnotation(Objective.class).value() == Direction.MAX)
 						{
 							maxObjectives.add((Port<Double>) port);
 						}
