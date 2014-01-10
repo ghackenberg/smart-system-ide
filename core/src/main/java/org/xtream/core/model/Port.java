@@ -8,6 +8,8 @@ public abstract class Port<T>
 	
 	@Constant
 	public String name;
+	@Constant
+	public Integer number;
 	
 	public State state = null;
 	

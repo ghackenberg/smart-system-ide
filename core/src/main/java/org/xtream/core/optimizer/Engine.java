@@ -37,6 +37,8 @@ public class Engine
 	
 	public void run(int duration, int coverage, double randomness)
 	{
+		// Prepare initial state
+		
 		SortedMap<Key, List<State>> previousGroups = new TreeMap<>();
 		
 		State start = new State(root);
@@ -49,11 +51,15 @@ public class Engine
 		
 		previousGroups.put(new Key(root, -1), initialGroup);
 		
+		// Run optimization
+		
 		int timepoint;
 		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
 			SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
+			
+			// Prepare statistics
 			
 			int validCount = 0;
 			int invalidCount = 0;
@@ -188,11 +194,13 @@ public class Engine
 					
 				previousGroups = currentGroups;
 				
+				// Print result
+				
 				System.out.println("Timepoint " + timepoint + " = " + validCount + " / " + invalidCount + " / " + dominatedCount + " / " + uncomparableCount + " / " + previousGroups.size());
 			}
 			else
 			{
-				break;
+				break; // Stop optimization
 			}
 		}
 		

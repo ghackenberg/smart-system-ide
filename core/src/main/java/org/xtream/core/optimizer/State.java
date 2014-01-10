@@ -1,9 +1,6 @@
 package org.xtream.core.optimizer;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
@@ -18,20 +15,23 @@ public class State implements Comparable<State>
 	
 	public State previous;
 	
-	public Map<Port<?>, Object> values = new HashMap<>();
+	public Object[] values;
 	
-	public Map<Port<?>, Map<Field, Object>> fields = new HashMap<>();
+	public Object[] fields;
 	
 	public State(Component root)
 	{
 		this(root, -1, null);
 	}
 	
-	public State(Component root, int timepoint, State parent)
+	public State(Component root, int timepoint, State previous)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
-		this.previous = parent;
+		this.previous = previous;
+		
+		values = new Object[root.portsRecursive.size()];
+		fields = new Object[root.fieldsRecursive.size()];
 		
 		for (Port<?> port : root.portsRecursive)
 		{
@@ -44,7 +44,7 @@ public class State implements Comparable<State>
 	{
 		if (this.timepoint == timepoint)
 		{
-			return (T) values.get(port);
+			return (T) values[port.number];
 		}
 		else
 		{
@@ -56,7 +56,7 @@ public class State implements Comparable<State>
 	{
 		if (this.timepoint == timepoint)
 		{
-			values.put(port, value);
+			values[port.number] = value;
 		}
 		else
 		{
@@ -66,10 +66,10 @@ public class State implements Comparable<State>
 	
 	public void save()
 	{
+		int index = 0;
+		
 		for (Port<?> port : root.portsRecursive)
 		{
-			fields.put(port, new HashMap<Field, Object>());
-			
 			for (Field field : port.getClass().getFields())
 			{
 				try
@@ -78,7 +78,7 @@ public class State implements Comparable<State>
 					
 					if (field.getAnnotation(Constant.class) == null)
 					{
-						fields.get(port).put(field, field.get(port));
+						fields[index++] = field.get(port);
 					}
 				}
 				catch (IllegalArgumentException e)
@@ -95,6 +95,8 @@ public class State implements Comparable<State>
 	
 	public void load()
 	{
+		int index = 0;
+		
 		for (Port<?> port : root.portsRecursive)
 		{
 			for (Field field : port.getClass().getFields())
@@ -105,7 +107,7 @@ public class State implements Comparable<State>
 					
 					if (field.getAnnotation(Constant.class) == null)
 					{
-						field.set(port, fields.get(port).get(field));
+						field.set(port, fields[index++]);
 					}
 				}
 				catch (IllegalArgumentException e)
@@ -122,11 +124,13 @@ public class State implements Comparable<State>
 	
 	public void dump()
 	{
-		for (Entry<Port<?>, Map<Field, Object>> port : fields.entrySet())
+		int index = 0;
+
+		for (Port<?> port : root.portsRecursive)
 		{
-			for (Entry<Field, Object> value : port.getValue().entrySet())
+			for (Field field : port.getClass().getFields())
 			{
-				System.out.println(port.getKey().name + "." + value.getKey().getName() + " = " + value.getValue());
+				System.out.println(port.name + "." + field.getName() + " = " + fields[index++]);
 			}
 		}
 	}
