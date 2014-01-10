@@ -10,6 +10,12 @@ import org.xtream.core.model.ports.SimpleRandomPort;
 public class Random extends Component
 {
 	
+	//
+	// PORTS
+	//
+	
+	
+	
 	public Port<Double> output = new SimpleRandomPort<Double>()
 	{
 		@Override
@@ -24,5 +30,19 @@ public class Random extends Component
 			return set;
 		}
 	};
-
+	
+	
+	
+	//
+	// COMPONENTS
+	//
+	
+	
+	
+	//
+	// CHANNELS
+	//
+	
+	
+	
 }
