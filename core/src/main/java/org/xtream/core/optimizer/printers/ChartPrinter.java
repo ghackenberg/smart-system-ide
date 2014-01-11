@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
@@ -24,6 +24,13 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 	
 	private static int PADDING = 50;
 	private static int STROKE = 1;
+	
+	private JTabbedPane tabs;
+	
+	public ChartPrinter(JTabbedPane tabs)
+	{
+		this.tabs = tabs;
+	}
 
 	@Override
 	public void print(T component, int timepoint)
@@ -48,7 +55,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Initialize frame
 		
-		ApplicationFrame frame = new ApplicationFrame("xtream - Printer");
+		JPanel frame = new JPanel();
 		frame.setLayout(layout);
 		
 		// Create charts
@@ -69,11 +76,11 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 				{
 					for (int i = 0; i < timepoint; i++)
 					{
-						dataset.addValue(port.get(i), port.name, "" + i);
+						dataset.addValue(port.get(i), port.qualifiedName, "" + i);
 					}
 				}
 				
-				JFreeChart chart = ChartFactory.createLineChart(contextComponent.name + "." + chartName, "Timepoint", "Value", dataset, PlotOrientation.VERTICAL, true, true, false);
+				JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Timepoint", null, dataset, PlotOrientation.VERTICAL, true, true, false);
 				
 				chart.setAntiAlias(true);
 				chart.setTextAntiAlias(true);
@@ -92,9 +99,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Show frame
 		
-		frame.pack();
-		frame.setVisible(true);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		tabs.addTab("Chart printer", frame);
 	}
 
 }

@@ -12,6 +12,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.monitors.CMDMonitor;
@@ -22,6 +28,7 @@ import org.xtream.core.optimizer.printers.CMDPrinter;
 import org.xtream.core.optimizer.printers.CSVPrinter;
 import org.xtream.core.optimizer.printers.ChartPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
+import org.xtream.core.optimizer.printers.TablePrinter;
 
 public class Engine<T extends Component>
 {
@@ -69,15 +76,45 @@ public class Engine<T extends Component>
 	{
 		try
 		{
+			try
+			{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			catch (ClassNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+			catch (InstantiationException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e)
+			{
+				e.printStackTrace();
+			}
+			catch (UnsupportedLookAndFeelException e)
+			{
+				e.printStackTrace();
+			}
+			
+			JTabbedPane tabs = new JTabbedPane();
+			
 			Monitor cmdMonitor = new CMDMonitor();
 			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
-			Monitor chartMonitor = new ChartMonitor();
+			Monitor chartMonitor = new ChartMonitor(tabs);
 			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor);
 			
 			Printer<T> cmdPrinter = new CMDPrinter<>();
 			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
-			Printer<T> chartPrinter = new ChartPrinter<>();
-			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter, chartPrinter);
+			Printer<T> chartPrinter = new ChartPrinter<>(tabs);
+			Printer<T> tablePrinter = new TablePrinter<>(tabs);
+			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter, chartPrinter, tablePrinter);
+			
+			JFrame frame = new ApplicationFrame("xtream");
+			frame.add(tabs);
+			frame.pack();
+			frame.setVisible(true);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
 			run(duration, coverage, randomness, allMonitor, allPrinter);
 		}

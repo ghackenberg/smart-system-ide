@@ -5,14 +5,14 @@ import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
@@ -28,6 +28,13 @@ public class ChartMonitor extends Monitor
 	private DefaultCategoryDataset classes = new DefaultCategoryDataset();
 	private DefaultCategoryDataset objectives = new DefaultCategoryDataset();
 	private DefaultCategoryDataset memory = new DefaultCategoryDataset();
+	
+	private JTabbedPane tabs;
+	
+	public ChartMonitor(JTabbedPane tabs)
+	{
+		this.tabs = tabs;
+	}
 
 	@Override
 	public void start()
@@ -75,15 +82,14 @@ public class ChartMonitor extends Monitor
 		layout.setHgap(1);
 		layout.setVgap(1);
 		
-		ApplicationFrame frame = new ApplicationFrame("xtream - Monitor");
-		frame.setLayout(layout);
-		frame.add(statesPanel);
-		frame.add(classesPanel);
-		frame.add(objectivesPanel);
-		frame.add(memoryPanel);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		JPanel panel = new JPanel();
+		panel.setLayout(layout);
+		panel.add(statesPanel);
+		panel.add(classesPanel);
+		panel.add(objectivesPanel);
+		panel.add(memoryPanel);
+		
+		tabs.addTab("Chart monitor", panel);
 	}
 
 	@Override

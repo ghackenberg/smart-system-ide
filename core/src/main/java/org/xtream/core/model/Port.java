@@ -4,8 +4,9 @@ import org.xtream.core.optimizer.State;
 
 public abstract class Port<T>
 {
-	
+
 	public String name;
+	public String qualifiedName;
 	public Integer number;
 	public Expression<T> expression;
 	public State state;

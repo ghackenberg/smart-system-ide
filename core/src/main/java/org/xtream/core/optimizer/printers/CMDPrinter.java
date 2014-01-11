@@ -18,7 +18,7 @@ public class CMDPrinter<T extends Component> extends Printer<T>
 			
 			for (Port<?> port : component.portsRecursive)
 			{
-				System.out.println(port.name + " = " + port.get(i));
+				System.out.println(port.qualifiedName + " = " + port.get(i));
 			}
 		}
 	}
