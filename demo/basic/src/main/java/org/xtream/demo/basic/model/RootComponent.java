@@ -12,9 +12,6 @@ import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.optimizer.Engine;
-import org.xtream.demo.basic.model.system.AddComponent;
-import org.xtream.demo.basic.model.system.IntegrateComponent;
-import org.xtream.demo.basic.model.system.RandomComponent;
 
 public class RootComponent extends Component
 {
