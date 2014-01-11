@@ -8,13 +8,17 @@ import org.xtream.core.model.OutputPort;
 public class AddComponent extends Component
 {
 	
-	///////////
-	// PORTS //
-	///////////
+	////////////
+	// INPUTS //
+	////////////
 	
 	public InputPort<Double> input1 = new InputPort<>();
 	
 	public InputPort<Double> input2 = new InputPort<>();
+	
+	/////////////
+	// OUTPUTS //
+	/////////////
 	
 	public OutputPort<Double> output = new OutputPort<>();
 	

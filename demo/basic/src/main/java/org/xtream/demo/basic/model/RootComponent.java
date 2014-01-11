@@ -23,9 +23,15 @@ public class RootComponent extends Component
 		new Engine<>(RootComponent.class).run(96, 100, 0.5);
 	}
 	
-	///////////
-	// PORTS //
-	///////////
+	////////////
+	// INPUTS //
+	////////////
+	
+	/* none */
+	
+	/////////////
+	// OUTPUTS //
+	/////////////
 	
 	@Equivalence
 	public OutputPort<Double> test1 = new OutputPort<>();

@@ -10,11 +10,15 @@ import org.xtream.core.model.enumerations.Direction;
 public class IntegrateComponent extends Component
 {
 	
-	///////////
-	// PORTS //
-	///////////
+	////////////
+	// INPUTS //
+	////////////
 	
 	public InputPort<Double> input = new InputPort<>();
+	
+	/////////////
+	// OUTPUTS //
+	/////////////
 	
 	@Objective(Direction.MIN)
 	public OutputPort<Double> output = new OutputPort<>();

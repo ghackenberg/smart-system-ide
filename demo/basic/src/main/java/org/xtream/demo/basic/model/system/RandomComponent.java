@@ -9,9 +9,15 @@ import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 public class RandomComponent extends Component
 {
 	
-	///////////
-	// PORTS //
-	///////////
+	////////////
+	// INPUTS //
+	////////////
+	
+	/* none */
+	
+	/////////////
+	// OUTPUTS //
+	/////////////
 	
 	public OutputPort<Double> output = new OutputPort<>();
 	
