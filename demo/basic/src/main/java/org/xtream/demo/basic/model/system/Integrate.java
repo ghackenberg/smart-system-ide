@@ -1,10 +1,11 @@
 package org.xtream.demo.basic.model.system;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.InputPort;
+import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
-import org.xtream.core.model.ports.ConnectablePort;
 
 public class Integrate extends Component
 {
@@ -13,21 +14,10 @@ public class Integrate extends Component
 	// PORTS //
 	///////////
 	
-	// CONNECTABLE PORTS
+	public InputPort<Double> input = new InputPort<>();
 	
-	public ConnectablePort<Double> input = new ConnectablePort<>();
-	
-	// NON-CONNECTABLE PORTS
-	
-	@Objective(Direction.MIN) public Port<Double> output = new Port<Double>()
-	{
-		public double previous = 0;
-		
-		@Override protected Double evaluate(int timepoint)
-		{
-			return previous += input.get(timepoint);
-		}
-	};
+	@Objective(Direction.MIN)
+	public OutputPort<Double> output = new OutputPort<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -40,5 +30,20 @@ public class Integrate extends Component
 	//////////////
 
 	/* none */
+	
+	/////////////////
+	// EXPRESSIONS //
+	/////////////////
+
+	public Expression<Double> outputExpression = new Expression<Double>(output)
+	{
+		public double previous = 0;
+		
+		@Override
+		public Double evaluate(int timepoint)
+		{
+			return previous += input.get(timepoint);
+		}
+	};
 	
 }

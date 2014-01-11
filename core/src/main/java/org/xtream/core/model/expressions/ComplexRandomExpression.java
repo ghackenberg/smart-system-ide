@@ -1,15 +1,21 @@
-package org.xtream.core.model.ports;
+package org.xtream.core.model.expressions;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xtream.core.model.Port;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.OutputPort;
 
-public abstract class ComplexRandomPort<T> extends Port<T>
+public abstract class ComplexRandomExpression<T> extends Expression<T>
 {
 	
+	public ComplexRandomExpression(OutputPort<T> port)
+	{
+		super(port);
+	}
+
 	@Override
-	protected final T evaluate(int timepoint)
+	public final T evaluate(int timepoint)
 	{
 		Map<T, Double> distribution = evaluateDistribution(timepoint);
 		

@@ -3,6 +3,7 @@ package org.xtream.core.optimizer;
 import java.lang.reflect.Field;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 
@@ -54,9 +55,9 @@ public class State implements Comparable<State>
 		
 		int index = 0;
 		
-		for (Port<?> port : root.portsRecursive)
+		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : port.getClass().getFields())
+			for (Field field : expression.getClass().getFields())
 			{
 				try
 				{
@@ -64,7 +65,7 @@ public class State implements Comparable<State>
 					
 					if (field.getAnnotation(Constant.class) == null)
 					{
-						field.set(port, fields[index++]);
+						field.set(expression, fields[index++]);
 					}
 				}
 				catch (IllegalArgumentException e)
@@ -83,9 +84,9 @@ public class State implements Comparable<State>
 	{
 		int index = 0;
 		
-		for (Port<?> port : root.portsRecursive)
+		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : port.getClass().getFields())
+			for (Field field : expression.getClass().getFields())
 			{
 				try
 				{
@@ -93,7 +94,7 @@ public class State implements Comparable<State>
 					
 					if (field.getAnnotation(Constant.class) == null)
 					{
-						fields[index++] = field.get(port);
+						fields[index++] = field.get(expression);
 					}
 				}
 				catch (IllegalArgumentException e)
@@ -137,11 +138,11 @@ public class State implements Comparable<State>
 	{
 		int index = 0;
 
-		for (Port<?> port : root.portsRecursive)
+		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : port.getClass().getFields())
+			for (Field field : expression.getClass().getFields())
 			{
-				System.out.println(port.name + "." + field.getName() + " = " + fields[index++]);
+				System.out.println(expression.name + "." + field.getName() + " = " + fields[index++]);
 			}
 		}
 	}
@@ -152,7 +153,7 @@ public class State implements Comparable<State>
 		{
 			// Check equivalence
 			
-			for (Port<?> port : root.equivalences)
+			for (Port<?> port : root.equivalencesRecursive)
 			{
 				if (!get(port, timepoint).equals(other.get(port, timepoint)))
 				{

@@ -5,10 +5,11 @@ import java.util.Set;
 
 import org.xtream.core.model.Channel;
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.ports.SimpleRandomPort;
+import org.xtream.core.model.expressions.SimpleRandomExpression;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.demo.basic.model.system.Integrate;
 import org.xtream.demo.basic.model.system.Random;
@@ -24,37 +25,12 @@ public class Root extends Component
 	///////////
 	// PORTS //
 	///////////
-
-	// CONNECTABLE PORTS
 	
-	/* none */
+	@Equivalence
+	public OutputPort<Double> test = new OutputPort<>();
 	
-	// NON-CONNECTABLE PORTS
-	
-	@Equivalence public Port<Double> test = new SimpleRandomPort<Double>()
-	{
-		@Override protected Set<Double> evaluateSet(int timepoint)
-		{
-			Set<Double> set = new HashSet<>();
-			set.add(1.0);
-			set.add(2.0);
-			set.add(3.0);
-			set.add(4.0);
-			set.add(5.0);
-			set.add(6.0);
-			set.add(7.0);
-			set.add(8.0);
-			return set;
-		}
-	};
-	
-	@Constraint public Port<Boolean> maximum = new Port<Boolean>()
-	{
-		@Override protected Boolean evaluate(int timepoint)
-		{
-			return random.output.get(timepoint) < 3.;
-		}
-	};
+	@Constraint
+	public OutputPort<Boolean> maximum = new OutputPort<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -74,4 +50,34 @@ public class Root extends Component
 	
 	public Channel<Double> channel = new Channel<Double>(random.output, integrate.input);
 	
+	/////////////////
+	// EXPRESSIONS //
+	/////////////////
+	
+	public Expression<Double> testExpression = new SimpleRandomExpression<Double>(test)
+	{
+		@Override
+		protected Set<Double> evaluateSet(int timepoint)
+		{
+			Set<Double> set = new HashSet<>();
+			set.add(1.0);
+			set.add(2.0);
+			set.add(3.0);
+			set.add(4.0);
+			set.add(5.0);
+			set.add(6.0);
+			set.add(7.0);
+			set.add(8.0);
+			return set;
+		}
+	};
+	
+	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximum)
+	{
+		@Override
+		public Boolean evaluate(int timepoint)
+		{
+			return random.output.get(timepoint) < 3.;
+		}
+	};
 }

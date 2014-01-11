@@ -21,6 +21,7 @@ public abstract class Component
 	public List<Field> fields = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
 	public List<Channel<?>> channels = new ArrayList<>();
+	public List<Expression<?>> expressions = new ArrayList<>();
 	public List<Port<Boolean>> constraints= new ArrayList<>();
 	public List<Port<Double>> minDominances= new ArrayList<>();
 	public List<Port<Double>> maxDominances= new ArrayList<>();
@@ -32,6 +33,7 @@ public abstract class Component
 	public List<Field> fieldsRecursive = new ArrayList<>();
 	public List<Component> componentsRecursive = new ArrayList<>();
 	public List<Channel<?>> channelsRecursive = new ArrayList<>();
+	public List<Expression<?>> expressionsRecursive = new ArrayList<>();
 	public List<Port<Boolean>> constraintsRecursive= new ArrayList<>();
 	public List<Port<Double>> minDominancesRecursive = new ArrayList<>();
 	public List<Port<Double>> maxDominancesRecursive = new ArrayList<>();
@@ -61,14 +63,6 @@ public abstract class Component
 					
 					port.name = name + "." + componentField.getName();
 					port.number = number++;
-					
-					for (Field portField : port.getClass().getFields())
-					{
-						if (portField.getAnnotation(Constant.class) == null)
-						{
-							fields.add(portField);
-						}
-					}
 					
 					if (componentField.getAnnotation(Constraint.class) != null && (Port<Boolean>) port != null)
 					{
@@ -113,6 +107,7 @@ public abstract class Component
 					fieldsRecursive.addAll(component.fieldsRecursive);
 					componentsRecursive.addAll(component.componentsRecursive);
 					channelsRecursive.addAll(component.channelsRecursive);
+					expressionsRecursive.addAll(component.expressionsRecursive);
 					constraintsRecursive.addAll(component.constraintsRecursive);
 					minDominancesRecursive.addAll(component.minDominancesRecursive);
 					maxDominancesRecursive.addAll(component.maxDominancesRecursive);
@@ -130,6 +125,22 @@ public abstract class Component
 					
 					channel.name = name + "." + componentField.getName();
 				}
+				else if (Expression.class.isAssignableFrom(componentField.getType()))
+				{
+					Expression<?> expression = (Expression<?>) componentField.get(this);
+					
+					expressions.add(expression);
+					
+					expression.name = name + "." + componentField.getName();
+					
+					for (Field expressionField : expression.getClass().getFields())
+					{
+						if (expressionField.getAnnotation(Constant.class) == null)
+						{
+							fields.add(expressionField);
+						}
+					}
+				}
 			}
 			catch (IllegalArgumentException e)
 			{
@@ -145,6 +156,7 @@ public abstract class Component
 		fieldsRecursive.addAll(fields);
 		componentsRecursive.addAll(components);
 		channelsRecursive.addAll(channels);
+		expressionsRecursive.addAll(expressions);
 		constraintsRecursive.addAll(constraints);
 		minDominancesRecursive.addAll(minDominances);
 		maxDominancesRecursive.addAll(maxDominances);
