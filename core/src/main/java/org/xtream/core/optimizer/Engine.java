@@ -1,5 +1,8 @@
 package org.xtream.core.optimizer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.monitors.CSVMonitor;
 
 public class Engine
 {
@@ -45,16 +49,32 @@ public class Engine
 		}
 		catch (InstantiationException e)
 		{
-			e.printStackTrace();
+			throw new IllegalStateException(e);
 		}
 		catch (IllegalAccessException e)
 		{
-			e.printStackTrace();
+			throw new IllegalStateException(e);
 		}
 	}
 	
 	public void run(int duration, int coverage, double randomness)
 	{
+		try
+		{
+			run(duration, coverage, randomness, new CSVMonitor(new PrintStream(new File("Monitor.csv"))));
+		}
+		catch (FileNotFoundException e)
+		{
+			throw new IllegalStateException(e);
+		}
+	}
+	
+	public void run(int duration, int coverage, double randomness, Monitor monitor)
+	{
+		// Start monitor
+		
+		monitor.start();
+		
 		// Prepare initial state
 		
 		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
@@ -78,10 +98,9 @@ public class Engine
 			
 			// Prepare statistics
 			
+			int generatedCount = 0;
 			int validCount = 0;
-			int invalidCount = 0;
-			int dominatedCount = 0;
-			int uncomparableCount = 0;
+			int dominantCount = 0;
 			
 			// Start threads
 			
@@ -103,9 +122,8 @@ public class Engine
 				{
 					threads[i].join();
 					
-					invalidCount += workers[i].invalidCount;
-					dominatedCount += workers[i].dominatedCount;
-					uncomparableCount += workers[i].uncomparableCount;
+					generatedCount += workers[i].generatedCount;
+					validCount += workers[i].validCount;
 				}
 				catch (InterruptedException e)
 				{
@@ -123,12 +141,12 @@ public class Engine
 				{
 					Collections.sort(previousGroup.getValue());
 					
-					validCount += previousGroup.getValue().size();
+					dominantCount += previousGroup.getValue().size();
 				}
 				
 				// Print result
 				
-				System.out.println("Timepoint " + timepoint + " = " + validCount + " / " + invalidCount + " / " + dominatedCount + " / " + uncomparableCount + " / " + previousGroups.size());
+				monitor.handle(timepoint, generatedCount, validCount, dominantCount, previousGroups.size());
 			}
 			else
 			{
@@ -160,18 +178,31 @@ public class Engine
 		
 		best.restore(roots[0]);
 		
+		// Stop monitor
+		
+		monitor.stop();
+		
 		// Print best
+		
+		System.out.print("Port");
 		
 		for (int i = 0; i < timepoint; i++)
 		{
-			System.out.println();
-			System.out.println("Timepoint " + i);
-			System.out.println();
+			System.out.print(";Timepoint " + i);
+		}
+		
+		System.out.println();
+		
+		for (Port<?> port : roots[0].portsRecursive)
+		{
+			System.out.print(port.name);
 			
-			for (Port<?> port : roots[0].portsRecursive)
+			for (int i = 0; i < timepoint; i++)
 			{
-				System.out.println(port.name + " = " + port.get(i));
+				System.out.print(";" + port.get(i));
 			}
+			
+			System.out.println();
 		}
 	}
 

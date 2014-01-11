@@ -21,9 +21,8 @@ public class Worker implements Runnable
 	public Map<Key, List<State>> currentGroups;
 	public Queue<Key> queue;
 	
-	public int invalidCount = 0;
-	public int dominatedCount = 0;
-	public int uncomparableCount = 0;
+	public int generatedCount = 0;
+	public int validCount = 0;
 	
 	public Worker(Component root, int timepoint, int groups, int coverage, double randomness, Map<Key, List<State>> previousGroups, Map<Key, List<State>> currentGroups, Queue<Key> queue)
 	{
@@ -50,6 +49,8 @@ public class Worker implements Runnable
 				
 				for (int sample = 0; sample < Math.max(1, (double) coverage / groups); sample++)
 				{
+					generatedCount++;
+					
 					// Select Status
 					
 					State previous = previousGroup.get(0);
@@ -85,6 +86,8 @@ public class Worker implements Runnable
 					
 					if (valid)
 					{
+						validCount++;
+						
 						// Group Status
 						
 						Key currentKey = new Key(root, timepoint);
@@ -126,16 +129,10 @@ public class Worker implements Runnable
 								{
 									currentGroup.remove(index--);
 									
-									dominatedCount++;
-									
 									continue;
 								}
 								
 								assert false;
-							}
-							else
-							{
-								uncomparableCount++;
 							}
 						}
 						
@@ -147,14 +144,6 @@ public class Worker implements Runnable
 							
 							currentGroup.add(current);
 						}
-						else
-						{
-							dominatedCount++;
-						}
-					}
-					else
-					{
-						invalidCount++;
 					}
 				}
 			}
