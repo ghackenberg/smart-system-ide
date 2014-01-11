@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
-import org.xtream.core.model.ports.SimpleRandomPort;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.OutputPort;
+import org.xtream.core.model.expressions.SimpleRandomExpression;
 
 public class Random extends Component
 {
@@ -14,23 +15,7 @@ public class Random extends Component
 	// PORTS //
 	///////////
 	
-	// CONNECTABLE PORTS
-	
-	/* none */
-	
-	// NON-CONNECTABLE PORTS
-	
-	public Port<Double> output = new SimpleRandomPort<Double>()
-	{
-		@Override protected Set<Double> evaluateSet(int timepoint)
-		{
-			Set<Double> set = new HashSet<>();
-			set.add(1.);
-			set.add(2.);
-			set.add(3.);
-			return set;
-		}
-	};
+	public OutputPort<Double> output = new OutputPort<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -43,5 +28,21 @@ public class Random extends Component
 	//////////////
 	
 	/* none */
+	
+	////////////////
+	// EXPRESSION //
+	////////////////
+	
+	public Expression<Double> outputExpression = new SimpleRandomExpression<Double>(output)
+	{
+		@Override protected Set<Double> evaluateSet(int timepoint)
+		{
+			Set<Double> set = new HashSet<>();
+			set.add(1.);
+			set.add(2.);
+			set.add(3.);
+			return set;
+		}
+	};
 	
 }

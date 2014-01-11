@@ -1,22 +1,55 @@
 package org.xtream.core.model;
 
-import org.xtream.core.model.ports.ConnectablePort;
+import org.xtream.core.model.annotations.Constant;
 
 
-public class Channel<T>
+public final class Channel<T>
 {
+	
+	private class ChannelExpression extends Expression<T>
+	{
+
+		@Constant
+		public Channel<T> channel;
+
+		public ChannelExpression(Port<T> port, Channel<T> channel)
+		{
+			super(port);
+			
+			this.channel = channel;
+		}
+
+		@Override
+		public T evaluate(int timepoint)
+		{
+			return channel.source.get(timepoint);
+		}
+
+	}
 	
 	public String name;
 	
 	public Port<T> source;
-	public ConnectablePort<T> target;
+	public Port<T> target;
 	
-	public Channel(Port<T> source, ConnectablePort<T> target)
+	public Expression<T> expression;
+	
+	public Channel(OutputPort<T> source, InputPort<T> target)
+	{
+		this((Port<T>) source, (Port<T>) target);
+	}
+	
+	public Channel(OutputPort<T> source, OutputPort<T> target)
+	{
+		this((Port<T>) source, (Port<T>) target);
+	}
+	
+	private Channel(Port<T> source, Port<T> target)
 	{
 		this.source = source;
 		this.target = target;
 		
-		target.channel = this;
+		this.expression = new ChannelExpression(target, this);
 	}
 
 }

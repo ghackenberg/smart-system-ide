@@ -1,17 +1,14 @@
 package org.xtream.core.model;
 
-import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.optimizer.State;
 
 public abstract class Port<T>
 {
 	
-	@Constant
 	public String name;
-	@Constant
 	public Integer number;
-	@Constant
-	public State state = null;
+	public Expression<T> expression;
+	public State state;
 	
 	public final T get(int timepoint)
 	{
@@ -19,14 +16,12 @@ public abstract class Port<T>
 		
 		if (value == null)
 		{
-			value = evaluate(timepoint);
+			value = expression.evaluate(timepoint);
 			
 			state.set(this, timepoint, value);
 		}
 		
 		return value;
 	}
-	
-	protected abstract T evaluate(int timepoint);
 
 }

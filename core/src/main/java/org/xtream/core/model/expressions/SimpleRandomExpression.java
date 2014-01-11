@@ -1,12 +1,18 @@
-package org.xtream.core.model.ports;
+package org.xtream.core.model.expressions;
 
 import java.util.Set;
 
-import org.xtream.core.model.Port;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.OutputPort;
 
-public abstract class SimpleRandomPort<T> extends Port<T>
+public abstract class SimpleRandomExpression<T> extends Expression<T>
 {
 	
+	public SimpleRandomExpression(OutputPort<T> port)
+	{
+		super(port);
+	}
+
 	@Override
 	public final T evaluate(int timepoint)
 	{
