@@ -17,6 +17,9 @@ import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
+import org.xtream.core.optimizer.printers.CMDPrinter;
+import org.xtream.core.optimizer.printers.CSVPrinter;
+import org.xtream.core.optimizer.printers.CompositePrinter;
 
 public class Engine<T extends Component>
 {
@@ -60,15 +63,19 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public T run(int duration, int coverage, double randomness)
+	public void run(int duration, int coverage, double randomness)
 	{
 		try
 		{
-			Monitor cmd = new CMDMonitor();
-			Monitor csv = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
-			Monitor all = new CompositeMonitor(cmd, csv);
+			Monitor cmdMonitor = new CMDMonitor();
+			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
+			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor);
 			
-			return run(duration, coverage, randomness, all);
+			Printer<T> cmdPrinter = new CMDPrinter<>();
+			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
+			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter);
+			
+			run(duration, coverage, randomness, allMonitor, allPrinter);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -76,7 +83,7 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public T run(int duration, int coverage, double randomness, Monitor monitor)
+	public void run(int duration, int coverage, double randomness, Monitor monitor, Printer<T> printer)
 	{
 		// Start monitor
 		
@@ -189,33 +196,9 @@ public class Engine<T extends Component>
 		
 		monitor.stop();
 		
-		// Return component
+		// Print component
 		
-		return roots.get(0);
-		
-		// Print best
-		/*
-		System.out.print("Port");
-		
-		for (int i = 0; i < timepoint; i++)
-		{
-			System.out.print(";Timepoint " + i);
-		}
-		
-		System.out.println();
-		
-		for (Port<?> port : roots.get(0).portsRecursive)
-		{
-			System.out.print(port.name);
-			
-			for (int i = 0; i < timepoint; i++)
-			{
-				System.out.print(";" + port.get(i));
-			}
-			
-			System.out.println();
-		}
-		*/
+		printer.print(roots.get(0), timepoint);
 	}
 
 }
