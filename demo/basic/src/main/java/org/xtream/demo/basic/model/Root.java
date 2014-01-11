@@ -56,8 +56,7 @@ public class Root extends Component
 	
 	public Expression<Double> testExpression = new SimpleRandomExpression<Double>(test)
 	{
-		@Override
-		protected Set<Double> evaluateSet(int timepoint)
+		@Override protected Set<Double> evaluateSet(int timepoint)
 		{
 			Set<Double> set = new HashSet<>();
 			set.add(1.0);
@@ -74,8 +73,7 @@ public class Root extends Component
 	
 	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximum)
 	{
-		@Override
-		public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(int timepoint)
 		{
 			return random.output.get(timepoint) < 3.;
 		}
