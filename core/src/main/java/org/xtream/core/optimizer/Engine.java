@@ -20,6 +20,7 @@ import org.xtream.core.optimizer.monitors.ChartMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
 import org.xtream.core.optimizer.printers.CMDPrinter;
 import org.xtream.core.optimizer.printers.CSVPrinter;
+import org.xtream.core.optimizer.printers.ChartPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
 
 public class Engine<T extends Component>
@@ -75,7 +76,8 @@ public class Engine<T extends Component>
 			
 			Printer<T> cmdPrinter = new CMDPrinter<>();
 			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
-			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter);
+			Printer<T> chartPrinter = new ChartPrinter<>();
+			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter, chartPrinter);
 			
 			run(duration, coverage, randomness, allMonitor, allPrinter);
 		}

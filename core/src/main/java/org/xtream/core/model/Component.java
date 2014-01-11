@@ -3,8 +3,12 @@ package org.xtream.core.model;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import org.xtream.core.model.annotations.Chart;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Dominance;
@@ -29,6 +33,8 @@ public abstract class Component
 	public List<Port<Double>> minObjectives= new ArrayList<>();
 	public List<Port<Double>> maxObjectives= new ArrayList<>();
 	
+	public Map<String, List<Port<Double>>> charts = new HashMap<>();
+	
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
 	public List<Component> componentsRecursive = new ArrayList<>();
@@ -40,6 +46,8 @@ public abstract class Component
 	public List<Port<?>> equivalencesRecursive= new ArrayList<>();
 	public List<Port<Double>> minObjectivesRecursive= new ArrayList<>();
 	public List<Port<Double>> maxObjectivesRecursive= new ArrayList<>();
+	
+	public Map<Component, Map<String, List<Port<Double>>>> chartsRecursive = new HashMap<>();
 	
 	public void init()
 	{
@@ -94,6 +102,22 @@ public abstract class Component
 							minObjectives.add((Port<Double>) port);
 						}
 					}
+					
+					if (componentField.getAnnotation(Chart.class) != null && (Port<Double>) port != null)
+					{
+						String chart = componentField.getAnnotation(Chart.class).value();
+						
+						List<Port<Double>> series = charts.get(chart);
+						
+						if (series == null)
+						{
+							series = new ArrayList<>();
+							
+							charts.put(chart, series);
+						}
+						
+						series.add((Port<Double>) port);
+					}
 				}
 				else if (Component.class.isAssignableFrom(componentField.getType()))
 				{
@@ -114,6 +138,11 @@ public abstract class Component
 					equivalencesRecursive.addAll(component.equivalencesRecursive);
 					minObjectivesRecursive.addAll(component.minObjectivesRecursive);
 					maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
+					
+					for (Entry<Component, Map<String, List<Port<Double>>>> entry : component.chartsRecursive.entrySet())
+					{
+						chartsRecursive.put(entry.getKey(), entry.getValue());
+					}
 					
 					number += component.portsRecursive.size();
 				}
@@ -163,6 +192,8 @@ public abstract class Component
 		equivalencesRecursive.addAll(equivalences);
 		minObjectivesRecursive.addAll(minObjectives);
 		maxObjectivesRecursive.addAll(maxObjectives);
+		
+		chartsRecursive.put(this, charts);
 	}
 	
 	public void dump(PrintStream out)

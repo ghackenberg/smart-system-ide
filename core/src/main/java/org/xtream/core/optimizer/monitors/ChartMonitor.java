@@ -75,7 +75,7 @@ public class ChartMonitor extends Monitor
 		layout.setHgap(1);
 		layout.setVgap(1);
 		
-		ApplicationFrame frame = new ApplicationFrame("xtream - Engine Monitor");
+		ApplicationFrame frame = new ApplicationFrame("xtream - Monitor");
 		frame.setLayout(layout);
 		frame.add(statesPanel);
 		frame.add(classesPanel);
