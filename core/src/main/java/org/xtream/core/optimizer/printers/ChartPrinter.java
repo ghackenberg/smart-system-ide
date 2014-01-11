@@ -23,7 +23,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 {
 	
 	private static int PADDING = 50;
-	private static int STROKE = 1;
+	private static int STROKE = 3;
 	
 	private JTabbedPane tabs;
 	
