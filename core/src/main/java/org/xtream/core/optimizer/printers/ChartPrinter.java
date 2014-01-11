@@ -1,5 +1,6 @@
 package org.xtream.core.optimizer.printers;
 
+import java.awt.BasicStroke;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,16 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
 
 public class ChartPrinter<T extends Component> extends Printer<T>
 {
+	
+	private static int PADDING = 50;
+	private static int STROKE = 1;
 
 	@Override
 	public void print(T component, int timepoint)
@@ -69,6 +74,15 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 				}
 				
 				JFreeChart chart = ChartFactory.createLineChart(contextComponent.name + "." + chartName, "Timepoint", "Value", dataset, PlotOrientation.VERTICAL, true, true, false);
+				
+				chart.setAntiAlias(true);
+				chart.setTextAntiAlias(true);
+				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+				
+				for (int i = 0; i < series.size(); i++)
+				{
+					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+				}
 				
 				ChartPanel panel = new ChartPanel(chart);
 				
