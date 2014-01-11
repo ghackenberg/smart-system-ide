@@ -13,8 +13,8 @@ public class CMDMonitor extends Monitor
 
 	@Override
 	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, int equivalenceClasses)
-	{
-		System.out.println("Timepoint " + timepoint + " : " + generatedStates + " / " + validStates + " / " + dominantStates + " / " + equivalenceClasses);
+	{	
+		System.out.println("Timepoint " + timepoint + " : " + generatedStates + " / " + validStates + " / " + dominantStates + " / " + equivalenceClasses + " / " + usedMemory() + " MB");
 	}
 
 	@Override
