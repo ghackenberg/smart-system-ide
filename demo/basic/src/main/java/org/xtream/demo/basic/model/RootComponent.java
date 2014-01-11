@@ -11,6 +11,7 @@ import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.optimizer.Engine;
+import org.xtream.demo.basic.model.system.AddComponent;
 import org.xtream.demo.basic.model.system.IntegrateComponent;
 import org.xtream.demo.basic.model.system.RandomComponent;
 
@@ -39,11 +40,13 @@ public class RootComponent extends Component
 	// COMPONENTS //
 	////////////////
 	
-	public RandomComponent random = new RandomComponent();
-	
 	public RandomComponent random1 = new RandomComponent();
 	
 	public RandomComponent random2 = new RandomComponent();
+	
+	public RandomComponent random3 = new RandomComponent();
+	
+	public AddComponent add = new AddComponent();
 	
 	public IntegrateComponent integrate = new IntegrateComponent();
 	
@@ -51,7 +54,11 @@ public class RootComponent extends Component
 	// CHANNELS //
 	//////////////
 	
-	public Channel<Double> channel = new Channel<Double>(random.output, integrate.input);
+	public Channel<Double> channel1 = new Channel<Double>(random1.output, add.input1);
+	
+	public Channel<Double> channel2 = new Channel<Double>(random2.output, add.input2);
+	
+	public Channel<Double> channel3 = new Channel<Double>(random3.output, integrate.input);
 	
 	/////////////////
 	// EXPRESSIONS //
@@ -65,7 +72,7 @@ public class RootComponent extends Component
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return random.output.get(timepoint) < 3.;
+			return random1.output.get(timepoint) < 3.;
 		}
 	};
 }
