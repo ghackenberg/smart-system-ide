@@ -34,7 +34,7 @@ public class CSVMonitor extends Monitor
 	@Override
 	public void stop()
 	{
-		
+		out.close();
 	}
 
 }
