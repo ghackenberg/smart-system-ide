@@ -7,9 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Chart
+public @interface Show
 {
 	
-	public String value();
+	public String[] value();
 
 }

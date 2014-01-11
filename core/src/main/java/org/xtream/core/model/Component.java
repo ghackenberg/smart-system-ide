@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xtream.core.model.annotations.Chart;
+import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Dominance;
@@ -103,20 +103,21 @@ public abstract class Component
 						}
 					}
 					
-					if (componentField.getAnnotation(Chart.class) != null && (Port<Double>) port != null)
+					if (componentField.getAnnotation(Show.class) != null && (Port<Double>) port != null)
 					{
-						String chart = componentField.getAnnotation(Chart.class).value();
-						
-						List<Port<Double>> series = charts.get(chart);
-						
-						if (series == null)
+						for (String chart : componentField.getAnnotation(Show.class).value())
 						{
-							series = new ArrayList<>();
+							List<Port<Double>> series = charts.get(chart);
 							
-							charts.put(chart, series);
+							if (series == null)
+							{
+								series = new ArrayList<>();
+								
+								charts.put(chart, series);
+							}
+							
+							series.add((Port<Double>) port);
 						}
-						
-						series.add((Port<Double>) port);
 					}
 				}
 				else if (Component.class.isAssignableFrom(componentField.getType()))
