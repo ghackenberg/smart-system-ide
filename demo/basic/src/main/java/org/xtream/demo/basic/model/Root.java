@@ -1,6 +1,8 @@
 package org.xtream.demo.basic.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.xtream.core.model.Channel;
@@ -9,6 +11,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
+import org.xtream.core.model.expressions.ComplexRandomExpression;
 import org.xtream.core.model.expressions.SimpleRandomExpression;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.demo.basic.model.system.Integrate;
@@ -27,7 +30,10 @@ public class Root extends Component
 	///////////
 	
 	@Equivalence
-	public OutputPort<Double> test = new OutputPort<>();
+	public OutputPort<Double> test1 = new OutputPort<>();
+	
+	@Equivalence
+	public OutputPort<Double> test2 = new OutputPort<>();
 	
 	@Constraint
 	public OutputPort<Boolean> maximum = new OutputPort<>();
@@ -54,7 +60,7 @@ public class Root extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> testExpression = new SimpleRandomExpression<Double>(test)
+	public Expression<Double> test1Expression = new SimpleRandomExpression<Double>(test1)
 	{
 		@Override protected Set<Double> evaluateSet(int timepoint)
 		{
@@ -68,6 +74,18 @@ public class Root extends Component
 			set.add(7.0);
 			set.add(8.0);
 			return set;
+		}
+	};
+	
+	public Expression<Double> test2Expression = new ComplexRandomExpression<Double>(test2)
+	{
+		@Override protected Map<Double, Double> evaluateDistribution(int timepoint)
+		{
+			Map<Double, Double> map = new HashMap<>();
+			map.put(1., 0.5);
+			map.put(2., 0.25);
+			map.put(3., 0.25);
+			return map;
 		}
 	};
 	
