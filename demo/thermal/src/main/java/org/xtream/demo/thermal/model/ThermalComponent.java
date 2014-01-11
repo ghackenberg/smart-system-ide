@@ -1,14 +1,14 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
+import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
-public class ThermalComponent extends Component
+public class ThermalComponent extends EnergyComponent
 {
 	
 	////////////
@@ -23,10 +23,8 @@ public class ThermalComponent extends Component
 	
 	public OutputPort<Boolean> command = new OutputPort<>();
 
-	@Show("Main")
+	@Show("Temperature")
 	public OutputPort<Double> temperature = new OutputPort<>();
-
-	public OutputPort<Double> energy = new OutputPort<>();
 	
 	@Constraint
 	public OutputPort<Boolean> constraint = new OutputPort<>();
@@ -71,7 +69,7 @@ public class ThermalComponent extends Component
 		}
 	};
 	
-	public Expression<Double> energyExpression = new Expression<Double>(energy)
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -85,6 +83,8 @@ public class ThermalComponent extends Component
 			}
 		}
 	};
+	
+	public Expression<Double> productionExpression = new ConstantExpression<Double>(production, 0.);
 	
 	public Expression<Boolean> constraintExpression = new Expression<Boolean>(constraint)
 	{

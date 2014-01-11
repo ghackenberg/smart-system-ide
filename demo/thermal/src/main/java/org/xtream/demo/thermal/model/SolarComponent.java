@@ -7,14 +7,12 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.OutputPort;
-import org.xtream.core.model.annotations.Show;
+import org.xtream.core.model.expressions.ConstantExpression;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class SolarComponent extends Component
+public class SolarComponent extends EnergyComponent
 {
 
 	private List<String[]> scenario;
@@ -48,9 +46,8 @@ public class SolarComponent extends Component
 	/////////////
 	// OUTPUTS //
 	/////////////
-
-	@Show("Main")
-	public OutputPort<Double> energy = new OutputPort<>();
+	
+	/* none */
 	
 	////////////////
 	// COMPONENTS //
@@ -68,7 +65,7 @@ public class SolarComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> energyExpression = new Expression<Double>(energy)
+	public Expression<Double> productionExpression = new Expression<Double>(production)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -82,5 +79,7 @@ public class SolarComponent extends Component
 			}
 		}
 	};
+	
+	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumption, 0.);
 
 }
