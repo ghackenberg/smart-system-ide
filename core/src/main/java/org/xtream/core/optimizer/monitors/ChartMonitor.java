@@ -22,7 +22,7 @@ public class ChartMonitor extends Monitor
 {
 	
 	private static int PADDING = 50;
-	private static int STROKE = 2;
+	private static int STROKE = 1;
 	
 	private DefaultCategoryDataset states = new DefaultCategoryDataset();
 	private DefaultCategoryDataset classes = new DefaultCategoryDataset();
