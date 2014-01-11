@@ -18,13 +18,13 @@ public abstract class EnergyComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> production = new OutputPort<>();
 	
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> consumption = new OutputPort<>();
 	
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> balance = new OutputPort<>();
 	
 	////////////////

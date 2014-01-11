@@ -82,7 +82,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 						}
 					}
 					
-					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "  : " + chartName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
 					
 					chart.setAntiAlias(true);
 					chart.setTextAntiAlias(true);

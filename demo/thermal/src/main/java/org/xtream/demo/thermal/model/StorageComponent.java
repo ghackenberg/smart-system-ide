@@ -23,13 +23,13 @@ public class StorageComponent extends EnergyComponent
 	
 	public OutputPort<Double> command = new OutputPort<>();
 
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> level = new OutputPort<>();
 	
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> minimum = new OutputPort<>();
 	
-	@Show("Main")
+	@Show("main")
 	public OutputPort<Double> maximum = new OutputPort<>();
 	
 	@Constraint
