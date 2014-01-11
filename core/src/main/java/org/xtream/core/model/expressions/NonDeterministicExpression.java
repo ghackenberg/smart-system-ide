@@ -5,10 +5,10 @@ import java.util.Set;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 
-public abstract class SimpleRandomExpression<T> extends Expression<T>
+public abstract class NonDeterministicExpression<T> extends Expression<T>
 {
 	
-	public SimpleRandomExpression(OutputPort<T> port)
+	public NonDeterministicExpression(OutputPort<T> port)
 	{
 		super(port);
 	}
