@@ -1,18 +1,15 @@
 package org.xtream.demo.basic.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.xtream.core.model.Channel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.expressions.ProbabilisticExpression;
-import org.xtream.core.model.expressions.NonDeterministicExpression;
+import org.xtream.core.model.builders.MapBuilder;
+import org.xtream.core.model.builders.SetBuilder;
+import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
+import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.demo.basic.model.system.Integrate;
 import org.xtream.demo.basic.model.system.Random;
@@ -60,34 +57,9 @@ public class Root extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> test1Expression = new NonDeterministicExpression<Double>(test1)
-	{
-		@Override protected Set<Double> evaluateSet(int timepoint)
-		{
-			Set<Double> set = new HashSet<>();
-			set.add(1.0);
-			set.add(2.0);
-			set.add(3.0);
-			set.add(4.0);
-			set.add(5.0);
-			set.add(6.0);
-			set.add(7.0);
-			set.add(8.0);
-			return set;
-		}
-	};
+	public Expression<Double> test1Expression = new ConstantNonDeterministicExpression<>(test1, new SetBuilder<Double>().add(1.).add(2.).add(3.));
 	
-	public Expression<Double> test2Expression = new ProbabilisticExpression<Double>(test2)
-	{
-		@Override protected Map<Double, Double> evaluateDistribution(int timepoint)
-		{
-			Map<Double, Double> map = new HashMap<>();
-			map.put(1., 0.5);
-			map.put(2., 0.25);
-			map.put(3., 0.25);
-			return map;
-		}
-	};
+	public Expression<Double> test2Expression = new ConstantProbabilisticExpression<>(test2, new MapBuilder<Double>().put(1., 0.5).put(2., 0.25).put(3.,  0.25));
 	
 	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximum)
 	{

@@ -1,12 +1,10 @@
 package org.xtream.demo.basic.model.system;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
-import org.xtream.core.model.expressions.NonDeterministicExpression;
+import org.xtream.core.model.builders.SetBuilder;
+import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
 public class Random extends Component
 {
@@ -33,16 +31,6 @@ public class Random extends Component
 	// EXPRESSION //
 	////////////////
 	
-	public Expression<Double> outputExpression = new NonDeterministicExpression<Double>(output)
-	{
-		@Override protected Set<Double> evaluateSet(int timepoint)
-		{
-			Set<Double> set = new HashSet<>();
-			set.add(1.);
-			set.add(2.);
-			set.add(3.);
-			return set;
-		}
-	};
+	public Expression<Double> outputExpression = new ConstantNonDeterministicExpression<Double>(output, new SetBuilder<Double>().add(1.).add(2.).add(3.));
 	
 }
