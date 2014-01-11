@@ -14,37 +14,40 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
+import org.xtream.core.optimizer.monitors.CompositeMonitor;
 
-public class Engine
+public class Engine<T extends Component>
 {
 	
-	public Class<? extends Component> type;
+	public Class<T> type;
 	public int processors;
-	public Thread[] threads;
-	public Worker[] workers;
-	public Component[] roots;
+	public List<Thread> threads;
+	public List<Worker> workers;
+	public List<T> roots;
 	public int timepoint;
 	
-	public Engine(Class<? extends Component> type)
+	public Engine(Class<T> type)
 	{
 		this(type, Runtime.getRuntime().availableProcessors());
 	}
 	
-	public Engine(Class<? extends Component> type, int processors)
+	public Engine(Class<T> type, int processors)
 	{
 		this.type = type;
 		this.processors = processors;
-		this.threads = new Thread[processors];
-		this.workers = new Worker[processors];
-		this.roots = new Component[processors];
+		
+		threads = new ArrayList<>(processors);
+		workers = new ArrayList<>(processors);
+		roots = new ArrayList<>(processors);
 		
 		try
 		{
 			for (int i = 0; i < processors; i++)
 			{
-				this.roots[i] = type.newInstance();
-				this.roots[i].init();
+				roots.add(i, type.newInstance());
+				roots.get(i).init();
 			}
 		}
 		catch (InstantiationException e)
@@ -57,11 +60,15 @@ public class Engine
 		}
 	}
 	
-	public void run(int duration, int coverage, double randomness)
+	public T run(int duration, int coverage, double randomness)
 	{
 		try
 		{
-			run(duration, coverage, randomness, new CSVMonitor(new PrintStream(new File("Monitor.csv"))));
+			Monitor cmd = new CMDMonitor();
+			Monitor csv = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
+			Monitor all = new CompositeMonitor(cmd, csv);
+			
+			return run(duration, coverage, randomness, all);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -69,7 +76,7 @@ public class Engine
 		}
 	}
 	
-	public void run(int duration, int coverage, double randomness, Monitor monitor)
+	public T run(int duration, int coverage, double randomness, Monitor monitor)
 	{
 		// Start monitor
 		
@@ -79,16 +86,16 @@ public class Engine
 		
 		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
 		
-		State start = new State(roots[0].portsRecursive.size(), roots[0].fieldsRecursive.size());
+		State start = new State(roots.get(0).portsRecursive.size(), roots.get(0).fieldsRecursive.size());
 		
-		start.connect(roots[0]);
+		start.connect(roots.get(0));
 		start.save();
 		
 		List<State> initialGroup = new ArrayList<>();
 		
 		initialGroup.add(start);
 		
-		previousGroups.put(new Key(roots[0], -1), initialGroup);
+		previousGroups.put(new Key(roots.get(0), -1), initialGroup);
 		
 		// Run optimization
 		
@@ -98,32 +105,32 @@ public class Engine
 			
 			// Prepare statistics
 			
-			int generatedCount = 0;
-			int validCount = 0;
-			int dominantCount = 0;
+			int generatedStates = 0;
+			int validStates = 0;
+			int dominantStates = 0;
 			
 			// Start threads
 			
 			Queue<Key> queue = new LinkedBlockingQueue<>(previousGroups.keySet());
 			
-			for (int i = 0; i < processors; i++)
+			for (int proccessor = 0; proccessor < processors; proccessor++)
 			{
-				workers[i] = new Worker(roots[i], timepoint, previousGroups.size(), coverage, randomness, previousGroups, currentGroups, queue);
+				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, previousGroups.size(), coverage, randomness, previousGroups, currentGroups, queue));
 				
-				threads[i] = new Thread(workers[i]);
-				threads[i].start();
+				threads.add(proccessor, new Thread(workers.get(proccessor)));
+				threads.get(proccessor).start();
 			}
 			
 			// Join threads
 			
-			for (int i = 0; i < processors; i++)
+			for (int processor = 0; processor < processors; processor++)
 			{
 				try
 				{
-					threads[i].join();
+					threads.get(processor).join();
 					
-					generatedCount += workers[i].generatedCount;
-					validCount += workers[i].validCount;
+					generatedStates += workers.get(processor).generatedCount;
+					validStates += workers.get(processor).validCount;
 				}
 				catch (InterruptedException e)
 				{
@@ -141,12 +148,12 @@ public class Engine
 				{
 					Collections.sort(previousGroup.getValue());
 					
-					dominantCount += previousGroup.getValue().size();
+					dominantStates += previousGroup.getValue().size();
 				}
 				
 				// Print result
 				
-				monitor.handle(timepoint, generatedCount, validCount, dominantCount, previousGroups.size());
+				monitor.handle(timepoint, generatedStates, validStates, dominantStates, previousGroups.size());
 			}
 			else
 			{
@@ -160,14 +167,14 @@ public class Engine
 		
 		for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 		{
-			for (Port<Double> port : roots[0].minObjectivesRecursive)
+			for (Port<Double> port : roots.get(0).minObjectivesRecursive)
 			{
 				if (best.get(port, timepoint - 1) > entry.getValue().get(0).get(port, timepoint - 1))
 				{
 					best = entry.getValue().get(0);
 				}
 			}
-			for (Port<Double> port : roots[0].maxObjectivesRecursive)
+			for (Port<Double> port : roots.get(0).maxObjectivesRecursive)
 			{
 				if (best.get(port, timepoint - 1) < entry.getValue().get(0).get(port, timepoint - 1))
 				{
@@ -176,14 +183,18 @@ public class Engine
 			}
 		}
 		
-		best.restore(roots[0]);
+		best.restore(roots.get(0));
 		
 		// Stop monitor
 		
 		monitor.stop();
 		
-		// Print best
+		// Return component
 		
+		return roots.get(0);
+		
+		// Print best
+		/*
 		System.out.print("Port");
 		
 		for (int i = 0; i < timepoint; i++)
@@ -193,7 +204,7 @@ public class Engine
 		
 		System.out.println();
 		
-		for (Port<?> port : roots[0].portsRecursive)
+		for (Port<?> port : roots.get(0).portsRecursive)
 		{
 			System.out.print(port.name);
 			
@@ -204,6 +215,7 @@ public class Engine
 			
 			System.out.println();
 		}
+		*/
 	}
 
 }
