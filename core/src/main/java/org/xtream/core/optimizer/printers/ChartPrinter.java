@@ -44,62 +44,65 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 			charts += mainEntry.getValue().size();
 		}
 		
-		// Calculate grid layout
-		
-		int cols = (int) Math.ceil(Math.sqrt(charts));
-		int rows = (int) Math.ceil(Math.sqrt(charts));
-		
-		GridLayout layout = new GridLayout(cols, rows);
-		layout.setHgap(1);
-		layout.setVgap(1);
-		
-		// Initialize frame
-		
-		JPanel frame = new JPanel();
-		frame.setLayout(layout);
-		
-		// Create charts
-		
-		for (Entry<Component, Map<String, List<Port<Double>>>> mainEntry : component.chartsRecursive.entrySet())
+		if (charts > 0)
 		{
-			Component contextComponent = mainEntry.getKey();
+			// Calculate grid layout
 			
-			for (Entry<String, List<Port<Double>>> nestedEntry : mainEntry.getValue().entrySet())
+			int cols = (int) Math.ceil(Math.sqrt(charts));
+			int rows = (int) Math.ceil(Math.sqrt(charts));
+			
+			GridLayout layout = new GridLayout(cols, rows);
+			layout.setHgap(1);
+			layout.setVgap(1);
+			
+			// Initialize frame
+			
+			JPanel frame = new JPanel();
+			frame.setLayout(layout);
+			
+			// Create charts
+			
+			for (Entry<Component, Map<String, List<Port<Double>>>> mainEntry : component.chartsRecursive.entrySet())
 			{
-				String chartName = nestedEntry.getKey();
+				Component contextComponent = mainEntry.getKey();
 				
-				List<Port<Double>> series = nestedEntry.getValue();
-				
-				DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-				
-				for (Port<Double> port : series)
+				for (Entry<String, List<Port<Double>>> nestedEntry : mainEntry.getValue().entrySet())
 				{
-					for (int i = 0; i < timepoint; i++)
+					String chartName = nestedEntry.getKey();
+					
+					List<Port<Double>> series = nestedEntry.getValue();
+					
+					DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+					
+					for (Port<Double> port : series)
 					{
-						dataset.addValue(port.get(i), port.qualifiedName, "" + i);
+						for (int i = 0; i < timepoint; i++)
+						{
+							dataset.addValue(port.get(i), port.qualifiedName, "" + i);
+						}
 					}
+					
+					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Timepoint", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					
+					chart.setAntiAlias(true);
+					chart.setTextAntiAlias(true);
+					chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+					
+					for (int i = 0; i < series.size(); i++)
+					{
+						chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+					}
+					
+					ChartPanel panel = new ChartPanel(chart);
+					
+					frame.add(panel);
 				}
-				
-				JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Timepoint", null, dataset, PlotOrientation.VERTICAL, true, true, false);
-				
-				chart.setAntiAlias(true);
-				chart.setTextAntiAlias(true);
-				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
-				
-				for (int i = 0; i < series.size(); i++)
-				{
-					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
-				}
-				
-				ChartPanel panel = new ChartPanel(chart);
-				
-				frame.add(panel);
 			}
+			
+			// Show frame
+			
+			tabs.addTab("Chart printer", frame);
 		}
-		
-		// Show frame
-		
-		tabs.addTab("Chart printer", frame);
 	}
 
 }
