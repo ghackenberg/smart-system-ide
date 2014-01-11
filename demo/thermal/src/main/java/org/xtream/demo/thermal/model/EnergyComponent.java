@@ -2,8 +2,8 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Show;
+import org.xtream.core.model.ports.OutputPort;
 
 public abstract class EnergyComponent extends Component
 {

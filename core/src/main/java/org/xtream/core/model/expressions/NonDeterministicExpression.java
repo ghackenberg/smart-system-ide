@@ -3,7 +3,7 @@ package org.xtream.core.model.expressions;
 import java.util.Set;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.OutputPort;
+import org.xtream.core.model.ports.OutputPort;
 
 public abstract class NonDeterministicExpression<T> extends Expression<T>
 {
