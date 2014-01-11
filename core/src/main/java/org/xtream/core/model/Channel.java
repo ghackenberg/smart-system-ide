@@ -34,6 +34,11 @@ public final class Channel<T>
 	
 	public Expression<T> expression;
 	
+	public Channel(InputPort<T> source, InputPort<T> target)
+	{
+		this((Port<T>) source, (Port<T>) target);
+	}
+	
 	public Channel(OutputPort<T> source, InputPort<T> target)
 	{
 		this((Port<T>) source, (Port<T>) target);
