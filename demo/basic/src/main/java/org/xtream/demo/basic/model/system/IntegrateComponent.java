@@ -7,7 +7,7 @@ import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
 
-public class Integrate extends Component
+public class IntegrateComponent extends Component
 {
 	
 	///////////

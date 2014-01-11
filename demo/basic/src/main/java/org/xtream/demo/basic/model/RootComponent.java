@@ -11,15 +11,15 @@ import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.optimizer.Engine;
-import org.xtream.demo.basic.model.system.Integrate;
-import org.xtream.demo.basic.model.system.Random;
+import org.xtream.demo.basic.model.system.IntegrateComponent;
+import org.xtream.demo.basic.model.system.RandomComponent;
 
-public class Root extends Component
+public class RootComponent extends Component
 {
 	
 	public static void main(String[] args)
 	{
-		new Engine(Root.class).run(96, 100, 0.5);
+		new Engine(RootComponent.class).run(96, 100, 0.5);
 	}
 	
 	///////////
@@ -39,13 +39,13 @@ public class Root extends Component
 	// COMPONENTS //
 	////////////////
 	
-	public Random random = new Random();
+	public RandomComponent random = new RandomComponent();
 	
-	public Random random1 = new Random();
+	public RandomComponent random1 = new RandomComponent();
 	
-	public Random random2 = new Random();
+	public RandomComponent random2 = new RandomComponent();
 	
-	public Integrate integrate = new Integrate();
+	public IntegrateComponent integrate = new IntegrateComponent();
 	
 	//////////////
 	// CHANNELS //
