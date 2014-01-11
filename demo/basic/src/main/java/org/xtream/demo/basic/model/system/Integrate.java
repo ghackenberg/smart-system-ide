@@ -39,8 +39,7 @@ public class Integrate extends Component
 	{
 		public double previous = 0;
 		
-		@Override
-		public Double evaluate(int timepoint)
+		@Override public Double evaluate(int timepoint)
 		{
 			return previous += input.get(timepoint);
 		}
