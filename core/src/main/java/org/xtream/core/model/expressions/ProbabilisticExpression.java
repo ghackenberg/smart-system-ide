@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.OutputPort;
+import org.xtream.core.model.ports.OutputPort;
 
 public abstract class ProbabilisticExpression<T> extends Expression<T>
 {

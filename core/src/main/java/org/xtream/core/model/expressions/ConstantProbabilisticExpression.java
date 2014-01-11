@@ -2,9 +2,9 @@ package org.xtream.core.model.expressions;
 
 import java.util.Map;
 
-import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.builders.MapBuilder;
+import org.xtream.core.model.ports.OutputPort;
 
 public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<T>
 {

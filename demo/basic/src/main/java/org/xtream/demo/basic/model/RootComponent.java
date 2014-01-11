@@ -3,7 +3,6 @@ package org.xtream.demo.basic.model;
 import org.xtream.core.model.Channel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
@@ -11,6 +10,7 @@ import org.xtream.core.model.builders.MapBuilder;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
+import org.xtream.core.model.ports.OutputPort;
 import org.xtream.core.optimizer.Engine;
 
 public class RootComponent extends Component

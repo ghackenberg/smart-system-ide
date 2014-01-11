@@ -1,6 +1,8 @@
 package org.xtream.core.model;
 
 import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.ports.InputPort;
+import org.xtream.core.model.ports.OutputPort;
 
 
 public final class Channel<T>
