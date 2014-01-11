@@ -6,10 +6,10 @@ import java.util.Map.Entry;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 
-public abstract class ComplexRandomExpression<T> extends Expression<T>
+public abstract class ProbabilisticExpression<T> extends Expression<T>
 {
 	
-	public ComplexRandomExpression(OutputPort<T> port)
+	public ProbabilisticExpression(OutputPort<T> port)
 	{
 		super(port);
 	}

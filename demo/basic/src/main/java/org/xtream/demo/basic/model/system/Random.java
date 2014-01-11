@@ -6,7 +6,7 @@ import java.util.Set;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
-import org.xtream.core.model.expressions.SimpleRandomExpression;
+import org.xtream.core.model.expressions.NonDeterministicExpression;
 
 public class Random extends Component
 {
@@ -33,7 +33,7 @@ public class Random extends Component
 	// EXPRESSION //
 	////////////////
 	
-	public Expression<Double> outputExpression = new SimpleRandomExpression<Double>(output)
+	public Expression<Double> outputExpression = new NonDeterministicExpression<Double>(output)
 	{
 		@Override protected Set<Double> evaluateSet(int timepoint)
 		{

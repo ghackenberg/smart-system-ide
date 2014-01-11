@@ -11,8 +11,8 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.expressions.ComplexRandomExpression;
-import org.xtream.core.model.expressions.SimpleRandomExpression;
+import org.xtream.core.model.expressions.ProbabilisticExpression;
+import org.xtream.core.model.expressions.NonDeterministicExpression;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.demo.basic.model.system.Integrate;
 import org.xtream.demo.basic.model.system.Random;
@@ -60,7 +60,7 @@ public class Root extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> test1Expression = new SimpleRandomExpression<Double>(test1)
+	public Expression<Double> test1Expression = new NonDeterministicExpression<Double>(test1)
 	{
 		@Override protected Set<Double> evaluateSet(int timepoint)
 		{
@@ -77,7 +77,7 @@ public class Root extends Component
 		}
 	};
 	
-	public Expression<Double> test2Expression = new ComplexRandomExpression<Double>(test2)
+	public Expression<Double> test2Expression = new ProbabilisticExpression<Double>(test2)
 	{
 		@Override protected Map<Double, Double> evaluateDistribution(int timepoint)
 		{
