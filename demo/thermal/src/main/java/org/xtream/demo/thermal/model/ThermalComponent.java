@@ -26,6 +26,12 @@ public class ThermalComponent extends EnergyComponent
 	@Show("Temperature")
 	public OutputPort<Double> temperature = new OutputPort<>();
 	
+	@Show("Temperature")
+	public OutputPort<Double> minimum = new OutputPort<>();
+	
+	@Show("Temperature")
+	public OutputPort<Double> maximum = new OutputPort<>();
+	
 	@Constraint
 	public OutputPort<Boolean> constraint = new OutputPort<>();
 	
@@ -69,6 +75,10 @@ public class ThermalComponent extends EnergyComponent
 		}
 	};
 	
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 2.);
+	
+	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximum, 8.);
+	
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
 	{
 		@Override public Double evaluate(int timepoint)
@@ -90,7 +100,7 @@ public class ThermalComponent extends EnergyComponent
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return temperature.get(timepoint) > 2. && temperature.get(timepoint) < 8.;
+			return temperature.get(timepoint) >= minimum.get(timepoint) && temperature.get(timepoint) < maximum.get(timepoint);
 		}
 	};
 
