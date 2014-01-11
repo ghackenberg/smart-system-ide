@@ -4,6 +4,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
+import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.ports.OutputPort;
 
@@ -24,6 +25,12 @@ public class StorageComponent extends EnergyComponent
 
 	@Show("Main")
 	public OutputPort<Double> level = new OutputPort<>();
+	
+	@Show("Main")
+	public OutputPort<Double> minimum = new OutputPort<>();
+	
+	@Show("Main")
+	public OutputPort<Double> maximum = new OutputPort<>();
 	
 	@Constraint
 	public OutputPort<Boolean> constraint = new OutputPort<>();
@@ -90,11 +97,15 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 0.);
+	
+	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximum, 10000.);
+	
 	public Expression<Boolean> constraintExpression = new Expression<Boolean>(constraint)
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return level.get(timepoint) >= 0. && level.get(timepoint) <= 10000.;
+			return level.get(timepoint) >= minimum.get(timepoint) && level.get(timepoint) <= maximum.get(timepoint);
 		}
 	};
 

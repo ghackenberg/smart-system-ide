@@ -110,7 +110,7 @@ public class Engine<T extends Component>
 			Printer<T> tablePrinter = new TablePrinter<>(tabs);
 			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter, chartPrinter, tablePrinter);
 			
-			JFrame frame = new ApplicationFrame("xtream");
+			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
 			frame.add(tabs);
 			frame.pack();
 			frame.setVisible(true);
