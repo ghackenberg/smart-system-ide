@@ -9,23 +9,11 @@ import org.xtream.core.model.Port;
 public class Key implements Comparable<Key>
 {
 	
-	public Double minObjective;
-	public Double maxObjective;
-	
 	public List<Double> equivalences = new ArrayList<>();
 	
 	@SuppressWarnings("unchecked")
 	public Key(Component root, int timepoint)
 	{
-		for (Port<Double> port : root.minObjectivesRecursive)
-		{
-			minObjective = port.get(timepoint);
-		}
-		for (Port<Double> port : root.maxObjectivesRecursive)
-		{
-			maxObjective = port.get(timepoint);
-		}
-		
 		for (Port<?> port : root.equivalencesRecursive)
 		{
 			if ((Port<Double>) port != null)
