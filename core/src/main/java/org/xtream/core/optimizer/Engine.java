@@ -151,6 +151,8 @@ public class Engine<T extends Component>
 			{
 				previousGroups = new TreeMap<>(currentGroups);
 				
+				// Sort states
+				
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
 					Collections.sort(previousGroup.getValue());
@@ -158,9 +160,41 @@ public class Engine<T extends Component>
 					dominantStates += previousGroup.getValue().size();
 				}
 				
+				// Calculate stats
+				
+				double minObjective = Double.MAX_VALUE;
+				double avgObjective = 0;
+				double maxObjective = Double.MIN_VALUE;
+
+				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
+				{
+					for (Port<Double> port : roots.get(0).minObjectivesRecursive)
+					{
+						for (State state : previousGroup.getValue())
+						{
+							double objective = state.get(port, timepoint);
+							
+							minObjective = Math.min(minObjective, objective);
+							avgObjective += objective / dominantStates;
+							maxObjective = Math.max(maxObjective, objective);
+						}
+					}
+					for (Port<Double> port : roots.get(0).maxObjectivesRecursive)
+					{
+						for (State state : previousGroup.getValue())
+						{
+							double objective = state.get(port, timepoint);
+							
+							minObjective = Math.min(minObjective, objective);
+							avgObjective += objective / dominantStates;
+							maxObjective = Math.max(maxObjective, objective);
+						}
+					}
+				}
+				
 				// Print result
 				
-				monitor.handle(timepoint, generatedStates, validStates, dominantStates, previousGroups.size());
+				monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, previousGroups);
 			}
 			else
 			{

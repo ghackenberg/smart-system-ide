@@ -1,8 +1,13 @@
 package org.xtream.core.optimizer.monitors;
 
 import java.io.PrintStream;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Map;
 
+import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.optimizer.State;
 
 public class CSVMonitor extends Monitor
 {
@@ -22,13 +27,18 @@ public class CSVMonitor extends Monitor
 	@Override
 	public void start()
 	{
-		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Maximum memory (in MB);Total memory (in MB);Used memory (in MB);Free memory (in MB)");
+		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Min objective;Avg objective;Max objective;Maximum memory (in MB);Total memory (in MB);Used memory (in MB);Free memory (in MB)");
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, int equivalenceClasses)
+	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, Map<Key, List<State>> equivalenceClasses)
 	{
-		out.println(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses + ";" + maxMemory() + ";" + totalMemory() + ";" + usedMemory() + ";" + freeMemory());
+		NumberFormat format = NumberFormat.getInstance();
+		
+		out.print(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses.size() + ";");
+		out.print(format.format(minObjective) + ";" + format.format(avgObjective) + ";" + format.format(maxObjective) + ";");
+		out.print(maxMemory() + ";" + totalMemory() + ";" + usedMemory() + ";" + freeMemory());
+		out.println();
 	}
 
 	@Override

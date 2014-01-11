@@ -2,8 +2,11 @@ package org.xtream.core.optimizer.monitors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.optimizer.State;
 
 public class CompositeMonitor extends Monitor
 {
@@ -28,11 +31,11 @@ public class CompositeMonitor extends Monitor
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, int equivalenceClasses)
+	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, Map<Key, List<State>> equivalenceClasses)
 	{
 		for (Monitor monitor : monitors)
 		{
-			monitor.handle(timepoint, generatedStates, validStates, dominantStates, equivalenceClasses);
+			monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, equivalenceClasses);
 		}
 	}
 
