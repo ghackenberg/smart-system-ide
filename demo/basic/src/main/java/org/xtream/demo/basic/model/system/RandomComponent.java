@@ -3,6 +3,7 @@ package org.xtream.demo.basic.model.system;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
+import org.xtream.core.model.annotations.Chart;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
@@ -19,6 +20,7 @@ public class RandomComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
+	@Chart("Test")
 	public OutputPort<Double> output = new OutputPort<>();
 	
 	////////////////
