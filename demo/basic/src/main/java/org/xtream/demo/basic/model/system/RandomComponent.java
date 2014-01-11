@@ -6,7 +6,7 @@ import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
-public class Random extends Component
+public class RandomComponent extends Component
 {
 	
 	///////////
