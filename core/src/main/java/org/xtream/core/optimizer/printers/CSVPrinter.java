@@ -39,7 +39,7 @@ public class CSVPrinter<T extends Component> extends Printer<T>
 		
 		for (Port<?> port : component.portsRecursive)
 		{
-			out.print(port.name);
+			out.print(port.qualifiedName);
 			
 			for (int i = 0; i < timepoint; i++)
 			{

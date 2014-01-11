@@ -18,8 +18,9 @@ import org.xtream.core.model.enumerations.Direction;
 
 public abstract class Component
 {
-	
+
 	public String name;
+	public String qualifiedName;
 	
 	public List<Port<?>> ports = new ArrayList<>();
 	public List<Field> fields = new ArrayList<>();
@@ -51,13 +52,14 @@ public abstract class Component
 	
 	public void init()
 	{
-		init("root", 0);
+		init("root", "root", 0);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void init(String name, int number)
+	public void init(String name2, String name, int number)
 	{
-		this.name = name;
+		this.name = name2;
+		this.qualifiedName = name;
 		
 		for (Field componentField : this.getClass().getFields())
 		{
@@ -69,7 +71,8 @@ public abstract class Component
 					
 					ports.add(port);
 					
-					port.name = name + "." + componentField.getName();
+					port.name = componentField.getName();
+					port.qualifiedName = name + "." + componentField.getName();
 					port.number = number++;
 					
 					if (componentField.getAnnotation(Constraint.class) != null && (Port<Boolean>) port != null)
@@ -126,7 +129,7 @@ public abstract class Component
 					
 					components.add(component);
 					
-					component.init(name + "." + componentField.getName(), number);
+					component.init(componentField.getName(), name + "." + componentField.getName(), number);
 					
 					portsRecursive.addAll(component.portsRecursive);
 					fieldsRecursive.addAll(component.fieldsRecursive);
@@ -206,7 +209,7 @@ public abstract class Component
 	{
 		tabs(out, indent);
 		
-		out.println(name);
+		out.println(qualifiedName);
 		
 		for (Component component : components)
 		{
