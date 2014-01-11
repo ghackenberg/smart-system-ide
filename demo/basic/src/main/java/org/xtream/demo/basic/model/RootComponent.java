@@ -20,7 +20,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 100, 0.5);
+		new Engine<>(RootComponent.class).run(96, 1000, 0);
 	}
 	
 	////////////
@@ -70,7 +70,7 @@ public class RootComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> test1Expression = new ConstantNonDeterministicExpression<>(test1, new SetBuilder<Double>().add(1.).add(2.).add(3.));
+	public Expression<Double> test1Expression = new ConstantNonDeterministicExpression<>(test1, new SetBuilder<Double>().add(1.).add(2.).add(3.).add(4.).add(5.).add(6.).add(7.).add(8.));
 	
 	public Expression<Double> test2Expression = new ConstantProbabilisticExpression<>(test2, new MapBuilder<Double>().put(1., 0.5).put(2., 0.25).put(3.,  0.25));
 	
