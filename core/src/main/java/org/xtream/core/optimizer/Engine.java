@@ -16,6 +16,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
+import org.xtream.core.optimizer.monitors.ChartMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
 import org.xtream.core.optimizer.printers.CMDPrinter;
 import org.xtream.core.optimizer.printers.CSVPrinter;
@@ -69,7 +70,8 @@ public class Engine<T extends Component>
 		{
 			Monitor cmdMonitor = new CMDMonitor();
 			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
-			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor);
+			Monitor chartMonitor = new ChartMonitor();
+			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor);
 			
 			Printer<T> cmdPrinter = new CMDPrinter<>();
 			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));

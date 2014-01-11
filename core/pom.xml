@@ -11,4 +11,12 @@
 	<artifactId>org.xtream.core</artifactId>
 	<packaging>jar</packaging>
 	
+	<dependencies>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.15</version>
+		</dependency>
+	</dependencies>
+	
 </project>
