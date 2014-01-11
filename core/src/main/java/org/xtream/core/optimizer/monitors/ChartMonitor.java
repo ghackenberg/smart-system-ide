@@ -1,7 +1,6 @@
 package org.xtream.core.optimizer.monitors;
 
 import java.awt.BasicStroke;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class ChartMonitor extends Monitor
 		GridLayout layout = new GridLayout(2, 2);
 		layout.setHgap(1);
 		layout.setVgap(1);
-
+		
 		ApplicationFrame frame = new ApplicationFrame("xtream - Engine Monitor");
 		frame.setLayout(layout);
 		frame.add(statesPanel);
