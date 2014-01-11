@@ -82,7 +82,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 						}
 					}
 					
-					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Timepoint", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "." + chartName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
 					
 					chart.setAntiAlias(true);
 					chart.setTextAntiAlias(true);
@@ -92,6 +92,8 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 					{
 						chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
 					}
+					
+					chart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
 					
 					ChartPanel panel = new ChartPanel(chart);
 					

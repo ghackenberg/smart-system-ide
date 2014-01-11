@@ -39,10 +39,10 @@ public class ChartMonitor extends Monitor
 	@Override
 	public void start()
 	{
-		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Timepoint", "Count", states, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Timepoint", "Count", classes, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Timepoint", "Value", objectives, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Timepoint", "Amount (in MB)", memory, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Time", "Count", states, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Time", "Count", classes, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Time", "Value", objectives, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Time", "Amount (in MB)", memory, PlotOrientation.VERTICAL, true, true, false);
 		
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
@@ -67,6 +67,11 @@ public class ChartMonitor extends Monitor
 		classesChart.setTextAntiAlias(true);
 		objectivesChart.setTextAntiAlias(true);
 		memoryChart.setTextAntiAlias(true);
+		
+		statesChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+		classesChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+		objectivesChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+		memoryChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
 		
 		statesChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 		classesChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));

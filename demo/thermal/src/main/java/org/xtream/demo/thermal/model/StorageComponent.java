@@ -1,6 +1,5 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
 import org.xtream.core.model.annotations.Constraint;
@@ -8,7 +7,7 @@ import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
-public class StorageComponent extends Component
+public class StorageComponent extends EnergyComponent
 {
 	
 	////////////
@@ -21,10 +20,7 @@ public class StorageComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	public OutputPort<Integer> command = new OutputPort<>();
-	
-	@Show("Main")
-	public OutputPort<Double> energy = new OutputPort<>();
+	public OutputPort<Double> command = new OutputPort<>();
 
 	@Show("Main")
 	public OutputPort<Double> level = new OutputPort<>();
@@ -48,13 +44,21 @@ public class StorageComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Integer> commandExpression = new ConstantNonDeterministicExpression<Integer>(command, new SetBuilder<Integer>().add(-1).add(0).add(1));
+	public Expression<Double> commandExpression = new ConstantNonDeterministicExpression<Double>(command, new SetBuilder<Double>().add(-1.).add(-0.5).add(0.).add(0.5).add(1.));
 	
-	public Expression<Double> energyExpression = new Expression<Double>(energy)
+	public Expression<Double> productionExpression = new Expression<Double>(production)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return command.get(timepoint) * 600.;
+			return command.get(timepoint) > 0. ? command.get(timepoint) * 800. : 0.;
+		}
+	};
+	
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return command.get(timepoint) < 0. ? command.get(timepoint) * 800. : 0.;
 		}
 	};
 	
@@ -64,21 +68,21 @@ public class StorageComponent extends Component
 		{
 			if (timepoint == 0)
 			{
-				return 5000.;
+				return 7500.;
 			}
 			else
 			{
-				if (command.get(timepoint) == -1)
+				if (command.get(timepoint) < 0.)
 				{
-					return level.get(timepoint - 1) * 0.99 - energy.get(timepoint) * 0.85; 
+					return level.get(timepoint - 1) * 0.99 - balance.get(timepoint) * 0.85; 
 				}
-				else if (command.get(timepoint) == 0)
+				else if (command.get(timepoint) == 0.)
 				{
 					return level.get(timepoint - 1) * 0.99;
 				}
-				else if (command.get(timepoint) == 1)
+				else if (command.get(timepoint) > 0.)
 				{
-					return level.get(timepoint - 1) * 0.99 - energy.get(timepoint);
+					return level.get(timepoint - 1) * 0.99 - balance.get(timepoint);
 				}
 				
 				throw new IllegalStateException();

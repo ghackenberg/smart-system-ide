@@ -50,7 +50,7 @@ public class RootComponent extends Component
 		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += net.energy.get(timepoint) * net.energy.get(timepoint);
+			return previous += net.balance.get(timepoint) * net.balance.get(timepoint);
 		}
 	};
 
