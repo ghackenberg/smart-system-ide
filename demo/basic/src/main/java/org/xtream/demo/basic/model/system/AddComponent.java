@@ -4,7 +4,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.InputPort;
 import org.xtream.core.model.OutputPort;
-import org.xtream.core.model.annotations.Chart;
+import org.xtream.core.model.annotations.Show;
 
 public class AddComponent extends Component
 {
@@ -13,17 +13,17 @@ public class AddComponent extends Component
 	// INPUTS //
 	////////////
 	
-	@Chart("Test")
+	@Show("Test")
 	public InputPort<Double> input1 = new InputPort<>();
 
-	@Chart("Test")
+	@Show("Test")
 	public InputPort<Double> input2 = new InputPort<>();
 	
 	/////////////
 	// OUTPUTS //
 	/////////////
 
-	@Chart("Test2")
+	@Show("Test2")
 	public OutputPort<Double> output = new OutputPort<>();
 	
 	////////////////

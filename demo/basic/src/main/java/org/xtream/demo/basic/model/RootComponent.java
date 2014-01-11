@@ -4,7 +4,7 @@ import org.xtream.core.model.Channel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.OutputPort;
-import org.xtream.core.model.annotations.Chart;
+import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.builders.MapBuilder;
@@ -34,11 +34,11 @@ public class RootComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Chart("Test")
+	@Show({"Test", "Test1"})
 	@Equivalence
 	public OutputPort<Double> test1 = new OutputPort<>();
 	
-	@Chart("Test")
+	@Show({"Test", "Test2"})
 	@Equivalence
 	public OutputPort<Double> test2 = new OutputPort<>();
 	
