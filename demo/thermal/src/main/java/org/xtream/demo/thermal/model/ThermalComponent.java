@@ -23,13 +23,13 @@ public class ThermalComponent extends EnergyComponent
 	
 	public OutputPort<Boolean> command = new OutputPort<>();
 
-	@Show("Temperature")
+	@Show("temperature")
 	public OutputPort<Double> temperature = new OutputPort<>();
 	
-	@Show("Temperature")
+	@Show("temperature")
 	public OutputPort<Double> minimum = new OutputPort<>();
 	
-	@Show("Temperature")
+	@Show("temperature")
 	public OutputPort<Double> maximum = new OutputPort<>();
 	
 	@Constraint
