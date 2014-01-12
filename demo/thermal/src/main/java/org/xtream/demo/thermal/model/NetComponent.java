@@ -11,7 +11,7 @@ public class NetComponent extends EnergyComponent
 		terminals = new EnergyComponent[size + 2];
 		
 		terminals[0] = new SolarComponent(size * 400.);
-		terminals[1] = new StorageComponent(size * 200., size * 4000.);
+		terminals[1] = new StorageComponent(size * 300., size * 4000.);
 		
 		for (int i = 0; i < size; i++)
 		{
