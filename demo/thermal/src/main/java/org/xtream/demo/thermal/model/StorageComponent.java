@@ -54,7 +54,7 @@ public class StorageComponent extends EnergyComponent
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> commandExpression = new ConstantNonDeterministicExpression<Double>(commandOutput, new SetBuilder<Double>().add(-1.).add(-0.5).add(0.).add(0.5).add(1.));
+	public Expression<Double> commandExpression = new ConstantNonDeterministicExpression<Double>(commandOutput, new SetBuilder<Double>().add(-1.).add(0.).add(1.));
 	
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
@@ -78,7 +78,7 @@ public class StorageComponent extends EnergyComponent
 		{
 			if (timepoint == 0)
 			{
-				return capacity;
+				return capacity * 0.5;
 			}
 			else
 			{
