@@ -81,7 +81,7 @@ public class StorageComponent extends EnergyComponent
 		{
 			if (timepoint == 0)
 			{
-				return capacity * 0.75;
+				return capacity;
 			}
 			else
 			{
