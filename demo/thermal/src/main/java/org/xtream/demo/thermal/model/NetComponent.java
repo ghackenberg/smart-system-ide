@@ -82,6 +82,36 @@ public class NetComponent extends EnergyComponent
 		}
 	};
 	
+	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			double temperature = 0;
+			
+			for (EnergyComponent terminal : terminals)
+			{
+				temperature += terminal.temperatureOutput.get(timepoint);
+			}
+			
+			return temperature;
+		}
+	};
+	
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			double level = 0;
+			
+			for (EnergyComponent terminal : terminals)
+			{
+				level += terminal.levelOutput.get(timepoint);
+			}
+			
+			return level;
+		}
+	};
+	
 	/////////////////
 	// CONSTRAINTS //
 	/////////////////

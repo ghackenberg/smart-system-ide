@@ -15,11 +15,14 @@ public class Key implements Comparable<Key>
 	@SuppressWarnings("unchecked")
 	public Key(Component root, int timepoint)
 	{
-		for (Equivalence<?> equivalence : root.equivalencesRecursive)
+		if (timepoint >= 0)
 		{
-			if ((Port<Double>) equivalence.port != null)
+			for (Equivalence<?> equivalence : root.equivalencesRecursive)
 			{
-				equivalences.add(((Port<Double>) equivalence.port).get(timepoint));
+				if ((Port<Double>) equivalence.port != null)
+				{
+					equivalences.add(((Port<Double>) equivalence.port).get(timepoint));
+				}
 			}
 		}
 	}
