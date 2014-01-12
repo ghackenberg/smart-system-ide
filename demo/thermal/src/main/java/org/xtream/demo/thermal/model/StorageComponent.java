@@ -148,6 +148,6 @@ public class StorageComponent extends EnergyComponent
 	// CHARTS //
 	////////////
 	
-	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput, levelOutput, minimumOutput, maximumOutput);
+	public Chart energyChart = new Chart(levelOutput, minimumOutput, maximumOutput);
 
 }
