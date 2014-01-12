@@ -20,7 +20,6 @@ public class IntegrateComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Objective(Direction.MIN)
 	public Port<Double> output = new Port<>();
 	
 	////////////////
@@ -48,6 +47,30 @@ public class IntegrateComponent extends Component
 			return previous += input.get(timepoint);
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	/* none */
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	public Objective outputObjective = new Objective(output, Direction.MIN);
 	
 	////////////
 	// CHARTS //

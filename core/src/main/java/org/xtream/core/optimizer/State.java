@@ -6,6 +6,9 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.annotations.Equivalence;
+import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.annotations.Preference;
 
 public class State implements Comparable<State>
 {
@@ -153,9 +156,9 @@ public class State implements Comparable<State>
 		{
 			// Check equivalence
 			
-			for (Port<?> port : root.equivalencesRecursive)
+			for (Equivalence<?> equivalence : root.equivalencesRecursive)
 			{
-				if (!get(port, timepoint).equals(other.get(port, timepoint)))
+				if (!get(equivalence.port, timepoint).equals(other.get(equivalence.port, timepoint)))
 				{
 					return null; // Not comparable
 				}
@@ -165,9 +168,9 @@ public class State implements Comparable<State>
 			
 			double difference = 0;
 			
-			for (Port<Double> port : root.minDominancesRecursive)
+			for (Preference preference : root.minDominancesRecursive)
 			{
-				double temp = get(port, timepoint) - other.get(port, timepoint);
+				double temp = get(preference.port, timepoint) - other.get(preference.port, timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -183,9 +186,9 @@ public class State implements Comparable<State>
 			
 			difference *= -1;
 			
-			for (Port<Double> port : root.maxDominancesRecursive)
+			for (Preference preference : root.maxDominancesRecursive)
 			{
-				double temp = get(port, timepoint) - other.get(port, timepoint);
+				double temp = get(preference.port, timepoint) - other.get(preference.port, timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -212,13 +215,13 @@ public class State implements Comparable<State>
 	{
 		if (root.minObjectivesRecursive.size() == 1 || root.maxObjectivesRecursive.size() == 1)
 		{
-			for (Port<Double> port : root.minObjectivesRecursive)
+			for (Objective objective : root.minObjectivesRecursive)
 			{
-				return (int) Math.signum(get(port, timepoint) - other.get(port, timepoint));
+				return (int) Math.signum(get(objective.port, timepoint) - other.get(objective.port, timepoint));
 			}
-			for (Port<Double> port : root.maxObjectivesRecursive)
+			for (Objective objective : root.maxObjectivesRecursive)
 			{
-				return (int) Math.signum(get(port, timepoint) - other.get(port, timepoint)) * -1;
+				return (int) Math.signum(get(objective.port, timepoint) - other.get(objective.port, timepoint)) * -1;
 			}
 			
 			throw new IllegalStateException();

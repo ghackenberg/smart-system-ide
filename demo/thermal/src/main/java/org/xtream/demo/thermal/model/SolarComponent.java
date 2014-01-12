@@ -68,7 +68,7 @@ public class SolarComponent extends EnergyComponent
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> productionExpression = new Expression<Double>(production)
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -83,7 +83,31 @@ public class SolarComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumption, 0.);
+	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	/* none */
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
 	
 	////////////
 	// CHARTS //

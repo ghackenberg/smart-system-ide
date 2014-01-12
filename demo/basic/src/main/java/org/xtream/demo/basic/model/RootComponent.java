@@ -30,13 +30,10 @@ public class RootComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Equivalence
 	public Port<Double> firstOutput = new Port<>();
 	
-	@Equivalence
 	public Port<Double> secondOutput = new Port<>();
 	
-	@Constraint
 	public Port<Boolean> maximumOutput = new Port<>();
 	
 	////////////////
@@ -78,6 +75,32 @@ public class RootComponent extends Component
 			return random1.output.get(timepoint) < 3.;
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	public Constraint maximumConstraint = new Constraint(maximumOutput);
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	public Equivalence<Double> firstEquivalence = new Equivalence<>(firstOutput);
+	
+	public Equivalence<Double> secondEquivalence = new Equivalence<>(secondOutput);
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
 	
 	////////////
 	// CHARTS //

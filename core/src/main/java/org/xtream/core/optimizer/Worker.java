@@ -9,6 +9,7 @@ import java.util.Queue;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Constraint;
 
 public class Worker implements Runnable
 {
@@ -79,9 +80,9 @@ public class Worker implements Runnable
 					
 					boolean valid = true;
 					
-					for (Port<Boolean> constraint : root.constraintsRecursive)
+					for (Constraint constraint : root.constraintsRecursive)
 					{
-						valid = valid && constraint.get(timepoint);
+						valid = valid && constraint.port.get(timepoint);
 					}
 					
 					if (valid)

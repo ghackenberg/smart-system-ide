@@ -7,10 +7,9 @@ import java.util.List;
 
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.annotations.Constraint;
-import org.xtream.core.model.annotations.Dominance;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
-import org.xtream.core.model.enumerations.Direction;
+import org.xtream.core.model.annotations.Preference;
 
 public abstract class Component
 {
@@ -22,25 +21,25 @@ public abstract class Component
 	public List<Field> fields = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
 	public List<Expression<?>> expressions = new ArrayList<>();
+	public List<Constraint> constraints= new ArrayList<>();
+	public List<Equivalence<?>> equivalences= new ArrayList<>();
+	public List<Preference> minDominances= new ArrayList<>();
+	public List<Preference> maxDominances= new ArrayList<>();
+	public List<Objective> minObjectives= new ArrayList<>();
+	public List<Objective> maxObjectives= new ArrayList<>();
 	public List<Chart> charts = new ArrayList<>();
-	public List<Port<Boolean>> constraints= new ArrayList<>();
-	public List<Port<Double>> minDominances= new ArrayList<>();
-	public List<Port<Double>> maxDominances= new ArrayList<>();
-	public List<Port<?>> equivalences= new ArrayList<>();
-	public List<Port<Double>> minObjectives= new ArrayList<>();
-	public List<Port<Double>> maxObjectives= new ArrayList<>();
 	
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
 	public List<Component> componentsRecursive = new ArrayList<>();
 	public List<Expression<?>> expressionsRecursive = new ArrayList<>();
+	public List<Constraint> constraintsRecursive= new ArrayList<>();
+	public List<Equivalence<?>> equivalencesRecursive= new ArrayList<>();
+	public List<Preference> minDominancesRecursive = new ArrayList<>();
+	public List<Preference> maxDominancesRecursive = new ArrayList<>();
+	public List<Objective> minObjectivesRecursive= new ArrayList<>();
+	public List<Objective> maxObjectivesRecursive= new ArrayList<>();
 	public List<Chart> chartsRecursive = new ArrayList<>();
-	public List<Port<Boolean>> constraintsRecursive= new ArrayList<>();
-	public List<Port<Double>> minDominancesRecursive = new ArrayList<>();
-	public List<Port<Double>> maxDominancesRecursive = new ArrayList<>();
-	public List<Port<?>> equivalencesRecursive= new ArrayList<>();
-	public List<Port<Double>> minObjectivesRecursive= new ArrayList<>();
-	public List<Port<Double>> maxObjectivesRecursive= new ArrayList<>();
 	
 	public void init()
 	{
@@ -89,13 +88,13 @@ public abstract class Component
 		fieldsRecursive.addAll(fields);
 		componentsRecursive.addAll(components);
 		expressionsRecursive.addAll(expressions);
-		chartsRecursive.addAll(charts);
 		constraintsRecursive.addAll(constraints);
+		equivalencesRecursive.addAll(equivalences);
 		minDominancesRecursive.addAll(minDominances);
 		maxDominancesRecursive.addAll(maxDominances);
-		equivalencesRecursive.addAll(equivalences);
 		minObjectivesRecursive.addAll(minObjectives);
 		maxObjectivesRecursive.addAll(maxObjectives);
+		chartsRecursive.addAll(charts);
 	}
 	
 	private void load(Field componentField, Object object, String name, String qualifiedName)
@@ -118,6 +117,30 @@ public abstract class Component
 			
 			load(expression, name, qualifiedName);
 		}
+		else if (object instanceof Constraint)
+		{
+			Constraint constraint = (Constraint) object;
+			
+			load(constraint, name, qualifiedName);
+		}
+		else if (object instanceof Equivalence)
+		{
+			Equivalence<?> equivalence = (Equivalence<?>) object;
+			
+			load(equivalence, name, qualifiedName);
+		}
+		else if (object instanceof Preference)
+		{
+			Preference preference = (Preference) object;
+			
+			load(preference, name, qualifiedName);
+		}
+		else if (object instanceof Objective)
+		{
+			Objective objective = (Objective) object;
+			
+			load(objective, name, qualifiedName);
+		}
 		else if (object instanceof Chart)
 		{
 			Chart chart = (Chart) object;
@@ -126,44 +149,12 @@ public abstract class Component
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void load(Field componentField, Port<?> port, String name, String qualifiedName)
 	{
 		ports.add(port);
 	
 		port.name = name;
 		port.qualifiedName = qualifiedName;
-		
-		if (componentField.getAnnotation(Constraint.class) != null && (Port<Boolean>) port != null)
-		{
-			constraints.add((Port<Boolean>) port);
-		}
-		else if (componentField.getAnnotation(Dominance.class) != null && (Port<Double>) port != null)
-		{
-			if (componentField.getAnnotation(Dominance.class).value() ==Direction.MAX)
-			{
-				maxDominances.add((Port<Double>) port);
-			}
-			else
-			{
-				minDominances.add((Port<Double>) port);	
-			}
-		}
-		else if (componentField.getAnnotation(Equivalence.class) != null)
-		{
-			equivalences.add((Port<?>) port);
-		}
-		else if (componentField.getAnnotation(Objective.class) != null && (Port<Double>) port != null)
-		{
-			if (componentField.getAnnotation(Objective.class).value() == Direction.MAX)
-			{
-				maxObjectives.add((Port<Double>) port);
-			}
-			else
-			{
-				minObjectives.add((Port<Double>) port);
-			}
-		}
 	}
 	
 	private void load(Field componentField, Component component, String name, String qualifiedName)
@@ -176,13 +167,13 @@ public abstract class Component
 		fieldsRecursive.addAll(component.fieldsRecursive);
 		componentsRecursive.addAll(component.componentsRecursive);
 		expressionsRecursive.addAll(component.expressionsRecursive);
-		chartsRecursive.addAll(component.chartsRecursive);
 		constraintsRecursive.addAll(component.constraintsRecursive);
+		equivalencesRecursive.addAll(component.equivalencesRecursive);
 		minDominancesRecursive.addAll(component.minDominancesRecursive);
 		maxDominancesRecursive.addAll(component.maxDominancesRecursive);
-		equivalencesRecursive.addAll(component.equivalencesRecursive);
 		minObjectivesRecursive.addAll(component.minObjectivesRecursive);
 		maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
+		chartsRecursive.addAll(component.chartsRecursive);
 	}
 	
 	private void load(Expression<?> expression, String name, String qualifiedName)
@@ -199,6 +190,58 @@ public abstract class Component
 				fields.add(expressionField);
 			}
 		}
+	}
+	
+	private void load(Constraint constraint, String name, String qualifiedName)
+	{
+		constraints.add(constraint);
+		
+		constraint.name = name;
+		constraint.qualifiedName = qualifiedName;
+	}
+	
+	private void load(Equivalence<?> equivalence, String name, String qualifiedName)
+	{
+		equivalences.add(equivalence);
+		
+		equivalence.name = name;
+		equivalence.qualifiedName = qualifiedName;
+	}
+	
+	private void load(Preference preference, String name, String qualifiedName)
+	{
+		switch (preference.direction)
+		{
+		case MIN:
+			minDominances.add(preference);
+			break;
+		case MAX:
+			maxDominances.add(preference);
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
+		preference.name = name;
+		preference.qualifiedName = qualifiedName;
+	}
+	
+	private void load(Objective objective, String name, String qualifiedName)
+	{
+		switch (objective.direction)
+		{
+		case MIN:
+			minObjectives.add(objective);
+			break;
+		case MAX:
+			maxObjectives.add(objective);
+			break;
+		default:
+			throw new IllegalStateException();
+		}
+		
+		objective.name = name;
+		objective.qualifiedName = qualifiedName;
 	}
 	
 	private void load(Chart chart, String name, String qualifiedName)

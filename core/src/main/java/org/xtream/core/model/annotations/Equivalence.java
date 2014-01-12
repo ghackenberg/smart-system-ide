@@ -1,13 +1,14 @@
 package org.xtream.core.model.annotations;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.xtream.core.model.Annotation;
+import org.xtream.core.model.Port;
 
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Equivalence
+public class Equivalence<T> extends Annotation<T>
 {
+
+	public Equivalence(Port<T> port)
+	{
+		super(port);
+	}
 
 }
