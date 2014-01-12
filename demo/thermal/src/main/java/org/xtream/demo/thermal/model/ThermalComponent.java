@@ -21,16 +21,15 @@ public class ThermalComponent extends EnergyComponent
 	// OUTPUTS //
 	/////////////
 	
-	public Port<Boolean> command = new Port<>();
+	public Port<Boolean> commandOutput = new Port<>();
 	
-	public Port<Double> temperature = new Port<>();
+	public Port<Double> temperatureOutput = new Port<>();
 	
-	public Port<Double> minimum = new Port<>();
+	public Port<Double> minimumOutput = new Port<>();
 	
-	public Port<Double> maximum = new Port<>();
+	public Port<Double> maximumOutput = new Port<>();
 	
-	@Constraint
-	public Port<Boolean> constraint = new Port<>();
+	public Port<Boolean> validOutput = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -48,9 +47,9 @@ public class ThermalComponent extends EnergyComponent
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Boolean> commandExpression = new ConstantNonDeterministicExpression<Boolean>(command, new SetBuilder<Boolean>().add(true).add(false));
+	public Expression<Boolean> commandExpression = new ConstantNonDeterministicExpression<Boolean>(commandOutput, new SetBuilder<Boolean>().add(true).add(false));
 
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperature)
+	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -60,27 +59,27 @@ public class ThermalComponent extends EnergyComponent
 			}
 			else
 			{
-				if (command.get(timepoint))
+				if (commandOutput.get(timepoint))
 				{
-					return temperature.get(timepoint - 1) - 0.1;
+					return temperatureOutput.get(timepoint - 1) - 0.1;
 				}
 				else
 				{
-					return temperature.get(timepoint - 1) + 0.1;
+					return temperatureOutput.get(timepoint - 1) + 0.1;
 				}
 			}
 		}
 	};
 	
-	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 2.);
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 2.);
 	
-	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximum, 8.);
+	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximumOutput, 8.);
 	
-	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			if (command.get(timepoint))
+			if (commandOutput.get(timepoint))
 			{
 				return -200.;
 			}
@@ -91,20 +90,44 @@ public class ThermalComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> productionExpression = new ConstantExpression<Double>(production, 0.);
+	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
 	
-	public Expression<Boolean> constraintExpression = new Expression<Boolean>(constraint)
+	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return temperature.get(timepoint) >= minimum.get(timepoint) && temperature.get(timepoint) < maximum.get(timepoint);
+			return temperatureOutput.get(timepoint) >= minimumOutput.get(timepoint) && temperatureOutput.get(timepoint) < maximumOutput.get(timepoint);
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	public Constraint levelConstraint = new Constraint(validOutput);
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
 	
 	////////////
 	// CHARTS //
 	////////////
 	
-	public Chart temperatureChart = new Chart(temperature, minimum, maximum);
+	public Chart temperatureChart = new Chart(temperatureOutput, minimumOutput, maximumOutput);
 
 }

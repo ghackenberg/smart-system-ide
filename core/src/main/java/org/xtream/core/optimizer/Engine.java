@@ -19,7 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.ChartMonitor;
@@ -211,26 +211,26 @@ public class Engine<T extends Component>
 
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
-					for (Port<Double> port : roots.get(0).minObjectivesRecursive)
+					for (Objective objective : roots.get(0).minObjectivesRecursive)
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double objective = state.get(port, timepoint);
+							double currentObjective = state.get(objective.port, timepoint);
 							
-							minObjective = Math.min(minObjective, objective);
-							avgObjective += objective / dominantStates;
-							maxObjective = Math.max(maxObjective, objective);
+							minObjective = Math.min(minObjective, currentObjective);
+							avgObjective += currentObjective / dominantStates;
+							maxObjective = Math.max(maxObjective, currentObjective);
 						}
 					}
-					for (Port<Double> port : roots.get(0).maxObjectivesRecursive)
+					for (Objective objective : roots.get(0).maxObjectivesRecursive)
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double objective = state.get(port, timepoint);
+							double currentObjective = state.get(objective.port, timepoint);
 							
-							minObjective = Math.min(minObjective, objective);
-							avgObjective += objective / dominantStates;
-							maxObjective = Math.max(maxObjective, objective);
+							minObjective = Math.min(minObjective, currentObjective);
+							avgObjective += currentObjective / dominantStates;
+							maxObjective = Math.max(maxObjective, currentObjective);
 						}
 					}
 				}
@@ -251,16 +251,16 @@ public class Engine<T extends Component>
 		
 		for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 		{
-			for (Port<Double> port : roots.get(0).minObjectivesRecursive)
+			for (Objective objective : roots.get(0).minObjectivesRecursive)
 			{
-				if (best.get(port, timepoint - 1) > entry.getValue().get(0).get(port, timepoint - 1))
+				if (best.get(objective.port, timepoint - 1) > entry.getValue().get(0).get(objective.port, timepoint - 1))
 				{
 					best = entry.getValue().get(0);
 				}
 			}
-			for (Port<Double> port : roots.get(0).maxObjectivesRecursive)
+			for (Objective objective : roots.get(0).maxObjectivesRecursive)
 			{
-				if (best.get(port, timepoint - 1) < entry.getValue().get(0).get(port, timepoint - 1))
+				if (best.get(objective.port, timepoint - 1) < entry.getValue().get(0).get(objective.port, timepoint - 1))
 				{
 					best = entry.getValue().get(0);
 				}

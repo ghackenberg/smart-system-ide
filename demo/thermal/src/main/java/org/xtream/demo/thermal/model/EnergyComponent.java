@@ -17,11 +17,11 @@ public abstract class EnergyComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	public Port<Double> production = new Port<>();
+	public Port<Double> productionOutput = new Port<>();
 	
-	public Port<Double> consumption = new Port<>();
+	public Port<Double> consumptionOutput = new Port<>();
 	
-	public Port<Double> balance = new Port<>();
+	public Port<Double> balanceOutput = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -39,13 +39,37 @@ public abstract class EnergyComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> balanceExpression = new Expression<Double>(balance)
+	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return production.get(timepoint) + consumption.get(timepoint);
+			return productionOutput.get(timepoint) + consumptionOutput.get(timepoint);
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	/* none */
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
 	
 	////////////
 	// CHARTS //

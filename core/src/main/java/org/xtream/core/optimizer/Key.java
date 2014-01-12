@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Equivalence;
 
 public class Key implements Comparable<Key>
 {
@@ -14,11 +15,11 @@ public class Key implements Comparable<Key>
 	@SuppressWarnings("unchecked")
 	public Key(Component root, int timepoint)
 	{
-		for (Port<?> port : root.equivalencesRecursive)
+		for (Equivalence<?> equivalence : root.equivalencesRecursive)
 		{
-			if ((Port<Double>) port != null)
+			if ((Port<Double>) equivalence.port != null)
 			{
-				equivalences.add(((Port<Double>) port).get(timepoint));
+				equivalences.add(((Port<Double>) equivalence.port).get(timepoint));
 			}
 		}
 	}

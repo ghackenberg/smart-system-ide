@@ -4,12 +4,12 @@ import org.xtream.core.model.Annotation;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.enumerations.Direction;
 
-public class Objective extends Annotation<Double>
+public class Preference extends Annotation<Double>
 {
 	
 	public Direction direction;
 
-	public Objective(Port<Double> port, Direction direction)
+	public Preference(Port<Double> port, Direction direction)
 	{
 		super(port);
 		

@@ -24,9 +24,8 @@ public class RootComponent extends Component
 	/////////////
 	// OUTPUTS //
 	/////////////
-
-	@Objective(Direction.MIN)
-	public Port<Double> objective = new Port<>();
+	
+	public Port<Double> costOutput = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -44,15 +43,39 @@ public class RootComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> objectiveExpression = new Expression<Double>(objective)
+	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
 		public double previous = 0.;
 		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += net.balance.get(timepoint) * net.balance.get(timepoint);
+			return previous += net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	/* none */
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	public Objective costObjective = new Objective(costOutput, Direction.MIN);
 	
 	////////////
 	// CHARTS //

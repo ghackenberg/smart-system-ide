@@ -30,16 +30,15 @@ public class StorageComponent extends EnergyComponent
 	// OUTPUTS //
 	/////////////
 	
-	public Port<Double> command = new Port<>();
+	public Port<Double> commandOutput = new Port<>();
 
-	public Port<Double> level = new Port<>();
+	public Port<Double> levelOutput = new Port<>();
 	
-	public Port<Double> minimum = new Port<>();
+	public Port<Double> minimumOutput = new Port<>();
 	
-	public Port<Double> maximum = new Port<>();
+	public Port<Double> maximumOutput = new Port<>();
 	
-	@Constraint
-	public Port<Boolean> constraint = new Port<>();
+	public Port<Boolean> validOutput = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -57,25 +56,25 @@ public class StorageComponent extends EnergyComponent
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> commandExpression = new ConstantNonDeterministicExpression<Double>(command, new SetBuilder<Double>().add(-1.).add(-0.5).add(0.).add(0.5).add(1.));
+	public Expression<Double> commandExpression = new ConstantNonDeterministicExpression<Double>(commandOutput, new SetBuilder<Double>().add(-1.).add(-0.5).add(0.).add(0.5).add(1.));
 	
-	public Expression<Double> productionExpression = new Expression<Double>(production)
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return command.get(timepoint) > 0. ? command.get(timepoint) * speed : 0.;
+			return commandOutput.get(timepoint) > 0. ? commandOutput.get(timepoint) * speed : 0.;
 		}
 	};
 	
-	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return command.get(timepoint) < 0. ? command.get(timepoint) * speed : 0.;
+			return commandOutput.get(timepoint) < 0. ? commandOutput.get(timepoint) * speed : 0.;
 		}
 	};
 	
-	public Expression<Double> levelExpression = new Expression<Double>(level)
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -85,17 +84,17 @@ public class StorageComponent extends EnergyComponent
 			}
 			else
 			{
-				if (command.get(timepoint) < 0.)
+				if (commandOutput.get(timepoint) < 0.)
 				{
-					return level.get(timepoint - 1) * 0.99 - balance.get(timepoint) * 0.85; 
+					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint) * 0.85; 
 				}
-				else if (command.get(timepoint) == 0.)
+				else if (commandOutput.get(timepoint) == 0.)
 				{
-					return level.get(timepoint - 1) * 0.99;
+					return levelOutput.get(timepoint - 1) * 0.99;
 				}
-				else if (command.get(timepoint) > 0.)
+				else if (commandOutput.get(timepoint) > 0.)
 				{
-					return level.get(timepoint - 1) * 0.99 - balance.get(timepoint);
+					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint);
 				}
 				
 				throw new IllegalStateException();
@@ -103,9 +102,9 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 0.);
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 0.);
 	
-	public Expression<Double> maximumExpression = new Expression<Double>(maximum)
+	public Expression<Double> maximumExpression = new Expression<Double>(maximumOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -113,18 +112,42 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Boolean> constraintExpression = new Expression<Boolean>(constraint)
+	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return level.get(timepoint) >= minimum.get(timepoint) && level.get(timepoint) <= maximum.get(timepoint);
+			return levelOutput.get(timepoint) >= minimumOutput.get(timepoint) && levelOutput.get(timepoint) <= maximumOutput.get(timepoint);
 		}
 	};
+	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	public Constraint validConstraint = new Constraint(validOutput);
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
 	
 	////////////
 	// CHARTS //
 	////////////
 	
-	public Chart energyChart = new Chart(production, consumption, balance, level, minimum, maximum);
+	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput, levelOutput, minimumOutput, maximumOutput);
 
 }

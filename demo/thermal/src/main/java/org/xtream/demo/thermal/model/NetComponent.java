@@ -52,7 +52,7 @@ public class NetComponent extends EnergyComponent
 	// EXPRESSIONS //
 	/////////////////
 
-	public Expression<Double> productionExpression = new Expression<Double>(production)
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -60,14 +60,14 @@ public class NetComponent extends EnergyComponent
 			
 			for (EnergyComponent terminal : terminals)
 			{
-				production += terminal.production.get(timepoint);
+				production += terminal.productionOutput.get(timepoint);
 			}
 			
 			return production;
 		}
 	};
 
-	public Expression<Double> consumptionExpression = new Expression<Double>(consumption)
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
@@ -75,17 +75,41 @@ public class NetComponent extends EnergyComponent
 			
 			for (EnergyComponent terminal : terminals)
 			{
-				consumption += terminal.consumption.get(timepoint);
+				consumption += terminal.consumptionOutput.get(timepoint);
 			}
 			
 			return consumption;
 		}
 	};
 	
+	/////////////////
+	// CONSTRAINTS //
+	/////////////////
+	
+	/* none */
+	
+	//////////////////
+	// EQUIVALENCES //
+	//////////////////
+	
+	/* none */
+	
+	/////////////////
+	// PREFERENCES //
+	/////////////////
+	
+	/* none */
+	
+	////////////////
+	// OBJECTIVES //
+	////////////////
+	
+	/* none */
+	
 	////////////
 	// CHARTS //
 	////////////
 	
-	public Chart energyChart = new Chart(production, consumption, balance);
+	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }
