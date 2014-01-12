@@ -2,11 +2,11 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
-import org.xtream.core.model.ports.OutputPort;
 
 public class StorageComponent extends EnergyComponent
 {
@@ -30,16 +30,16 @@ public class StorageComponent extends EnergyComponent
 	// OUTPUTS //
 	/////////////
 	
-	public OutputPort<Double> command = new OutputPort<>();
+	public Port<Double> command = new Port<>();
 
-	public OutputPort<Double> level = new OutputPort<>();
+	public Port<Double> level = new Port<>();
 	
-	public OutputPort<Double> minimum = new OutputPort<>();
+	public Port<Double> minimum = new Port<>();
 	
-	public OutputPort<Double> maximum = new OutputPort<>();
+	public Port<Double> maximum = new Port<>();
 	
 	@Constraint
-	public OutputPort<Boolean> constraint = new OutputPort<>();
+	public Port<Boolean> constraint = new Port<>();
 	
 	////////////////
 	// COMPONENTS //

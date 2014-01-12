@@ -2,9 +2,9 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
-import org.xtream.core.model.ports.OutputPort;
 import org.xtream.core.optimizer.Engine;
 
 public class RootComponent extends Component
@@ -26,7 +26,7 @@ public class RootComponent extends Component
 	/////////////
 
 	@Objective(Direction.MIN)
-	public OutputPort<Double> objective = new OutputPort<>();
+	public Port<Double> objective = new Port<>();
 	
 	////////////////
 	// COMPONENTS //

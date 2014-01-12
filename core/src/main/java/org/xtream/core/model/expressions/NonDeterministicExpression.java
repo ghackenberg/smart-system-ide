@@ -3,12 +3,12 @@ package org.xtream.core.model.expressions;
 import java.util.Set;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.ports.OutputPort;
+import org.xtream.core.model.Port;
 
 public abstract class NonDeterministicExpression<T> extends Expression<T>
 {
 	
-	public NonDeterministicExpression(OutputPort<T> port)
+	public NonDeterministicExpression(Port<T> port)
 	{
 		super(port);
 	}

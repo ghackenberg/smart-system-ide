@@ -3,10 +3,9 @@ package org.xtream.demo.basic.model;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
-import org.xtream.core.model.ports.InputPort;
-import org.xtream.core.model.ports.OutputPort;
 
 public class IntegrateComponent extends Component
 {
@@ -15,14 +14,14 @@ public class IntegrateComponent extends Component
 	// INPUTS //
 	////////////
 	
-	public InputPort<Double> input = new InputPort<>();
+	public Port<Double> input = new Port<>();
 	
 	/////////////
 	// OUTPUTS //
 	/////////////
 	
 	@Objective(Direction.MIN)
-	public OutputPort<Double> output = new OutputPort<>();
+	public Port<Double> output = new Port<>();
 	
 	////////////////
 	// COMPONENTS //

@@ -2,9 +2,9 @@ package org.xtream.demo.basic.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
-import org.xtream.core.model.ports.OutputPort;
 
 public class RandomComponent extends Component
 {
@@ -19,7 +19,7 @@ public class RandomComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	public OutputPort<Double> output = new OutputPort<>();
+	public Port<Double> output = new Port<>();
 	
 	////////////////
 	// COMPONENTS //

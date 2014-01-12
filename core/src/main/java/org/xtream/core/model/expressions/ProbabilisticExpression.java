@@ -4,12 +4,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.ports.OutputPort;
+import org.xtream.core.model.Port;
 
 public abstract class ProbabilisticExpression<T> extends Expression<T>
 {
 	
-	public ProbabilisticExpression(OutputPort<T> port)
+	public ProbabilisticExpression(Port<T> port)
 	{
 		super(port);
 	}
