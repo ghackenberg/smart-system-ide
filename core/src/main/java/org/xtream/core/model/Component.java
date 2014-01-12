@@ -52,127 +52,35 @@ public abstract class Component
 	
 	public void init()
 	{
-		init("root", "root", 0);
+		init("root", "root");
+		
+		for (int i = 0; i < portsRecursive.size(); i++)
+		{
+			portsRecursive.get(i).number = i;
+		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void init(String name2, String name, int number)
+	public void init(String name, String qualifiedName)
 	{
-		this.name = name2;
-		this.qualifiedName = name;
+		this.name = name;
+		this.qualifiedName = qualifiedName;
 		
 		for (Field componentField : this.getClass().getFields())
 		{
 			try
 			{
-				if (Port.class.isAssignableFrom(componentField.getType()))
+				if (componentField.getType().isArray())
 				{
-					Port<?> port = (Port<?>) componentField.get(this);
+					Object[] objects = (Object[]) componentField.get(this);
 					
-					ports.add(port);
-					
-					port.name = componentField.getName();
-					port.qualifiedName = name + "." + componentField.getName();
-					port.number = number++;
-					
-					if (componentField.getAnnotation(Constraint.class) != null && (Port<Boolean>) port != null)
+					for (int i = 0; i < objects.length; i++)
 					{
-						constraints.add((Port<Boolean>) port);
-					}
-					else if (componentField.getAnnotation(Dominance.class) != null && (Port<Double>) port != null)
-					{
-						if (componentField.getAnnotation(Dominance.class).value() ==Direction.MAX)
-						{
-							maxDominances.add((Port<Double>) port);
-						}
-						else
-						{
-							minDominances.add((Port<Double>) port);	
-						}
-					}
-					else if (componentField.getAnnotation(Equivalence.class) != null)
-					{
-						equivalences.add((Port<?>) port);
-					}
-					else if (componentField.getAnnotation(Objective.class) != null && (Port<Double>) port != null)
-					{
-						if (componentField.getAnnotation(Objective.class).value() == Direction.MAX)
-						{
-							maxObjectives.add((Port<Double>) port);
-						}
-						else
-						{
-							minObjectives.add((Port<Double>) port);
-						}
-					}
-					
-					if (componentField.getAnnotation(Show.class) != null && (Port<Double>) port != null)
-					{
-						for (String chart : componentField.getAnnotation(Show.class).value())
-						{
-							List<Port<Double>> series = charts.get(chart);
-							
-							if (series == null)
-							{
-								series = new ArrayList<>();
-								
-								charts.put(chart, series);
-							}
-							
-							series.add((Port<Double>) port);
-						}
+						load(componentField, objects[i], componentField.getName() + "[" + i + "]", qualifiedName + "." + componentField.getName() + "[" + i + "]");
 					}
 				}
-				else if (Component.class.isAssignableFrom(componentField.getType()))
+				else
 				{
-					Component component = (Component) componentField.get(this);
-					
-					components.add(component);
-					
-					component.init(componentField.getName(), name + "." + componentField.getName(), number);
-					
-					portsRecursive.addAll(component.portsRecursive);
-					fieldsRecursive.addAll(component.fieldsRecursive);
-					componentsRecursive.addAll(component.componentsRecursive);
-					channelsRecursive.addAll(component.channelsRecursive);
-					expressionsRecursive.addAll(component.expressionsRecursive);
-					constraintsRecursive.addAll(component.constraintsRecursive);
-					minDominancesRecursive.addAll(component.minDominancesRecursive);
-					maxDominancesRecursive.addAll(component.maxDominancesRecursive);
-					equivalencesRecursive.addAll(component.equivalencesRecursive);
-					minObjectivesRecursive.addAll(component.minObjectivesRecursive);
-					maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
-					
-					for (Entry<Component, Map<String, List<Port<Double>>>> entry : component.chartsRecursive.entrySet())
-					{
-						chartsRecursive.put(entry.getKey(), entry.getValue());
-					}
-					
-					number += component.portsRecursive.size();
-				}
-				else if (Channel.class.isAssignableFrom(componentField.getType()))
-				{
-					Channel<?> channel = (Channel<?>) componentField.get(this);
-					
-					channels.add(channel);
-					
-					channel.name = name + "." + componentField.getName();
-				}
-				else if (Expression.class.isAssignableFrom(componentField.getType()))
-				{
-					Expression<?> expression = (Expression<?>) componentField.get(this);
-					
-					expressions.add(expression);
-					
-					expression.name = name + "." + componentField.getName();
-					
-					for (Field expressionField : expression.getClass().getFields())
-					{
-						if (expressionField.getAnnotation(Constant.class) == null)
-						{
-							fields.add(expressionField);
-						}
-					}
+					load(componentField, componentField.get(this), componentField.getName(), qualifiedName + "." + componentField.getName());
 				}
 			}
 			catch (IllegalArgumentException e)
@@ -200,6 +108,139 @@ public abstract class Component
 		chartsRecursive.put(this, charts);
 	}
 	
+	private void load(Field componentField, Object object, String name, String qualifiedName)
+	{
+		if (object instanceof Port<?>)
+		{
+			Port<?> port = (Port<?>) object;
+			
+			load(componentField, port, name, qualifiedName);
+		}
+		else if (object instanceof Component)
+		{
+			Component component = (Component) object;
+			
+			load(componentField, component, name, qualifiedName);
+		}
+		else if (object instanceof Channel<?>)
+		{
+			Channel<?> channel = (Channel<?>) object;
+			
+			load(channel, name, qualifiedName);
+		}
+		else if (object instanceof Expression<?>)
+		{
+			Expression<?> expression = (Expression<?>) object;
+			
+			load(expression, name, qualifiedName);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void load(Field componentField, Port<?> port, String name, String qualifiedName)
+	{
+		ports.add(port);
+	
+		port.name = name;
+		port.qualifiedName = qualifiedName;
+		
+		if (componentField.getAnnotation(Constraint.class) != null && (Port<Boolean>) port != null)
+		{
+			constraints.add((Port<Boolean>) port);
+		}
+		else if (componentField.getAnnotation(Dominance.class) != null && (Port<Double>) port != null)
+		{
+			if (componentField.getAnnotation(Dominance.class).value() ==Direction.MAX)
+			{
+				maxDominances.add((Port<Double>) port);
+			}
+			else
+			{
+				minDominances.add((Port<Double>) port);	
+			}
+		}
+		else if (componentField.getAnnotation(Equivalence.class) != null)
+		{
+			equivalences.add((Port<?>) port);
+		}
+		else if (componentField.getAnnotation(Objective.class) != null && (Port<Double>) port != null)
+		{
+			if (componentField.getAnnotation(Objective.class).value() == Direction.MAX)
+			{
+				maxObjectives.add((Port<Double>) port);
+			}
+			else
+			{
+				minObjectives.add((Port<Double>) port);
+			}
+		}
+		
+		if (componentField.getAnnotation(Show.class) != null && (Port<Double>) port != null)
+		{
+			for (String chart : componentField.getAnnotation(Show.class).value())
+			{
+				List<Port<Double>> series = charts.get(chart);
+				
+				if (series == null)
+				{
+					series = new ArrayList<>();
+					
+					charts.put(chart, series);
+				}
+				
+				series.add((Port<Double>) port);
+			}
+		}
+	}
+	
+	private void load(Field componentField, Component component, String name, String qualifiedName)
+	{
+		components.add(component);
+	
+		component.init(name, qualifiedName);
+		
+		portsRecursive.addAll(component.portsRecursive);
+		fieldsRecursive.addAll(component.fieldsRecursive);
+		componentsRecursive.addAll(component.componentsRecursive);
+		channelsRecursive.addAll(component.channelsRecursive);
+		expressionsRecursive.addAll(component.expressionsRecursive);
+		constraintsRecursive.addAll(component.constraintsRecursive);
+		minDominancesRecursive.addAll(component.minDominancesRecursive);
+		maxDominancesRecursive.addAll(component.maxDominancesRecursive);
+		equivalencesRecursive.addAll(component.equivalencesRecursive);
+		minObjectivesRecursive.addAll(component.minObjectivesRecursive);
+		maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
+		
+		for (Entry<Component, Map<String, List<Port<Double>>>> entry : component.chartsRecursive.entrySet())
+		{
+			chartsRecursive.put(entry.getKey(), entry.getValue());
+		}
+	}
+	
+	private void load(Channel<?> channel, String name, String qualifiedName)
+	{
+		channels.add(channel);
+		
+		channel.name = name;
+		channel.qualitiedName = qualifiedName;
+	}
+	
+	private void load(Expression<?> expression, String name, String qualifiedName)
+	{
+		expressions.add(expression);
+		
+		expression.name = name;
+		expression.qualifiedName = qualifiedName;
+		
+		for (Field expressionField : expression.getClass().getFields())
+		{
+			if (expressionField.getAnnotation(Constant.class) == null)
+			{
+				fields.add(expressionField);
+			}
+		}
+	}
+	
 	public void dump(PrintStream out)
 	{
 		dump(out, 0);
@@ -210,6 +251,13 @@ public abstract class Component
 		tabs(out, indent);
 		
 		out.println(qualifiedName);
+		
+		for (Port<?> port : ports)
+		{
+			tabs(out, indent + 1);
+			
+			out.println(port.qualifiedName);
+		}
 		
 		for (Component component : components)
 		{
