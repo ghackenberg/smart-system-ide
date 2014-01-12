@@ -32,7 +32,7 @@ public class RootComponent extends Component
 	// COMPONENTS //
 	////////////////
 	
-	public NetComponent net = new NetComponent(new NetComponent(3), new NetComponent(3));
+	public NetComponent net = new NetComponent(new NetComponent(2), new NetComponent(2));
 	
 	//////////////
 	// CHANNELS //
