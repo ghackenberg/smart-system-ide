@@ -2,9 +2,9 @@ package org.xtream.core.model.expressions;
 
 import java.util.Set;
 
+import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.builders.SetBuilder;
-import org.xtream.core.model.ports.OutputPort;
 
 public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpression<T>
 {
@@ -12,7 +12,7 @@ public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpre
 	@Constant
 	public Set<T> set;
 	
-	public ConstantNonDeterministicExpression(OutputPort<T> port, SetBuilder<T> builder)
+	public ConstantNonDeterministicExpression(Port<T> port, SetBuilder<T> builder)
 	{
 		super(port);
 		

@@ -21,7 +21,6 @@ public abstract class Component
 	public List<Port<?>> ports = new ArrayList<>();
 	public List<Field> fields = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
-	public List<Channel<?>> channels = new ArrayList<>();
 	public List<Expression<?>> expressions = new ArrayList<>();
 	public List<Chart> charts = new ArrayList<>();
 	public List<Port<Boolean>> constraints= new ArrayList<>();
@@ -34,7 +33,6 @@ public abstract class Component
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
 	public List<Component> componentsRecursive = new ArrayList<>();
-	public List<Channel<?>> channelsRecursive = new ArrayList<>();
 	public List<Expression<?>> expressionsRecursive = new ArrayList<>();
 	public List<Chart> chartsRecursive = new ArrayList<>();
 	public List<Port<Boolean>> constraintsRecursive= new ArrayList<>();
@@ -90,7 +88,6 @@ public abstract class Component
 		portsRecursive.addAll(ports);
 		fieldsRecursive.addAll(fields);
 		componentsRecursive.addAll(components);
-		channelsRecursive.addAll(channels);
 		expressionsRecursive.addAll(expressions);
 		chartsRecursive.addAll(charts);
 		constraintsRecursive.addAll(constraints);
@@ -114,12 +111,6 @@ public abstract class Component
 			Component component = (Component) object;
 			
 			load(componentField, component, name, qualifiedName);
-		}
-		else if (object instanceof Channel<?>)
-		{
-			Channel<?> channel = (Channel<?>) object;
-			
-			load(channel, name, qualifiedName);
 		}
 		else if (object instanceof Expression<?>)
 		{
@@ -184,7 +175,6 @@ public abstract class Component
 		portsRecursive.addAll(component.portsRecursive);
 		fieldsRecursive.addAll(component.fieldsRecursive);
 		componentsRecursive.addAll(component.componentsRecursive);
-		channelsRecursive.addAll(component.channelsRecursive);
 		expressionsRecursive.addAll(component.expressionsRecursive);
 		chartsRecursive.addAll(component.chartsRecursive);
 		constraintsRecursive.addAll(component.constraintsRecursive);
@@ -193,14 +183,6 @@ public abstract class Component
 		equivalencesRecursive.addAll(component.equivalencesRecursive);
 		minObjectivesRecursive.addAll(component.minObjectivesRecursive);
 		maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
-	}
-	
-	private void load(Channel<?> channel, String name, String qualifiedName)
-	{
-		channels.add(channel);
-		
-		channel.name = name;
-		channel.qualitiedName = qualifiedName;
 	}
 	
 	private void load(Expression<?> expression, String name, String qualifiedName)

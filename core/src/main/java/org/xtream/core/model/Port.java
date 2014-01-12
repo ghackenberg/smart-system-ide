@@ -2,7 +2,7 @@ package org.xtream.core.model;
 
 import org.xtream.core.optimizer.State;
 
-public abstract class Port<T>
+public class Port<T>
 {
 
 	public String name;

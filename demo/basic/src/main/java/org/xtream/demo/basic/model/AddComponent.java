@@ -2,8 +2,7 @@ package org.xtream.demo.basic.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.ports.InputPort;
-import org.xtream.core.model.ports.OutputPort;
+import org.xtream.core.model.Port;
 
 public class AddComponent extends Component
 {
@@ -12,15 +11,15 @@ public class AddComponent extends Component
 	// INPUTS //
 	////////////
 	
-	public InputPort<Double> input1 = new InputPort<>();
+	public Port<Double> firstInput = new Port<>();
 
-	public InputPort<Double> input2 = new InputPort<>();
+	public Port<Double> secondInput = new Port<>();
 	
 	/////////////
 	// OUTPUTS //
 	/////////////
 
-	public OutputPort<Double> output = new OutputPort<>();
+	public Port<Double> output = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -42,7 +41,7 @@ public class AddComponent extends Component
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return input1.get(timepoint) + input2.get(timepoint);
+			return firstInput.get(timepoint) + secondInput.get(timepoint);
 		}
 	};
 	
