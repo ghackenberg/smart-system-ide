@@ -2,7 +2,6 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.ports.OutputPort;
 
 public abstract class EnergyComponent extends Component
@@ -18,13 +17,10 @@ public abstract class EnergyComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Show("main")
 	public OutputPort<Double> production = new OutputPort<>();
 	
-	@Show("main")
 	public OutputPort<Double> consumption = new OutputPort<>();
 	
-	@Show("main")
 	public OutputPort<Double> balance = new OutputPort<>();
 	
 	////////////////
@@ -50,5 +46,11 @@ public abstract class EnergyComponent extends Component
 			return production.get(timepoint) + consumption.get(timepoint);
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	/* none */
 
 }

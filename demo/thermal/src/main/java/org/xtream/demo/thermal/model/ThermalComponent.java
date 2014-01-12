@@ -1,8 +1,8 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.annotations.Constraint;
-import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
@@ -22,14 +22,11 @@ public class ThermalComponent extends EnergyComponent
 	/////////////
 	
 	public OutputPort<Boolean> command = new OutputPort<>();
-
-	@Show("temperature")
+	
 	public OutputPort<Double> temperature = new OutputPort<>();
 	
-	@Show("temperature")
 	public OutputPort<Double> minimum = new OutputPort<>();
 	
-	@Show("temperature")
 	public OutputPort<Double> maximum = new OutputPort<>();
 	
 	@Constraint
@@ -103,5 +100,11 @@ public class ThermalComponent extends EnergyComponent
 			return temperature.get(timepoint) >= minimum.get(timepoint) && temperature.get(timepoint) < maximum.get(timepoint);
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	public Chart temperatureChart = new Chart(temperature, minimum, maximum);
 
 }

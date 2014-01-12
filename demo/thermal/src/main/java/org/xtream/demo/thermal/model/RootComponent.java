@@ -32,7 +32,7 @@ public class RootComponent extends Component
 	// COMPONENTS //
 	////////////////
 	
-	public NetComponent net = new NetComponent(new NetComponent(2), new NetComponent(2));
+	public NetComponent net = new NetComponent(new NetComponent(5), new NetComponent(5));
 	
 	//////////////
 	// CHANNELS //
@@ -53,5 +53,11 @@ public class RootComponent extends Component
 			return previous += net.balance.get(timepoint) * net.balance.get(timepoint);
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	/* none */
 
 }

@@ -84,5 +84,11 @@ public class SolarComponent extends EnergyComponent
 	};
 	
 	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumption, 0.);
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	/* none */
 
 }

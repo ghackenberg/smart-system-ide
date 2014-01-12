@@ -2,9 +2,6 @@ package org.xtream.core.optimizer.printers;
 
 import java.awt.BasicStroke;
 import java.awt.GridLayout;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -15,6 +12,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
@@ -35,21 +33,12 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 	@Override
 	public void print(T component, int timepoint)
 	{
-		// Calculate number of charts
-		
-		int charts = 0;
-		
-		for (Entry<Component, Map<String, List<Port<Double>>>> mainEntry : component.chartsRecursive.entrySet())
-		{
-			charts += mainEntry.getValue().size();
-		}
-		
-		if (charts > 0)
+		if (component.chartsRecursive.size() > 0)
 		{
 			// Calculate grid layout
 			
-			int cols = (int) Math.ceil(Math.sqrt(charts));
-			int rows = (int) Math.ceil(Math.sqrt(charts));
+			int cols = (int) Math.ceil(Math.sqrt(component.chartsRecursive.size()));
+			int rows = (int) Math.ceil(Math.sqrt(component.chartsRecursive.size()));
 			
 			GridLayout layout = new GridLayout(cols, rows);
 			layout.setHgap(1);
@@ -62,43 +51,34 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 			
 			// Create charts
 			
-			for (Entry<Component, Map<String, List<Port<Double>>>> mainEntry : component.chartsRecursive.entrySet())
+			for (Chart definition : component.chartsRecursive)
 			{
-				Component contextComponent = mainEntry.getKey();
+				DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 				
-				for (Entry<String, List<Port<Double>>> nestedEntry : mainEntry.getValue().entrySet())
+				for (Port<Double> port : definition.ports)
 				{
-					String chartName = nestedEntry.getKey();
-					
-					List<Port<Double>> series = nestedEntry.getValue();
-					
-					DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-					
-					for (Port<Double> port : series)
+					for (int i = 0; i < timepoint; i++)
 					{
-						for (int i = 0; i < timepoint; i++)
-						{
-							dataset.addValue(port.get(i), port.qualifiedName, "" + i);
-						}
+						dataset.addValue(port.get(i), port.qualifiedName, "" + i);
 					}
-					
-					JFreeChart chart = ChartFactory.createLineChart(contextComponent.qualifiedName + "  : " + chartName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
-					
-					chart.setAntiAlias(true);
-					chart.setTextAntiAlias(true);
-					chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
-					
-					for (int i = 0; i < series.size(); i++)
-					{
-						chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
-					}
-					
-					chart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
-					
-					ChartPanel panel = new ChartPanel(chart);
-					
-					frame.add(panel);
 				}
+				
+				JFreeChart chart = ChartFactory.createLineChart(definition.qualifiedName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+				
+				chart.setAntiAlias(true);
+				chart.setTextAntiAlias(true);
+				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+				
+				for (int i = 0; i < definition.ports.length; i++)
+				{
+					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+				}
+				
+				chart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+				
+				ChartPanel panel = new ChartPanel(chart);
+				
+				frame.add(panel);
 			}
 			
 			// Show frame

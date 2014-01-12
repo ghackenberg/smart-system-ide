@@ -1,8 +1,8 @@
 package org.xtream.demo.basic.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.ports.InputPort;
@@ -21,7 +21,6 @@ public class IntegrateComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Show("Main")
 	@Objective(Direction.MIN)
 	public OutputPort<Double> output = new OutputPort<>();
 	
@@ -50,5 +49,11 @@ public class IntegrateComponent extends Component
 			return previous += input.get(timepoint);
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	public Chart outputChart = new Chart(output); 
 	
 }

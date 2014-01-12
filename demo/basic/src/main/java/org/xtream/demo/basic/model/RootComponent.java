@@ -3,7 +3,6 @@ package org.xtream.demo.basic.model;
 import org.xtream.core.model.Channel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.builders.MapBuilder;
@@ -31,11 +30,9 @@ public class RootComponent extends Component
 	// OUTPUTS //
 	/////////////
 	
-	@Show({"Test", "Test1"})
 	@Equivalence
 	public OutputPort<Double> test1 = new OutputPort<>();
 	
-	@Show({"Test", "Test2"})
 	@Equivalence
 	public OutputPort<Double> test2 = new OutputPort<>();
 	
@@ -81,4 +78,10 @@ public class RootComponent extends Component
 			return random1.output.get(timepoint) < 3.;
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	/* none */
 }

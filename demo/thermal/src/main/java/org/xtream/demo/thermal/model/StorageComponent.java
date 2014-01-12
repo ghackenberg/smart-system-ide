@@ -1,9 +1,10 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.annotations.Constraint;
-import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
+import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.ports.OutputPort;
 
@@ -31,13 +32,10 @@ public class StorageComponent extends EnergyComponent
 	
 	public OutputPort<Double> command = new OutputPort<>();
 
-	@Show("main")
 	public OutputPort<Double> level = new OutputPort<>();
 	
-	@Show("main")
 	public OutputPort<Double> minimum = new OutputPort<>();
 	
-	@Show("main")
 	public OutputPort<Double> maximum = new OutputPort<>();
 	
 	@Constraint
@@ -105,13 +103,7 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> minimumExpression = new Expression<Double>(minimum)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			return 0.;
-		}
-	};
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 0.);
 	
 	public Expression<Double> maximumExpression = new Expression<Double>(maximum)
 	{
@@ -128,5 +120,11 @@ public class StorageComponent extends EnergyComponent
 			return level.get(timepoint) >= minimum.get(timepoint) && level.get(timepoint) <= maximum.get(timepoint);
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	public Chart energyChart = new Chart(production, consumption, balance, level, minimum, maximum);
 
 }
