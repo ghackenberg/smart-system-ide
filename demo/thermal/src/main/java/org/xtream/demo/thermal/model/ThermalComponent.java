@@ -23,8 +23,6 @@ public class ThermalComponent extends EnergyComponent
 	
 	public Port<Boolean> commandOutput = new Port<>();
 	
-	public Port<Double> temperatureOutput = new Port<>();
-	
 	public Port<Double> minimumOutput = new Port<>();
 	
 	public Port<Double> maximumOutput = new Port<>();
@@ -91,6 +89,8 @@ public class ThermalComponent extends EnergyComponent
 	};
 	
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
+	
+	public Expression<Double> levelExpression = new ConstantExpression<Double>(levelOutput, 0.);
 	
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{

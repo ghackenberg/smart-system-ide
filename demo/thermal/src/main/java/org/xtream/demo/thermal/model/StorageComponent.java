@@ -31,8 +31,6 @@ public class StorageComponent extends EnergyComponent
 	/////////////
 	
 	public Port<Double> commandOutput = new Port<>();
-
-	public Port<Double> levelOutput = new Port<>();
 	
 	public Port<Double> minimumOutput = new Port<>();
 	
@@ -101,6 +99,8 @@ public class StorageComponent extends EnergyComponent
 			}
 		}
 	};
+	
+	public Expression<Double> temperatureExpression = new ConstantExpression<Double>(temperatureOutput, 0.);
 	
 	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 0.);
 	
