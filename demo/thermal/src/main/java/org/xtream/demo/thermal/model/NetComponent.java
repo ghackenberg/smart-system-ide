@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 
 public class NetComponent extends EnergyComponent
@@ -80,5 +81,11 @@ public class NetComponent extends EnergyComponent
 			return consumption;
 		}
 	};
+	
+	////////////
+	// CHARTS //
+	////////////
+	
+	public Chart energyChart = new Chart(production, consumption, balance);
 
 }
