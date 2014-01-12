@@ -61,6 +61,8 @@ public class Engine<T extends Component>
 				roots.add(i, type.newInstance());
 				roots.get(i).init();
 			}
+			
+			roots.get(0).dump(System.out);
 		}
 		catch (InstantiationException e)
 		{

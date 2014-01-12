@@ -5,6 +5,24 @@ import org.xtream.core.model.Expression;
 public class NetComponent extends EnergyComponent
 {
 	
+	public NetComponent(int size)
+	{
+		terminals = new EnergyComponent[size + 2];
+		
+		terminals[0] = new SolarComponent(size * 400.);
+		terminals[1] = new StorageComponent(size * 200., size * 4000.);
+		
+		for (int i = 0; i < size; i++)
+		{
+			terminals[i + 2] = new ThermalComponent();
+		}
+	}
+	
+	public NetComponent(EnergyComponent... terminals)
+	{
+		this.terminals = terminals;
+	}
+	
 	////////////
 	// INPUTS //
 	////////////
@@ -21,15 +39,7 @@ public class NetComponent extends EnergyComponent
 	// COMPONENTS //
 	////////////////
 	
-	public EnergyComponent thermal1 = new ThermalComponent();
-	
-	public EnergyComponent thermal2 = new ThermalComponent();
-	
-	public EnergyComponent thermal3 = new ThermalComponent();
-	
-	public EnergyComponent solar = new SolarComponent();
-	
-	public EnergyComponent storage = new StorageComponent();
+	public EnergyComponent[] terminals;
 	
 	//////////////
 	// CHANNELS //
@@ -45,7 +55,14 @@ public class NetComponent extends EnergyComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return thermal1.production.get(timepoint) + thermal2.production.get(timepoint) + thermal3.production.get(timepoint) + solar.production.get(timepoint) + storage.production.get(timepoint);
+			double production = 0;
+			
+			for (EnergyComponent terminal : terminals)
+			{
+				production += terminal.production.get(timepoint);
+			}
+			
+			return production;
 		}
 	};
 
@@ -53,7 +70,14 @@ public class NetComponent extends EnergyComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return thermal1.consumption.get(timepoint) + thermal2.consumption.get(timepoint) + thermal3.consumption.get(timepoint) + solar.consumption.get(timepoint) + storage.consumption.get(timepoint);
+			double consumption = 0;
+			
+			for (EnergyComponent terminal : terminals)
+			{
+				consumption += terminal.consumption.get(timepoint);
+			}
+			
+			return consumption;
 		}
 	};
 

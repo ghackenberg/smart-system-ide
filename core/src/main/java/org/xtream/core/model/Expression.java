@@ -8,6 +8,8 @@ public abstract class Expression<T>
 	@Constant
 	public String name;
 	@Constant
+	public String qualifiedName;
+	@Constant
 	public Port<T> port;
 
 	public Expression(Port<T> port)

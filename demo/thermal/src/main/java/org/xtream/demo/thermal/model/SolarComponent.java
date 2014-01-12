@@ -15,10 +15,13 @@ import au.com.bytecode.opencsv.CSVReader;
 public class SolarComponent extends EnergyComponent
 {
 
+	private double scale;
 	private List<String[]> scenario;
 	
-	public SolarComponent()
+	public SolarComponent(double scale)
 	{
+		this.scale = scale;
+		
 		try
 		{
 			CSVReader reader = new CSVReader(new FileReader("Scenario.csv"), ';');
@@ -71,7 +74,7 @@ public class SolarComponent extends EnergyComponent
 		{
 			try
 			{
-				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * 1200.;
+				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale;
 			}
 			catch (ParseException e)
 			{

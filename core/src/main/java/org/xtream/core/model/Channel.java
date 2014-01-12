@@ -30,6 +30,7 @@ public final class Channel<T>
 	}
 	
 	public String name;
+	public String qualitiedName;
 	
 	public Port<T> source;
 	public Port<T> target;

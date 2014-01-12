@@ -142,7 +142,7 @@ public class State implements Comparable<State>
 		{
 			for (Field field : expression.getClass().getFields())
 			{
-				System.out.println(expression.name + "." + field.getName() + " = " + fields[index++]);
+				System.out.println(expression.qualifiedName + "." + field.getName() + " = " + fields[index++]);
 			}
 		}
 	}

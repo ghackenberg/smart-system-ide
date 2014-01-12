@@ -4,12 +4,20 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Show;
 import org.xtream.core.model.builders.SetBuilder;
-import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.ports.OutputPort;
 
 public class StorageComponent extends EnergyComponent
 {
+	
+	private double speed;
+	private double capacity;
+	
+	public StorageComponent(double speed, double capacity)
+	{
+		this.speed = speed;
+		this.capacity = capacity;
+	}
 	
 	////////////
 	// INPUTS //
@@ -57,7 +65,7 @@ public class StorageComponent extends EnergyComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return command.get(timepoint) > 0. ? command.get(timepoint) * 800. : 0.;
+			return command.get(timepoint) > 0. ? command.get(timepoint) * speed : 0.;
 		}
 	};
 	
@@ -65,7 +73,7 @@ public class StorageComponent extends EnergyComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return command.get(timepoint) < 0. ? command.get(timepoint) * 800. : 0.;
+			return command.get(timepoint) < 0. ? command.get(timepoint) * speed : 0.;
 		}
 	};
 	
@@ -75,7 +83,7 @@ public class StorageComponent extends EnergyComponent
 		{
 			if (timepoint == 0)
 			{
-				return 7500.;
+				return capacity * 0.75;
 			}
 			else
 			{
@@ -97,9 +105,21 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimum, 0.);
+	public Expression<Double> minimumExpression = new Expression<Double>(minimum)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return 0.;
+		}
+	};
 	
-	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximum, 10000.);
+	public Expression<Double> maximumExpression = new Expression<Double>(maximum)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return capacity;
+		}
+	};
 	
 	public Expression<Boolean> constraintExpression = new Expression<Boolean>(constraint)
 	{
