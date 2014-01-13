@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers.nodes;
+package org.xtream.core.optimizer.printers.table;
 
 import java.util.Enumeration;
 

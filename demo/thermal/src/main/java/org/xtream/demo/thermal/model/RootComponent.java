@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -13,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 200, 0);
+		new Engine<>(RootComponent.class).run(96, 50, 0);
 	}
 	
 	////////////
@@ -62,7 +63,7 @@ public class RootComponent extends Component
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return Math.floor((net.temperatureOutput.get(timepoint) - 10. * 2.) / (10. * 8.) * 5.);
+			return Math.floor((net.temperatureOutput.get(timepoint) - 2.) / 8. * 5.);
 		}
 	};
 	
@@ -70,7 +71,7 @@ public class RootComponent extends Component
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return Math.floor(net.levelOutput.get(timepoint) / (5. * 4000. + 5. * 4000.) * 5.);
+			return Math.floor(net.levelOutput.get(timepoint) / (2. * 4000. + 2. * 4000.) * 5.);
 		}
 	};
 	
@@ -104,6 +105,6 @@ public class RootComponent extends Component
 	// CHARTS //
 	////////////
 	
-	/* none */
+	public Chart costChart = new Chart(costOutput);
 
 }
