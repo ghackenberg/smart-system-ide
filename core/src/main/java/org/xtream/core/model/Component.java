@@ -28,6 +28,7 @@ public abstract class Component
 	public List<Objective> minObjectives= new ArrayList<>();
 	public List<Objective> maxObjectives= new ArrayList<>();
 	public List<Chart> charts = new ArrayList<>();
+	public List<Chart> previews = new ArrayList<>();
 	
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
@@ -40,6 +41,7 @@ public abstract class Component
 	public List<Objective> minObjectivesRecursive= new ArrayList<>();
 	public List<Objective> maxObjectivesRecursive= new ArrayList<>();
 	public List<Chart> chartsRecursive = new ArrayList<>();
+	public List<Chart> previewsRecursive = new ArrayList<>();
 	
 	public void init()
 	{
@@ -95,6 +97,7 @@ public abstract class Component
 		minObjectivesRecursive.addAll(minObjectives);
 		maxObjectivesRecursive.addAll(maxObjectives);
 		chartsRecursive.addAll(charts);
+		previewsRecursive.addAll(previews);
 	}
 	
 	private void load(Field componentField, Object object, String name, String qualifiedName)
@@ -246,7 +249,18 @@ public abstract class Component
 	
 	private void load(Chart chart, String name, String qualifiedName)
 	{
-		charts.add(chart);
+		if (name.endsWith("Chart"))
+		{
+			charts.add(chart);
+		}
+		else if (name.endsWith("Preview"))
+		{
+			previews.add(chart);
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
 		
 		chart.name = name;
 		chart.qualifiedName = qualifiedName;
