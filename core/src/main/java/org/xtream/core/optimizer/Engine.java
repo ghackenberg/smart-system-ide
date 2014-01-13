@@ -1,5 +1,7 @@
 package org.xtream.core.optimizer;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -13,8 +15,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -109,8 +115,40 @@ public class Engine<T extends Component>
 			Printer<T> tablePrinter = new TablePrinter<>(tabs);
 			Printer<T> allPrinter = new CompositePrinter<>(csvPrinter, chartPrinter, tablePrinter);
 			
+			JTextField durationField = new JTextField("" + duration, 5);
+			JTextField coverageField = new JTextField("" + coverage, 5);
+			JTextField classesField = new JTextField("" + classes, 5);
+			JTextField randomnessField = new JTextField("" + randomness, 5);
+			
+			durationField.setEditable(false);
+			coverageField.setEditable(false);
+			classesField.setEditable(false);
+			randomnessField.setEditable(false);
+			
+			JButton startButton = new JButton("Start");
+			JButton stopButton = new JButton("Stop");
+			
+			startButton.setEnabled(false);
+			stopButton.setEnabled(false);
+			
+			JToolBar toolbar = new JToolBar("Toolbar");
+			toolbar.setFloatable(false);
+			toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
+			toolbar.add(new JLabel("Duration"));
+			toolbar.add(durationField);
+			toolbar.add(new JLabel("Coverage"));
+			toolbar.add(coverageField);
+			toolbar.add(new JLabel("Classes"));
+			toolbar.add(classesField);
+			toolbar.add(new JLabel("Randomness"));
+			toolbar.add(randomnessField);
+			toolbar.add(startButton);
+			toolbar.add(stopButton);
+			
 			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
-			frame.add(tabs);
+			frame.setLayout(new BorderLayout());
+			frame.add(toolbar, BorderLayout.PAGE_START);
+			frame.add(tabs, BorderLayout.CENTER);
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 1000, 50, 0);
+		new Engine<>(RootComponent.class).run(96, 1000, 50, 0.5);
 	}
 	
 	////////////
@@ -33,7 +33,7 @@ public class RootComponent extends Component
 	// COMPONENTS //
 	////////////////
 	
-	public NetComponent net = new NetComponent(new NetComponent(2), new NetComponent(2));
+	public NetComponent net = new NetComponent(new NetComponent(5), new NetComponent(5));
 	
 	//////////////
 	// CHANNELS //
