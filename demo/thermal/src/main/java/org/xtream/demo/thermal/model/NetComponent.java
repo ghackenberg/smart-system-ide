@@ -160,6 +160,6 @@ public class NetComponent extends EnergyComponent
 	// PREVIEWS //
 	//////////////
 	
-	public Chart energyPreview = energyChart;
+	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }

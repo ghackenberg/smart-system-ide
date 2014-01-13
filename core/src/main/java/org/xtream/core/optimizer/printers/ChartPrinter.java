@@ -114,7 +114,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 							{
 								for (int i = 0; i < timepoint; i++)
 								{
-									dataset.addValue(port.get(i), port.qualifiedName, "" + i);
+									dataset.addValue(port.get(i), port.name, "" + i);
 								}
 							}
 							
@@ -161,7 +161,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 								{
 									for (int i = 0; i < timepoint; i++)
 									{
-										dataset.addValue(port.get(i), port.qualifiedName, "" + i);
+										dataset.addValue(port.get(i), port.name, "" + i);
 									}
 								}
 								

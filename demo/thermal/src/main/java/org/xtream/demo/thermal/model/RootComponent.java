@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 50, 0);
+		new Engine<>(RootComponent.class).run(96, 200, 0);
 	}
 	
 	////////////
@@ -111,6 +111,6 @@ public class RootComponent extends Component
 	// PREVIEWS //
 	//////////////
 	
-	public Chart costPreview = costChart;
+	public Chart costPreview = new Chart(costOutput);
 
 }

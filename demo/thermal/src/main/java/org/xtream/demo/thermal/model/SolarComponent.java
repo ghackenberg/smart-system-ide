@@ -120,6 +120,6 @@ public class SolarComponent extends EnergyComponent
 	// PREVIEWS //
 	//////////////
 	
-	public Chart energyPreview = energyChart;
+	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }
