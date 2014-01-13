@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -24,7 +25,6 @@ import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.ChartMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
-import org.xtream.core.optimizer.printers.CMDPrinter;
 import org.xtream.core.optimizer.printers.CSVPrinter;
 import org.xtream.core.optimizer.printers.ChartPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
@@ -61,8 +61,6 @@ public class Engine<T extends Component>
 				roots.add(i, type.newInstance());
 				roots.get(i).init();
 			}
-			
-			roots.get(0).dump(System.out);
 		}
 		catch (InstantiationException e)
 		{
@@ -74,7 +72,7 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public void run(int duration, int coverage, double randomness)
+	public void run(int duration, int coverage, int classes, double randomness)
 	{
 		try
 		{
@@ -106,11 +104,10 @@ public class Engine<T extends Component>
 			Monitor chartMonitor = new ChartMonitor(tabs);
 			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor);
 			
-			Printer<T> cmdPrinter = new CMDPrinter<>();
 			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
 			Printer<T> chartPrinter = new ChartPrinter<>(tabs);
 			Printer<T> tablePrinter = new TablePrinter<>(tabs);
-			Printer<T> allPrinter = new CompositePrinter<>(cmdPrinter, csvPrinter, chartPrinter, tablePrinter);
+			Printer<T> allPrinter = new CompositePrinter<>(csvPrinter, chartPrinter, tablePrinter);
 			
 			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
 			frame.add(tabs);
@@ -118,7 +115,7 @@ public class Engine<T extends Component>
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
-			run(duration, coverage, randomness, allMonitor, allPrinter);
+			run(duration, coverage, classes, randomness, allMonitor, allPrinter);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -126,7 +123,7 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public void run(int duration, int coverage, double randomness, Monitor monitor, Printer<T> printer)
+	public void run(int duration, int coverage, int classes, double randomness, Monitor monitor, Printer<T> printer)
 	{
 		// Start monitor
 		
@@ -145,14 +142,12 @@ public class Engine<T extends Component>
 		
 		initialGroup.add(start);
 		
-		previousGroups.put(new Key(roots.get(0), -1), initialGroup);
+		previousGroups.put(new Key(roots.get(0), null, null, classes, -1), initialGroup);
 		
 		// Run optimization
 		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
-			SortedMap<Key, List<State>> currentGroups = Collections.synchronizedSortedMap(new TreeMap<Key, List<State>>());
-			
 			// Prepare statistics
 			
 			int generatedStates = 0;
@@ -165,11 +160,15 @@ public class Engine<T extends Component>
 			
 			for (int proccessor = 0; proccessor < processors; proccessor++)
 			{
-				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, previousGroups.size(), coverage, randomness, previousGroups, currentGroups, queue));
+				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, coverage, randomness, previousGroups, queue));
 				
 				threads.add(proccessor, new Thread(workers.get(proccessor)));
 				threads.get(proccessor).start();
 			}
+			
+			// All states
+			
+			List<State> currentStates = new LinkedList<>();
 			
 			// Join threads
 			
@@ -181,10 +180,100 @@ public class Engine<T extends Component>
 					
 					generatedStates += workers.get(processor).generatedCount;
 					validStates += workers.get(processor).validCount;
+					
+					currentStates.addAll(workers.get(processor).currentStates);
 				}
 				catch (InterruptedException e)
 				{
 					e.printStackTrace();
+				}
+			}
+			
+			// Current groups
+			
+			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();
+			
+			// Calculate bounds
+			
+			double[] minEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
+			double[] maxEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
+			
+			for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+			{
+				minEquivalences[i] = Double.MAX_VALUE;
+				maxEquivalences[i] = Double.MIN_VALUE;
+			}
+			
+			for (State current : currentStates)
+			{
+				current.restore(roots.get(0));
+				
+				for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+				{
+					minEquivalences[i] = Math.min(minEquivalences[i], roots.get(0).equivalencesRecursive.get(i).port.get(timepoint));
+					maxEquivalences[i] = Math.max(maxEquivalences[i], roots.get(0).equivalencesRecursive.get(i).port.get(timepoint));
+				}
+			}
+			
+			// Sort groups
+			
+			for (State current : currentStates)
+			{
+				current.restore(roots.get(0));
+				
+				// Group Status
+				
+				Key currentKey = new Key(roots.get(0), minEquivalences, maxEquivalences, classes, timepoint);
+				
+				List<State> currentGroup = currentGroups.get(currentKey);
+				
+				if (currentGroup == null)
+				{
+					currentGroup = new LinkedList<State>();
+					
+					currentGroups.put(currentKey, currentGroup);
+				}
+				
+				// Check Status
+				
+				boolean dominant = true;
+				
+				for (int index = 0; index < currentGroup.size(); index++)
+				{
+					State alternative = currentGroup.get(index);
+					
+					Integer difference = current.compareDominanceTo(alternative);
+					
+					if (difference != null)
+					{
+						if (difference < 0)
+						{
+							dominant = false;
+							
+							break; // do not keep
+						}
+						else if (difference == 0)
+						{
+							dominant = false;
+							
+							break; // do not keep
+						}
+						else if (difference > 0)
+						{
+							currentGroup.remove(index--);
+							
+							continue;
+						}
+						
+						assert false;
+					}
+				}
+				
+				// Save Status
+				
+				if (dominant)
+				{
+					currentGroup.add(current);
 				}
 			}
 			

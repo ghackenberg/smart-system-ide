@@ -73,11 +73,11 @@ public class State implements Comparable<State>
 				}
 				catch (IllegalArgumentException e)
 				{
-					e.printStackTrace();
+					throw new IllegalStateException(e);
 				}
 				catch (IllegalAccessException e)
 				{
-					e.printStackTrace();
+					throw new IllegalStateException(e);
 				}
 			}
 		}
@@ -102,11 +102,11 @@ public class State implements Comparable<State>
 				}
 				catch (IllegalArgumentException e)
 				{
-					e.printStackTrace();
+					throw new IllegalStateException(e);
 				}
 				catch (IllegalAccessException e)
 				{
-					e.printStackTrace();
+					throw new IllegalStateException(e);
 				}
 			}
 		}
@@ -156,7 +156,7 @@ public class State implements Comparable<State>
 		{
 			// Check equivalence
 			
-			for (Equivalence<?> equivalence : root.equivalencesRecursive)
+			for (Equivalence equivalence : root.equivalencesRecursive)
 			{
 				if (!get(equivalence.port, timepoint).equals(other.get(equivalence.port, timepoint)))
 				{

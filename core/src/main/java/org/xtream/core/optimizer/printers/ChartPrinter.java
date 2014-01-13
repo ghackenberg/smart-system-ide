@@ -203,7 +203,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		// Split pane
 		
 		JSplitPane details = new JSplitPane(JSplitPane.VERTICAL_SPLIT, charts, previews);
-		details.setDividerLocation(0.75);
+		details.setDividerLocation(0.5);
 		
 		// Split pane
 

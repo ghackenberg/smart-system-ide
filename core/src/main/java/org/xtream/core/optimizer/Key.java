@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Equivalence;
 
 public class Key implements Comparable<Key>
 {
 	
 	public List<Double> equivalences = new ArrayList<>();
 	
-	@SuppressWarnings("unchecked")
-	public Key(Component root, int timepoint)
+	public Key(Component root, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
 	{
+		double scale = Math.pow(classes, 1. / root.equivalencesRecursive.size());
+		
 		if (timepoint >= 0)
 		{
-			for (Equivalence<?> equivalence : root.equivalencesRecursive)
+			for (int i = 0; i < root.equivalencesRecursive.size(); i++)
 			{
-				if ((Port<Double>) equivalence.port != null)
-				{
-					equivalences.add(((Port<Double>) equivalence.port).get(timepoint));
-				}
+				double discreteValue = root.equivalencesRecursive.get(0).port.get(timepoint);
+				double normalizedValue = (discreteValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
+				
+				equivalences.add(Math.floor(normalizedValue));
 			}
 		}
 	}

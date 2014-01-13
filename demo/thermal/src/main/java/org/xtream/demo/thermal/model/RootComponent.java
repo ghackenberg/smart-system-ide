@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 200, 0);
+		new Engine<>(RootComponent.class).run(96, 200, 50, 0);
 	}
 	
 	////////////
@@ -28,10 +28,6 @@ public class RootComponent extends Component
 	/////////////
 	
 	public Port<Double> costOutput = new Port<>();
-	
-	public Port<Double> temperatureOutput = new Port<>();
-	
-	public Port<Double> levelOutput = new Port<>();
 	
 	////////////////
 	// COMPONENTS //
@@ -59,22 +55,6 @@ public class RootComponent extends Component
 		}
 	};
 	
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			return Math.floor((net.temperatureOutput.get(timepoint) - 2.) / 8. * 5.);
-		}
-	};
-	
-	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			return Math.floor(net.levelOutput.get(timepoint) / (2. * 4000. + 2. * 4000.) * 5.);
-		}
-	};
-	
 	/////////////////
 	// CONSTRAINTS //
 	/////////////////
@@ -85,9 +65,9 @@ public class RootComponent extends Component
 	// EQUIVALENCES //
 	//////////////////
 	
-	public Equivalence<Double> temperatureEquivalence = new Equivalence<>(temperatureOutput);
+	public Equivalence temperatureEquivalence = new Equivalence(net.temperatureOutput);
 	
-	public Equivalence<Double> levelEquivalence = new Equivalence<>(levelOutput);
+	public Equivalence levelEquivalence = new Equivalence(net.levelOutput);
 	
 	/////////////////
 	// PREFERENCES //

@@ -1,7 +1,6 @@
 package org.xtream.core.optimizer;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -15,25 +14,22 @@ public class Worker implements Runnable
 {
 	public Component root;
 	public int timepoint;
-	public int groups;
 	public int coverage;
 	public double randomness;
 	public Map<Key, List<State>> previousGroups;
-	public Map<Key, List<State>> currentGroups;
 	public Queue<Key> queue;
 	
 	public int generatedCount = 0;
 	public int validCount = 0;
+	public List<State> currentStates = new ArrayList<>();
 	
-	public Worker(Component root, int timepoint, int groups, int coverage, double randomness, Map<Key, List<State>> previousGroups, Map<Key, List<State>> currentGroups, Queue<Key> queue)
+	public Worker(Component root, int timepoint, int coverage, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
-		this.groups = groups;
 		this.coverage = coverage;
 		this.randomness = randomness;
 		this.previousGroups = previousGroups;
-		this.currentGroups = currentGroups;
 		this.queue = queue;
 	}
 	
@@ -48,7 +44,9 @@ public class Worker implements Runnable
 						
 				List<State> previousGroup = previousGroups.get(previousKey);
 				
-				for (int sample = 0; sample < Math.max(1, (double) coverage / groups); sample++)
+				double count = Math.max(1, (double) coverage / previousGroups.size());
+				
+				for (int sample = 0; sample < count; sample++)
 				{
 					generatedCount++;
 					
@@ -56,7 +54,7 @@ public class Worker implements Runnable
 					
 					State previous = previousGroup.get(0);
 					
-					if (sample > Math.max(1, (double) coverage / groups) * (1 - randomness))
+					if (sample > count * (1 - randomness))
 					{
 						int random = (int) Math.floor(Math.random() * previousGroup.size());
 						
@@ -89,62 +87,9 @@ public class Worker implements Runnable
 					{
 						validCount++;
 						
-						// Group Status
+						currentStates.add(current);
 						
-						Key currentKey = new Key(root, timepoint);
-						
-						List<State> currentGroup = currentGroups.get(currentKey);
-						
-						if (currentGroup == null)
-						{
-							currentGroup = Collections.synchronizedList(new LinkedList<State>());
-							
-							currentGroups.put(currentKey, currentGroup);
-						}
-						
-						// Check Status
-						
-						boolean dominant = true;
-						
-						for (int index = 0; index < currentGroup.size(); index++)
-						{
-							State alternative = currentGroup.get(index);
-							
-							Integer difference = current.compareDominanceTo(alternative);
-							
-							if (difference != null)
-							{
-								if (difference < 0)
-								{
-									dominant = false;
-									
-									break; // do not keep
-								}
-								else if (difference == 0)
-								{
-									dominant = false;
-									
-									break; // do not keep
-								}
-								else if (difference > 0)
-								{
-									currentGroup.remove(index--);
-									
-									continue;
-								}
-								
-								assert false;
-							}
-						}
-						
-						// Save Status
-						
-						if (dominant)
-						{
-							current.save();
-							
-							currentGroup.add(current);
-						}
+						current.save();
 					}
 				}
 			}
