@@ -3,10 +3,10 @@ package org.xtream.core.model.annotations;
 import org.xtream.core.model.Annotation;
 import org.xtream.core.model.Port;
 
-public class Equivalence<T> extends Annotation<T>
+public class Equivalence extends Annotation<Double>
 {
 
-	public Equivalence(Port<T> port)
+	public Equivalence(Port<Double> port)
 	{
 		super(port);
 	}

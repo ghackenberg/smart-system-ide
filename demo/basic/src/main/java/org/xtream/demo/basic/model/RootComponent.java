@@ -17,7 +17,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 1000, 0);
+		new Engine<>(RootComponent.class).run(96, 100, 10, 0);
 	}
 	
 	////////////
@@ -86,9 +86,9 @@ public class RootComponent extends Component
 	// EQUIVALENCES //
 	//////////////////
 	
-	public Equivalence<Double> firstEquivalence = new Equivalence<>(firstOutput);
+	public Equivalence firstEquivalence = new Equivalence(firstOutput);
 	
-	public Equivalence<Double> secondEquivalence = new Equivalence<>(secondOutput);
+	public Equivalence secondEquivalence = new Equivalence(secondOutput);
 	
 	/////////////////
 	// PREFERENCES //

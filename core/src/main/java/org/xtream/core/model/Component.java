@@ -22,7 +22,7 @@ public abstract class Component
 	public List<Component> components = new ArrayList<>();
 	public List<Expression<?>> expressions = new ArrayList<>();
 	public List<Constraint> constraints= new ArrayList<>();
-	public List<Equivalence<?>> equivalences= new ArrayList<>();
+	public List<Equivalence> equivalences= new ArrayList<>();
 	public List<Preference> minDominances= new ArrayList<>();
 	public List<Preference> maxDominances= new ArrayList<>();
 	public List<Objective> minObjectives= new ArrayList<>();
@@ -35,7 +35,7 @@ public abstract class Component
 	public List<Component> componentsRecursive = new ArrayList<>();
 	public List<Expression<?>> expressionsRecursive = new ArrayList<>();
 	public List<Constraint> constraintsRecursive= new ArrayList<>();
-	public List<Equivalence<?>> equivalencesRecursive= new ArrayList<>();
+	public List<Equivalence> equivalencesRecursive= new ArrayList<>();
 	public List<Preference> minDominancesRecursive = new ArrayList<>();
 	public List<Preference> maxDominancesRecursive = new ArrayList<>();
 	public List<Objective> minObjectivesRecursive= new ArrayList<>();
@@ -128,7 +128,7 @@ public abstract class Component
 		}
 		else if (object instanceof Equivalence)
 		{
-			Equivalence<?> equivalence = (Equivalence<?>) object;
+			Equivalence equivalence = (Equivalence) object;
 			
 			load(equivalence, name, qualifiedName);
 		}
@@ -203,7 +203,7 @@ public abstract class Component
 		constraint.qualifiedName = qualifiedName;
 	}
 	
-	private void load(Equivalence<?> equivalence, String name, String qualifiedName)
+	private void load(Equivalence equivalence, String name, String qualifiedName)
 	{
 		equivalences.add(equivalence);
 		
