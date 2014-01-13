@@ -9,7 +9,7 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.printers.nodes.ComponentNode;
+import org.xtream.core.optimizer.printers.table.ComponentNode;
 
 public class TablePrinter<T extends Component> extends Printer<T>
 {

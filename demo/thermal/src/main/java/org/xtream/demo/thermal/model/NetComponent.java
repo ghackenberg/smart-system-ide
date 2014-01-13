@@ -1,6 +1,5 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 
 public class NetComponent extends EnergyComponent
@@ -87,13 +86,20 @@ public class NetComponent extends EnergyComponent
 		@Override public Double evaluate(int timepoint)
 		{
 			double temperature = 0;
+			int count = 0;
 			
 			for (EnergyComponent terminal : terminals)
 			{
-				temperature += terminal.temperatureOutput.get(timepoint);
+				Double current = terminal.temperatureOutput.get(timepoint);
+				
+				if (current != null)
+				{
+					temperature += current;
+					count++;
+				}
 			}
 			
-			return temperature;
+			return temperature / count;
 		}
 	};
 	
@@ -102,13 +108,20 @@ public class NetComponent extends EnergyComponent
 		@Override public Double evaluate(int timepoint)
 		{
 			double level = 0;
+			int count = 0;
 			
 			for (EnergyComponent terminal : terminals)
 			{
-				level += terminal.levelOutput.get(timepoint);
+				Double current = terminal.levelOutput.get(timepoint);
+				
+				if (current != null)
+				{
+					level += current;
+					count++;
+				}
 			}
 			
-			return level;
+			return level / count;
 		}
 	};
 	
@@ -140,6 +153,6 @@ public class NetComponent extends EnergyComponent
 	// CHARTS //
 	////////////
 	
-	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
+	/* none */
 
 }

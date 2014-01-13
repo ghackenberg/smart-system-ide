@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -79,6 +80,6 @@ public abstract class EnergyComponent extends Component
 	// CHARTS //
 	////////////
 	
-	/* none */
+	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }

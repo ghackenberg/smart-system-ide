@@ -90,8 +90,6 @@ public class ThermalComponent extends EnergyComponent
 	
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
 	
-	public Expression<Double> levelExpression = new ConstantExpression<Double>(levelOutput, 0.);
-	
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
 		@Override public Boolean evaluate(int timepoint)

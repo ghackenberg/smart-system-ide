@@ -100,8 +100,6 @@ public class StorageComponent extends EnergyComponent
 		}
 	};
 	
-	public Expression<Double> temperatureExpression = new ConstantExpression<Double>(temperatureOutput, 0.);
-	
 	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 0.);
 	
 	public Expression<Double> maximumExpression = new Expression<Double>(maximumOutput)
@@ -148,6 +146,6 @@ public class StorageComponent extends EnergyComponent
 	// CHARTS //
 	////////////
 	
-	public Chart energyChart = new Chart(levelOutput, minimumOutput, maximumOutput);
+	public Chart levelChart = new Chart(levelOutput, minimumOutput, maximumOutput);
 
 }

@@ -85,10 +85,6 @@ public class SolarComponent extends EnergyComponent
 	
 	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
 	
-	public Expression<Double> temperatureExpression = new ConstantExpression<Double>(temperatureOutput, 0.);
-	
-	public Expression<Double> levelExpression = new ConstantExpression<Double>(levelOutput, 0.);
-	
 	/////////////////
 	// CONSTRAINTS //
 	/////////////////
