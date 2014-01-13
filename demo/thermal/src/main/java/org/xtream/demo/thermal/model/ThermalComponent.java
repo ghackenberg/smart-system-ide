@@ -132,6 +132,6 @@ public class ThermalComponent extends EnergyComponent
 	// PREVIEWS //
 	//////////////
 	
-	public Chart temperaturePreview = temperatureChart;
+	public Chart temperaturePreview = new Chart(temperatureOutput, minimumOutput, maximumOutput);
 
 }

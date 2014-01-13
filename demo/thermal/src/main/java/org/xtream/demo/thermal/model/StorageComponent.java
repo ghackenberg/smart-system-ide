@@ -152,6 +152,6 @@ public class StorageComponent extends EnergyComponent
 	// PREVIEWS //
 	//////////////
 	
-	public Chart levelPreview = levelChart;
+	public Chart levelPreview = new Chart(levelOutput, minimumOutput, maximumOutput);
 
 }
