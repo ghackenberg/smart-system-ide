@@ -26,7 +26,7 @@ import org.xtream.core.optimizer.printers.chart.ComponentNode;
 public class ChartPrinter<T extends Component> extends Printer<T>
 {
 	
-	private static int PADDING = 50;
+	private static int PADDING = 25;
 	private static int STROKE = 3;
 	
 	private JTabbedPane tabs;
@@ -41,16 +41,29 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 	{
 		// Create grid
 		
-		final GridLayout layout = new GridLayout();
+		final GridLayout chartLayout = new GridLayout();
 		
-		layout.setHgap(1);
-		layout.setVgap(1);
+		chartLayout.setHgap(1);
+		chartLayout.setVgap(1);
 		
-		// Initialize frame
+		// Create grid
 		
-		final JPanel frame = new JPanel();
+		final GridLayout previewLayout = new GridLayout();
 		
-		frame.setLayout(layout);
+		previewLayout.setHgap(1);
+		previewLayout.setVgap(1);
+		
+		// Panel
+		
+		final JPanel charts = new JPanel();
+		
+		charts.setLayout(chartLayout);
+		
+		// Panel
+		
+		final JPanel previews = new JPanel();
+		
+		previews.setLayout(previewLayout);
 		
 		// Tree view
 		
@@ -63,15 +76,23 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 				{
 					// Remove old charts
 					
-					frame.removeAll();
+					charts.removeAll();
+					previews.removeAll();
 					
 					// Obtain component
 					
 					ComponentNode componentNode = (ComponentNode) tree.getLastSelectedPathComponent();
 					
-					System.out.println(componentNode.component.qualifiedName);
+					// Calculate previews
+					
+					double previewCount = 0;
+					
+					for (Component child : componentNode.component.components)
+					{
+						previewCount += child.previews.size();
+					}
 
-					// Check for charts
+					// Charts
 					
 					if (componentNode.component.charts.size() > 0)
 					{	
@@ -80,8 +101,8 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 						int cols = (int) Math.ceil(Math.sqrt(componentNode.component.charts.size()));
 						int rows = (int) Math.ceil(Math.sqrt(componentNode.component.charts.size()));
 						
-						layout.setColumns(cols);
-						layout.setRows(rows);
+						chartLayout.setColumns(cols);
+						chartLayout.setRows(rows);
 						
 						// Show charts
 						
@@ -112,13 +133,62 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 							
 							ChartPanel panel = new ChartPanel(chart);
 							
-							frame.add(panel);
+							charts.add(panel);
+						}
+					}
+					
+					// Previews
+					
+					if (previewCount > 0)
+					{
+						// Calculate grid layout
+						
+						int cols = (int) Math.ceil(Math.sqrt(previewCount));
+						int rows = (int) Math.ceil(Math.sqrt(previewCount));
+						
+						previewLayout.setColumns(cols);
+						previewLayout.setRows(rows);
+						
+						// Show charts
+						
+						for (Component child : componentNode.component.components)
+						{
+							for (Chart definition : child.previews)
+							{
+								DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+								
+								for (Port<Double> port : definition.ports)
+								{
+									for (int i = 0; i < timepoint; i++)
+									{
+										dataset.addValue(port.get(i), port.qualifiedName, "" + i);
+									}
+								}
+								
+								JFreeChart chart = ChartFactory.createLineChart(definition.qualifiedName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+								
+								chart.setAntiAlias(true);
+								chart.setTextAntiAlias(true);
+								chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+								
+								for (int i = 0; i < definition.ports.length; i++)
+								{
+									chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+								}
+								
+								chart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+								
+								ChartPanel panel = new ChartPanel(chart);
+								
+								previews.add(panel);
+							}
 						}
 					}
 					
 					// Repaint frame
 					
-					frame.updateUI();
+					charts.updateUI();
+					previews.updateUI();
 				}
 			}
 		);
@@ -131,9 +201,14 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		tree.setSelectionRow(0);
 		
 		// Split pane
+		
+		JSplitPane details = new JSplitPane(JSplitPane.VERTICAL_SPLIT, charts, previews);
+		details.setDividerLocation(0.75);
+		
+		// Split pane
 
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, frame);
-		split.setDividerLocation(200);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, details);
+		split.setDividerLocation(0.25);
 		
 		// Show frame
 		

@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.expressions.ConstantExpression;
 
@@ -114,5 +115,11 @@ public class SolarComponent extends EnergyComponent
 	////////////
 	
 	/* none */
+	
+	//////////////
+	// PREVIEWS //
+	//////////////
+	
+	public Chart energyPreview = energyChart;
 
 }

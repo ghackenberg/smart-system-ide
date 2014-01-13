@@ -106,5 +106,11 @@ public class RootComponent extends Component
 	////////////
 	
 	public Chart costChart = new Chart(costOutput);
+	
+	//////////////
+	// PREVIEWS //
+	//////////////
+	
+	public Chart costPreview = costChart;
 
 }
