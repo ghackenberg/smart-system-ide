@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 200, 50, 0);
+		new Engine<>(RootComponent.class).run(96, 100, 20, 0);
 	}
 	
 	////////////

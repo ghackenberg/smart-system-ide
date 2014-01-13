@@ -1,27 +1,27 @@
 package org.xtream.core.optimizer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.xtream.core.model.Component;
 
 public class Key implements Comparable<Key>
 {
 	
-	public List<Double> equivalences = new ArrayList<>();
+	public double[] equivalences;
 	
 	public Key(Component root, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
 	{
+		equivalences = new double[root.equivalencesRecursive.size()];
+		
 		double scale = Math.pow(classes, 1. / root.equivalencesRecursive.size());
 		
 		if (timepoint >= 0)
 		{
 			for (int i = 0; i < root.equivalencesRecursive.size(); i++)
 			{
-				double discreteValue = root.equivalencesRecursive.get(0).port.get(timepoint);
-				double normalizedValue = (discreteValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
+				double originalValue = root.equivalencesRecursive.get(0).port.get(timepoint);
+				double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
+				double discreteValue = Math.floor(normalizedValue);
 				
-				equivalences.add(Math.floor(normalizedValue));
+				equivalences[i] = discreteValue;
 			}
 		}
 	}
@@ -29,9 +29,9 @@ public class Key implements Comparable<Key>
 	@Override
 	public int compareTo(Key other)
 	{
-		for (int index = 0; index < equivalences.size(); index++)
+		for (int index = 0; index < equivalences.length; index++)
 		{
-			double difference = equivalences.get(index) - other.equivalences.get(index);
+			double difference = equivalences[index] - other.equivalences[index];
 			
 			if (difference != 0)
 			{
