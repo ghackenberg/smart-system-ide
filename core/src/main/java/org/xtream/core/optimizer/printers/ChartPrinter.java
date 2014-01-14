@@ -21,7 +21,7 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.printers.chart.ComponentNode;
+import org.xtream.core.optimizer.nodes.ComponentTreeNode;
 
 public class ChartPrinter<T extends Component> extends Printer<T>
 {
@@ -67,7 +67,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Tree view
 		
-		final JTree tree = new JTree(new ComponentNode(null, component));
+		final JTree tree = new JTree(new ComponentTreeNode(null, component));
 		
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(new TreeSelectionListener()
@@ -81,7 +81,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 					
 					// Obtain component
 					
-					ComponentNode componentNode = (ComponentNode) tree.getLastSelectedPathComponent();
+					ComponentTreeNode componentNode = (ComponentTreeNode) tree.getLastSelectedPathComponent();
 					
 					// Calculate previews
 					

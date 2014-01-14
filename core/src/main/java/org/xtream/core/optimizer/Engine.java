@@ -35,6 +35,7 @@ import org.xtream.core.optimizer.printers.CSVPrinter;
 import org.xtream.core.optimizer.printers.ChartPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
 import org.xtream.core.optimizer.printers.TablePrinter;
+import org.xtream.core.optimizer.viewers.GraphViewer;
 
 public class Engine<T extends Component>
 {
@@ -105,6 +106,8 @@ public class Engine<T extends Component>
 			
 			JTabbedPane tabs = new JTabbedPane();
 			
+			Viewer<T> graphViewer = new GraphViewer<>(tabs);
+			
 			Monitor cmdMonitor = new CMDMonitor();
 			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
 			Monitor chartMonitor = new ChartMonitor(tabs);
@@ -153,7 +156,7 @@ public class Engine<T extends Component>
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			
-			run(duration, coverage, classes, randomness, allMonitor, allPrinter);
+			run(duration, coverage, classes, randomness, graphViewer, allMonitor, allPrinter);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -161,8 +164,10 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public void run(int duration, int coverage, int classes, double randomness, Monitor monitor, Printer<T> printer)
+	public void run(int duration, int coverage, int classes, double randomness, Viewer<T> viewer, Monitor monitor, Printer<T> printer)
 	{
+		viewer.view(roots.get(0));
+		
 		// Start monitor
 		
 		monitor.start();
