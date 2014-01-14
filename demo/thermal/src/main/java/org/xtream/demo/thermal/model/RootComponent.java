@@ -7,6 +7,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
+import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Engine;
 
 public class RootComponent extends Component
@@ -14,7 +15,53 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 1000, 50, 0.5);
+		new Engine<>(RootComponent.class).run(96, 100, 10, 0.5);
+	}
+	
+	public RootComponent()
+	{
+		this(4);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public RootComponent(int size)
+	{
+		// Thermals
+		
+		thermals = new ThermalComponent[size];
+		
+		for (int i = 0; i < thermals.length; i++)
+		{
+			thermals[i] = new ThermalComponent();
+		}
+		
+		// Solar
+		
+		solar = new SolarComponent(size * 400.);
+		
+		// Storage
+		
+		storage = new StorageComponent(size * 200., size * 4000.);
+		
+		// Net
+		
+		net = new NetComponent(size + 2);
+		
+		// Level
+		
+		level = new ChannelExpression<>(levelOutput, storage.levelOutput);
+		
+		// Balance
+		
+		balances = new ChannelExpression[size + 2];
+		
+		for (int i = 0; i < thermals.length; i++)
+		{
+			balances[i] = new ChannelExpression<>(net.terminalInputs[i], thermals[i].balanceOutput);
+		}
+		
+		balances[size + 0] = new ChannelExpression<>(net.terminalInputs[size + 0], storage.balanceOutput);
+		balances[size + 1] = new ChannelExpression<>(net.terminalInputs[size + 1], solar.balanceOutput);
 	}
 	
 	////////////
@@ -29,17 +76,29 @@ public class RootComponent extends Component
 	
 	public Port<Double> costOutput = new Port<>();
 	
+	public Port<Double> temperatureOutput = new Port<>();
+	
+	public Port<Double> levelOutput = new Port<>();
+	
 	////////////////
 	// COMPONENTS //
 	////////////////
 	
-	public NetComponent net = new NetComponent(new NetComponent(5), new NetComponent(5));
+	public NetComponent net;
+	
+	public SolarComponent solar;
+	
+	public StorageComponent storage;
+	
+	public ThermalComponent[] thermals;
 	
 	//////////////
 	// CHANNELS //
 	//////////////
+	
+	public ChannelExpression<Double>[] balances;
 
-	/* none */
+	public ChannelExpression<Double> level;
 	
 	/////////////////
 	// EXPRESSIONS //
@@ -55,6 +114,21 @@ public class RootComponent extends Component
 		}
 	};
 	
+	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			double average = 0.;
+			
+			for (ThermalComponent thermal : thermals)
+			{
+				average += thermal.temperatureOutput.get(timepoint) / thermals.length;
+			}
+			
+			return average;
+		}
+	};
+	
 	/////////////////
 	// CONSTRAINTS //
 	/////////////////
@@ -65,9 +139,9 @@ public class RootComponent extends Component
 	// EQUIVALENCES //
 	//////////////////
 	
-	public Equivalence temperatureEquivalence = new Equivalence(net.temperatureOutput);
+	public Equivalence temperatureEquivalence = new Equivalence(temperatureOutput);
 	
-	public Equivalence levelEquivalence = new Equivalence(net.levelOutput);
+	public Equivalence levelEquivalence = new Equivalence(levelOutput);
 	
 	/////////////////
 	// PREFERENCES //
@@ -87,9 +161,9 @@ public class RootComponent extends Component
 	
 	public Chart costChart = new Chart(costOutput);
 	
-	public Chart temperatureChart = new Chart(net.temperatureOutput);
+	public Chart temperatureChart = new Chart(temperatureOutput);
 	
-	public Chart levelChart = new Chart(net.levelOutput);
+	public Chart levelChart = new Chart(levelOutput);
 	
 	//////////////
 	// PREVIEWS //

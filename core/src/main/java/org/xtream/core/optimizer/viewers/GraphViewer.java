@@ -1,5 +1,6 @@
 package org.xtream.core.optimizer.viewers;
 
+import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
@@ -37,6 +39,8 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 	{
 		final JPanel graph = new JPanel();
 		
+		graph.setLayout(new GridLayout(1, 1));
+		
 		final JTree tree = new JTree(new ComponentTreeNode(null, root));
 
 		tree.addTreeSelectionListener(new TreeSelectionListener()
@@ -53,8 +57,9 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						
 						dot.append("digraph G {\n");
 						dot.append("\tfontname = \"Calibri\";\n");
-						dot.append("\tnode [fontname = \"Calibri\"];\n");
-						dot.append("\tedge [fontname = \"Calibri\"];\n");
+						dot.append("\tfontsize = 13;\n");
+						dot.append("\tnode [fontname = \"Calibri\", fontsize = 11];\n");
+						dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
 						for (Port<?> port : root.ports)
 						{
 							dot.append("\t\"" + port.name + "\" [label = \"\", shape = point, color = white];\n");
@@ -114,8 +119,9 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		tree.setSelectionRow(0);
 		
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, graph);
-		split.setDividerLocation(0.25);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, new JScrollPane(graph));
+		
+		split.setDividerLocation(tree.getPreferredSize().width);
 		
 		tabs.addTab("Graph viewer", split);
 	}

@@ -24,10 +24,6 @@ public abstract class EnergyComponent extends Component
 	
 	public Port<Double> balanceOutput = new Port<>();
 	
-	public Port<Double> temperatureOutput = new Port<>();
-	
-	public Port<Double> levelOutput = new Port<>();
-	
 	////////////////
 	// COMPONENTS //
 	////////////////

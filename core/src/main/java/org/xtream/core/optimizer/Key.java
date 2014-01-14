@@ -7,7 +7,12 @@ public class Key implements Comparable<Key>
 	
 	public double[] equivalences;
 	
-	public Key(Component root, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
+	public Key()
+	{
+		equivalences = new double[0];
+	}
+	
+	public Key(Component root, State state, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
 	{
 		equivalences = new double[root.equivalencesRecursive.size()];
 		
@@ -17,7 +22,7 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.equivalencesRecursive.size(); i++)
 			{
-				double originalValue = root.equivalencesRecursive.get(0).port.get(timepoint);
+				double originalValue = state.get(root.equivalencesRecursive.get(i).port, timepoint);
 				double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
 				double discreteValue = Math.floor(normalizedValue);
 				
