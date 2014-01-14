@@ -57,13 +57,13 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						dot.append("\tedge [fontname = \"Calibri\"];\n");
 						for (Port<?> port : root.ports)
 						{
-							dot.append("\t" + port.name + " [label = \"\", shape = point, color = white];\n");
+							dot.append("\t\"" + port.name + "\" [label = \"\", shape = point, color = white];\n");
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
 						dot.append("\t\tlabel = \"" + root.name + "\";\n");
 						for (Component component : root.components)
 						{
-							dot.append("\t\t" + component.name + " [shape = rectangle];\n");
+							dot.append("\t\t\"" + component.name + "\" [shape = rectangle];\n");
 						}
 						dot.append("\t}\n");
 						for (ChannelExpression<?> channel : root.channels)
@@ -80,7 +80,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 								target = channel.port.name;
 							}
 							
-							dot.append("\t" + source + " -> " + target + " [label = \"" + channel.name + "\", color = blue, fontcolor = blue];\n");
+							dot.append("\t\"" + source + "\" -> \"" + target + "\" [label = \"" + channel.name + "\", color = blue, fontcolor = blue];\n");
 						}
 						dot.append("}");
 						
