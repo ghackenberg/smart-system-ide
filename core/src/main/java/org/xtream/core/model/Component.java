@@ -10,6 +10,7 @@ import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.annotations.Preference;
+import org.xtream.core.model.expressions.ChannelExpression;
 
 public abstract class Component
 {
@@ -20,6 +21,7 @@ public abstract class Component
 	public List<Port<?>> ports = new ArrayList<>();
 	public List<Field> fields = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
+	public List<ChannelExpression<?>> channels = new ArrayList<>();
 	public List<Expression<?>> expressions = new ArrayList<>();
 	public List<Constraint> constraints= new ArrayList<>();
 	public List<Equivalence> equivalences= new ArrayList<>();
@@ -33,6 +35,7 @@ public abstract class Component
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
 	public List<Component> componentsRecursive = new ArrayList<>();
+	public List<ChannelExpression<?>> channelsRecursive = new ArrayList<>();
 	public List<Expression<?>> expressionsRecursive = new ArrayList<>();
 	public List<Constraint> constraintsRecursive= new ArrayList<>();
 	public List<Equivalence> equivalencesRecursive= new ArrayList<>();
@@ -89,6 +92,7 @@ public abstract class Component
 		portsRecursive.addAll(ports);
 		fieldsRecursive.addAll(fields);
 		componentsRecursive.addAll(components);
+		channelsRecursive.addAll(channels);
 		expressionsRecursive.addAll(expressions);
 		constraintsRecursive.addAll(constraints);
 		equivalencesRecursive.addAll(equivalences);
@@ -182,6 +186,11 @@ public abstract class Component
 	private void load(Expression<?> expression, String name, String qualifiedName)
 	{
 		expressions.add(expression);
+		
+		if (expression instanceof ChannelExpression<?>)
+		{
+			channels.add((ChannelExpression<?>) expression);
+		}
 		
 		expression.name = name;
 		expression.qualifiedName = qualifiedName;
