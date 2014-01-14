@@ -9,6 +9,10 @@ public abstract class Expression<T>
 	public String name;
 	@Constant
 	public String qualifiedName;
+	
+	@Constant
+	public Component parent;
+	
 	@Constant
 	public Port<T> port;
 

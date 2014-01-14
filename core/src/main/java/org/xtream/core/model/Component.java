@@ -18,6 +18,8 @@ public abstract class Component
 	public String name;
 	public String qualifiedName;
 	
+	public Component parent;
+	
 	public List<Port<?>> ports = new ArrayList<>();
 	public List<Field> fields = new ArrayList<>();
 	public List<Component> components = new ArrayList<>();
@@ -162,6 +164,8 @@ public abstract class Component
 	
 		port.name = name;
 		port.qualifiedName = qualifiedName;
+		
+		port.parent = this;
 	}
 	
 	private void load(Field componentField, Component component, String name, String qualifiedName)
@@ -169,6 +173,7 @@ public abstract class Component
 		components.add(component);
 	
 		component.init(name, qualifiedName);
+		component.parent = this;
 		
 		portsRecursive.addAll(component.portsRecursive);
 		fieldsRecursive.addAll(component.fieldsRecursive);
@@ -195,6 +200,8 @@ public abstract class Component
 		expression.name = name;
 		expression.qualifiedName = qualifiedName;
 		
+		expression.parent = this;
+		
 		for (Field expressionField : expression.getClass().getFields())
 		{
 			if (expressionField.getAnnotation(Constant.class) == null)
@@ -210,6 +217,8 @@ public abstract class Component
 		
 		constraint.name = name;
 		constraint.qualifiedName = qualifiedName;
+		
+		constraint.parent = this;
 	}
 	
 	private void load(Equivalence equivalence, String name, String qualifiedName)
@@ -218,6 +227,8 @@ public abstract class Component
 		
 		equivalence.name = name;
 		equivalence.qualifiedName = qualifiedName;
+		
+		equivalence.parent = this;
 	}
 	
 	private void load(Preference preference, String name, String qualifiedName)
@@ -236,6 +247,8 @@ public abstract class Component
 		
 		preference.name = name;
 		preference.qualifiedName = qualifiedName;
+		
+		preference.parent = this;
 	}
 	
 	private void load(Objective objective, String name, String qualifiedName)
@@ -254,6 +267,8 @@ public abstract class Component
 		
 		objective.name = name;
 		objective.qualifiedName = qualifiedName;
+		
+		objective.parent = this;
 	}
 	
 	private void load(Chart chart, String name, String qualifiedName)
@@ -273,6 +288,8 @@ public abstract class Component
 		
 		chart.name = name;
 		chart.qualifiedName = qualifiedName;
+		
+		chart.parent = this;
 	}
 	
 	public void dump(PrintStream out)
