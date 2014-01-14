@@ -7,8 +7,13 @@ public class Port<T>
 
 	public String name;
 	public String qualifiedName;
+	
+	public Component parent;
+	
 	public Integer number;
+	
 	public Expression<T> expression;
+	
 	public State state;
 	
 	public final T get(int timepoint)

@@ -6,6 +6,8 @@ public class Chart
 	public String name;
 	public String qualifiedName;
 	
+	public Component parent;
+	
 	public Port<Double>[] ports;
 	
 	@SafeVarargs
