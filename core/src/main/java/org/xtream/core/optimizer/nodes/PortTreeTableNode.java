@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers.table;
+package org.xtream.core.optimizer.nodes;
 
 import java.util.Enumeration;
 
@@ -8,13 +8,13 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 
-public class PortNode implements TreeTableNode
+public class PortTreeTableNode implements TreeTableNode
 {
 	
-	public ComponentNode parent;
+	public ComponentTreeTableNode parent;
 	public Port<?> port;
 	
-	public PortNode(ComponentNode parent, Port<?> port)
+	public PortTreeTableNode(ComponentTreeTableNode parent, Port<?> port)
 	{
 		this.parent = parent;
 		this.port = port;
@@ -35,9 +35,9 @@ public class PortNode implements TreeTableNode
 	@Override
 	public int getIndex(TreeNode node)
 	{
-		if (node instanceof ComponentNode)
+		if (node instanceof ComponentTreeTableNode)
 		{
-			ComponentNode componentNode = (ComponentNode) node;
+			ComponentTreeTableNode componentNode = (ComponentTreeTableNode) node;
 			
 			Component component = componentNode.component;
 			

@@ -10,7 +10,7 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.printers.table.ComponentNode;
+import org.xtream.core.optimizer.nodes.ComponentTreeTableNode;
 
 public class TablePrinter<T extends Component> extends Printer<T>
 {
@@ -28,7 +28,7 @@ public class TablePrinter<T extends Component> extends Printer<T>
 		
 		// Initialize table
 		
-		ComponentNode node = new ComponentNode(null, component, timepoint);
+		ComponentTreeTableNode node = new ComponentTreeTableNode(null, component, timepoint);
 		
 		DefaultTreeTableModel model = new DefaultTreeTableModel(node);
 		

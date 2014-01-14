@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers.chart;
+package org.xtream.core.optimizer.nodes;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -7,13 +7,13 @@ import javax.swing.tree.TreeNode;
 
 import org.xtream.core.model.Component;
 
-public class ComponentNode implements TreeNode
+public class ComponentTreeNode implements TreeNode
 {
 	
-	public ComponentNode parent;
+	public ComponentTreeNode parent;
 	public Component component;
 	
-	public ComponentNode(ComponentNode parent, Component component)
+	public ComponentTreeNode(ComponentTreeNode parent, Component component)
 	{
 		this.parent = parent;
 		this.component = component;
@@ -26,7 +26,7 @@ public class ComponentNode implements TreeNode
 		
 		for (Component child : component.components)
 		{
-			children.addElement(new ComponentNode(this, child));
+			children.addElement(new ComponentTreeNode(this, child));
 		}
 		
 		return children.elements();
@@ -41,7 +41,7 @@ public class ComponentNode implements TreeNode
 	@Override
 	public TreeNode getChildAt(int childIndex)
 	{
-		return new ComponentNode(this, component.components.get(childIndex));
+		return new ComponentTreeNode(this, component.components.get(childIndex));
 	}
 
 	@Override
@@ -53,9 +53,9 @@ public class ComponentNode implements TreeNode
 	@Override
 	public int getIndex(TreeNode node)
 	{
-		if (node instanceof ComponentNode)
+		if (node instanceof ComponentTreeNode)
 		{
-			ComponentNode childComponent = (ComponentNode) node;
+			ComponentTreeNode childComponent = (ComponentTreeNode) node;
 			
 			for (int i = 0; i < component.components.size(); i++)
 			{

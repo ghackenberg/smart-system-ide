@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers.table;
+package org.xtream.core.optimizer.nodes;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -9,14 +9,14 @@ import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 
-public class ComponentNode implements TreeTableNode
+public class ComponentTreeTableNode implements TreeTableNode
 {
 
-	public ComponentNode parent;
+	public ComponentTreeTableNode parent;
 	public Component component;
 	public int timepoint;
 	
-	public ComponentNode(ComponentNode parent, Component component, int timepoint)
+	public ComponentTreeTableNode(ComponentTreeTableNode parent, Component component, int timepoint)
 	{
 		this.parent = parent;
 		this.component = component;
@@ -38,9 +38,9 @@ public class ComponentNode implements TreeTableNode
 	@Override
 	public int getIndex(TreeNode node)
 	{
-		if (node instanceof ComponentNode)
+		if (node instanceof ComponentTreeTableNode)
 		{
-			ComponentNode componentNode = (ComponentNode) node;
+			ComponentTreeTableNode componentNode = (ComponentTreeTableNode) node;
 			
 			Component argumentComponent = componentNode.component;
 			
@@ -68,11 +68,11 @@ public class ComponentNode implements TreeTableNode
 		
 		for (Port<?> port : component.ports)
 		{
-			children.add(new PortNode(this, port));
+			children.add(new PortTreeTableNode(this, port));
 		}
 		for (Component childComponent : component.components)
 		{
-			children.add(new ComponentNode(this, childComponent, timepoint));
+			children.add(new ComponentTreeTableNode(this, childComponent, timepoint));
 		}
 		
 		return children.elements();
@@ -83,11 +83,11 @@ public class ComponentNode implements TreeTableNode
 	{
 		if (index < component.ports.size())
 		{
-			return new PortNode(this, component.ports.get(index));
+			return new PortTreeTableNode(this, component.ports.get(index));
 		}
 		else
 		{
-			return new ComponentNode(this, component.components.get(index - component.ports.size()), timepoint);
+			return new ComponentTreeTableNode(this, component.components.get(index - component.ports.size()), timepoint);
 		}
 	}
 
