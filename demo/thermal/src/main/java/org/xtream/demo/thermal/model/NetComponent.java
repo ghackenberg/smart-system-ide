@@ -2,33 +2,27 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 
 public class NetComponent extends EnergyComponent
 {
 	
+	@SuppressWarnings("unchecked")
 	public NetComponent(int size)
 	{
-		terminals = new EnergyComponent[size + 2];
-		
-		terminals[0] = new SolarComponent(size * 400.);
-		terminals[1] = new StorageComponent(size * 300., size * 4000.);
+		terminalInputs = new Port[size];
 		
 		for (int i = 0; i < size; i++)
 		{
-			terminals[i + 2] = new ThermalComponent();
+			terminalInputs[i] = new Port<>();
 		}
-	}
-	
-	public NetComponent(EnergyComponent... terminals)
-	{
-		this.terminals = terminals;
 	}
 	
 	////////////
 	// INPUTS //
 	////////////
 	
-	/* none */
+	public Port<Double>[] terminalInputs;
 	
 	/////////////
 	// OUTPUTS //
@@ -39,8 +33,6 @@ public class NetComponent extends EnergyComponent
 	////////////////
 	// COMPONENTS //
 	////////////////
-	
-	public EnergyComponent[] terminals;
 	
 	//////////////
 	// CHANNELS //
@@ -58,9 +50,11 @@ public class NetComponent extends EnergyComponent
 		{
 			double production = 0;
 			
-			for (EnergyComponent terminal : terminals)
+			for (Port<Double> terminal : terminalInputs)
 			{
-				production += terminal.productionOutput.get(timepoint);
+				double current = terminal.get(timepoint);
+				
+				production += current > 0. ? current : 0.;
 			}
 			
 			return production;
@@ -73,56 +67,14 @@ public class NetComponent extends EnergyComponent
 		{
 			double consumption = 0;
 			
-			for (EnergyComponent terminal : terminals)
+			for (Port<Double> terminal : terminalInputs)
 			{
-				consumption += terminal.consumptionOutput.get(timepoint);
+				double current = terminal.get(timepoint);
+				
+				consumption += current < 0. ? current : 0.;
 			}
 			
 			return consumption;
-		}
-	};
-	
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			double temperature = 0;
-			int count = 0;
-			
-			for (EnergyComponent terminal : terminals)
-			{
-				Double current = terminal.temperatureOutput.get(timepoint);
-				
-				if (current != null)
-				{
-					temperature += current;
-					count++;
-				}
-			}
-			
-			return temperature / count;
-		}
-	};
-	
-	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			double level = 0;
-			int count = 0;
-			
-			for (EnergyComponent terminal : terminals)
-			{
-				Double current = terminal.levelOutput.get(timepoint);
-				
-				if (current != null)
-				{
-					level += current;
-					count++;
-				}
-			}
-			
-			return level / count;
 		}
 	};
 	

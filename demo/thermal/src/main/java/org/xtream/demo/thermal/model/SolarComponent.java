@@ -17,6 +17,7 @@ public class SolarComponent extends EnergyComponent
 {
 
 	private double scale;
+	
 	private List<String[]> scenario;
 	
 	public SolarComponent(double scale)

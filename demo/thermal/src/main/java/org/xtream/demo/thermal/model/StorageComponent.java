@@ -32,6 +32,8 @@ public class StorageComponent extends EnergyComponent
 	
 	public Port<Double> commandOutput = new Port<>();
 	
+	public Port<Double> levelOutput = new Port<>();
+	
 	public Port<Double> minimumOutput = new Port<>();
 	
 	public Port<Double> maximumOutput = new Port<>();

@@ -83,26 +83,7 @@ public class Engine<T extends Component>
 	{
 		try
 		{
-			try
-			{
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-			catch (ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-			catch (InstantiationException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-			catch (UnsupportedLookAndFeelException e)
-			{
-				e.printStackTrace();
-			}
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
 			JTabbedPane tabs = new JTabbedPane();
 			
@@ -162,6 +143,22 @@ public class Engine<T extends Component>
 		{
 			throw new IllegalStateException(e);
 		}
+		catch (ClassNotFoundException e)
+		{
+			throw new IllegalStateException(e);
+		}
+		catch (InstantiationException e)
+		{
+			throw new IllegalStateException(e);
+		}
+		catch (IllegalAccessException e)
+		{
+			throw new IllegalStateException(e);
+		}
+		catch (UnsupportedLookAndFeelException e)
+		{
+			throw new IllegalStateException(e);
+		}
 	}
 	
 	public void run(int duration, int coverage, int classes, double randomness, Viewer<T> viewer, Monitor monitor, Printer<T> printer)
@@ -185,7 +182,7 @@ public class Engine<T extends Component>
 		
 		initialGroup.add(start);
 		
-		previousGroups.put(new Key(roots.get(0), null, null, classes, -1), initialGroup);
+		previousGroups.put(new Key(), initialGroup);
 		
 		// Run optimization
 		
@@ -249,12 +246,10 @@ public class Engine<T extends Component>
 			
 			for (State current : currentStates)
 			{
-				current.restore(roots.get(0));
-				
 				for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
 				{
-					minEquivalences[i] = Math.min(minEquivalences[i], roots.get(0).equivalencesRecursive.get(i).port.get(timepoint));
-					maxEquivalences[i] = Math.max(maxEquivalences[i], roots.get(0).equivalencesRecursive.get(i).port.get(timepoint));
+					minEquivalences[i] = Math.min(minEquivalences[i], current.get(roots.get(0).equivalencesRecursive.get(i).port, timepoint));
+					maxEquivalences[i] = Math.max(maxEquivalences[i], current.get(roots.get(0).equivalencesRecursive.get(i).port, timepoint));
 				}
 			}
 			
@@ -262,11 +257,9 @@ public class Engine<T extends Component>
 			
 			for (State current : currentStates)
 			{
-				current.restore(roots.get(0));
-				
 				// Group Status
 				
-				Key currentKey = new Key(roots.get(0), minEquivalences, maxEquivalences, classes, timepoint);
+				Key currentKey = new Key(roots.get(0), current, minEquivalences, maxEquivalences, classes, timepoint);
 				
 				List<State> currentGroup = currentGroups.get(currentKey);
 				
