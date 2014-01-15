@@ -40,6 +40,7 @@ public class IntegrateComponent extends Component
 
 	public Expression<Double> outputExpression = new Expression<Double>(output)
 	{
+		// NOTE Will be managed by the optimizer (like all public fields of expressions except with annotation @Constant)!
 		public double previous = 0;
 		
 		@Override public Double evaluate(int timepoint)
