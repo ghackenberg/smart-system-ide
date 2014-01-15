@@ -123,9 +123,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Split pane
 		
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, new JScrollPane(graph));
-		
-		split.setDividerLocation(tree.getPreferredSize().width);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), new JScrollPane(graph));
 		
 		// Add tab
 		
@@ -134,6 +132,10 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		// Select row
 		
 		tree.setSelectionRow(0);
+
+		// Divider location
+		
+		split.setDividerLocation(tree.getPreferredSize().width + 50);
 	}
 
 }

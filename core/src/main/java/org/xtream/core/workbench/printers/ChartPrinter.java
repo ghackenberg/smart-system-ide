@@ -214,8 +214,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Split pane
 
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, details);
-		split.setDividerLocation(tree.getPreferredSize().width);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), details);
 		
 		// Show frame
 		
@@ -224,6 +223,10 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		// Select row
 		
 		tree.setSelectionRow(0);
+		
+		// Divider location
+		
+		split.setDividerLocation(tree.getPreferredSize().width + 50);
 	}
 
 }
