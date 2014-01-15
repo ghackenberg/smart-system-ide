@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.monitors;
+package org.xtream.core.workbench.monitors;
 
 import java.awt.BasicStroke;
 import java.awt.GridLayout;

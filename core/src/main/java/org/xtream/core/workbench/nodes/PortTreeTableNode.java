@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.nodes;
+package org.xtream.core.workbench.nodes;
 
 import java.util.Enumeration;
 

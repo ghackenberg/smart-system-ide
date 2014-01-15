@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers;
+package org.xtream.core.workbench.printers;
 
 import java.awt.BasicStroke;
 import java.awt.GridLayout;
@@ -21,7 +21,7 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.nodes.ComponentTreeNode;
 
 public class ChartPrinter<T extends Component> extends Printer<T>
 {

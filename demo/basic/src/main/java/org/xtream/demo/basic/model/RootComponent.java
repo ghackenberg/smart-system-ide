@@ -10,14 +10,14 @@ import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
-import org.xtream.core.optimizer.Engine;
+import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
 {
 	
 	public static void main(String[] args)
 	{
-		new Engine<>(RootComponent.class).run(96, 100, 10, 0);
+		new Workbench<>(RootComponent.class, 96, 100, 10, 0);
 	}
 	
 	////////////
