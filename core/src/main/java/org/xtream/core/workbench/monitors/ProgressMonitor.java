@@ -49,7 +49,7 @@ public class ProgressMonitor extends Monitor
 	private int getMemoryProgress()
 	{
 		long max = maxMemory();
-		long used = totalMemory() - freeMemory();
+		long used = usedMemory();
 		
 		double progress = (double) used / max * 100;
 		
