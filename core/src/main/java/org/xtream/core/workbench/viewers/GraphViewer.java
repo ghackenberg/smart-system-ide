@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.viewers;
+package org.xtream.core.workbench.viewers;
 
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
-import org.xtream.core.optimizer.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.nodes.ComponentTreeNode;
 
 public class GraphViewer<T extends Component> extends Viewer<T>
 {

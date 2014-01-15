@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.printers;
+package org.xtream.core.workbench.printers;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -10,7 +10,7 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.nodes.ComponentTreeTableNode;
+import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
 
 public class TablePrinter<T extends Component> extends Printer<T>
 {
