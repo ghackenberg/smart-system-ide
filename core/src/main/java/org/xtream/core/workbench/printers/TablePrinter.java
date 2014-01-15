@@ -67,7 +67,7 @@ public class TablePrinter<T extends Component> extends Printer<T>
 		
 		// Create tab
 		
-		tabs.addTab("Table printer", scroll);
+		tabs.addTab("Trace Table", scroll);
 	}
 
 }
