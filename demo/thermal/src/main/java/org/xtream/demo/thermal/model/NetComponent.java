@@ -60,7 +60,6 @@ public class NetComponent extends EnergyComponent
 			return production;
 		}
 	};
-
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
 		@Override public Double evaluate(int timepoint)

@@ -1,6 +1,7 @@
 package org.xtream.core.optimizer;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +19,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
@@ -31,6 +33,7 @@ import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.ChartMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
+import org.xtream.core.optimizer.monitors.ProgressMonitor;
 import org.xtream.core.optimizer.printers.CSVPrinter;
 import org.xtream.core.optimizer.printers.ChartPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
@@ -83,21 +86,11 @@ public class Engine<T extends Component>
 	{
 		try
 		{
+			// Look and feel
+			
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
-			JTabbedPane tabs = new JTabbedPane();
-			
-			Viewer<T> graphViewer = new GraphViewer<>(tabs);
-			
-			Monitor cmdMonitor = new CMDMonitor();
-			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
-			Monitor chartMonitor = new ChartMonitor(tabs);
-			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor);
-			
-			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
-			Printer<T> chartPrinter = new ChartPrinter<>(tabs);
-			Printer<T> tablePrinter = new TablePrinter<>(tabs);
-			Printer<T> allPrinter = new CompositePrinter<>(csvPrinter, chartPrinter, tablePrinter);
+			// Controls
 			
 			JTextField durationField = new JTextField("" + duration, 5);
 			JTextField coverageField = new JTextField("" + coverage, 5);
@@ -115,6 +108,17 @@ public class Engine<T extends Component>
 			startButton.setEnabled(false);
 			stopButton.setEnabled(false);
 			
+			JProgressBar timeBar = new JProgressBar();
+			JProgressBar memoryBar = new JProgressBar();
+			
+			timeBar.setStringPainted(true);
+			memoryBar.setStringPainted(true);
+			
+			timeBar.setForeground(Color.GREEN);
+			memoryBar.setForeground(Color.RED);
+			
+			// Toolbar
+			
 			JToolBar toolbar = new JToolBar("Toolbar");
 			toolbar.setFloatable(false);
 			toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -126,8 +130,20 @@ public class Engine<T extends Component>
 			toolbar.add(classesField);
 			toolbar.add(new JLabel("Randomness"));
 			toolbar.add(randomnessField);
+			toolbar.addSeparator();
 			toolbar.add(startButton);
 			toolbar.add(stopButton);
+			toolbar.addSeparator();
+			toolbar.add(new JLabel("Time"));
+			toolbar.add(timeBar);
+			toolbar.add(new JLabel("Memory"));
+			toolbar.add(memoryBar);
+			
+			// Tabs
+			
+			JTabbedPane tabs = new JTabbedPane();
+			
+			// Frame
 			
 			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
 			frame.setLayout(new BorderLayout());
@@ -136,6 +152,27 @@ public class Engine<T extends Component>
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			
+			// Viewers
+			
+			Viewer<T> graphViewer = new GraphViewer<>(tabs);
+			
+			// Monitors
+			
+			Monitor cmdMonitor = new CMDMonitor();
+			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
+			Monitor chartMonitor = new ChartMonitor(tabs);
+			Monitor progressMonitor = new ProgressMonitor(timeBar, memoryBar, duration);
+			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor, progressMonitor);
+			
+			// Printers
+			
+			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
+			Printer<T> chartPrinter = new ChartPrinter<>(tabs);
+			Printer<T> tablePrinter = new TablePrinter<>(tabs);
+			Printer<T> allPrinter = new CompositePrinter<>(csvPrinter, chartPrinter, tablePrinter);
+			
+			// run
 			
 			run(duration, coverage, classes, randomness, graphViewer, allMonitor, allPrinter);
 		}

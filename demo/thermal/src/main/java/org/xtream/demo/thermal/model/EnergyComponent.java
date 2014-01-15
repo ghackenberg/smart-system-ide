@@ -19,9 +19,7 @@ public abstract class EnergyComponent extends Component
 	/////////////
 	
 	public Port<Double> productionOutput = new Port<>();
-	
 	public Port<Double> consumptionOutput = new Port<>();
-	
 	public Port<Double> balanceOutput = new Port<>();
 	
 	////////////////

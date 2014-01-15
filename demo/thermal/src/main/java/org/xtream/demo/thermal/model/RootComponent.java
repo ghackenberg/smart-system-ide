@@ -75,9 +75,7 @@ public class RootComponent extends Component
 	/////////////
 	
 	public Port<Double> costOutput = new Port<>();
-	
 	public Port<Double> temperatureOutput = new Port<>();
-	
 	public Port<Double> levelOutput = new Port<>();
 	
 	////////////////
@@ -85,11 +83,8 @@ public class RootComponent extends Component
 	////////////////
 	
 	public NetComponent net;
-	
 	public SolarComponent solar;
-	
 	public StorageComponent storage;
-	
 	public ThermalComponent[] thermals;
 	
 	//////////////
@@ -97,7 +92,8 @@ public class RootComponent extends Component
 	//////////////
 	
 	public ChannelExpression<Double>[] balances;
-
+	public ChannelExpression<Double> storageBalance;
+	public ChannelExpression<Double> solarBalance;
 	public ChannelExpression<Double> level;
 	
 	/////////////////
@@ -113,7 +109,6 @@ public class RootComponent extends Component
 			return previous += net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
 		}
 	};
-	
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
 		@Override public Double evaluate(int timepoint)
@@ -140,7 +135,6 @@ public class RootComponent extends Component
 	//////////////////
 	
 	public Equivalence temperatureEquivalence = new Equivalence(temperatureOutput);
-	
 	public Equivalence levelEquivalence = new Equivalence(levelOutput);
 	
 	/////////////////
@@ -160,9 +154,7 @@ public class RootComponent extends Component
 	////////////
 	
 	public Chart costChart = new Chart(costOutput);
-	
 	public Chart temperatureChart = new Chart(temperatureOutput);
-	
 	public Chart levelChart = new Chart(levelOutput);
 	
 	//////////////

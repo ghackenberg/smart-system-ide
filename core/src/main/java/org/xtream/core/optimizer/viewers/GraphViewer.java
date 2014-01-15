@@ -68,7 +68,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						dot.append("\t\tlabel = \"" + root.name + "\";\n");
 						for (Component component : root.components)
 						{
-							dot.append("\t\t\"" + component.name + "\" [shape = rectangle];\n");
+							dot.append("\t\t\"" + component.name + "\" [shape = rectangle, style = filled, fillcolor = gray95];\n");
 						}
 						dot.append("\t}\n");
 						for (ChannelExpression<?> channel : root.channels)
