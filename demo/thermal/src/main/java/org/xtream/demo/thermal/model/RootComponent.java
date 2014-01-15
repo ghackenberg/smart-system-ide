@@ -15,12 +15,12 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 500, 10, 0.);
+		new Workbench<>(RootComponent.class, 96, 500, 50, 0.);
 	}
 	
 	public RootComponent()
 	{
-		this(4);
+		this(100);
 	}
 	
 	@SuppressWarnings("unchecked")

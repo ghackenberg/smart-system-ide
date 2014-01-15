@@ -112,7 +112,7 @@ public class ChartMonitor extends Monitor
 		
 		memory.addValue(maxMemory(), "Max memory", "" + timepoint);
 		memory.addValue(totalMemory(), "Total memory", "" + timepoint);
-		memory.addValue(freeMemory(), "Free memory", "" + timepoint);
+		memory.addValue(usedMemory(), "Used memory", "" + timepoint);
 	}
 
 	@Override
