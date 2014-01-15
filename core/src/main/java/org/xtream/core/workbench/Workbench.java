@@ -28,6 +28,7 @@ import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
 import org.xtream.core.optimizer.printers.CSVPrinter;
 import org.xtream.core.optimizer.printers.CompositePrinter;
+import org.xtream.core.optimizer.viewers.CompositeViewer;
 import org.xtream.core.workbench.monitors.ChartMonitor;
 import org.xtream.core.workbench.monitors.ProgressMonitor;
 import org.xtream.core.workbench.printers.ChartPrinter;
@@ -115,6 +116,7 @@ public class Workbench<T extends Component>
 			// Viewers
 			
 			Viewer<T> graphViewer = new GraphViewer<>(tabs);
+			Viewer<T> allViewer = new CompositeViewer<>(graphViewer);
 			
 			// Monitors
 			
@@ -133,7 +135,7 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			engine.run(duration, coverage, classes, randomness, graphViewer, allMonitor, allPrinter);
+			engine.run(duration, coverage, classes, randomness, allViewer, allMonitor, allPrinter);
 		}
 		catch (FileNotFoundException e)
 		{
