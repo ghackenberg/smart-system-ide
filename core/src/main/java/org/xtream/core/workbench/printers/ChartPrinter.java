@@ -1,9 +1,11 @@
 package org.xtream.core.workbench.printers;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
@@ -65,6 +67,14 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		previews.setLayout(previewLayout);
 		
+		// Scroll pane
+		
+		final JScrollPane scroll = new JScrollPane(previews);
+		
+		// Split pane
+		
+		final JSplitPane details = new JSplitPane(JSplitPane.VERTICAL_SPLIT, charts, scroll);
+		
 		// Tree view
 		
 		final JTree tree = new JTree(new ComponentTreeNode(null, component));
@@ -85,7 +95,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 					
 					// Calculate previews
 					
-					double previewCount = 0;
+					int previewCount = 0;
 					
 					for (Component child : componentNode.component.components)
 					{
@@ -118,7 +128,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 								}
 							}
 							
-							JFreeChart chart = ChartFactory.createLineChart(definition.qualifiedName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+							JFreeChart chart = ChartFactory.createLineChart(definition.name, null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 							
 							chart.setAntiAlias(true);
 							chart.setTextAntiAlias(true);
@@ -143,11 +153,8 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 					{
 						// Calculate grid layout
 						
-						int cols = (int) Math.ceil(Math.sqrt(previewCount));
-						int rows = (int) Math.ceil(Math.sqrt(previewCount));
-						
-						previewLayout.setColumns(cols);
-						previewLayout.setRows(rows);
+						previewLayout.setColumns(previewCount);
+						previewLayout.setRows(1);
 						
 						// Show charts
 						
@@ -165,11 +172,12 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 									}
 								}
 								
-								JFreeChart chart = ChartFactory.createLineChart(definition.qualifiedName, "Time", null, dataset, PlotOrientation.VERTICAL, true, true, false);
+								JFreeChart chart = ChartFactory.createLineChart(child.name + "." + definition.name, null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 								
 								chart.setAntiAlias(true);
 								chart.setTextAntiAlias(true);
 								chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+								chart.removeLegend();
 								
 								for (int i = 0; i < definition.ports.length; i++)
 								{
@@ -180,10 +188,16 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 								
 								ChartPanel panel = new ChartPanel(chart);
 								
+								panel.setPreferredSize(new Dimension(400, 300));
+								
 								previews.add(panel);
 							}
 						}
 					}
+					
+					// Divider location
+					
+					details.setDividerLocation(details.getHeight() - 350);
 					
 					// Repaint frame
 					
@@ -198,12 +212,6 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 			tree.expandRow(i);
 		}
 		
-		tree.setSelectionRow(0);
-		
-		// Split pane
-		
-		JSplitPane details = new JSplitPane(JSplitPane.VERTICAL_SPLIT, charts, previews);
-		
 		// Split pane
 
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, details);
@@ -211,7 +219,11 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Show frame
 		
-		tabs.addTab("Chart printer", split);
+		tabs.addTab("Trace Charts", split);
+		
+		// Select row
+		
+		tree.setSelectionRow(0);
 	}
 
 }

@@ -94,7 +94,7 @@ public class ChartMonitor extends Monitor
 		panel.add(objectivesPanel);
 		panel.add(memoryPanel);
 		
-		tabs.addTab("Chart monitor", panel);
+		tabs.addTab("Engine Monitor", panel);
 	}
 
 	@Override

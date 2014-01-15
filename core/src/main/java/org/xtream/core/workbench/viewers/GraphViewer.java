@@ -37,9 +37,13 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 	@Override
 	public void view(T root)
 	{
+		// Graph pane
+		
 		final JPanel graph = new JPanel();
 		
 		graph.setLayout(new GridLayout(1, 1));
+		
+		// Tree pane
 		
 		final JTree tree = new JTree(new ComponentTreeNode(null, root));
 
@@ -117,13 +121,19 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 			tree.expandRow(i);
 		}
 		
-		tree.setSelectionRow(0);
+		// Split pane
 		
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tree, new JScrollPane(graph));
 		
 		split.setDividerLocation(tree.getPreferredSize().width);
 		
-		tabs.addTab("Graph viewer", split);
+		// Add tab
+		
+		tabs.addTab("Model Graphs", split);
+		
+		// Select row
+		
+		tree.setSelectionRow(0);
 	}
 
 }
