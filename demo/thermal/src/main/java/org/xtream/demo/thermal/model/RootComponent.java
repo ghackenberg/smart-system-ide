@@ -7,7 +7,6 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
-import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -15,90 +14,39 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 500, 10, 0.);
+		new Workbench<>(RootComponent.class, 96, 100, 10, 0.);
 	}
 	
-	public RootComponent()
-	{
-		this(4);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public RootComponent(int size)
-	{
-		// Thermals
-		
-		thermals = new ThermalComponent[size];
-		
-		for (int i = 0; i < thermals.length; i++)
-		{
-			thermals[i] = new ThermalComponent();
-		}
-		
-		// Solar
-		
-		solar = new SolarComponent(size * 400.);
-		
-		// Storage
-		
-		storage = new StorageComponent(size * 200., size * 4000.);
-		
-		// Net
-		
-		net = new NetComponent(size + 2);
-		
-		// Level
-		
-		level = new ChannelExpression<>(levelOutput, storage.levelOutput);
-		
-		// Balance
-		
-		balances = new ChannelExpression[size + 2];
-		
-		for (int i = 0; i < thermals.length; i++)
-		{
-			balances[i] = new ChannelExpression<>(net.terminalInputs[i], thermals[i].balanceOutput);
-		}
-		
-		balances[size + 0] = new ChannelExpression<>(net.terminalInputs[size + 0], storage.balanceOutput);
-		balances[size + 1] = new ChannelExpression<>(net.terminalInputs[size + 1], solar.balanceOutput);
-	}
-	
-	////////////
-	// INPUTS //
-	////////////
-	
-	/* none */
-	
-	/////////////
-	// OUTPUTS //
-	/////////////
+	// Outputs
 	
 	public Port<Double> costOutput = new Port<>();
 	public Port<Double> temperatureOutput = new Port<>();
 	public Port<Double> levelOutput = new Port<>();
 	
-	////////////////
-	// COMPONENTS //
-	////////////////
+	// Components
 	
-	public NetComponent net;
-	public SolarComponent solar;
-	public StorageComponent storage;
-	public ThermalComponent[] thermals;
+	public NetComponent net = new NetComponent(4);
 	
-	//////////////
-	// CHANNELS //
-	//////////////
+	// Equivalences
 	
-	public ChannelExpression<Double>[] balances;
-	public ChannelExpression<Double> storageBalance;
-	public ChannelExpression<Double> solarBalance;
-	public ChannelExpression<Double> level;
+	public Equivalence temperatureEquivalence = new Equivalence(temperatureOutput);
+	public Equivalence levelEquivalence = new Equivalence(levelOutput);
 	
-	/////////////////
-	// EXPRESSIONS //
-	/////////////////
+	// Objectives
+	
+	public Objective costObjective = new Objective(costOutput, Direction.MIN);
+	
+	// Charts
+	
+	public Chart costChart = new Chart(costOutput);
+	public Chart temperatureChart = new Chart(temperatureOutput);
+	public Chart levelChart = new Chart(levelOutput);
+	
+	// Previews
+	
+	public Chart costPreview = new Chart(costOutput);
+	
+	// Expressions
 	
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
@@ -115,52 +63,21 @@ public class RootComponent extends Component
 		{
 			double average = 0.;
 			
-			for (ThermalComponent thermal : thermals)
+			for (ThermalComponent thermal : net.modules.thermals)
 			{
-				average += thermal.temperatureOutput.get(timepoint) / thermals.length;
+				average += thermal.physics.temperatureOutput.get(timepoint) / net.modules.thermals.length;
 			}
 			
 			return average;
 		}
 	};
-	
-	/////////////////
-	// CONSTRAINTS //
-	/////////////////
-	
-	/* none */
-	
-	//////////////////
-	// EQUIVALENCES //
-	//////////////////
-	
-	public Equivalence temperatureEquivalence = new Equivalence(temperatureOutput);
-	public Equivalence levelEquivalence = new Equivalence(levelOutput);
-	
-	/////////////////
-	// PREFERENCES //
-	/////////////////
-	
-	/* none */
-	
-	////////////////
-	// OBJECTIVES //
-	////////////////
-	
-	public Objective costObjective = new Objective(costOutput, Direction.MIN);
-	
-	////////////
-	// CHARTS //
-	////////////
-	
-	public Chart costChart = new Chart(costOutput);
-	public Chart temperatureChart = new Chart(temperatureOutput);
-	public Chart levelChart = new Chart(levelOutput);
-	
-	//////////////
-	// PREVIEWS //
-	//////////////
-	
-	public Chart costPreview = new Chart(costOutput);
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return net.modules.storage.physics.levelOutput.get(timepoint);
+		}
+		
+	};
 
 }
