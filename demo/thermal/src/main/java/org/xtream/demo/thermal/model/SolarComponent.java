@@ -1,125 +1,24 @@
 package org.xtream.demo.thermal.model;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.List;
-
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.Expression;
-import org.xtream.core.model.expressions.ConstantExpression;
+import org.xtream.demo.thermal.model.commons.EnergyModuleComponent;
+import org.xtream.demo.thermal.model.solars.ConstraintsComponent;
+import org.xtream.demo.thermal.model.solars.CostsComponent;
+import org.xtream.demo.thermal.model.solars.LogicsComponent;
+import org.xtream.demo.thermal.model.solars.ModulesComponent;
+import org.xtream.demo.thermal.model.solars.PhysicsComponent;
+import org.xtream.demo.thermal.model.solars.QualitiesComponent;
 
-import au.com.bytecode.opencsv.CSVReader;
-
-public class SolarComponent extends EnergyComponent
+public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
 {
-
-	private double scale;
-	
-	private List<String[]> scenario;
 	
 	public SolarComponent(double scale)
 	{
-		this.scale = scale;
-		
-		try
-		{
-			CSVReader reader = new CSVReader(new FileReader("Scenario.csv"), ';');
-			
-			scenario = reader.readAll();
-			
-			reader.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (IOException e)
-		{
-			throw new IllegalStateException(e);
-		}
+		super(new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
 	}
 	
-	////////////
-	// INPUTS //
-	////////////
+	// Previews
 	
-	/* none */
-	
-	/////////////
-	// OUTPUTS //
-	/////////////
-	
-	/* none */
-	
-	////////////////
-	// COMPONENTS //
-	////////////////
-
-	/* none */
-	
-	//////////////
-	// CHANNELS //
-	//////////////
-
-	/* none */
-	
-	/////////////////
-	// EXPRESSIONS //
-	/////////////////
-	
-	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			try
-			{
-				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale;
-			}
-			catch (ParseException e)
-			{
-				throw new IllegalStateException(e);
-			}
-		}
-	};
-	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
-	
-	/////////////////
-	// CONSTRAINTS //
-	/////////////////
-	
-	/* none */
-	
-	//////////////////
-	// EQUIVALENCES //
-	//////////////////
-	
-	/* none */
-	
-	/////////////////
-	// PREFERENCES //
-	/////////////////
-	
-	/* none */
-	
-	////////////////
-	// OBJECTIVES //
-	////////////////
-	
-	/* none */
-	
-	////////////
-	// CHARTS //
-	////////////
-	
-	/* none */
-	
-	//////////////
-	// PREVIEWS //
-	//////////////
-	
-	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
+	public Chart energyPreview = new Chart(productionOutput);
 
 }

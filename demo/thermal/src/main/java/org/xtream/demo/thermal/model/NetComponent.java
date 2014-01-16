@@ -1,115 +1,40 @@
 package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.Expression;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.demo.thermal.model.commons.EnergyModuleComponent;
+import org.xtream.demo.thermal.model.nets.ConstraintsComponent;
+import org.xtream.demo.thermal.model.nets.CostsComponent;
+import org.xtream.demo.thermal.model.nets.LogicsComponent;
+import org.xtream.demo.thermal.model.nets.ModulesComponent;
+import org.xtream.demo.thermal.model.nets.PhysicsComponent;
+import org.xtream.demo.thermal.model.nets.QualitiesComponent;
 
-public class NetComponent extends EnergyComponent
+public class NetComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
 {
 	
 	@SuppressWarnings("unchecked")
 	public NetComponent(int size)
 	{
-		terminalInputs = new Port[size];
+		super(new PhysicsComponent(size), new LogicsComponent(), new ConstraintsComponent(size * 200.), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(size));
 		
-		for (int i = 0; i < size; i++)
+		// Balance channels
+		
+		balances = new ChannelExpression[size + 2];
+		
+		for (int i = 0; i < size + 2; i++)
 		{
-			terminalInputs[i] = new Port<>();
+			balances[i] = new ChannelExpression<>(physics.terminalInputs[i], modules.balanceOutputs[i]);
 		}
 	}
 	
-	////////////
-	// INPUTS //
-	////////////
+	// Channels
 	
-	public Port<Double>[] terminalInputs;
+	public ChannelExpression<Double> productionInternal = new ChannelExpression<>(constraints.productionInput, physics.productionOutput);
+	public ChannelExpression<Double> consumptionInternal = new ChannelExpression<>(constraints.consumptionInput, physics.consumptionOutput);
+	public ChannelExpression<Double>[] balances;
 	
-	/////////////
-	// OUTPUTS //
-	/////////////
-	
-	/* none */
-	
-	////////////////
-	// COMPONENTS //
-	////////////////
-	
-	//////////////
-	// CHANNELS //
-	//////////////
-
-	/* none */
-	
-	/////////////////
-	// EXPRESSIONS //
-	/////////////////
-
-	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			double production = 0;
-			
-			for (Port<Double> terminal : terminalInputs)
-			{
-				double current = terminal.get(timepoint);
-				
-				production += current > 0. ? current : 0.;
-			}
-			
-			return production;
-		}
-	};
-	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
-	{
-		@Override public Double evaluate(int timepoint)
-		{
-			double consumption = 0;
-			
-			for (Port<Double> terminal : terminalInputs)
-			{
-				double current = terminal.get(timepoint);
-				
-				consumption += current < 0. ? current : 0.;
-			}
-			
-			return consumption;
-		}
-	};
-	
-	/////////////////
-	// CONSTRAINTS //
-	/////////////////
-	
-	/* none */
-	
-	//////////////////
-	// EQUIVALENCES //
-	//////////////////
-	
-	/* none */
-	
-	/////////////////
-	// PREFERENCES //
-	/////////////////
-	
-	/* none */
-	
-	////////////////
-	// OBJECTIVES //
-	////////////////
-	
-	/* none */
-	
-	////////////
-	// CHARTS //
-	////////////
-	
-	/* none */
-	
-	//////////////
-	// PREVIEWS //
-	//////////////
+	// Previews
 	
 	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
