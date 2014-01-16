@@ -10,9 +10,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	@SuppressWarnings("unchecked")
 	public PhysicsComponent(int size)
 	{
-		terminalInputs = new Port[size + 2];
+		terminalInputs = new Port[size];
 		
-		for (int i = 0; i < size + 2; i++)
+		for (int i = 0; i < size; i++)
 		{
 			terminalInputs[i] = new Port<>();
 		}

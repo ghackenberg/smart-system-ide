@@ -10,19 +10,19 @@ import org.xtream.demo.thermal.model.nets.ModulesComponent;
 import org.xtream.demo.thermal.model.nets.PhysicsComponent;
 import org.xtream.demo.thermal.model.nets.QualitiesComponent;
 
-public class NetComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
+public abstract class NetComponent<ConcreteModulesComponent extends ModulesComponent> extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ConcreteModulesComponent>
 {
 	
 	@SuppressWarnings("unchecked")
-	public NetComponent(int size)
+	public NetComponent(int size, ConcreteModulesComponent modules)
 	{
-		super(new PhysicsComponent(size), new LogicsComponent(), new ConstraintsComponent(size * 200.), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(size));
+		super(new PhysicsComponent(size), new LogicsComponent(), new ConstraintsComponent(size * 200.), new QualitiesComponent(), new CostsComponent(), modules);
 		
 		// Balance channels
 		
-		balances = new ChannelExpression[size + 2];
+		balances = new ChannelExpression[size];
 		
-		for (int i = 0; i < size + 2; i++)
+		for (int i = 0; i < size; i++)
 		{
 			balances[i] = new ChannelExpression<>(physics.terminalInputs[i], modules.balanceOutputs[i]);
 		}
