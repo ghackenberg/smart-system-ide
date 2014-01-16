@@ -109,6 +109,7 @@ public class Workbench<T extends Component>
 			frame.setLayout(new BorderLayout());
 			frame.add(toolbar, BorderLayout.PAGE_START);
 			frame.add(tabs, BorderLayout.CENTER);
+			frame.add(new JLabel("Copyright 2014, Smart Energy Systems Group, Chair for Software & Systems Engineering, Technische Universität München"), BorderLayout.PAGE_END);
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);

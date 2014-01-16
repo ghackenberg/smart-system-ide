@@ -240,7 +240,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		// Show frame
 		
-		tabs.addTab("Trace Charts", split);
+		tabs.addTab("Trace (Chart)", split);
 		
 		// Select row
 		
