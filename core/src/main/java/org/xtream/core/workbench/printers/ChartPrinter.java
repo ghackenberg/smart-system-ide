@@ -1,9 +1,11 @@
 package org.xtream.core.workbench.printers;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -67,13 +69,25 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 		
 		previews.setLayout(previewLayout);
 		
-		// Scroll pane
+		// Top pane
 		
-		final JScrollPane scroll = new JScrollPane(previews);
+		JPanel top = new JPanel();
 		
-		// Split pane
+		top.setLayout(new BorderLayout());
+		top.add(new JLabel("Component Charts"), BorderLayout.PAGE_START);
+		top.add(charts, BorderLayout.CENTER);
 		
-		final JSplitPane details = new JSplitPane(JSplitPane.VERTICAL_SPLIT, charts, scroll);
+		// Bottom pane
+		
+		JPanel bottom = new JPanel();
+		
+		bottom.setLayout(new BorderLayout());
+		bottom.add(new JLabel("Child Component Previews"), BorderLayout.PAGE_START);
+		bottom.add(new JScrollPane(previews), BorderLayout.CENTER);
+		
+		// Right pane
+		
+		final JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT, top, bottom);
 		
 		// Tree view
 		
@@ -197,7 +211,7 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 					
 					// Divider location
 					
-					details.setDividerLocation(details.getHeight() - 350);
+					right.setDividerLocation(right.getHeight() - 350);
 					
 					// Repaint frame
 					
@@ -212,9 +226,17 @@ public class ChartPrinter<T extends Component> extends Printer<T>
 			tree.expandRow(i);
 		}
 		
+		// Left pane
+		
+		JPanel left = new JPanel();
+		
+		left.setLayout(new BorderLayout());
+		left.add(new JLabel("Component Hierarchy"), BorderLayout.PAGE_START);
+		left.add(new JScrollPane(tree), BorderLayout.CENTER);
+		
 		// Split pane
 
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), details);
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		
 		// Show frame
 		

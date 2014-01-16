@@ -1,5 +1,6 @@
 package org.xtream.core.workbench.viewers;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -121,9 +122,25 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 			tree.expandRow(i);
 		}
 		
+		// Left pane
+		
+		JPanel left = new JPanel();
+		
+		left.setLayout(new BorderLayout());
+		left.add(new JLabel("Component Hierarchy"), BorderLayout.PAGE_START);
+		left.add(new JScrollPane(tree), BorderLayout.CENTER);
+		
+		// Right pane
+		
+		JPanel right = new JPanel();
+		
+		right.setLayout(new BorderLayout());
+		right.add(new JLabel("Component Graph"), BorderLayout.PAGE_START);
+		right.add(new JScrollPane(graph), BorderLayout.CENTER);
+		
 		// Split pane
 		
-		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(tree), new JScrollPane(graph));
+		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		
 		// Add tab
 		
