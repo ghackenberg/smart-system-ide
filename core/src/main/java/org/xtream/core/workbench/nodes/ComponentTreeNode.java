@@ -84,7 +84,7 @@ public class ComponentTreeNode implements TreeNode
 	@Override
 	public String toString()
 	{
-		return component.name;
+		return component.name + " : " + component.getClass().getSimpleName();
 	}
 
 }

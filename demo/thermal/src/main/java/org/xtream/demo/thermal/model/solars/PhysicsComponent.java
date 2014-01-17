@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.demo.thermal.model.commons.EnergyPhysicsComponent;
 
@@ -43,6 +44,10 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	private double scale;
 	private List<String[]> scenario;
 	
+	// Inputs
+	
+	public Port<Double> damingInput = new Port<>();
+	
 	// Expressions
 	
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
@@ -51,7 +56,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		{
 			try
 			{
-				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale;
+				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale * damingInput.get(timepoint);
 			}
 			catch (ParseException e)
 			{
