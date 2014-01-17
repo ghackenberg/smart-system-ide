@@ -21,7 +21,7 @@ public class Port<T>
 		T value = state.get(this, timepoint);
 		
 		if (value == null && expression != null)
-		{
+		{	
 			value = expression.evaluate(timepoint);
 			
 			state.set(this, timepoint, value);

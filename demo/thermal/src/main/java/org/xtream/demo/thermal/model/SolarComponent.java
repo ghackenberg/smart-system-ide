@@ -1,6 +1,7 @@
 package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.thermal.model.commons.EnergyModuleComponent;
 import org.xtream.demo.thermal.model.solars.ConstraintsComponent;
 import org.xtream.demo.thermal.model.solars.CostsComponent;
@@ -16,6 +17,10 @@ public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, Logi
 	{
 		super(new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
 	}
+	
+	// Channels
+	
+	public ChannelExpression<Double> damping = new ChannelExpression<>(physics.damingInput, logics.dampingOutput);
 	
 	// Previews
 	

@@ -67,18 +67,37 @@ public abstract class Component
 		{
 			try
 			{
-				if (componentField.getType().isArray())
+				if (!componentField.getName().equals("parent"))
 				{
-					Object[] objects = (Object[]) componentField.get(this);
+					Object object = componentField.get(this);
 					
-					for (int i = 0; i < objects.length; i++)
+					if (object == null)
 					{
-						load(componentField, objects[i], componentField.getName() + "[" + i + "]", qualifiedName + "." + componentField.getName() + "[" + i + "]");
+						System.out.println("[WARNING] " + qualifiedName + "." + componentField.getName() + " = null");
 					}
-				}
-				else
-				{
-					load(componentField, componentField.get(this), componentField.getName(), qualifiedName + "." + componentField.getName());
+					else
+					{
+						if (componentField.getType().isArray())
+						{
+							Object[] objects = (Object[]) object;
+							
+							for (int i = 0; i < objects.length; i++)
+							{
+								if (objects[i] == null)
+								{
+									System.out.println("[WARNING] " + qualifiedName + "." + componentField.getName() + "[" + i + "] = null");
+								}
+								else
+								{
+									load(componentField, objects[i], componentField.getName() + "[" + i + "]", qualifiedName + "." + componentField.getName() + "[" + i + "]");
+								}
+							}
+						}
+						else
+						{
+							load(componentField, object, componentField.getName(), qualifiedName + "." + componentField.getName());
+						}
+					}
 				}
 			}
 			catch (IllegalArgumentException e)
@@ -107,7 +126,7 @@ public abstract class Component
 	}
 	
 	private void load(Field componentField, Object object, String name, String qualifiedName)
-	{
+	{	
 		if (object instanceof Port<?>)
 		{
 			Port<?> port = (Port<?>) object;
@@ -160,6 +179,13 @@ public abstract class Component
 	
 	private void load(Field componentField, Port<?> port, String name, String qualifiedName)
 	{
+		if (port.expression == null)
+		{
+			System.out.println("[ERROR] " + qualifiedName + ".expression = null");
+			
+			throw new IllegalStateException();
+		}
+		
 		ports.add(port);
 	
 		port.name = name;
@@ -194,6 +220,15 @@ public abstract class Component
 		
 		if (expression instanceof ChannelExpression<?>)
 		{
+			ChannelExpression<?> channel = (ChannelExpression<?>) expression;
+			
+			if (channel.source == null)
+			{
+				System.out.println("[ERROR] " + qualifiedName + ".source = null");
+				
+				throw new IllegalStateException();
+			}
+			
 			channels.add((ChannelExpression<?>) expression);
 		}
 		

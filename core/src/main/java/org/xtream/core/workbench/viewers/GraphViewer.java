@@ -27,7 +27,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
-import org.xtream.core.workbench.nodes.CompositeComponentTreeNode;
+import org.xtream.core.workbench.nodes.ComponentTreeNode;
 
 public class GraphViewer<T extends Component> extends Viewer<T>
 {
@@ -50,7 +50,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Tree pane
 		
-		final JTree tree = new JTree(new CompositeComponentTreeNode(null, root));
+		final JTree tree = new JTree(new ComponentTreeNode(null, root));
 
 		tree.addTreeSelectionListener(new TreeSelectionListener()
 			{
@@ -59,10 +59,8 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 				{
 					try
 					{
-						CompositeComponentTreeNode node = (CompositeComponentTreeNode) tree.getLastSelectedPathComponent();
+						ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
 						Component root = node.component;
-						
-						System.out.println(root.qualifiedName);
 						
 						Map<Component, Map<Component, List<String>>> edges = new HashMap<>();
 						for (ChannelExpression<?> channel : root.channels)
@@ -95,14 +93,20 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
 						for (Component component : root.components)
 						{
-							dot.append("\t\"" + component.name + "_inputs\" [label = \"\", shape = point, color = white];\n");
-							dot.append("\t\"" + component.name + "_outputs\" [label = \"\", shape = point, color = white];\n");
+							if (component.ports.size() > 0)
+							{
+								dot.append("\t\"" + component.name + "_inputs\" [label = \"\", shape = point, color = white];\n");
+								dot.append("\t\"" + component.name + "_outputs\" [label = \"\", shape = point, color = white];\n");
+							}
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
-						dot.append("\t\tlabel = \"" + root.name + "\";\n");
+						dot.append("\t\tlabel = \"" + root.name + " : " + root.getClass().getName() + "\";\n");
 						for (Component component : root.components)
 						{
-							dot.append("\t\t\"" + component.name + "\" [shape = rectangle, style = filled, fillcolor = gray95];\n");
+							if (component.ports.size() > 0)
+							{
+								dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, style = filled, fillcolor = gray95];\n");
+							}
 						}
 						dot.append("\t}\n");
 						for (Entry<Component, Map<Component, List<String>>> source : edges.entrySet())
@@ -133,8 +137,6 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						graph.removeAll();
 						graph.add(new JLabel(new ImageIcon(image)));
 						graph.updateUI();
-						
-						System.out.println(root.qualifiedName);
 					}
 					catch (InterruptedException e)
 					{

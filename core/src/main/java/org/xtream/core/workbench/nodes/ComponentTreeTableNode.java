@@ -114,7 +114,7 @@ public class ComponentTreeTableNode implements TreeTableNode
 	{
 		if (column == 0)
 		{
-			return component.name;
+			return component.name + " : " + component.getClass().getSimpleName();
 		}
 		else
 		{
