@@ -6,6 +6,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -20,10 +25,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
-import org.xtream.core.workbench.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.nodes.CompositeComponentTreeNode;
 
 public class GraphViewer<T extends Component> extends Viewer<T>
 {
@@ -46,7 +50,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Tree pane
 		
-		final JTree tree = new JTree(new ComponentTreeNode(null, root));
+		final JTree tree = new JTree(new CompositeComponentTreeNode(null, root));
 
 		tree.addTreeSelectionListener(new TreeSelectionListener()
 			{
@@ -55,8 +59,32 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 				{
 					try
 					{
-						ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
+						CompositeComponentTreeNode node = (CompositeComponentTreeNode) tree.getLastSelectedPathComponent();
 						Component root = node.component;
+						
+						System.out.println(root.qualifiedName);
+						
+						Map<Component, Map<Component, List<String>>> edges = new HashMap<>();
+						for (ChannelExpression<?> channel : root.channels)
+						{
+							Map<Component, List<String>> source = edges.get(channel.source.parent);
+							
+							if (source == null)
+							{
+								source = new HashMap<>();
+								edges.put(channel.source.parent, source);
+							}
+							
+							List<String> target = source.get(channel.port.parent);
+							
+							if (target == null)
+							{
+								target = new LinkedList<>();
+								source.put(channel.port.parent, target);
+							}
+							
+							target.add(channel.name);
+						}
 						
 						PrintStream dot = new PrintStream(new File("Graph.dot"));
 						
@@ -65,9 +93,10 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						dot.append("\tfontsize = 13;\n");
 						dot.append("\tnode [fontname = \"Calibri\", fontsize = 11];\n");
 						dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
-						for (Port<?> port : root.ports)
+						for (Component component : root.components)
 						{
-							dot.append("\t\"" + port.name + "\" [label = \"\", shape = point, color = white];\n");
+							dot.append("\t\"" + component.name + "_inputs\" [label = \"\", shape = point, color = white];\n");
+							dot.append("\t\"" + component.name + "_outputs\" [label = \"\", shape = point, color = white];\n");
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
 						dot.append("\t\tlabel = \"" + root.name + "\";\n");
@@ -76,21 +105,22 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 							dot.append("\t\t\"" + component.name + "\" [shape = rectangle, style = filled, fillcolor = gray95];\n");
 						}
 						dot.append("\t}\n");
-						for (ChannelExpression<?> channel : root.channels)
+						for (Entry<Component, Map<Component, List<String>>> source : edges.entrySet())
 						{
-							String source = channel.source.parent.name;
-							String target = channel.port.parent.name;
-							
-							if (channel.source.parent == root)
+							for (Entry<Component, List<String>> target : source.getValue().entrySet())
 							{
-								source = channel.source.name;
+								String sourceName = source.getKey() == root ? target.getKey().name + "_inputs" : source.getKey().name;
+								String targetName = target.getKey() == root ? source.getKey().name + "_outputs" : target.getKey().name;
+								
+								String label = "";
+								
+								for (String channel : target.getValue())
+								{
+									label += (label.length() > 0 ? "\n" : "") + channel;
+								}
+								
+								dot.append("\t\"" + sourceName + "\" -> \"" + targetName + "\" [label = \"" + label + "\", color = blue, fontcolor = blue, penwidth = " + target.getValue().size() + "];\n");
 							}
-							if (channel.port.parent == root)
-							{
-								target = channel.port.name;
-							}
-							
-							dot.append("\t\"" + source + "\" -> \"" + target + "\" [label = \"" + channel.name + "\", color = blue, fontcolor = blue];\n");
 						}
 						dot.append("}");
 						
@@ -103,6 +133,8 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						graph.removeAll();
 						graph.add(new JLabel(new ImageIcon(image)));
 						graph.updateUI();
+						
+						System.out.println(root.qualifiedName);
 					}
 					catch (InterruptedException e)
 					{
