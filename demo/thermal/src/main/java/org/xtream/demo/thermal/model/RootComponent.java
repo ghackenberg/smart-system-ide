@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 100, 10, 0.);
+		new Workbench<>(RootComponent.class, 96, 10, 10, 0.);
 	}
 	
 	// Outputs
@@ -25,7 +25,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public NetComponent net = new NetComponent(1000000., new NetComponent(1000000., 5), new NetComponent(1000000., 5));
+	public NetComponent net = new NetComponent(1000000., new NetComponent(1000000., 5), new NetComponent(1000000., 5), new NetComponent(1000000., 10));
 	
 	// Equivalences
 	
