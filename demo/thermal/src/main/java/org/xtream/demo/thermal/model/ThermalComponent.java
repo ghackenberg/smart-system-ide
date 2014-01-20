@@ -16,6 +16,10 @@ public class ThermalComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public ThermalComponent()
 	{
 		super(ThermalComponent.class.getClassLoader().getResource("consumer.png"), new PhysicsComponent(), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		
+		// Previews
+		
+		modulePreview = new Chart(physics.temperatureOutput, physics.minimumOutput, physics.maximumOutput);
 	}
 	
 	// Channels
@@ -28,9 +32,5 @@ public class ThermalComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	// Charts
 	
 	public Chart temperatureChart = new Chart(physics.temperatureOutput, physics.minimumOutput, physics.maximumOutput);
-	
-	// Previews
-	
-	public Chart temperaturePreview = new Chart(physics.temperatureOutput, physics.minimumOutput, physics.maximumOutput);
 
 }

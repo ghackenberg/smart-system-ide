@@ -1,6 +1,5 @@
 package org.xtream.demo.thermal.model.storages;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
@@ -29,10 +28,6 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Port<Double> levelOutput = new Port<>();
 	public Port<Double> minimumOutput = new Port<>();
 	public Port<Double> maximumOutput = new Port<>();
-	
-	// Charts
-	
-	public Chart levelChart = new Chart(levelOutput, minimumOutput, maximumOutput);
 	
 	// Expressions
 

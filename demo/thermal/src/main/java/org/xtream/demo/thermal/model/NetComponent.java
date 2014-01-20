@@ -13,6 +13,24 @@ import org.xtream.demo.thermal.model.nets.QualitiesComponent;
 public class NetComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
 {
 	
+	private static EnergyModuleComponent<?, ?, ?, ?, ?, ?>[] getModules(int size)
+	{
+		EnergyModuleComponent<?, ?, ?, ?, ?, ?>[] modules = new EnergyModuleComponent[size + 2];
+		
+		modules[0] = new SolarComponent(size * 400.);
+		modules[1] = new StorageComponent(size * 200., size * 1000.);
+		for (int i = 0; i < size; i++)
+		{
+			modules[i + 2] = new ThermalComponent();
+		}
+		
+		return modules;
+	}
+	
+	public NetComponent(double capacity, int size)
+	{
+		this(capacity, getModules(size));
+	}
 	@SuppressWarnings("unchecked")
 	public NetComponent(double capacity, EnergyModuleComponent<?, ?, ?, ?, ?, ?>... modules)
 	{
@@ -26,6 +44,10 @@ public class NetComponent extends EnergyModuleComponent<PhysicsComponent, Logics
 		{
 			balances[i] = new ChannelExpression<>(physics.terminalInputs[i], this.modules.balanceOutputs[i]);
 		}
+		
+		// Previews
+		
+		modulePreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 	}
 	
 	// Channels
@@ -33,9 +55,5 @@ public class NetComponent extends EnergyModuleComponent<PhysicsComponent, Logics
 	public ChannelExpression<Double> productionInternal = new ChannelExpression<>(constraints.productionInput, physics.productionOutput);
 	public ChannelExpression<Double> consumptionInternal = new ChannelExpression<>(constraints.consumptionInput, physics.consumptionOutput);
 	public ChannelExpression<Double>[] balances;
-	
-	// Previews
-	
-	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }

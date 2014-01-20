@@ -1,6 +1,5 @@
 package org.xtream.demo.thermal.model.commons;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractPhysicsComponent;
@@ -23,9 +22,5 @@ public abstract class EnergyPhysicsComponent extends AbstractPhysicsComponent
 			return productionOutput.get(timepoint) + consumptionOutput.get(timepoint);
 		}
 	};
-	
-	// Charts
-	
-	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
 
 }

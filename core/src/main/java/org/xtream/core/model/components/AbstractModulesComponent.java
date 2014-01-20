@@ -1,5 +1,6 @@
 package org.xtream.core.model.components;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -15,6 +16,7 @@ public abstract class AbstractModulesComponent extends Component
 		modules = new AbstractModuleComponent[0];
 		costsOutputs = new Port[0];
 		costs = new ChannelExpression[0];
+		modulePreviews = new Chart[0];
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -35,6 +37,12 @@ public abstract class AbstractModulesComponent extends Component
 		{
 			costs[i] = new ChannelExpression<>(costsOutputs[i], modules[i].costsOutput);
 		}
+		
+		modulePreviews = new Chart[modules.length];
+		for (int i = 0; i < modules.length; i++)
+		{
+			modulePreviews[i] = new Chart(modules[i].modulePreview.ports);
+		}
 	}
 	
 	// Outputs
@@ -48,5 +56,9 @@ public abstract class AbstractModulesComponent extends Component
 	// Channels
 	
 	public ChannelExpression<Double> costs[];
+	
+	// Previews
+	
+	public Chart modulePreviews[];
 
 }

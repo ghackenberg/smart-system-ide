@@ -1,6 +1,5 @@
 package org.xtream.core.model.components;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 
@@ -24,9 +23,5 @@ public abstract class AggregatorComponent extends Component
 	// Outputs
 	
 	public Port<Double> valueOutput = new Port<>();
-	
-	// Charts
-	
-	public Chart valueChart = new Chart(valueOutput);
 
 }

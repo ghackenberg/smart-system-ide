@@ -319,11 +319,11 @@ public abstract class Component
 	
 	private void load(Chart chart, String name, String qualifiedName)
 	{
-		if (name.endsWith("Chart"))
+		if (name.contains("Chart"))
 		{
 			charts.add(chart);
 		}
-		else if (name.endsWith("Preview"))
+		else if (name.contains("Preview"))
 		{
 			previews.add(chart);
 		}

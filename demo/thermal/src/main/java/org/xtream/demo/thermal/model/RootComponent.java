@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 10, 10, 0.);
+		new Workbench<>(RootComponent.class, 96, 100, 10, 0.);
 	}
 	
 	// Outputs
@@ -25,7 +25,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public NetComponent net = new NetComponent(10000., new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()), new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()));
+	public NetComponent net = new NetComponent(1000000., new NetComponent(1000000., 5), new NetComponent(1000000., 5));
 	
 	// Equivalences
 	
@@ -63,16 +63,6 @@ public class RootComponent extends Component
 		{
 			double sum = 0.;
 			
-			/*
-			for (NetComponent lvnet : net.modules.nets)
-			{
-				for (ThermalComponent thermal : lvnet.modules.thermals)
-				{
-					sum += thermal.physics.temperatureOutput.get(timepoint);
-				}
-			}
-			*/
-			
 			return sum;
 		}
 	};
@@ -81,13 +71,6 @@ public class RootComponent extends Component
 		@Override public Double evaluate(int timepoint)
 		{
 			double sum = 0.;
-			
-			/*
-			for (NetComponent lvnet : net.modules.nets)
-			{
-				sum += lvnet.modules.storage.physics.levelOutput.get(timepoint);
-			}
-			*/
 			
 			return sum;
 		}
