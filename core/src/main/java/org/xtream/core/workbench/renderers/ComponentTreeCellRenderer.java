@@ -2,6 +2,9 @@ package org.xtream.core.workbench.renderers;
 
 import java.awt.Component;
 import java.awt.Image;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
@@ -14,6 +17,8 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 
 	private static final long serialVersionUID = -5343638159221108825L;
 	
+	private Map<URL, ImageIcon> icons = new HashMap<>();
+	
 	@Override
 	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
 	{
@@ -23,9 +28,25 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 		
 		if (node.component.icon != null)
 		{	
-			ImageIcon icon = new ImageIcon(node.component.icon);
+			ImageIcon icon = icons.get(node.component.icon);
 			
-			setIcon(new ImageIcon(icon.getImage().getScaledInstance(14, 14, Image.SCALE_SMOOTH)));
+			if (icon == null)
+			{
+				ImageIcon image = new ImageIcon(node.component.icon);
+				
+				if (image.getIconWidth() == 14 && image.getIconHeight() == 14)
+				{
+					icon = image;
+				}
+				else
+				{
+					icon = new ImageIcon(image.getImage().getScaledInstance(14, 14, Image.SCALE_SMOOTH));
+				}
+				
+				icons.put(node.component.icon, icon);
+			}
+			
+			setIcon(icon);
 		}
 		
 		return this;

@@ -52,7 +52,7 @@ public abstract class Component
 	
 	public Component()
 	{
-		
+		this(Component.class.getClassLoader().getResource("component.png"));
 	}
 	public Component(URL icon)
 	{
