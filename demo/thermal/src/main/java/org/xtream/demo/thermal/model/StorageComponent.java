@@ -15,7 +15,7 @@ public class StorageComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 
 	public StorageComponent(double speed, double capacity)
 	{
-		super(StorageComponent.class.getClassLoader().getResource("storage.png"), new PhysicsComponent(speed, capacity), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		super(StorageComponent.class.getClassLoader().getResource("buffer.png"), new PhysicsComponent(speed, capacity), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
 	}
 	
 	// Channels

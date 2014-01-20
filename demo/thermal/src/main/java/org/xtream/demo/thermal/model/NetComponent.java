@@ -16,7 +16,7 @@ public class NetComponent extends EnergyModuleComponent<PhysicsComponent, Logics
 	@SuppressWarnings("unchecked")
 	public NetComponent(double capacity, EnergyModuleComponent<?, ?, ?, ?, ?, ?>... modules)
 	{
-		super(NetComponent.class.getClassLoader().getResource("net.gif"), new PhysicsComponent(modules.length), new LogicsComponent(), new ConstraintsComponent(capacity), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(modules));
+		super(NetComponent.class.getClassLoader().getResource("net.png"), new PhysicsComponent(modules.length), new LogicsComponent(), new ConstraintsComponent(capacity), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(modules));
 		
 		// Balance channels
 		

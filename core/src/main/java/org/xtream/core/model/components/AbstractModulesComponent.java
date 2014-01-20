@@ -10,6 +10,8 @@ public abstract class AbstractModulesComponent extends Component
 	@SuppressWarnings("unchecked")
 	public AbstractModulesComponent()
 	{
+		super(AbstractModulesComponent.class.getClassLoader().getResource("modules.png"));
+		
 		modules = new AbstractModuleComponent[0];
 		costsOutputs = new Port[0];
 		costs = new ChannelExpression[0];
@@ -18,6 +20,8 @@ public abstract class AbstractModulesComponent extends Component
 	@SuppressWarnings("unchecked")
 	public AbstractModulesComponent(AbstractModuleComponent<?, ?, ?, ?, ?, ?>[] modules)
 	{
+		super(AbstractModulesComponent.class.getClassLoader().getResource("modules.png"));
+		
 		this.modules = modules;
 		
 		costsOutputs = new Port[modules.length];

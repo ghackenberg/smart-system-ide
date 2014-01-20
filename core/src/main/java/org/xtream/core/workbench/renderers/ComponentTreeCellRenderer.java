@@ -25,7 +25,7 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 		{	
 			ImageIcon icon = new ImageIcon(node.component.icon);
 			
-			setIcon(new ImageIcon(icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
+			setIcon(new ImageIcon(icon.getImage().getScaledInstance(14, 14, Image.SCALE_SMOOTH)));
 		}
 		
 		return this;

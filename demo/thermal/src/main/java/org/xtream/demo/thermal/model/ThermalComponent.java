@@ -15,7 +15,7 @@ public class ThermalComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 
 	public ThermalComponent()
 	{
-		super(ThermalComponent.class.getClassLoader().getResource("thermal.png"), new PhysicsComponent(), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		super(ThermalComponent.class.getClassLoader().getResource("consumer.png"), new PhysicsComponent(), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
 	}
 	
 	// Channels
