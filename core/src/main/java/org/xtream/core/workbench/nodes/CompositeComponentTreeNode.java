@@ -7,17 +7,14 @@ import javax.swing.tree.TreeNode;
 
 import org.xtream.core.model.Component;
 
-public class CompositeComponentTreeNode implements TreeNode
+public class CompositeComponentTreeNode extends AbstractComponentTreeNode
 {
 	
-	public CompositeComponentTreeNode parent;
-	public Component component;
 	public Vector<CompositeComponentTreeNode> children;
 	
 	public CompositeComponentTreeNode(CompositeComponentTreeNode parent, Component component)
 	{
-		this.parent = parent;
-		this.component = component;
+		super(parent, component);
 		
 		children = new Vector<>();
 		
@@ -72,23 +69,11 @@ public class CompositeComponentTreeNode implements TreeNode
 		
 		return -1;
 	}
-
-	@Override
-	public TreeNode getParent()
-	{
-		return parent;
-	}
-
+	
 	@Override
 	public boolean isLeaf()
 	{
 		return children.size() == 0;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return component.name + " : " + component.getClass().getSimpleName();
 	}
 
 }

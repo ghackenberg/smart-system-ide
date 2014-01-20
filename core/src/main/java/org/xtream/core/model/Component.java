@@ -2,6 +2,7 @@ package org.xtream.core.model;
 
 import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.xtream.core.model.expressions.ChannelExpression;
 public abstract class Component
 {
 
+	public URL icon;
 	public String name;
 	public String qualifiedName;
 	
@@ -48,6 +50,15 @@ public abstract class Component
 	public List<Chart> chartsRecursive = new ArrayList<>();
 	public List<Chart> previewsRecursive = new ArrayList<>();
 	
+	public Component()
+	{
+		
+	}
+	public Component(URL icon)
+	{
+		this.icon = icon;
+	}
+	
 	public void init()
 	{
 		init("root", "root");
@@ -67,7 +78,7 @@ public abstract class Component
 		{
 			try
 			{
-				if (!componentField.getName().equals("parent"))
+				if (!componentField.getName().equals("parent") && !componentField.getName().equals("icon"))
 				{
 					Object object = componentField.get(this);
 					

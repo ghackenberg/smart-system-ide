@@ -1,5 +1,7 @@
 package org.xtream.core.model.components;
 
+import java.net.URL;
+
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.aggregators.SumAggregatorComponent;
@@ -8,9 +10,15 @@ import org.xtream.core.model.expressions.ChannelExpression;
 public abstract class AbstractModuleComponent<PhysicsComponent extends AbstractPhysicsComponent, LogicsComponent extends AbstractLogicsComponent, ConstraintsComponent extends AbstractConstraintsComponent, QualitiesComponent extends AbstractQualitiesComponent, CostsComponent extends AbstractCostsComponent, ModulesComponent extends AbstractModulesComponent> extends Component
 {
 	
-	@SuppressWarnings("unchecked")
 	public AbstractModuleComponent(PhysicsComponent physics, LogicsComponent logics, ConstraintsComponent constraints, QualitiesComponent qualities, CostsComponent costs, ModulesComponent modules)
 	{
+		this(null, physics, logics, constraints, qualities, costs, modules);
+	}
+	@SuppressWarnings("unchecked")
+	public AbstractModuleComponent(URL icon, PhysicsComponent physics, LogicsComponent logics, ConstraintsComponent constraints, QualitiesComponent qualities, CostsComponent costs, ModulesComponent modules)
+	{
+		super(icon);
+		
 		this.physics = physics;
 		this.logics = logics;
 		this.constraints = constraints;

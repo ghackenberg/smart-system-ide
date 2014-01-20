@@ -15,7 +15,7 @@ public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, Logi
 	
 	public SolarComponent(double scale)
 	{
-		super(new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		super(SolarComponent.class.getClassLoader().getResource("solar.gif"), new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
 	}
 	
 	// Channels
