@@ -181,7 +181,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Add tab
 		
-		tabs.addTab("Model", split);
+		tabs.addTab("Architecture", split);
 		
 		// Select row
 		
