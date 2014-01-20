@@ -79,7 +79,7 @@ public abstract class AbstractComponentTreeNode implements TreeNode
 	@Override
 	public String toString()
 	{
-		return component.name + " : " + component.getClass().getSimpleName();
+		return /*component.name + " : " + */component.getClass().getSimpleName();
 	}
 
 }

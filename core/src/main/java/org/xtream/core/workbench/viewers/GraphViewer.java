@@ -116,7 +116,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 						{
 							if (component.ports.size() > 0)
 							{
-								dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + component.components.size() / 10. + " style = filled, fillcolor = gray85];\n");
+								dot.append("\t\t\"" + component.name + "\" [label = \"" + /*component.name + " : " +*/ component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.components.size() / 10.) + " style = filled, fillcolor = gray85];\n");
 							}
 						}
 						dot.append("\t}\n");
