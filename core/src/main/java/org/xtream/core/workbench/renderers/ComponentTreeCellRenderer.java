@@ -34,13 +34,13 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 			{
 				ImageIcon image = new ImageIcon(node.component.icon);
 				
-				if (image.getIconWidth() == 14 && image.getIconHeight() == 14)
+				if (image.getIconWidth() == 16 && image.getIconHeight() == 16)
 				{
 					icon = image;
 				}
 				else
 				{
-					icon = new ImageIcon(image.getImage().getScaledInstance(14, 14, Image.SCALE_SMOOTH));
+					icon = new ImageIcon(image.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 				}
 				
 				icons.put(node.component.icon, icon);
