@@ -25,9 +25,10 @@ public class ThermalComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	// Channels
 	
 	public ChannelExpression<Boolean> command = new ChannelExpression<>(physics.commandInput, logics.commandOutput);
-	public ChannelExpression<Double> temperature = new ChannelExpression<>(constraints.temperatureInput, physics.temperatureOutput);
 	public ChannelExpression<Double> maximum = new ChannelExpression<>(constraints.maximumInput, physics.maximumOutput);
 	public ChannelExpression<Double> minimum = new ChannelExpression<>(constraints.minimumInput, physics.minimumOutput);
+	public ChannelExpression<Double> temperatureContraints = new ChannelExpression<>(constraints.temperatureInput, physics.temperatureOutput);
+	public ChannelExpression<Double> temperatureCosts = new ChannelExpression<>(costs.temperatureInput, physics.temperatureOutput);
 	
 	// Charts
 	

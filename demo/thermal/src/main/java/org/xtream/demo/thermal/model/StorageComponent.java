@@ -28,6 +28,7 @@ public class StorageComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public ChannelExpression<Double> level = new ChannelExpression<>(constraints.levelInput, physics.levelOutput);
 	public ChannelExpression<Double> maximum = new ChannelExpression<>(constraints.maximumInput, physics.maximumOutput);
 	public ChannelExpression<Double> minimum = new ChannelExpression<>(constraints.minimumInput, physics.minimumOutput);
+	public ChannelExpression<Double> balance = new ChannelExpression<>(costs.balanceInput, physics.balanceOutput);
 	
 	// Charts
 	
