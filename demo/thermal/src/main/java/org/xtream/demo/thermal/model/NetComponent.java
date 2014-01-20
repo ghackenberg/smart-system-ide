@@ -54,6 +54,7 @@ public class NetComponent extends EnergyModuleComponent<PhysicsComponent, Logics
 	
 	public ChannelExpression<Double> productionInternal = new ChannelExpression<>(constraints.productionInput, physics.productionOutput);
 	public ChannelExpression<Double> consumptionInternal = new ChannelExpression<>(constraints.consumptionInput, physics.consumptionOutput);
+	public ChannelExpression<Double> balanceInternal = new ChannelExpression<>(costs.balanceInput, physics.balanceOutput);
 	public ChannelExpression<Double>[] balances;
 
 }

@@ -109,7 +109,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 							}
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
-						dot.append("\t\tlabel = \"" + root.name + " : " + root.getClass().getName() + "\";\n");
+						dot.append("\t\tlabel = \"" + /*root.name + " : " +*/ root.getClass().getSimpleName() + "\";\n");
 						dot.append("\t\tstyle = filled;\n");
 						dot.append("\t\tfillcolor = gray95;\n");
 						for (Component component : root.components)

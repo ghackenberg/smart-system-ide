@@ -24,6 +24,7 @@ public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, Logi
 	
 	// Channels
 	
-	public ChannelExpression<Double> damping = new ChannelExpression<>(physics.damingInput, logics.dampingOutput);
+	public ChannelExpression<Double> dampingPhysics = new ChannelExpression<>(physics.damingInput, logics.dampingOutput);
+	public ChannelExpression<Double> dampingCosts = new ChannelExpression<>(costs.dampingInput, logics.dampingOutput);
 
 }
