@@ -2,6 +2,7 @@ package org.xtream.core.model.components;
 
 import java.net.URL;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.aggregators.SumAggregatorComponent;
@@ -57,5 +58,9 @@ public abstract class AbstractModuleComponent<PhysicsComponent extends AbstractP
 	
 	public ChannelExpression<Double>[] costsInternal;
 	public ChannelExpression<Double> costsExternal;
+	
+	// Previews
+	
+	public Chart modulePreview;
 
 }

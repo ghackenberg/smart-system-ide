@@ -16,14 +16,14 @@ public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, Logi
 	public SolarComponent(double scale)
 	{
 		super(SolarComponent.class.getClassLoader().getResource("producer.png"), new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		
+		// Previews
+		
+		modulePreview = new Chart(productionOutput);
 	}
 	
 	// Channels
 	
 	public ChannelExpression<Double> damping = new ChannelExpression<>(physics.damingInput, logics.dampingOutput);
-	
-	// Previews
-	
-	public Chart energyPreview = new Chart(productionOutput);
 
 }
