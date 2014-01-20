@@ -25,7 +25,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public NetComponent net = new NetComponent(10000., new ThermalComponent(), new ThermalComponent(), new ThermalComponent(), new ThermalComponent(), new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()), new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()));
+	public NetComponent net = new NetComponent(10000., new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()), new NetComponent(10000., new SolarComponent(1000.), new StorageComponent(200., 10000.), new ThermalComponent(), new ThermalComponent()));
 	
 	// Equivalences
 	
