@@ -99,16 +99,24 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 							if (component.ports.size() > 0)
 							{
 								dot.append("\t\"" + component.name + "_inputs\" [label = \"\", shape = point, color = white];\n");
+							}
+						}
+						for (Component component : root.components)
+						{
+							if (component.ports.size() > 0)
+							{
 								dot.append("\t\"" + component.name + "_outputs\" [label = \"\", shape = point, color = white];\n");
 							}
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
 						dot.append("\t\tlabel = \"" + root.name + " : " + root.getClass().getName() + "\";\n");
+						dot.append("\t\tstyle = filled;\n");
+						dot.append("\t\tfillcolor = gray95;\n");
 						for (Component component : root.components)
 						{
 							if (component.ports.size() > 0)
 							{
-								dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, style = filled, fillcolor = gray95];\n");
+								dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + component.components.size() / 10. + " style = filled, fillcolor = gray85];\n");
 							}
 						}
 						dot.append("\t}\n");
@@ -129,6 +137,21 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 								dot.append("\t\"" + sourceName + "\" -> \"" + targetName + "\" [label = \"" + label + "\", color = blue, fontcolor = blue, penwidth = " + target.getValue().size() + "];\n");
 							}
 						}
+						/*
+						for (Component componentA : root.components)
+						{
+							if (componentA.ports.size() > 0)
+							{
+								for (Component componentB : root.components)
+								{
+									if (componentB.ports.size() > 0)
+									{
+										dot.append("\t\t\"" + componentA.name + "_inputs\" -> \"" + componentB.name + "\" -> \"" + componentA.name + "_outputs\" [style = invis];\n");
+									}
+								}
+							}
+						}
+						*/
 						dot.append("}");
 						
 						dot.close();

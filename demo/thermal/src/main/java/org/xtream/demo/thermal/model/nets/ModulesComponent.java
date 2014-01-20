@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model.nets;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractModulesComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -28,6 +29,14 @@ public class ModulesComponent extends AbstractModulesComponent
 		{
 			balances[i] = new ChannelExpression<>(balanceOutputs[i], modules[i].balanceOutput);
 		}
+		
+		// Balance charts
+		
+		balanceCharts = new Chart[modules.length];
+		for (int i = 0; i < modules.length; i++)
+		{
+			balanceCharts[i] = new Chart(balanceOutputs[i]);
+		}
 	}
 	
 	// Ports
@@ -37,5 +46,9 @@ public class ModulesComponent extends AbstractModulesComponent
 	// Channels
 	
 	public ChannelExpression<Double>[] balances;
+	
+	// Charts
+	
+	public Chart balanceCharts[];
 	
 }
