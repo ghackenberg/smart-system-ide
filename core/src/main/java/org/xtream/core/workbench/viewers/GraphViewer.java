@@ -27,7 +27,9 @@ import javax.swing.tree.TreeSelectionModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
-import org.xtream.core.workbench.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
+import org.xtream.core.workbench.nodes.CompositeComponentTreeNode;
+import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class GraphViewer<T extends Component> extends Viewer<T>
 {
@@ -50,8 +52,9 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Tree pane
 		
-		final JTree tree = new JTree(new ComponentTreeNode(null, root));
+		final JTree tree = new JTree(new CompositeComponentTreeNode(null, root));
 
+		tree.setCellRenderer(new ComponentTreeCellRenderer());
 		tree.addTreeSelectionListener(new TreeSelectionListener()
 			{
 				@Override
@@ -59,7 +62,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 				{
 					try
 					{
-						ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
+						AbstractComponentTreeNode node = (AbstractComponentTreeNode) tree.getLastSelectedPathComponent();
 						Component root = node.component;
 						
 						Map<Component, Map<Component, List<String>>> edges = new HashMap<>();

@@ -23,7 +23,6 @@ import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Printer;
 import org.xtream.core.optimizer.Viewer;
-import org.xtream.core.optimizer.monitors.CMDMonitor;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
 import org.xtream.core.optimizer.printers.CSVPrinter;
@@ -121,11 +120,10 @@ public class Workbench<T extends Component>
 			
 			// Monitors
 			
-			Monitor cmdMonitor = new CMDMonitor();
 			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
 			Monitor chartMonitor = new ChartMonitor(tabs);
 			Monitor progressMonitor = new ProgressMonitor(timeBar, memoryBar, duration);
-			Monitor allMonitor = new CompositeMonitor(cmdMonitor, csvMonitor, chartMonitor, progressMonitor);
+			Monitor allMonitor = new CompositeMonitor(csvMonitor, chartMonitor, progressMonitor);
 			
 			// Printers
 			

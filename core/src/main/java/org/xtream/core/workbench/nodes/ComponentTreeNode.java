@@ -7,16 +7,12 @@ import javax.swing.tree.TreeNode;
 
 import org.xtream.core.model.Component;
 
-public class ComponentTreeNode implements TreeNode
+public class ComponentTreeNode extends AbstractComponentTreeNode
 {
-	
-	public ComponentTreeNode parent;
-	public Component component;
 	
 	public ComponentTreeNode(ComponentTreeNode parent, Component component)
 	{
-		this.parent = parent;
-		this.component = component;
+		super(parent, component);
 	}
 
 	@Override
@@ -70,21 +66,9 @@ public class ComponentTreeNode implements TreeNode
 	}
 
 	@Override
-	public TreeNode getParent()
-	{
-		return parent;
-	}
-
-	@Override
 	public boolean isLeaf()
 	{
 		return component.components.size() == 0;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return component.name + " : " + component.getClass().getSimpleName();
 	}
 
 }

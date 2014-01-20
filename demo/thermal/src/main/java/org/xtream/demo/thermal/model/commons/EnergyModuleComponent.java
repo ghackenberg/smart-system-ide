@@ -1,5 +1,7 @@
 package org.xtream.demo.thermal.model.commons;
 
+import java.net.URL;
+
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
@@ -13,9 +15,9 @@ import org.xtream.core.model.expressions.ChannelExpression;
 public class EnergyModuleComponent<PhysicsComponent extends EnergyPhysicsComponent, LogicsComponent extends AbstractLogicsComponent, ConstraintsComponent extends AbstractConstraintsComponent, QualitiesComponent extends AbstractQualitiesComponent, CostsComponent extends AbstractCostsComponent, ModulesComponent extends AbstractModulesComponent> extends AbstractModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
 {
 	
-	public EnergyModuleComponent(PhysicsComponent physics, LogicsComponent logics, ConstraintsComponent constraints, QualitiesComponent qualities, CostsComponent costs, ModulesComponent modules)
+	public EnergyModuleComponent(URL icon, PhysicsComponent physics, LogicsComponent logics, ConstraintsComponent constraints, QualitiesComponent qualities, CostsComponent costs, ModulesComponent modules)
 	{
-		super(physics, logics, constraints, qualities, costs, modules);
+		super(icon, physics, logics, constraints, qualities, costs, modules);
 	}
 	
 	// Ports
