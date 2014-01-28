@@ -1,6 +1,7 @@
 package org.xtream.core.optimizer.printers;
 
 import java.io.PrintStream;
+import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
@@ -43,7 +44,16 @@ public class CSVPrinter<T extends Component> extends Printer<T>
 			
 			for (int i = 0; i < timepoint; i++)
 			{
-				out.print(";" + port.get(i));
+				Object value = port.get(i);
+				
+				if (value instanceof Double)
+				{
+					out.print(";" + NumberFormat.getInstance().format((Double) value));
+				}
+				else
+				{
+					out.print(";" + port.get(i));
+				}
 			}
 			
 			out.println();
