@@ -25,7 +25,10 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public NetComponent net = new NetComponent(1000000., new NetComponent(1000000., 5), new NetComponent(1000000., 5), new NetComponent(1000000., 10));
+	public NetComponent net;
+	public SolarComponent solar;
+	public StorageComponent storage;
+	public ThermalComponent[] thermals;
 	
 	// Equivalences
 	
@@ -42,26 +45,18 @@ public class RootComponent extends Component
 	public Chart temperatureChart = new Chart(temperatureOutput);
 	public Chart levelChart = new Chart(levelOutput);
 	
-	// Previews
-	
-	public Chart costPreview = new Chart(costOutput);
-	
 	// Expressions
 	
-	public Expression<Double> costExpression = new Expression<Double>(costOutput)
-	{
-		public double previous = 0.;
-		
-		@Override public Double evaluate(int timepoint)
-		{
-			return previous += net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
-		}
-	};
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
 			double sum = 0.;
+			
+			for (ThermalComponent thermal : thermals)
+			{
+				sum += thermal.temperatureOutput.get(timepoint);
+			}
 			
 			return sum;
 		}
@@ -70,9 +65,7 @@ public class RootComponent extends Component
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			double sum = 0.;
-			
-			return sum;
+			return storage.levelOutput.get(timepoint);
 		}
 		
 	};

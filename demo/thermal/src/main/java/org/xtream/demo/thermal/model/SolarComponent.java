@@ -1,30 +1,75 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
-import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.demo.thermal.model.commons.EnergyModuleComponent;
-import org.xtream.demo.thermal.model.solars.ConstraintsComponent;
-import org.xtream.demo.thermal.model.solars.CostsComponent;
-import org.xtream.demo.thermal.model.solars.LogicsComponent;
-import org.xtream.demo.thermal.model.solars.ModulesComponent;
-import org.xtream.demo.thermal.model.solars.PhysicsComponent;
-import org.xtream.demo.thermal.model.solars.QualitiesComponent;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
 
-public class SolarComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
+import org.xtream.core.model.Chart;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.ConstantExpression;
+
+import au.com.bytecode.opencsv.CSVReader;
+
+public abstract class SolarComponent extends EnergyComponent
 {
 	
 	public SolarComponent(double scale)
 	{
-		super(SolarComponent.class.getClassLoader().getResource("producer.png"), new PhysicsComponent(scale), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		super(SolarComponent.class.getClassLoader().getResource("producer.png"));
 		
-		// Previews
+		this.scale = scale;
 		
-		modulePreview = new Chart(productionOutput);
+		try
+		{
+			CSVReader reader = new CSVReader(new FileReader("Scenario.csv"), ';');
+			
+			scenario = reader.readAll();
+			
+			reader.close();
+		}
+		catch (FileNotFoundException e)
+		{
+			throw new IllegalStateException(e);
+		}
+		catch (IOException e)
+		{
+			throw new IllegalStateException(e);
+		}
 	}
 	
-	// Channels
+	// Parameters
 	
-	public ChannelExpression<Double> dampingPhysics = new ChannelExpression<>(physics.damingInput, logics.dampingOutput);
-	public ChannelExpression<Double> dampingCosts = new ChannelExpression<>(costs.dampingInput, logics.dampingOutput);
+	private double scale;
+	private List<String[]> scenario;
+	
+	// Inputs
+	
+	public Port<Double> efficiencyInput = new Port<>();
+	
+	// Charts
+	
+	public Chart energyChart = new Chart(productionOutput);
+	
+	// Expressions
+	
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			try
+			{
+				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale * efficiencyInput.get(timepoint);
+			}
+			catch (ParseException e)
+			{
+				throw new IllegalStateException(e);
+			}
+		}
+	};
+	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
 
 }
