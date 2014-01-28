@@ -84,7 +84,7 @@ public abstract class ThermalComponent extends EnergyComponent
 		}
 	};
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
-	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 2.1);
-	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximumOutput, 8.1);
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 2.0 - 0.1);
+	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximumOutput, 8.0 + 0.1);
 	
 }
