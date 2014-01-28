@@ -147,6 +147,17 @@ public class Engine<T extends Component>
 				}
 			}
 			
+			for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+			{
+				if (minEquivalences[i] == maxEquivalences[i])
+				{
+					minEquivalences[i] = 0.;
+					maxEquivalences[i] = 1.;
+				}
+			}
+			
+			System.out.println();
+			
 			// Sort groups
 			
 			for (State current : currentStates)
