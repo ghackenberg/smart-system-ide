@@ -13,8 +13,8 @@ public abstract class RootComponent extends Component
 {
 	
 	public static int DURATION = 96;
-	public static int COVERAGE = 500;
-	public static int CLASSES = 25;
+	public static int COVERAGE = 1000;
+	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.25;
 	
 	public RootComponent(Stage stage)
@@ -27,7 +27,7 @@ public abstract class RootComponent extends Component
 		this.stage = stage;
 		
 		net = new NetComponent(size + 2);
-		solar = stage.createSolar(size * 300.);
+		solar = stage.createSolar(size * 400.);
 		storage = stage.createStorage(size * 200., size * 2000.);
 		thermals = new ThermalComponent[size];
 		
