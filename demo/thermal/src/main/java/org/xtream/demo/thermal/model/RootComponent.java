@@ -7,15 +7,51 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.enumerations.Direction;
-import org.xtream.core.workbench.Workbench;
+import org.xtream.core.model.expressions.ChannelExpression;
 
-public class RootComponent extends Component
+public abstract class RootComponent extends Component
 {
 	
-	public static void main(String[] args)
+	public static int DURATION = 96;
+	public static int COVERAGE = 500;
+	public static int CLASSES = 25;
+	public static double RANDOMNESS = 0.25;
+	
+	public RootComponent(Stage stage)
 	{
-		new Workbench<>(RootComponent.class, 96, 10, 10, 0.);
+		this(stage, 10);
 	}
+	@SuppressWarnings("unchecked")
+	public RootComponent(Stage stage, int size)
+	{
+		this.stage = stage;
+		
+		net = new NetComponent(size + 2);
+		solar = stage.createSolar(size * 300.);
+		storage = stage.createStorage(size * 200., size * 2000.);
+		thermals = new ThermalComponent[size];
+		
+		for (int i = 0; i < size; i++)
+		{
+			thermals[i] = stage.createThermal();
+		}
+		
+		balances = new ChannelExpression[size + 2];
+		
+		balances[0] = new ChannelExpression<>(net.balanceInputs[0], solar.balanceOutput);
+		balances[1] = new ChannelExpression<>(net.balanceInputs[1], storage.balanceOutput);
+		for (int i = 0; i < size; i++)
+		{
+			balances[i + 2] = new ChannelExpression<>(net.balanceInputs[i + 2], thermals[i].balanceOutput);
+		}
+		
+		temperatureChart = new Chart(thermals[0].minimumOutput, temperatureOutput, thermals[0].maximumOutput);
+		levelChart = new Chart(storage.minimumOutput, levelOutput, storage.maximumOutput);
+	}
+	
+	// Parameters
+	
+	protected Stage stage;
 	
 	// Outputs
 	
@@ -30,6 +66,10 @@ public class RootComponent extends Component
 	public StorageComponent storage;
 	public ThermalComponent[] thermals;
 	
+	// Channels
+	
+	public ChannelExpression<Double>[] balances;
+	
 	// Equivalences
 	
 	public Equivalence temperatureEquivalence = new Equivalence(temperatureOutput);
@@ -42,8 +82,8 @@ public class RootComponent extends Component
 	// Charts
 	
 	public Chart costChart = new Chart(costOutput);
-	public Chart temperatureChart = new Chart(temperatureOutput);
-	public Chart levelChart = new Chart(levelOutput);
+	public Chart temperatureChart;
+	public Chart levelChart;
 	
 	// Expressions
 	
@@ -55,7 +95,7 @@ public class RootComponent extends Component
 			
 			for (ThermalComponent thermal : thermals)
 			{
-				sum += thermal.temperatureOutput.get(timepoint);
+				sum += thermal.temperatureOutput.get(timepoint) / thermals.length;
 			}
 			
 			return sum;

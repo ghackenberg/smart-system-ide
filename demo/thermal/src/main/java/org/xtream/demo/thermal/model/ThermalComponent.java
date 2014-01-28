@@ -14,6 +14,11 @@ public abstract class ThermalComponent extends EnergyComponent
 		super(ThermalComponent.class.getClassLoader().getResource("consumer.png"));
 	}
 	
+	// Parameters
+	
+	protected double increase = 0.5;
+	protected double decrease = 1.5;
+	
 	// Inputs
 	
 	public Port<Boolean> commandInput = new Port<>();
@@ -27,7 +32,7 @@ public abstract class ThermalComponent extends EnergyComponent
 	
 	// Constraints
 	
-	public Constraint levelConstraint = new Constraint(validOutput);
+	public Constraint validConstraint = new Constraint(validOutput);
 	
 	// Charts
 	
@@ -47,11 +52,11 @@ public abstract class ThermalComponent extends EnergyComponent
 			{
 				if (commandInput.get(timepoint))
 				{
-					return temperatureOutput.get(timepoint - 1) - 0.1;
+					return temperatureOutput.get(timepoint - 1) - decrease;
 				}
 				else
 				{
-					return temperatureOutput.get(timepoint - 1) + 0.1;
+					return temperatureOutput.get(timepoint - 1) + increase;
 				}
 			}
 		}
@@ -78,7 +83,7 @@ public abstract class ThermalComponent extends EnergyComponent
 		}
 	};
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
-	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 2.);
-	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximumOutput, 8.);
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 2.1);
+	public Expression<Double> maximumExpression = new ConstantExpression<Double>(maximumOutput, 8.1);
 	
 }

@@ -43,8 +43,8 @@ public abstract class SolarComponent extends EnergyComponent
 	
 	// Parameters
 	
-	private double scale;
-	private List<String[]> scenario;
+	protected double scale;
+	protected List<String[]> scenario;
 	
 	// Inputs
 	

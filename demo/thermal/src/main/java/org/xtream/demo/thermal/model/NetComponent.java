@@ -9,11 +9,11 @@ public class NetComponent extends EnergyComponent
 {
 	
 	@SuppressWarnings("unchecked")
-	public NetComponent(double capacity, int size)
+	public NetComponent(int size)
 	{
 		super(NetComponent.class.getClassLoader().getResource("net.png"));
 		
-		this.capacity = capacity;
+		this.capacity = Double.MAX_VALUE;
 		
 		// Balance channels
 		
@@ -27,7 +27,7 @@ public class NetComponent extends EnergyComponent
 	
 	// Parameters
 	
-	private double capacity;
+	protected double capacity;
 	
 	// Inputs
 	
@@ -44,6 +44,10 @@ public class NetComponent extends EnergyComponent
 	// Charts
 	
 	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
+	
+	// Previews
+	
+	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
 	
 	// Expressions
 
