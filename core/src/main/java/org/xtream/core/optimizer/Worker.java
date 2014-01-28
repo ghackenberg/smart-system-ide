@@ -81,6 +81,11 @@ public class Worker implements Runnable
 					for (Constraint constraint : root.constraintsRecursive)
 					{
 						valid = valid && constraint.port.get(timepoint);
+						
+						if (!constraint.port.get(timepoint))
+						{
+							System.out.println(constraint.qualifiedName + " violated!");
+						}
 					}
 					
 					if (valid)

@@ -19,8 +19,10 @@ public abstract class StorageComponent extends EnergyComponent
 	
 	// Parameters
 	
-	private double speed;
-	private double capacity;
+	protected double speed;
+	protected double capacity;
+	protected double efficiency = 0.5;
+	protected double loss = 0.99;
 	
 	// Inputs
 	
@@ -41,20 +43,24 @@ public abstract class StorageComponent extends EnergyComponent
 	
 	public Chart energyChart = new Chart(minimumOutput, levelOutput, maximumOutput);
 	
+	// Previews
+	
+	public Chart energyPreview = new Chart(minimumOutput, levelOutput, maximumOutput);
+	
 	// Expressions
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return commandInput.get(timepoint) > 0. ? commandInput.get(timepoint) * speed : 0.;
+			return commandInput.get(timepoint) > 0. ? speed : 0.;
 		}
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return commandInput.get(timepoint) < 0. ? commandInput.get(timepoint) * speed : 0.;
+			return commandInput.get(timepoint) < 0. ? -speed : 0.;
 		}
 	};
 	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
@@ -63,21 +69,21 @@ public abstract class StorageComponent extends EnergyComponent
 		{
 			if (timepoint == 0)
 			{
-				return capacity * 0.5;
+				return 0.25 * capacity;
 			}
 			else
 			{
 				if (commandInput.get(timepoint) < 0.)
 				{
-					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint) * 0.85; 
+					return levelOutput.get(timepoint - 1) * loss + speed * efficiency; 
 				}
 				else if (commandInput.get(timepoint) == 0.)
 				{
-					return levelOutput.get(timepoint - 1) * 0.99;
+					return levelOutput.get(timepoint - 1) * loss;
 				}
 				else if (commandInput.get(timepoint) > 0.)
 				{
-					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint);
+					return levelOutput.get(timepoint - 1) * loss - speed;
 				}
 				
 				throw new IllegalStateException();

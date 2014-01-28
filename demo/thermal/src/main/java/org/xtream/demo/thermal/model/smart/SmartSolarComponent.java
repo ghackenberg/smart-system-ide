@@ -1,14 +1,14 @@
-package org.xtream.demo.thermal.model.standard;
+package org.xtream.demo.thermal.model.smart;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.demo.thermal.model.SolarComponent;
 
-public class StandardSolarPanel extends SolarComponent
+public class SmartSolarComponent extends SolarComponent
 {
 	
-	public StandardSolarPanel(double scale)
+	public SmartSolarComponent(double scale)
 	{
 		super(scale);
 	}
