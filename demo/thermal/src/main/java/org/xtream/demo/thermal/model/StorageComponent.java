@@ -1,37 +1,103 @@
 package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.demo.thermal.model.commons.EnergyModuleComponent;
-import org.xtream.demo.thermal.model.storages.ConstraintsComponent;
-import org.xtream.demo.thermal.model.storages.CostsComponent;
-import org.xtream.demo.thermal.model.storages.LogicsComponent;
-import org.xtream.demo.thermal.model.storages.ModulesComponent;
-import org.xtream.demo.thermal.model.storages.PhysicsComponent;
-import org.xtream.demo.thermal.model.storages.QualitiesComponent;
+import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Constraint;
+import org.xtream.core.model.expressions.ConstantExpression;
 
-public class StorageComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
+public abstract class StorageComponent extends EnergyComponent
 {
 
 	public StorageComponent(double speed, double capacity)
 	{
-		super(StorageComponent.class.getClassLoader().getResource("buffer.png"), new PhysicsComponent(speed, capacity), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(), new ModulesComponent());
+		super(StorageComponent.class.getClassLoader().getResource("buffer.png"));
 		
-		// Previews
-		
-		modulePreview = new Chart(physics.levelOutput, physics.minimumOutput, physics.maximumOutput);
+		this.speed = speed;
+		this.capacity = capacity;
 	}
 	
-	// Channels
-
-	public ChannelExpression<Double> command = new ChannelExpression<>(physics.commandInput, logics.commandOutput);
-	public ChannelExpression<Double> level = new ChannelExpression<>(constraints.levelInput, physics.levelOutput);
-	public ChannelExpression<Double> maximum = new ChannelExpression<>(constraints.maximumInput, physics.maximumOutput);
-	public ChannelExpression<Double> minimum = new ChannelExpression<>(constraints.minimumInput, physics.minimumOutput);
-	public ChannelExpression<Double> balance = new ChannelExpression<>(costs.balanceInput, physics.balanceOutput);
+	// Parameters
+	
+	private double speed;
+	private double capacity;
+	
+	// Inputs
+	
+	public Port<Double> commandInput = new Port<>();
+	
+	// Outputs
+	
+	public Port<Double> levelOutput = new Port<>();
+	public Port<Double> minimumOutput = new Port<>();
+	public Port<Double> maximumOutput = new Port<>();
+	public Port<Boolean> validOutput = new Port<>();
+	
+	// Constraints
+	
+	public Constraint validConstraint = new Constraint(validOutput);
 	
 	// Charts
 	
-	public Chart levelChart = new Chart(physics.levelOutput, physics.minimumOutput, physics.maximumOutput);
+	public Chart energyChart = new Chart(minimumOutput, levelOutput, maximumOutput);
+	
+	// Expressions
+
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return commandInput.get(timepoint) > 0. ? commandInput.get(timepoint) * speed : 0.;
+		}
+	};
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return commandInput.get(timepoint) < 0. ? commandInput.get(timepoint) * speed : 0.;
+		}
+	};
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			if (timepoint == 0)
+			{
+				return capacity * 0.5;
+			}
+			else
+			{
+				if (commandInput.get(timepoint) < 0.)
+				{
+					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint) * 0.85; 
+				}
+				else if (commandInput.get(timepoint) == 0.)
+				{
+					return levelOutput.get(timepoint - 1) * 0.99;
+				}
+				else if (commandInput.get(timepoint) > 0.)
+				{
+					return levelOutput.get(timepoint - 1) * 0.99 - balanceOutput.get(timepoint);
+				}
+				
+				throw new IllegalStateException();
+			}
+		}
+	};
+	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
+	{
+		@Override public Boolean evaluate(int timepoint)
+		{
+			return levelOutput.get(timepoint) >= minimumOutput.get(timepoint) && levelOutput.get(timepoint) <= maximumOutput.get(timepoint);
+		}
+	};
+	public Expression<Double> maximumExpression = new Expression<Double>(maximumOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			return capacity;
+		}
+	};
+	public Expression<Double> minimumExpression = new ConstantExpression<Double>(minimumOutput, 0.);
 
 }
