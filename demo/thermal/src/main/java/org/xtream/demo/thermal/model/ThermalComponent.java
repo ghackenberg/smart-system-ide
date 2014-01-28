@@ -20,7 +20,8 @@ public abstract class ThermalComponent extends EnergyComponent
 	protected double decrease = 1.5;
 	
 	// Inputs
-	
+
+	public Port<Double> probabilityInput = new Port<>();
 	public Port<Boolean> commandInput = new Port<>();
 	
 	// Outputs

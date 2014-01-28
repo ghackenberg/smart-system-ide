@@ -28,7 +28,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
-import org.xtream.core.workbench.nodes.ArchitectureComponentTreeNode;
+import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class GraphViewer<T extends Component> extends Viewer<T>
@@ -52,7 +52,7 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 		
 		// Tree pane
 		
-		final JTree tree = new JTree(new ArchitectureComponentTreeNode(null, root));
+		final JTree tree = new JTree(new ChartComponentTreeNode(null, root));
 
 		tree.setCellRenderer(new ComponentTreeCellRenderer());
 		tree.addTreeSelectionListener(new TreeSelectionListener()

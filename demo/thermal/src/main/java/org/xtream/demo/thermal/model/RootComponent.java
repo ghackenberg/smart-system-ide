@@ -6,8 +6,10 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
 public abstract class RootComponent extends Component
 {
@@ -15,7 +17,7 @@ public abstract class RootComponent extends Component
 	public static int DURATION = 96;
 	public static int COVERAGE = 1000;
 	public static int CLASSES = 50;
-	public static double RANDOMNESS = 0.25;
+	public static double RANDOMNESS = 0.0;
 	
 	public RootComponent(Stage stage)
 	{
@@ -45,6 +47,12 @@ public abstract class RootComponent extends Component
 			balances[i + 2] = new ChannelExpression<>(net.balanceInputs[i + 2], thermals[i].balanceOutput);
 		}
 		
+		probabilities = new ChannelExpression[size];
+		for (int i = 0; i < size; i++)
+		{
+			probabilities[i] = new ChannelExpression<>(thermals[i].probabilityInput, probabilityOutput);
+		}
+		
 		temperatureChart = new Chart(thermals[0].minimumOutput, temperatureOutput, thermals[0].maximumOutput);
 		levelChart = new Chart(storage.minimumOutput, levelOutput, storage.maximumOutput);
 	}
@@ -58,6 +66,7 @@ public abstract class RootComponent extends Component
 	public Port<Double> costOutput = new Port<>();
 	public Port<Double> temperatureOutput = new Port<>();
 	public Port<Double> levelOutput = new Port<>();
+	public Port<Double> probabilityOutput = new Port<>();
 	
 	// Components
 	
@@ -69,6 +78,7 @@ public abstract class RootComponent extends Component
 	// Channels
 	
 	public ChannelExpression<Double>[] balances;
+	public ChannelExpression<Double>[] probabilities;
 	
 	// Equivalences
 	
@@ -107,7 +117,7 @@ public abstract class RootComponent extends Component
 		{
 			return storage.levelOutput.get(timepoint);
 		}
-		
 	};
+	public Expression<Double> probabilityExpression = new ConstantNonDeterministicExpression<>(probabilityOutput, new SetBuilder<Double>().add(0.).add(.25).add(.5).add(.75).add(1.));
 
 }

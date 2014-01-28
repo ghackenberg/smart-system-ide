@@ -13,6 +13,7 @@ public class CSVMonitor extends Monitor
 {
 	
 	private PrintStream out;
+	private long start;
 	
 	public CSVMonitor()
 	{
@@ -27,7 +28,9 @@ public class CSVMonitor extends Monitor
 	@Override
 	public void start()
 	{
-		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Min objective;Avg objective;Max objective;Maximum memory (in MB);Total memory (in MB);Free memory (in MB)");
+		start = System.currentTimeMillis();
+		
+		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Min objective;Avg objective;Max objective;Maximum memory (in MB);Total memory (in MB);Free memory (in MB);Time");
 	}
 
 	@Override
@@ -37,13 +40,14 @@ public class CSVMonitor extends Monitor
 		
 		out.print(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses.size() + ";");
 		out.print(format.format(minObjective) + ";" + format.format(avgObjective) + ";" + format.format(maxObjective) + ";");
-		out.print(maxMemory() + ";" + totalMemory() + ";" + freeMemory());
+		out.print(maxMemory() + ";" + totalMemory() + ";" + freeMemory() + ";");
+		out.print(System.currentTimeMillis() - start);
 		out.println();
 	}
 
 	@Override
 	public void stop()
-	{
+	{	
 		out.close();
 	}
 
