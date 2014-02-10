@@ -16,11 +16,9 @@ public abstract class QuadraticRootComponent extends RootComponent
 
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
+			return (timepoint > 0 ? costOutput.get(timepoint - 1) : 0) + net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
 		}
 	};
 

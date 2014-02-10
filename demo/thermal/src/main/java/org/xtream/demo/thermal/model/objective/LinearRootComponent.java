@@ -16,11 +16,9 @@ public abstract class LinearRootComponent extends RootComponent
 
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += Math.abs(net.balanceOutput.get(timepoint));
+			return (timepoint > 0 ? costOutput.get(timepoint - 1) : 0) + Math.abs(net.balanceOutput.get(timepoint));
 		}
 	};
 
