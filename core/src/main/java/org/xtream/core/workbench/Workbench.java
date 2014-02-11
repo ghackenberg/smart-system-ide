@@ -83,10 +83,10 @@ public class Workbench<T extends Component>
 			toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 			toolbar.add(new JLabel("Duration"));
 			toolbar.add(durationField);
-			toolbar.add(new JLabel("Samples"));
-			toolbar.add(samplesField);
 			toolbar.add(new JLabel("Classes"));
 			toolbar.add(classesField);
+			toolbar.add(new JLabel("Samples"));
+			toolbar.add(samplesField);
 			toolbar.add(new JLabel("Randomness"));
 			toolbar.add(randomnessField);
 			toolbar.addSeparator();
