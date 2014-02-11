@@ -14,7 +14,7 @@ public class Worker implements Runnable
 {
 	public Component root;
 	public int timepoint;
-	public int coverage;
+	public int samples;
 	public double randomness;
 	public Map<Key, List<State>> previousGroups;
 	public Queue<Key> queue;
@@ -23,11 +23,11 @@ public class Worker implements Runnable
 	public int validCount = 0;
 	public List<State> currentStates = new ArrayList<>();
 	
-	public Worker(Component root, int timepoint, int coverage, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
+	public Worker(Component root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
-		this.coverage = coverage;
+		this.samples = samples;
 		this.randomness = randomness;
 		this.previousGroups = previousGroups;
 		this.queue = queue;
@@ -44,9 +44,7 @@ public class Worker implements Runnable
 						
 				List<State> previousGroup = previousGroups.get(previousKey);
 				
-				double count = Math.max(1, (double) coverage / previousGroups.size());
-				
-				for (int sample = 0; sample < count; sample++)
+				for (int sample = 0; sample < samples; sample++)
 				{
 					generatedCount++;
 					
@@ -54,7 +52,7 @@ public class Worker implements Runnable
 					
 					State previous = previousGroup.get(0);
 					
-					if (sample > count * (1 - randomness))
+					if (sample > samples * (1 - randomness))
 					{
 						int random = (int) Math.floor(Math.random() * previousGroup.size());
 						

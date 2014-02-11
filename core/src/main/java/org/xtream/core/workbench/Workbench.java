@@ -39,7 +39,7 @@ public class Workbench<T extends Component>
 	
 	private Engine<T> engine;
 	
-	public Workbench(Class<T> type, int duration, int coverage, int classes, double randomness)
+	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
 		engine = new Engine<>(type);
 		
@@ -52,12 +52,12 @@ public class Workbench<T extends Component>
 			// Controls
 			
 			JTextField durationField = new JTextField("" + duration, 5);
-			JTextField coverageField = new JTextField("" + coverage, 5);
+			JTextField samplesField = new JTextField("" + samples, 5);
 			JTextField classesField = new JTextField("" + classes, 5);
 			JTextField randomnessField = new JTextField("" + randomness, 5);
 			
 			durationField.setEditable(false);
-			coverageField.setEditable(false);
+			samplesField.setEditable(false);
 			classesField.setEditable(false);
 			randomnessField.setEditable(false);
 			
@@ -83,8 +83,8 @@ public class Workbench<T extends Component>
 			toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 			toolbar.add(new JLabel("Duration"));
 			toolbar.add(durationField);
-			toolbar.add(new JLabel("Coverage"));
-			toolbar.add(coverageField);
+			toolbar.add(new JLabel("Samples"));
+			toolbar.add(samplesField);
 			toolbar.add(new JLabel("Classes"));
 			toolbar.add(classesField);
 			toolbar.add(new JLabel("Randomness"));
@@ -134,7 +134,7 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			engine.run(duration, coverage, classes, randomness, allViewer, allMonitor, allPrinter);
+			engine.run(duration, samples, classes, randomness, allViewer, allMonitor, allPrinter);
 		}
 		catch (FileNotFoundException e)
 		{

@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.annotations.Preference;
@@ -60,16 +59,16 @@ public class State implements Comparable<State>
 		
 		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : expression.getClass().getFields())
+			for (Field field : expression.fields)
 			{
 				try
 				{
 					field.setAccessible(true);
 					
-					if (field.getAnnotation(Constant.class) == null)
-					{
+					//if (field.getAnnotation(Constant.class) == null)
+					//{
 						field.set(expression, fields[index++]);
-					}
+					//}
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -89,16 +88,16 @@ public class State implements Comparable<State>
 		
 		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : expression.getClass().getFields())
+			for (Field field : expression.fields)
 			{
 				try
 				{
 					field.setAccessible(true);
 					
-					if (field.getAnnotation(Constant.class) == null)
-					{
+					//if (field.getAnnotation(Constant.class) == null)
+					//{
 						fields[index++] = field.get(expression);
-					}
+					//}
 				}
 				catch (IllegalArgumentException e)
 				{
@@ -143,7 +142,7 @@ public class State implements Comparable<State>
 
 		for (Expression<?> expression : root.expressionsRecursive)
 		{
-			for (Field field : expression.getClass().getFields())
+			for (Field field : expression.fields)
 			{
 				System.out.println(expression.qualifiedName + "." + field.getName() + " = " + fields[index++]);
 			}
