@@ -8,7 +8,7 @@ public class LinearStageBRootComponent extends LinearRootComponent
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(LinearStageBRootComponent.class, DURATION, COVERAGE, CLASSES, RANDOMNESS);
+		new Workbench<>(LinearStageBRootComponent.class, DURATION, SAMPLES, CLASSES, RANDOMNESS);
 	}
 
 	public LinearStageBRootComponent()

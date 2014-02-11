@@ -55,7 +55,7 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public void run(int duration, int coverage, int classes, double randomness, Viewer<T> viewer, Monitor monitor, Printer<T> printer)
+	public void run(int duration, int samples, int classes, double randomness, Viewer<T> viewer, Monitor monitor, Printer<T> printer)
 	{
 		viewer.view(roots.get(0));
 		
@@ -94,7 +94,7 @@ public class Engine<T extends Component>
 			
 			for (int proccessor = 0; proccessor < processors; proccessor++)
 			{
-				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, coverage, randomness, previousGroups, queue));
+				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, samples, randomness, previousGroups, queue));
 				
 				threads.add(proccessor, new Thread(workers.get(proccessor)));
 				threads.get(proccessor).start();
