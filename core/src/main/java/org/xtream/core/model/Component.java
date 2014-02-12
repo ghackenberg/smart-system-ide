@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
@@ -248,6 +247,7 @@ public abstract class Component
 		
 		expression.parent = this;
 		
+		/*
 		for (Field expressionField : expression.getClass().getFields())
 		{
 			if (expressionField.getAnnotation(Constant.class) == null)
@@ -255,6 +255,11 @@ public abstract class Component
 				fields.add(expressionField);
 			}
 		}
+		*/
+		
+		expression.load();
+		
+		fields.addAll(expression.fields);
 	}
 	
 	private void load(Constraint constraint, String name, String qualifiedName)
