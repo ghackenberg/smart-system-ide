@@ -10,19 +10,19 @@ public class QuadraticStageBCalibrationRootComponent extends LinearRootComponent
 	
 	public static int DURATION = 96;
 	
-	public static int CLUSTERS_START = 10;
-	public static int CLUSTERS_END = 50;
+	public static int CLUSTERS_START = 1;
+	public static int CLUSTERS_END = 5;
 	public static int CLUSTERS_STEPS = 5;
 	
-	public static int SAMPLES_START = 10;
-	public static int SAMPLES_END = 50;
+	public static int SAMPLES_START = 1;
+	public static int SAMPLES_END = 5;
 	public static int SAMPLES_STEPS = 5;
 	
-	public static double RANDOM_START = 0.;
-	public static double RANDOM_END = 1.;
+	public static double RANDOM_START = 0.0;
+	public static double RANDOM_END = 0.9;
 	public static int RANDOM_STEPS = 5;
 	
-	public static int ITERATIONS = 20;
+	public static int ITERATIONS = 100;
 	
 	public static void main(String[] args)
 	{
