@@ -11,14 +11,14 @@ import org.xtream.core.optimizer.viewers.CompositeViewer;
 public class Calibrator<T extends Component>
 {
 	
-	public Engine<T> engine;
+	public Class<T> type;
 	
 	public Calibrator(Class<T> type)
 	{
-		engine = new Engine<>(type);
+		this.type = type;
 	}
 	
-	public void run(int duration, int classes_start, int classes_end, int classes_steps, int samples_start, int samples_end, int samples_steps, double random_start, double random_end, int random_steps, int iterations)
+	public void run(int processors, int duration, int classes_start, int classes_end, int classes_steps, int samples_start, int samples_end, int samples_steps, double random_start, double random_end, int random_steps, int iterations)
 	{
 		try
 		{
@@ -50,8 +50,6 @@ public class Calibrator<T extends Component>
 					
 					for (int random_i = 0; random_i < random_steps; random_i++)
 					{
-						System.gc();
-
 						double random = random_start + (random_end - random_start) *  random_i / (random_steps - 1.);
 						
 						System.out.println("Generating sample " + classes + "/" + samples + "/" + random);
@@ -60,12 +58,12 @@ public class Calibrator<T extends Component>
 						double[] costs = new double[iterations]; 
 						
 						for (int iteration = 0; iteration < iterations; iteration++)
-						{	
-							System.out.print(iteration + " ");
-							
+						{
 							CalibrationMonitor monitor = new CalibrationMonitor();
 							
-							engine.run(duration, samples, classes, random, new CompositeViewer<T>(), monitor, new CompositePrinter<T>());
+							new Engine<>(type, processors).run(duration, samples, classes, random, new CompositeViewer<T>(), monitor, new CompositePrinter<T>());
+							
+							System.out.print(iteration + " ");					
 							
 							if (monitor.timepoint < duration - 1)
 							{
@@ -139,28 +137,30 @@ public class Calibrator<T extends Component>
 			
 			PrintStream time_out = new PrintStream("Time.pov");
 			PrintStream cost_out = new PrintStream("Cost.pov");
+			PrintStream cost_minima_out = new PrintStream("CostMinima.pov");
+			PrintStream cost_classes_out = new PrintStream("CostClasses.pov");
+			PrintStream cost_samples_out = new PrintStream("CostSamples.pov");
+			PrintStream cost_random_out = new PrintStream("CostRandom.pov");
 			
-			time_out.println("global_settings { ambient_light rgb<3,3,3> }");
-			time_out.println("camera { location <" + classes_steps*1.25 + "," + random_steps*1.25 + "," + samples_steps*2 + "> look_at <" + classes_steps/2. + "," + random_steps/2. + "," + samples_steps/2. + "> }");
-			time_out.println("light_source {<" + classes_steps/2. + "," + random_steps*1.5 + "," + samples_steps*1.5 + ">,color rgb<1,1,1> area_light <10,0,0>,<0,0,10>,10,10 adaptive 3 jitter}");
-			time_out.println("plane {<0,1,0>,-2 pigment {color rgb<1,1,1>}}");
-			time_out.println("cylinder {<-1,-1,-1>,<" + classes_steps + ",-1,-1>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			time_out.println("cylinder {<-1,-1,-1>,<-1," + random_steps + ",-1>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			time_out.println("cylinder {<-1,-1,-1>,<-1,-1," + samples_steps + ">,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			time_out.println("cone {<" + classes_steps + ",-1,-1>,0.2,<" + (classes_steps+0.5) + ",-1,-1>,0 pigment {color rgb<0.5,0.5,0.5>}}");
-			time_out.println("cone {<-1," + random_steps + ",-1>,0.2,<-1," + (random_steps+0.5) + ",-1>,0 pigment {color rgb<0.5,0.5,0.5>}}");
-			time_out.println("cone {<-1,-1," + samples_steps + ">,0.2,<-1,-1," + (samples_steps+0.5) + ">,0 pigment {color rgb<0.5,0.5,0.5>}}");
-
-			cost_out.println("global_settings { ambient_light rgb<3,3,3> }");
-			cost_out.println("camera { location <" + classes_steps*1.25 + "," + random_steps*1.25 + "," + samples_steps*2 + "> look_at <" + classes_steps/2. + "," + random_steps/2. + "," + samples_steps/2. + "> }");
-			cost_out.println("light_source {<" + classes_steps/2. + "," + random_steps*1.5 + "," + samples_steps*1.5 + ">,color rgb<1,1,1> area_light <10,0,0>,<0,0,10>,10,10 adaptive 3 jitter}");
-			cost_out.println("plane {<0,1,0>,-2 pigment {color rgb<1,1,1>}}");
-			cost_out.println("cylinder {<-1,-1,-1>,<" + classes_steps + ",-1,-1>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			cost_out.println("cylinder {<-1,-1,-1>,<-1," + random_steps + ",-1>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			cost_out.println("cylinder {<-1,-1,-1>,<-1,-1," + samples_steps + ">,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
-			cost_out.println("cone {<" + classes_steps + ",-1,-1>,0.2,<" + (classes_steps+0.5) + ",-1,-1>,0 pigment {color rgb<0.5,0.5,0.5>}}");
-			cost_out.println("cone {<-1," + random_steps + ",-1>,0.2,<-1," + (random_steps+0.5) + ",-1>,0 pigment {color rgb<0.5,0.5,0.5>}}");
-			cost_out.println("cone {<-1,-1," + samples_steps + ">,0.2,<-1,-1," + (samples_steps+0.5) + ">,0 pigment {color rgb<0.5,0.5,0.5>}}");
+			printHeader(time_out, classes_steps, samples_steps, random_steps);
+			printHeader(cost_out, classes_steps, samples_steps, random_steps);
+			printHeader(cost_minima_out, classes_steps, samples_steps, random_steps);
+			printHeader(cost_classes_out, classes_steps, samples_steps, random_steps);
+			printHeader(cost_samples_out, classes_steps, samples_steps, random_steps);
+			printHeader(cost_random_out, classes_steps, samples_steps, random_steps);
+			
+			printGrids(time_out, classes_steps, samples_steps, random_steps, 1);
+			printGrids(cost_out, classes_steps, samples_steps, random_steps, 1);
+			printYZGrid(cost_classes_out, 0, random_steps, samples_steps, 1);
+			printXZGrid(cost_random_out, classes_steps, 0, samples_steps, 1);
+			printXYGrid(cost_samples_out, classes_steps, random_steps, 0, 1);
+			
+			time_out.println("// body");
+			cost_out.println("// body");
+			cost_minima_out.println("// body");
+			cost_classes_out.println("// body");
+			cost_samples_out.println("// body");
+			cost_random_out.println("// body");
 			
 			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
 			{
@@ -178,18 +178,205 @@ public class Calibrator<T extends Component>
 						double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
 						double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
 						
-						time_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + time_average_norm/10) + " pigment {color rgb<" + (0.5 + 0.5 * time_covariance_norm) + ",0.5,0.5>}}");
-						cost_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + (0.5 + 0.5 * cost_covariance_norm) + ",0.5,0.5>}}");
+						time_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + time_average_norm/10) + " pigment {color rgb<" + time_covariance_norm + "," + (1-time_covariance_norm) + "," + (1-time_average_norm) + ">}}");
+						cost_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					}
+				}
+			}
+
+			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+			{
+				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+				{
+					int random_min_i = 0;
+					
+					for (int random_i = 0; random_i < random_steps; random_i++)
+					{
+						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_i][random_min_i])
+						{
+							random_min_i = random_i;
+						}
+					}
+
+					double cost_average = cost_averages[classes_i][samples_i][random_min_i];
+					double cost_covariance = cost_covariances[classes_i][samples_i][random_min_i];
+
+					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+
+					cost_minima_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					cost_random_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					
+					if (random_min_i > 0)
+					{
+						cost_random_out.println("cylinder {<" + classes_i + ",0," + samples_i + ">,<" + classes_i + "," + random_min_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+					}
+				}
+			}
+
+			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+			{
+				for (int random_i = 0; random_i < random_steps; random_i++)
+				{
+					int samples_min_i = 0;
+					
+					for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+					{
+						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_min_i][random_i])
+						{
+							samples_min_i = samples_i;
+						}
+					}
+
+					double cost_average = cost_averages[classes_i][samples_min_i][random_i];
+					double cost_covariance = cost_covariances[classes_i][samples_min_i][random_i];
+
+					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+
+					cost_minima_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					cost_samples_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					
+					if (samples_min_i > 0)
+					{
+						cost_samples_out.println("cylinder {<" + classes_i + "," + random_i + ",0>,<" + classes_i + "," + random_i + "," + samples_min_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");	
+					}
+				}
+			}
+
+			for (int random_i = 0; random_i < random_steps; random_i++)
+			{
+				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+				{
+					int classes_min_i = 0;
+					
+					for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+					{
+						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_min_i][samples_i][random_i])
+						{
+							classes_min_i = classes_i;
+						}
+					}
+
+					double cost_average = cost_averages[classes_min_i][samples_i][random_i];
+					double cost_covariance = cost_covariances[classes_min_i][samples_i][random_i];
+
+					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+
+					cost_minima_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					cost_classes_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+					
+					if (classes_min_i > 0)
+					{
+						cost_classes_out.println("cylinder {<0," + random_i + "," + samples_i + ">,<" + classes_min_i + "," + random_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
 					}
 				}
 			}
 			
 			time_out.close();
 			cost_out.close();
+			cost_minima_out.close();
+			cost_classes_out.close();
+			cost_samples_out.close();
+			cost_random_out.close();
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	private void printHeader(PrintStream out, int classes_steps, int samples_steps, int random_steps)
+	{
+		out.println("// header");
+		
+		out.println("global_settings { ambient_light rgb<3,3,3> }");
+		out.println("camera { location <" + classes_steps*1.25 + "," + random_steps*1.25 + "," + samples_steps*2 + "> look_at <" + classes_steps/2. + "," + random_steps/2. + "," + samples_steps/2. + "> }");
+		out.println("light_source {<" + classes_steps/2. + "," + random_steps*1.5 + "," + samples_steps*1.5 + ">,color rgb<1,1,1> area_light <10,0,0>,<0,0,10>,10,10 adaptive 3 jitter}");
+		out.println("plane {<1,0,0>,-2 pigment {color rgb<1,1,1>}}");
+		out.println("plane {<0,1,0>,-2 pigment {color rgb<1,1,1>}}");
+		out.println("plane {<0,0,1>,-2 pigment {color rgb<1,1,1>}}");
+		out.println("cylinder {<0,0,0>,<" + classes_steps + ",0,0>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
+		out.println("cylinder {<0,0,0>,<0," + random_steps + ",0>,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
+		out.println("cylinder {<0,0,0>,<0,0," + samples_steps + ">,0.05 pigment {color rgb<0.5,0.5,0.5>}}");
+		out.println("cone {<" + classes_steps + ",0,0>,0.2,<" + (classes_steps+0.5) + ",0,0>,0 pigment {color rgb<0.5,0.5,0.5>}}");
+		out.println("cone {<0," + random_steps + ",0>,0.2,<0," + (random_steps+0.5) + ",0>,0 pigment {color rgb<0.5,0.5,0.5>}}");
+		out.println("cone {<0,0," + samples_steps + ">,0.2,<0,0," + (samples_steps+0.5) + ">,0 pigment {color rgb<0.5,0.5,0.5>}}");
+	}
+	
+	private void printGrids(PrintStream out, int classes_steps, int samples_steps, int random_steps, int step)
+	{
+		out.println("// xy grids");
+		
+		printXYGrids(out, classes_steps, random_steps, samples_steps, step);
+		
+		out.println("// yz grids");
+		
+		printYZGrids(out, classes_steps, random_steps, samples_steps, step);
+		
+		out.println("// xz grids");
+		
+		printXZGrids(out, classes_steps, random_steps, samples_steps, step);
+	}
+	
+	private void printXYGrids(PrintStream out, int x_steps, int y_steps, int z_steps, int step)
+	{
+		for (int z = 0; z < z_steps; z+=step)
+		{
+			printXYGrid(out, x_steps, y_steps, z, step);
+		}
+	}
+	
+	private void printYZGrids(PrintStream out, int x_steps, int y_steps, int z_steps, int step)
+	{
+		for (int x = 0; x < x_steps; x+=step)
+		{
+			printYZGrid(out, x, y_steps, z_steps, step);
+		}
+	}
+	
+	private void printXZGrids(PrintStream out, int x_steps, int y_steps, int z_steps, int step)
+	{
+		for (int y = 0; y < y_steps; y+=step)
+		{
+			printXZGrid(out, x_steps, y, z_steps, step);
+		}
+	}
+	
+	private void printXYGrid(PrintStream out, int x_steps, int y_steps, int z, int step)
+	{
+		for (int x = 0; x < x_steps; x+=step)
+		{
+			out.println("cylinder {<" + x + ",0," + z + ">,<" + x + "," + (y_steps-1) + "," + z + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+		}
+		for (int y = 0; y < y_steps; y+=step)
+		{
+			out.println("cylinder {<0," + y + "," + z + ">,<" + (x_steps-1) + "," + y + "," + z + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+		}
+	}
+	
+	private void printYZGrid(PrintStream out, int x, int y_steps, int z_steps, int step)
+	{
+		for (int y = 0; y < y_steps; y+=step)
+		{
+			out.println("cylinder {<" + x + "," + y + ",0>,<" + x + "," + y + "," + (z_steps-1) + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+		}
+		for (int z = 0; z < z_steps; z+=step)
+		{
+			out.println("cylinder {<" + x + ",0," + z + ">,<" + x + "," + (y_steps-1) + "," + z + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+		}
+	}
+	
+	private void printXZGrid(PrintStream out, int x_steps, int y, int z_steps, int step)
+	{
+		for (int x = 0; x < x_steps; x+=step)
+		{
+			out.println("cylinder {<" + x + "," + y + ",0>,<" + x + "," + y + "," + (z_steps-1) + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+		}
+		for (int z = 0; z < z_steps; z+=step)
+		{
+			out.println("cylinder {<0," + y + "," + z + ">,<" + (x_steps-1) + "," + y + "," + z + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
 		}
 	}
 
