@@ -156,8 +156,6 @@ public class Engine<T extends Component>
 				}
 			}
 			
-			System.out.println();
-			
 			// Sort groups
 			
 			for (State current : currentStates)
