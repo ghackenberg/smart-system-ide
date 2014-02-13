@@ -149,8 +149,6 @@ public class Calibrator<T extends Component>
 			printHeader(cost_samples_out, classes_steps, samples_steps, random_steps);
 			printHeader(cost_random_out, classes_steps, samples_steps, random_steps);
 			
-			printGrids(time_out, classes_steps, samples_steps, random_steps, 1);
-			printGrids(cost_out, classes_steps, samples_steps, random_steps, 1);
 			printYZGrid(cost_classes_out, 0, random_steps, samples_steps, 1);
 			printXZGrid(cost_random_out, classes_steps, 0, samples_steps, 1);
 			printXYGrid(cost_samples_out, classes_steps, random_steps, 0, 1);
@@ -305,6 +303,7 @@ public class Calibrator<T extends Component>
 		out.println("cone {<0,0," + samples_steps + ">,0.2,<0,0," + (samples_steps+0.5) + ">,0 pigment {color rgb<0.5,0.5,0.5>}}");
 	}
 	
+	/*
 	private void printGrids(PrintStream out, int classes_steps, int samples_steps, int random_steps, int step)
 	{
 		out.println("// xy grids");
@@ -343,6 +342,7 @@ public class Calibrator<T extends Component>
 			printXZGrid(out, x_steps, y, z_steps, step);
 		}
 	}
+	*/
 	
 	private void printXYGrid(PrintStream out, int x_steps, int y_steps, int z, int step)
 	{
