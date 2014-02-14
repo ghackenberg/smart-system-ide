@@ -2,13 +2,14 @@ package org.xtream.core.optimizer;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.monitors.CalibrationMonitor;
 import org.xtream.core.optimizer.printers.CompositePrinter;
 import org.xtream.core.optimizer.viewers.CompositeViewer;
 
-public class Calibrator<T extends Component>
+public abstract class Calibrator<T extends Component>
 {
 	
 	public Class<T> type;
@@ -42,15 +43,15 @@ public class Calibrator<T extends Component>
 			
 			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
 			{
-				int classes = (int) (classes_start + (classes_end - classes_start) *  classes_i / (classes_steps - 1.));
+				int classes = getClasses(classes_start, classes_end, classes_steps, classes_i);
 				
 				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
 				{
-					int samples = (int) (samples_start + (samples_end - samples_start) *  samples_i / (samples_steps - 1.));
-					
+					int samples = getSamples(samples_start, samples_end, samples_steps, samples_i);
+							
 					for (int random_i = 0; random_i < random_steps; random_i++)
 					{
-						double random = random_start + (random_end - random_start) *  random_i / (random_steps - 1.);
+						double random = getRandom(random_start, random_end, random_steps, random_i);
 						
 						System.out.println("Generating sample " + classes + "/" + samples + "/" + random);
 						
@@ -135,155 +136,213 @@ public class Calibrator<T extends Component>
 				}
 			}
 			
-			PrintStream time_out = new PrintStream("Time.pov");
-			PrintStream cost_out = new PrintStream("Cost.pov");
-			PrintStream cost_minima_out = new PrintStream("CostMinima.pov");
-			PrintStream cost_classes_out = new PrintStream("CostClasses.pov");
-			PrintStream cost_samples_out = new PrintStream("CostSamples.pov");
-			PrintStream cost_random_out = new PrintStream("CostRandom.pov");
-			
-			printHeader(time_out, classes_steps, samples_steps, random_steps);
-			printHeader(cost_out, classes_steps, samples_steps, random_steps);
-			printHeader(cost_minima_out, classes_steps, samples_steps, random_steps);
-			printHeader(cost_classes_out, classes_steps, samples_steps, random_steps);
-			printHeader(cost_samples_out, classes_steps, samples_steps, random_steps);
-			printHeader(cost_random_out, classes_steps, samples_steps, random_steps);
-			
-			printYZGrid(cost_classes_out, 0, random_steps, samples_steps, 1);
-			printXZGrid(cost_random_out, classes_steps, 0, samples_steps, 1);
-			printXYGrid(cost_samples_out, classes_steps, random_steps, 0, 1);
-			
-			time_out.println("// body");
-			cost_out.println("// body");
-			cost_minima_out.println("// body");
-			cost_classes_out.println("// body");
-			cost_samples_out.println("// body");
-			cost_random_out.println("// body");
-			
-			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+			for (int random_i = 0; random_i < random_steps; random_i++)
 			{
+				PrintStream cost_averages_out = new PrintStream("Cost-" + random_i + "-Averages.csv");
+				PrintStream cost_covariances_out = new PrintStream("Cost-" + random_i + "-Covariances.csv");
+				PrintStream time_averages_out = new PrintStream("Time-" + random_i + "-Averages.csv");
+				PrintStream time_covariances_out = new PrintStream("Time-" + random_i + "-Covariances.csv");
+				
 				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
 				{
-					for (int random_i = 0; random_i < random_steps; random_i++)
-					{
-						double time_average = time_averages[classes_i][samples_i][random_i];
-						double time_covariance = time_covariances[classes_i][samples_i][random_i];
-						double cost_average = cost_averages[classes_i][samples_i][random_i];
-						double cost_covariance = cost_covariances[classes_i][samples_i][random_i];
-						
-						double time_average_norm = (time_average - time_averages_min) / (time_averages_max - time_averages_min);
-						double time_covariance_norm = (time_covariance - time_covariances_min) / (time_covariances_max - time_covariances_min);
-						double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
-						double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
-						
-						time_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + time_average_norm/10) + " pigment {color rgb<" + time_covariance_norm + "," + (1-time_covariance_norm) + "," + (1-time_average_norm) + ">}}");
-						cost_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					}
-				}
-			}
-
-			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
-			{
-				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
-				{
-					int random_min_i = 0;
+					int samples = getSamples(samples_start, samples_end, samples_steps, samples_i);
 					
-					for (int random_i = 0; random_i < random_steps; random_i++)
-					{
-						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_i][random_min_i])
-						{
-							random_min_i = random_i;
-						}
-					}
-
-					double cost_average = cost_averages[classes_i][samples_i][random_min_i];
-					double cost_covariance = cost_covariances[classes_i][samples_i][random_min_i];
-
-					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
-					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
-
-					cost_minima_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					cost_random_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					
-					if (random_min_i > 0)
-					{
-						cost_random_out.println("cylinder {<" + classes_i + ",0," + samples_i + ">,<" + classes_i + "," + random_min_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
-					}
+					cost_averages_out.print(";" + samples);
+					cost_covariances_out.print(";" + samples);
+					time_averages_out.print(";" + samples);
+					time_covariances_out.print(";" + samples);
 				}
-			}
-
-			for (int classes_i = 0; classes_i < classes_steps; classes_i++)
-			{
-				for (int random_i = 0; random_i < random_steps; random_i++)
+				cost_averages_out.println();
+				cost_covariances_out.println();
+				time_averages_out.println();
+				time_covariances_out.println();
+				
+				for (int classes_i = 0; classes_i < classes_steps; classes_i++)
 				{
-					int samples_min_i = 0;
+					int classes = getClasses(classes_start, classes_end, classes_steps, classes_i);
+					
+					cost_averages_out.print(classes);
+					cost_covariances_out.print(classes);
+					time_averages_out.print(classes);
+					time_covariances_out.print(classes);
 					
 					for (int samples_i = 0; samples_i < samples_steps; samples_i++)
 					{
-						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_min_i][random_i])
-						{
-							samples_min_i = samples_i;
-						}
+						cost_averages_out.print(";" + NumberFormat.getInstance().format(cost_averages[classes_i][samples_i][random_i]));
+						cost_covariances_out.print(";" + NumberFormat.getInstance().format(cost_covariances[classes_i][samples_i][random_i]));
+						time_averages_out.print(";" + NumberFormat.getInstance().format(time_averages[classes_i][samples_i][random_i]));
+						time_covariances_out.print(";" + NumberFormat.getInstance().format(time_covariances[classes_i][samples_i][random_i]));
 					}
-
-					double cost_average = cost_averages[classes_i][samples_min_i][random_i];
-					double cost_covariance = cost_covariances[classes_i][samples_min_i][random_i];
-
-					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
-					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
-
-					cost_minima_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					cost_samples_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					
-					if (samples_min_i > 0)
-					{
-						cost_samples_out.println("cylinder {<" + classes_i + "," + random_i + ",0>,<" + classes_i + "," + random_i + "," + samples_min_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");	
-					}
+					cost_averages_out.println();
+					cost_covariances_out.println();
+					time_averages_out.println();
+					time_covariances_out.println();
 				}
-			}
-
-			for (int random_i = 0; random_i < random_steps; random_i++)
-			{
-				for (int samples_i = 0; samples_i < samples_steps; samples_i++)
-				{
-					int classes_min_i = 0;
-					
-					for (int classes_i = 0; classes_i < classes_steps; classes_i++)
-					{
-						if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_min_i][samples_i][random_i])
-						{
-							classes_min_i = classes_i;
-						}
-					}
-
-					double cost_average = cost_averages[classes_min_i][samples_i][random_i];
-					double cost_covariance = cost_covariances[classes_min_i][samples_i][random_i];
-
-					double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
-					double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
-
-					cost_minima_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					cost_classes_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
-					
-					if (classes_min_i > 0)
-					{
-						cost_classes_out.println("cylinder {<0," + random_i + "," + samples_i + ">,<" + classes_min_i + "," + random_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
-					}
-				}
+				
+				cost_averages_out.close();
+				cost_covariances_out.close();
+				time_averages_out.close();
+				time_covariances_out.close();
 			}
 			
-			time_out.close();
-			cost_out.close();
-			cost_minima_out.close();
-			cost_classes_out.close();
-			cost_samples_out.close();
-			cost_random_out.close();
+			if (random_steps > 0)
+			{
+				PrintStream time_out = new PrintStream("Time.pov");
+				PrintStream cost_out = new PrintStream("Cost.pov");
+				PrintStream cost_minima_out = new PrintStream("CostMinima.pov");
+				PrintStream cost_classes_out = new PrintStream("CostClasses.pov");
+				PrintStream cost_samples_out = new PrintStream("CostSamples.pov");
+				PrintStream cost_random_out = new PrintStream("CostRandom.pov");
+				
+				printHeader(time_out, classes_steps, samples_steps, random_steps);
+				printHeader(cost_out, classes_steps, samples_steps, random_steps);
+				printHeader(cost_minima_out, classes_steps, samples_steps, random_steps);
+				printHeader(cost_classes_out, classes_steps, samples_steps, random_steps);
+				printHeader(cost_samples_out, classes_steps, samples_steps, random_steps);
+				printHeader(cost_random_out, classes_steps, samples_steps, random_steps);
+				
+				printYZGrid(cost_classes_out, 0, random_steps, samples_steps, 1);
+				printXZGrid(cost_random_out, classes_steps, 0, samples_steps, 1);
+				printXYGrid(cost_samples_out, classes_steps, random_steps, 0, 1);
+				
+				time_out.println("// body");
+				cost_out.println("// body");
+				cost_minima_out.println("// body");
+				cost_classes_out.println("// body");
+				cost_samples_out.println("// body");
+				cost_random_out.println("// body");
+				
+				for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+				{
+					for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+					{
+						for (int random_i = 0; random_i < random_steps; random_i++)
+						{
+							double time_average = time_averages[classes_i][samples_i][random_i];
+							double time_covariance = time_covariances[classes_i][samples_i][random_i];
+							double cost_average = cost_averages[classes_i][samples_i][random_i];
+							double cost_covariance = cost_covariances[classes_i][samples_i][random_i];
+							
+							double time_average_norm = (time_average - time_averages_min) / (time_averages_max - time_averages_min);
+							double time_covariance_norm = (time_covariance - time_covariances_min) / (time_covariances_max - time_covariances_min);
+							double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+							double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+							
+							time_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + time_average_norm/10) + " pigment {color rgb<" + time_covariance_norm + "," + (1-time_covariance_norm) + "," + (1-time_average_norm) + ">}}");
+							cost_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						}
+					}
+				}
+	
+				for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+				{
+					for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+					{
+						int random_min_i = 0;
+						
+						for (int random_i = 0; random_i < random_steps; random_i++)
+						{
+							if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_i][random_min_i])
+							{
+								random_min_i = random_i;
+							}
+						}
+	
+						double cost_average = cost_averages[classes_i][samples_i][random_min_i];
+						double cost_covariance = cost_covariances[classes_i][samples_i][random_min_i];
+	
+						double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+						double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+	
+						cost_minima_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						cost_random_out.println("sphere {<" + classes_i + "," + random_min_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						
+						if (random_min_i > 0)
+						{
+							cost_random_out.println("cylinder {<" + classes_i + ",0," + samples_i + ">,<" + classes_i + "," + random_min_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+						}
+					}
+				}
+	
+				for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+				{
+					for (int random_i = 0; random_i < random_steps; random_i++)
+					{
+						int samples_min_i = 0;
+						
+						for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+						{
+							if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_i][samples_min_i][random_i])
+							{
+								samples_min_i = samples_i;
+							}
+						}
+	
+						double cost_average = cost_averages[classes_i][samples_min_i][random_i];
+						double cost_covariance = cost_covariances[classes_i][samples_min_i][random_i];
+	
+						double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+						double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+	
+						cost_minima_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						cost_samples_out.println("sphere {<" + classes_i + "," + random_i + "," + samples_min_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						
+						if (samples_min_i > 0)
+						{
+							cost_samples_out.println("cylinder {<" + classes_i + "," + random_i + ",0>,<" + classes_i + "," + random_i + "," + samples_min_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");	
+						}
+					}
+				}
+	
+				for (int random_i = 0; random_i < random_steps; random_i++)
+				{
+					for (int samples_i = 0; samples_i < samples_steps; samples_i++)
+					{
+						int classes_min_i = 0;
+						
+						for (int classes_i = 0; classes_i < classes_steps; classes_i++)
+						{
+							if (cost_averages[classes_i][samples_i][random_i] < cost_averages[classes_min_i][samples_i][random_i])
+							{
+								classes_min_i = classes_i;
+							}
+						}
+	
+						double cost_average = cost_averages[classes_min_i][samples_i][random_i];
+						double cost_covariance = cost_covariances[classes_min_i][samples_i][random_i];
+	
+						double cost_average_norm = (cost_average - cost_averages_min) / (cost_averages_max - cost_averages_min);
+						double cost_covariance_norm = (cost_covariance - cost_covariances_min) / (cost_covariances_max - cost_covariances_min);
+	
+						cost_minima_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						cost_classes_out.println("sphere {<" + classes_min_i + "," + random_i + "," + samples_i + ">," + (1./10 + cost_average_norm/10) + " pigment {color rgb<" + cost_covariance_norm + "," + (1-cost_covariance_norm) + "," + (1-cost_average_norm) + ">}}");
+						
+						if (classes_min_i > 0)
+						{
+							cost_classes_out.println("cylinder {<0," + random_i + "," + samples_i + ">,<" + classes_min_i + "," + random_i + "," + samples_i + ">,0.025 pigment {color rgb<0.5,0.5,0.5>}}");
+						}
+					}
+				}
+				
+				time_out.close();
+				cost_out.close();
+				cost_minima_out.close();
+				cost_classes_out.close();
+				cost_samples_out.close();
+				cost_random_out.close();
+			}
 		}
 		catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
+	protected abstract int getClasses(int classes_start, int classes_end, int classes_steps, int classes_i);
+	
+	protected abstract int getSamples(int samples_start, int samples_end, int samples_steps, int samples_i);
+	
+	protected abstract double getRandom(double random_start, double random_end, int random_steps, int random_i);
 	
 	private void printHeader(PrintStream out, int classes_steps, int samples_steps, int random_steps)
 	{
