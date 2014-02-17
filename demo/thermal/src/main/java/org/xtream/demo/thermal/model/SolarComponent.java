@@ -62,7 +62,7 @@ public abstract class SolarComponent extends EnergyComponent
 		{
 			try
 			{
-				return NumberFormat.getInstance().parse(scenario.get(timepoint + 1)[1]).doubleValue() * scale * efficiencyInput.get(timepoint);
+				return NumberFormat.getInstance().parse(scenario.get(timepoint % 96 + 1)[1]).doubleValue() * scale * efficiencyInput.get(timepoint);
 			}
 			catch (ParseException e)
 			{
