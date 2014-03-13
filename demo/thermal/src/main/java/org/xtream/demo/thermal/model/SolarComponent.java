@@ -3,8 +3,10 @@ package org.xtream.demo.thermal.model;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+/*
 import java.text.NumberFormat;
 import java.text.ParseException;
+*/
 import java.util.List;
 
 import org.xtream.core.model.Chart;
@@ -60,6 +62,26 @@ public abstract class SolarComponent extends EnergyComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
+			int modulo = timepoint % 96;
+			
+			double mean = 12;
+			double variance = 4;
+			
+			if (modulo < (mean - variance) * 4)
+			{
+				return 0.;
+			}
+			else if (modulo > (mean + variance) * 4)
+			{
+				return 0.;
+			}
+			else
+			{
+				double difference = (modulo - mean * 4) / (variance * 4);
+				
+				return (1 - difference * difference) * scale;
+			}
+			/*
 			try
 			{
 				return NumberFormat.getInstance().parse(scenario.get(timepoint % 96 + 1)[1]).doubleValue() * scale * efficiencyInput.get(timepoint);
@@ -68,6 +90,7 @@ public abstract class SolarComponent extends EnergyComponent
 			{
 				throw new IllegalStateException(e);
 			}
+			*/
 		}
 	};
 	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
