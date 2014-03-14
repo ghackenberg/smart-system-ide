@@ -10,7 +10,11 @@ public abstract class QuadraticRootComponent extends RootComponent
 	public QuadraticRootComponent(Stage stage)
 	{
 		super(stage);
+		
+		scale = size * 600;
 	}
+	
+	protected double scale;
 	
 	// Expressions
 
@@ -18,7 +22,7 @@ public abstract class QuadraticRootComponent extends RootComponent
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return (timepoint > 0 ? costOutput.get(timepoint - 1) : 0) + net.balanceOutput.get(timepoint) * net.balanceOutput.get(timepoint);
+			return (timepoint > 0 ? costOutput.get(timepoint - 1) : 0) + net.balanceOutput.get(timepoint) / scale * net.balanceOutput.get(timepoint) / scale;
 		}
 	};
 

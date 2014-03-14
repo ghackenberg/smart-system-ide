@@ -3,7 +3,7 @@ package org.xtream.demo.thermal.model.objective;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.demo.thermal.model.stage.StageB;
 
-public class QuadraticStageBRootComponent extends LinearRootComponent
+public class QuadraticStageBRootComponent extends QuadraticRootComponent
 {
 	
 	public static void main(String[] args)
