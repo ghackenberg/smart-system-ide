@@ -21,12 +21,13 @@ public abstract class RootComponent extends Component
 	
 	public RootComponent(Stage stage)
 	{
-		this(stage, 10);
+		this(stage, 50);
 	}
 	@SuppressWarnings("unchecked")
 	public RootComponent(Stage stage, int size)
 	{
 		this.stage = stage;
+		this.size = size;
 		
 		net = new NetComponent(size + 2);
 		solar = stage.createSolar(size * 400.);
@@ -60,6 +61,7 @@ public abstract class RootComponent extends Component
 	// Parameters
 	
 	protected Stage stage;
+	protected int size;
 	
 	// Outputs
 	
