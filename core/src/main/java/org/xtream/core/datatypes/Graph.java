@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.datatypes;
+package org.xtream.core.datatypes;
 
 import java.awt.Color;
 import java.io.File;
@@ -23,7 +23,7 @@ import org.jgrapht.alg.KShortestPaths;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import org.xtream.demo.mobile.datatypes.helpers.Dom;
+import org.xtream.core.datatypes.helpers.Dom;
 
 
 public class Graph
@@ -200,11 +200,9 @@ public class Graph
 	public void addEdge(Edge edge) 
 	{	
 		edge.setGraph(this);
-		
 		DefaultWeightedEdge graphEdge = new DefaultWeightedEdge();
 		
 		graph.addEdge(getNode(edge.getSource()), getNode(edge.getTarget()), graphEdge);
-		
 		graph.setEdgeWeight(graphEdge, Double.parseDouble(edge.getWeight()));
 	
 		graphEdgeMap.put(edge.getName(), graphEdge);
@@ -368,7 +366,7 @@ public class Graph
 		throw new IllegalStateException("ShortestPathCost not found: (" + source + "," + target + ")");
 	}
 	
-	public double getMaximumPathCost(Node source, Node target)
+	public double getLongestPathCost(Node source, Node target)
 	{
 		if (source.equals(target)) 
 		{
@@ -427,7 +425,6 @@ public class Graph
 		
 		throw new IllegalStateException("Edge not found: " + edge ); 
 	}
-	
 	
 	@Override
 	public String toString()

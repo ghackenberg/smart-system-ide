@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.datatypes.helpers;
+package org.xtream.core.datatypes.helpers;
 
 import java.util.ArrayList;
 import java.util.Collection;

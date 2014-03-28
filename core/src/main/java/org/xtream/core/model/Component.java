@@ -34,6 +34,8 @@ public abstract class Component
 	public List<Objective> maxObjectives= new ArrayList<>();
 	public List<Chart> charts = new ArrayList<>();
 	public List<Chart> previews = new ArrayList<>();
+	public List<Histogram> histograms = new ArrayList<>();
+	public List<Histogram> histogramPreviews = new ArrayList<>();
 	
 	public List<Port<?>> portsRecursive = new ArrayList<>();
 	public List<Field> fieldsRecursive = new ArrayList<>();
@@ -48,6 +50,8 @@ public abstract class Component
 	public List<Objective> maxObjectivesRecursive= new ArrayList<>();
 	public List<Chart> chartsRecursive = new ArrayList<>();
 	public List<Chart> previewsRecursive = new ArrayList<>();
+	public List<Histogram> histogramsRecursive = new ArrayList<>();
+	public List<Histogram> histogramPreviewsRecursive = new ArrayList<>();
 	
 	public Component()
 	{
@@ -133,6 +137,8 @@ public abstract class Component
 		maxObjectivesRecursive.addAll(maxObjectives);
 		chartsRecursive.addAll(charts);
 		previewsRecursive.addAll(previews);
+		histogramsRecursive.addAll(histograms);
+		histogramPreviewsRecursive.addAll(histogramPreviews);
 	}
 	
 	private void load(Field componentField, Object object, String name, String qualifiedName)
@@ -185,6 +191,12 @@ public abstract class Component
 			
 			load(chart, name, qualifiedName);
 		}
+		else if (object instanceof Histogram)
+		{
+			Histogram histogram = (Histogram) object;
+			
+			load(histogram, name, qualifiedName);
+		}
 	}
 	
 	private void load(Field componentField, Port<?> port, String name, String qualifiedName)
@@ -222,6 +234,7 @@ public abstract class Component
 		minObjectivesRecursive.addAll(component.minObjectivesRecursive);
 		maxObjectivesRecursive.addAll(component.maxObjectivesRecursive);
 		chartsRecursive.addAll(component.chartsRecursive);
+		histogramsRecursive.addAll(component.histogramsRecursive);
 	}
 	
 	private void load(Expression<?> expression, String name, String qualifiedName)
@@ -341,6 +354,27 @@ public abstract class Component
 		chart.qualifiedName = qualifiedName;
 		
 		chart.parent = this;
+	}
+	
+	private void load(Histogram histogram, String name, String qualifiedName)
+	{
+		if (name.contains("Histogram"))
+		{
+			histograms.add(histogram);
+		}
+		else if (name.contains("HistogramPreview"))
+		{
+			histogramPreviews.add(histogram);
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
+		
+		histogram.name = name;
+		histogram.qualifiedName = qualifiedName;
+		
+		histogram.parent = this;
 	}
 	
 	public void dump(PrintStream out)
