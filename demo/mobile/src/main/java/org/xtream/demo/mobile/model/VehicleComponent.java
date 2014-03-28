@@ -1,10 +1,12 @@
 package org.xtream.demo.mobile.model;
 
+import org.xtream.core.datatypes.Edge;
+import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.demo.mobile.datatypes.Edge;
-import org.xtream.demo.mobile.datatypes.Graph;
 import org.xtream.demo.mobile.model.commons.EnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
 import org.xtream.demo.mobile.model.vehicles.CostsComponent;
@@ -23,25 +25,34 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 		// Previews
 		
 		modulePreview = new Chart(physics.powerOutput);
-		//modulePreview = new Chart(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
 	}
 	
 	// Ports
-	
+
 	public Port<Double> speedOutput = new Port<>();
+	public Port<Double> positionTraversedLengthOutput = new Port<>();
+	public Port<Edge> positionOutput = new Port<>();
+	public Port<Double> vehicleLengthOutput = new Port<>();
+	
+	// Equivalences
+	
+	public Equivalence speedEquivalence = new Equivalence(speedOutput);
 	
 	// Channels
 	
 	// Channels logics -> overallsystem
 	
 	public ChannelExpression<Double> speed = new ChannelExpression<>(speedOutput, logics.speedOutput);
+	public ChannelExpression<Double> positionTraversedLength = new ChannelExpression<>(positionTraversedLengthOutput, physics.positionTraversedLengthOutput);
+	public ChannelExpression<Edge> position3 = new ChannelExpression<>(positionOutput, logics.positionOutput);
+	public ChannelExpression<Double> vehicleLength = new ChannelExpression<>(vehicleLengthOutput, physics.vehicleLengthOutput);
 	
 	// Channels physics -> logics
 	
 	public ChannelExpression<Edge> startPosition = new ChannelExpression<>(logics.startPositionInput, physics.startPositionOutput);
 	public ChannelExpression<Edge> destinationPosition = new ChannelExpression<>(logics.destinationPositionInput, physics.destinationPositionOutput);
 	public ChannelExpression<Edge> positionOutgoingEdges = new ChannelExpression<>(logics.positionOutgoingEdgesInput, physics.positionOutgoingEdgesOutput);
-	public ChannelExpression<Double> positionTraversedLength = new ChannelExpression<>(logics.positionTraversedLengthInput, physics.positionTraversedLengthOutput);
+	public ChannelExpression<Double> positionTraversedLength2 = new ChannelExpression<>(logics.positionTraversedLengthInput, physics.positionTraversedLengthOutput);
 	public ChannelExpression<Double> positionEdgeLength = new ChannelExpression<>(logics.positionEdgeLengthInput, physics.positionEdgeLengthOutput);
 	
 	public ChannelExpression<Boolean> drivingIndicator = new ChannelExpression<>(logics.drivingIndicatorInput, physics.drivingIndicatorOutput);
@@ -54,6 +65,7 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	// Channels logics -> qualities
 	
 	public ChannelExpression<Edge> position2 = new ChannelExpression<>(qualities.positionInput, logics.positionOutput);
+	public ChannelExpression<Edge> positionTarget = new ChannelExpression<>(qualities.positionTargetInput, logics.positionTargetOutput);
 	
 	// Channels qualities -> costs
 	
@@ -71,7 +83,6 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public ChannelExpression<Boolean> drivingIndicator2 = new ChannelExpression<>(qualities.drivingIndicatorInput, physics.drivingIndicatorOutput);
 	public ChannelExpression<Edge> destinationPosition2 = new ChannelExpression<>(qualities.destinationPositionInput, physics.destinationPositionOutput);
 
-	
 	// Channels physics -> constraints
 	
 	public ChannelExpression<Double> maximumChargeState = new ChannelExpression<>(constraints.maximumChargeStateInput, physics.maximumChargeStateOutput);
@@ -82,6 +93,10 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 
 	public Chart chargeStateChart = new Chart(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
 	public Chart powerChart = new Chart(physics.powerOutput);
-	public Chart speedChart = new Chart(logics.speedOutput);	
+	public Chart speedChart = new Chart(logics.speedOutput);
+	
+	// Histograms
+
+	public Histogram positionHistogram = new Histogram(logics.positionOutput);
 
 }

@@ -2,12 +2,12 @@ package org.xtream.demo.mobile.model.vehicles;
 
 import java.util.Set;
 
+import org.xtream.core.datatypes.Edge;
+import org.xtream.core.datatypes.Graph;
+import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
-import org.xtream.demo.mobile.datatypes.Edge;
-import org.xtream.demo.mobile.datatypes.Graph;
-import org.xtream.demo.mobile.datatypes.Node;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
 
 public class PhysicsComponent extends EnergyPhysicsComponent
@@ -42,6 +42,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Port<Double> powerOutput= new Port<>();
 	
 	public Port<Double> chargeStateOutput = new Port<>();
+	public Port<Double> chargeStateRelativeOutput = new Port<>();
 	public Port<Double> minimumChargeStateOutput = new Port<>();
 	public Port<Double> maximumChargeStateOutput = new Port<>();
 	
@@ -69,7 +70,6 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Port<Double> vehicleLengthOutput = new Port<>();
 	public Port<Double> vehicleWidthOutput = new Port<>();
 	
-	public Port<Double> powerChargeStateOutput = new Port<>();
 	public Port<Double> chargeRateOutput = new Port<>();
 	
 	// Expressions
@@ -125,7 +125,6 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 			}
 		}
 	};
-	
 	
 	public Expression<Double> positionXExpression = new Expression<Double>(positionXOutput)
 	{
@@ -299,7 +298,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 			double differenceZ = Math.pow((positionTargetNodeZOutput.get(timepoint)-positionSourceNodeZOutput.get(timepoint)), 2);
 			
 			return Math.sqrt(differenceX+differenceY+differenceZ);
-		}
+		}		
 	};
 	
 	public Expression<Boolean> drivingIndicatorExpression = new Expression<Boolean>(drivingIndicatorOutput)
@@ -345,7 +344,10 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		{
 			if (speedInput.get(timepoint) > 0)
 			{
-				return (((Math.abs(Math.pow(speedInput.get(timepoint), 2)))+(positionAltitudeDifferenceOutput.get(timepoint)*speedInput.get(timepoint)))/2);
+				double milage = 0.2353;
+				double slope = (((Math.abs(Math.pow(speedInput.get(timepoint), 2)))+(positionAltitudeDifferenceOutput.get(timepoint)*speedInput.get(timepoint)))/2);
+				
+				return ((milage*(1.+(slope/(slope*2))))*speedInput.get(timepoint));
 			}
 			else
 			{
@@ -360,7 +362,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		{
 			if (timepoint == 0)
 			{
-				return 10000.0;
+				return 85.00;
 			}
 			else
 			{
@@ -379,24 +381,23 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 				// Discharge
 				else
 				{
-					return (chargeStateOutput.get(timepoint-1)-powerChargeStateOutput.get(timepoint));
+					return (chargeStateOutput.get(timepoint-1)-powerOutput.get(timepoint));
 				}
 			}
 		}
 	};
 	
-	
-	public Expression<Double> powerChargeStateExpression = new Expression<Double>(powerChargeStateOutput)
+	public Expression<Double> chargeStateRelativeExpression = new Expression<Double>(chargeStateRelativeOutput)
 	{
 		@Override public Double evaluate(int timepoint)
 		{
-			return (powerOutput.get(timepoint)/11);
+			return (chargeStateOutput.get(timepoint)/maximumChargeStateOutput.get(timepoint));
 		}
 	};
 	
-	public Expression<Double> chargeRateExpression = new ConstantExpression<Double>(chargeRateOutput, 0.05);	
+	public Expression<Double> chargeRateExpression = new ConstantExpression<Double>(chargeRateOutput, 1.13);	
 	public Expression<Double> minimumChargeStateExpression = new ConstantExpression<Double>(minimumChargeStateOutput, 0.);
-	public Expression<Double> maximumChargeStateExpression = new ConstantExpression<Double>(maximumChargeStateOutput, 10000.);
+	public Expression<Double> maximumChargeStateExpression = new ConstantExpression<Double>(maximumChargeStateOutput, 85.0);
 	
 	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);

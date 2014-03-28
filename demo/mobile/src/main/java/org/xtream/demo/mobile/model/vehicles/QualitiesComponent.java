@@ -1,10 +1,10 @@
 package org.xtream.demo.mobile.model.vehicles;
 
+import org.xtream.core.datatypes.Edge;
+import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractQualitiesComponent;
-import org.xtream.demo.mobile.datatypes.Edge;
-import org.xtream.demo.mobile.datatypes.Graph;
 
 public class QualitiesComponent extends AbstractQualitiesComponent
 {
@@ -22,6 +22,7 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	public Port<Double> powerInput = new Port<>();
 	public Port<Double> chargeStateInput = new Port<>();
 	public Port<Edge> positionInput = new Port<>();
+	public Port<Edge> positionTargetInput = new Port<>();
 	public Port<Edge> destinationPositionInput = new Port<>();
 	
 	public Port<Double> maximumChargeStateInput = new Port<>();
@@ -41,16 +42,26 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	{
 		@Override 
 		public Double evaluate(int timepoint)
-		{
+		{			
+			Double shortestPathCostInitial = graph.getShortestPathCost(graph.getTargetNode(positionInput.get(0).getName()),graph.getTargetNode(destinationPositionInput.get(0).getName()));
+			Double shortestPathCost = graph.getShortestPathCost(graph.getTargetNode(positionInput.get(timepoint).getName()),graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
+			Double longestPathCost = graph.getLongestPathCost(graph.getTargetNode(positionInput.get(timepoint).getName()),graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
+			
 			if (targetReachedInput.get(timepoint) || !(drivingIndicatorInput.get(timepoint)))
+			{
+				return 0.;
+			}
+			else if (shortestPathCost == 0 && longestPathCost == 0)
+			{
+				return 0.;
+			}
+			else if (positionTargetInput.get(timepoint).equals(graph.getShortestPath(graph.getTargetNode(positionInput.get(timepoint).getName()),graph.getTargetNode(destinationPositionInput.get(timepoint).getName())).get(0)))
 			{
 				return 0.;
 			}
 			else 
 			{
-				Double shortestPathCost = graph.getShortestPathCost(graph.getTargetNode(positionInput.get(timepoint).getName()),graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
-				Double longestPathCost = graph.getMaximumPathCost(graph.getTargetNode(positionInput.get(timepoint).getName()),graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
-				return (shortestPathCost/longestPathCost);
+				return (1.0*(shortestPathCost/shortestPathCostInitial));
 			}
 		}
 	};
@@ -80,9 +91,13 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 			{
 				return 0.;
 			}
+			else if (powerInput.get(timepoint) == 0)
+			{
+				return 0.;
+			}
 			else 
 			{
-				return powerInput.get(timepoint);
+				return (powerInput.get(timepoint)/3264);
 			}
 		}
 	};
@@ -102,7 +117,5 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 			}
 		}
 	};
-	
-	
 	
 }

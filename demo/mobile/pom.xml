@@ -11,18 +11,5 @@
 
 	<artifactId>org.xtream.demo.mobile</artifactId>
 	<packaging>jar</packaging>
-
-	<dependencies>
-		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>2.3</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jgrapht</groupId>
-			<artifactId>jgrapht</artifactId>
-			<version>0.8.3</version>
-		</dependency>   
-	</dependencies>
-
-</project>
+	
+	</project>
