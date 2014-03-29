@@ -22,7 +22,7 @@ public class QuadraticStageBQuadraticCalibration
 	public static double RANDOM_END = 1.0;
 	public static int RANDOM_STEPS = 2;
 	
-	public static int ITERATIONS = 2;
+	public static int ITERATIONS = 10;
 	
 	public static void main(String[] args)
 	{
