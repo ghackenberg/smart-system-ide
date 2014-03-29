@@ -1,9 +1,9 @@
-package org.xtream.demo.thermal.model.objective;
+package org.xtream.demo.thermal.model.calibration;
 
 import org.xtream.core.optimizer.calibrators.LinearCalibrator;
-import org.xtream.demo.thermal.model.stage.StageB;
+import org.xtream.demo.thermal.model.configuration.QuadraticStageBRootComponent;
 
-public class QuadraticStageBLinearCalibrationRootComponent extends LinearRootComponent
+public class QuadraticStageBLinearCalibration
 {
 	
 	public static int PROCESSORS = Runtime.getRuntime().availableProcessors() - 2;
@@ -26,12 +26,7 @@ public class QuadraticStageBLinearCalibrationRootComponent extends LinearRootCom
 	
 	public static void main(String[] args)
 	{
-		new LinearCalibrator<>(QuadraticStageBLinearCalibrationRootComponent.class).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
-	}
-
-	public QuadraticStageBLinearCalibrationRootComponent()
-	{
-		super(new StageB());
+		new LinearCalibrator<>(QuadraticStageBRootComponent.class).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
 	}
 
 }

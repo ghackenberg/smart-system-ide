@@ -1,7 +1,6 @@
 package org.xtream.demo.thermal.model.stage;
 
 import org.xtream.demo.thermal.model.SolarComponent;
-import org.xtream.demo.thermal.model.Stage;
 import org.xtream.demo.thermal.model.StorageComponent;
 import org.xtream.demo.thermal.model.ThermalComponent;
 import org.xtream.demo.thermal.model.smart.SmartStorageComponent;

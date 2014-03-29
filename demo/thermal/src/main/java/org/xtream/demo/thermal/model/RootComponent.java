@@ -10,6 +10,7 @@ import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
+import org.xtream.demo.thermal.model.stage.Stage;
 
 public abstract class RootComponent extends Component
 {
