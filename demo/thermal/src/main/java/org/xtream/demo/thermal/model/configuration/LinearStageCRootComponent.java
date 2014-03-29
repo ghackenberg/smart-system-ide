@@ -1,6 +1,7 @@
-package org.xtream.demo.thermal.model.objective;
+package org.xtream.demo.thermal.model.configuration;
 
 import org.xtream.core.workbench.Workbench;
+import org.xtream.demo.thermal.model.objective.LinearRootComponent;
 import org.xtream.demo.thermal.model.stage.StageC;
 
 public class LinearStageCRootComponent extends LinearRootComponent

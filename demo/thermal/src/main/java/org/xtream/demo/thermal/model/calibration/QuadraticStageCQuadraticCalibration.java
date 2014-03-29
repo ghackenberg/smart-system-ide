@@ -1,14 +1,14 @@
-package org.xtream.demo.thermal.model.objective;
+package org.xtream.demo.thermal.model.calibration;
 
 import org.xtream.core.optimizer.calibrators.QuadraticCalibrator;
-import org.xtream.demo.thermal.model.stage.StageB;
+import org.xtream.demo.thermal.model.configuration.QuadraticStageCRootComponent;
 
-public class QuadraticStageBQuadraticCalibrationRootComponent extends LinearRootComponent
+public class QuadraticStageCQuadraticCalibration
 {
 	
 	public static int PROCESSORS = Runtime.getRuntime().availableProcessors() - 2;
 	
-	public static int DURATION = 96;
+	public static int DURATION = 96 * 2;
 	
 	public static int CLUSTERS_START = 1;
 	public static int CLUSTERS_END = 64;
@@ -26,12 +26,7 @@ public class QuadraticStageBQuadraticCalibrationRootComponent extends LinearRoot
 	
 	public static void main(String[] args)
 	{
-		new QuadraticCalibrator<>(QuadraticStageBQuadraticCalibrationRootComponent.class).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
-	}
-
-	public QuadraticStageBQuadraticCalibrationRootComponent()
-	{
-		super(new StageB());
+		new QuadraticCalibrator<>(QuadraticStageCRootComponent.class).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
 	}
 
 }

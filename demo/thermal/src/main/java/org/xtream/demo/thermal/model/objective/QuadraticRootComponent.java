@@ -2,7 +2,7 @@ package org.xtream.demo.thermal.model.objective;
 
 import org.xtream.core.model.Expression;
 import org.xtream.demo.thermal.model.RootComponent;
-import org.xtream.demo.thermal.model.Stage;
+import org.xtream.demo.thermal.model.stage.Stage;
 
 public abstract class QuadraticRootComponent extends RootComponent
 {
