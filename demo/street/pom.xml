@@ -4,26 +4,18 @@
 
 	<parent>
 		<groupId>org.xtream</groupId>
-		<artifactId>org.xtream</artifactId>
+		<artifactId>org.xtream.demo</artifactId>
 		<version>1.0</version>
 	</parent>
 	
-	<artifactId>org.xtream.demo</artifactId>
-	<packaging>pom</packaging>
-	
-	<modules>
-		<module>basic</module>
-		<module>hydro</module>
-		<module>mobile</module>
-		<module>street</module>
-		<module>thermal</module>
-	</modules>
+	<artifactId>org.xtream.demo.street</artifactId>
+	<packaging>jar</packaging>
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.xtream</groupId>
-			<artifactId>org.xtream.core</artifactId>
-			<version>1.0</version>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 	
