@@ -11,7 +11,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 100, 50, 0.5);
+		new Workbench<>(RootComponent.class, 96, 100, 100, 0.25);
 	}
 	
 	// Components
