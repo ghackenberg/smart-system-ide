@@ -11,7 +11,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 100, 10, 0.5);
+		new Workbench<>(RootComponent.class, 96, 100, 50, 0.5);
 	}
 	
 	// Components
@@ -28,6 +28,8 @@ public class RootComponent extends Component
 	public Chart rewardChart = new Chart(objective.rewardOutput);
 	
 	// Expressions
+	
+	public Expression<Double> scenarioInflow = new ChannelExpression<>(steuerung.scenarioInflowInput, context.scenarioInflowOutput);
 	
 	public Expression<Double> speicherseeLevel = new ChannelExpression<>(steuerung.speicherseeLevelInput, context.speicherseeLevelOutput);
 	public Expression<Double> volumen1Level = new ChannelExpression<>(steuerung.volumen1LevelInput, context.volumen1LevelOutput);

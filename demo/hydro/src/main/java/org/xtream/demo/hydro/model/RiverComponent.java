@@ -39,11 +39,11 @@ public class RiverComponent extends Component
 	
 	// Components
 	
-	public VolumeComponent speichersee = new VolumeComponent(0, 0, 5, 3800000);
-	public VolumeComponent volumen1 = new VolumeComponent(0, 0, 1.6, 13500);
-	public VolumeComponent volumen2 = new VolumeComponent(0, 0, 2.1, 12525);
-	public VolumeComponent volumen3 = new VolumeComponent(0, 0, 2.9, 15000);
-	public VolumeComponent volumen4 = new VolumeComponent(0, 0, 3.4, 48000);
+	public VolumeComponent speichersee = new VolumeComponent(0, 0, Constants.SPEICHERSEE_LEVEL_MAX, Constants.SPEICHERSEE_AREA);
+	public VolumeComponent volumen1 = new VolumeComponent(0, 0, Constants.VOLUMEN1_LEVEL_MAX, Constants.VOLUMEN1_AREA);
+	public VolumeComponent volumen2 = new VolumeComponent(0, 0, Constants.VOLUMEN2_LEVEL_MAX, Constants.VOLUMEN2_AREA);
+	public VolumeComponent volumen3 = new VolumeComponent(0, 0, Constants.VOLUMEN3_LEVEL_MAX, Constants.VOLUMEN3_AREA);
+	public VolumeComponent volumen4 = new VolumeComponent(0, 0, Constants.VOLUMEN4_LEVEL_MAX, Constants.VOLUMEN4_AREA);
 	
 	public BarrageComponent hauptkraftwerk = new BarrageComponent(315, 275.4);
 	public BarrageComponent wehr1 = new BarrageComponent(275.4, 271.7);

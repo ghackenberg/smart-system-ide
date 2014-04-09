@@ -64,7 +64,7 @@ public class VolumeComponent extends Component
 			}
 			else
 			{
-				return levelOutput.get(timepoint - 1) + inflowInput.get(timepoint) / area * 900 - outflowInput.get(timepoint) / area * 900;
+				return levelOutput.get(timepoint - 1) + inflowInput.get(timepoint) * 900 / area - outflowInput.get(timepoint) * 900 / area;
 			}
 		}
 	};
