@@ -61,38 +61,46 @@ public class Worker implements Runnable
 					
 					previous.restore(root);
 					
-					// Create Status
-					
-					State current = new State(root.portsRecursive.size(), root.fieldsRecursive.size(), timepoint, previous);
-					
-					current.connect(root);
-					
-					for (Port<?> port : root.portsRecursive)
+					try
 					{
-						port.get(timepoint);
-					}
-					
-					// Check Status
-					
-					boolean valid = true;
-					
-					for (Constraint constraint : root.constraintsRecursive)
-					{
-						valid = valid && constraint.port.get(timepoint);
+						// Create Status
 						
-						if (!constraint.port.get(timepoint))
+						State current = new State(root.portsRecursive.size(), root.fieldsRecursive.size(), timepoint, previous);
+						
+						current.connect(root);
+						
+						for (Port<?> port : root.portsRecursive)
 						{
-							System.out.println(constraint.qualifiedName + " violated!");
+							port.get(timepoint);
+						}
+						
+						// Check Status
+						
+						boolean valid = true;
+						
+						for (Constraint constraint : root.constraintsRecursive)
+						{
+							valid = valid && constraint.port.get(timepoint);
+							
+							if (!constraint.port.get(timepoint))
+							{
+								System.out.println(constraint.qualifiedName + " violated!");
+							}
+						}
+						
+						if (valid)
+						{
+							validCount++;
+							
+							currentStates.add(current);
+							
+							current.save();
 						}
 					}
-					
-					if (valid)
+					catch (IllegalStateException e)
 					{
-						validCount++;
-						
-						currentStates.add(current);
-						
-						current.save();
+						// No options in this state!
+						e.printStackTrace();
 					}
 				}
 			}
