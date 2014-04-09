@@ -16,5 +16,17 @@ public class Constants
 	public static double VOLUMEN3_LEVEL_MAX = 2.9;
 	public static double VOLUMEN4_LEVEL_MAX = 3.4;
 	public static double VOLUMEN5_LEVEL_MAX = Double.MAX_VALUE;
+	
+	public static double HAUPTKRAFTWERK_TURBINE_DISCHARGE_MAX = 30;
+	public static double WEHR1_TURBINE_DISCHARGE_MAX = 24;
+	public static double WEHR2_TURBINE_DISCHARGE_MAX = 24;
+	public static double WEHR3_TURBINE_DISCHARGE_MAX = 24;
+	public static double WEHR4_TURBINE_DISCHARGE_MAX = 7.2;
+	
+	public static double HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX = 5;
+	public static double WEHR1_WEIR_DISCHARGE_MAX = 5;
+	public static double WEHR2_WEIR_DISCHARGE_MAX = 5;
+	public static double WEHR3_WEIR_DISCHARGE_MAX = 5;
+	public static double WEHR4_WEIR_DISCHARGE_MAX = 5;
 
 }

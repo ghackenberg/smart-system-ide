@@ -86,7 +86,7 @@ public class VolumeComponent extends Component
 	{
 		@Override public Boolean evaluate(int timepoint)
 		{
-			return levelOutput.get(timepoint) >= levelMin && levelOutput.get(timepoint) <= levelMax;
+			return levelOutput.get(timepoint) >= levelMin - 0.1 && levelOutput.get(timepoint) <= levelMax + 0.1;
 		}
 	};
 

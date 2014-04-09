@@ -82,10 +82,12 @@ public class Worker implements Runnable
 						{
 							valid = valid && constraint.port.get(timepoint);
 							
-							if (!constraint.port.get(timepoint))
-							{
-								System.out.println(constraint.qualifiedName + " violated!");
-							}
+							//if (!constraint.port.get(timepoint))
+							//{
+							//	System.out.println(constraint.qualifiedName + " violated!");
+							//}
+							
+							// TODO Count and visualize
 						}
 						
 						if (valid)
@@ -100,7 +102,10 @@ public class Worker implements Runnable
 					catch (IllegalStateException e)
 					{
 						// No options in this state!
-						e.printStackTrace();
+						
+						//e.printStackTrace();
+						
+						// TODO Count and visualize
 					}
 				}
 			}
