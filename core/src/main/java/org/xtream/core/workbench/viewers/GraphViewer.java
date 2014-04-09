@@ -109,14 +109,14 @@ public class GraphViewer<T extends Component> extends Viewer<T>
 							}
 						}
 						dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
-						dot.append("\t\tlabel = \"" + /*root.name + " : " +*/ root.getClass().getSimpleName() + "\";\n");
+						dot.append("\t\tlabel = \"" + root.name + " : " + root.getClass().getSimpleName() + "\";\n");
 						dot.append("\t\tstyle = filled;\n");
 						dot.append("\t\tfillcolor = gray95;\n");
 						for (Component component : root.components)
 						{
 							if (component.ports.size() > 0)
 							{
-								dot.append("\t\t\"" + component.name + "\" [label = \"" + /*component.name + " : " +*/ component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.components.size() / 10.) + " style = filled, fillcolor = gray85];\n");
+								dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.components.size() / 10.) + " style = filled, fillcolor = gray85];\n");
 							}
 						}
 						dot.append("\t}\n");
