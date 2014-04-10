@@ -3,7 +3,7 @@ package org.xtream.demo.hydro.model.continuous.random;
 import org.xtream.core.model.Expression;
 import org.xtream.demo.hydro.model.Constants;
 
-public class ControlComponent extends org.xtream.demo.hydro.model.ControlComponent
+public class ControlComponent extends org.xtream.demo.hydro.model.continuous.ControlComponent
 {
 	
 	// Expressions

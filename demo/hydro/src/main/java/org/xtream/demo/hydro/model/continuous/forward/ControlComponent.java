@@ -5,7 +5,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.demo.hydro.model.Constants;
 
-public class ControlComponent extends org.xtream.demo.hydro.model.ControlComponent
+public class ControlComponent extends org.xtream.demo.hydro.model.continuous.ControlComponent
 {
 	
 	// Ports
