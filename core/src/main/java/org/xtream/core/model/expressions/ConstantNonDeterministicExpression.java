@@ -12,6 +12,13 @@ public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpre
 	@Constant
 	public Set<T> set;
 	
+	public ConstantNonDeterministicExpression(Port<T> port, Set<T> set)
+	{
+		super(port);
+		
+		this.set = set;
+	}
+	
 	public ConstantNonDeterministicExpression(Port<T> port, SetBuilder<T> builder)
 	{
 		super(port);

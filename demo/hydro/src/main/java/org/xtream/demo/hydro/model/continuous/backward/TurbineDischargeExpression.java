@@ -1,15 +1,15 @@
-package org.xtream.demo.hydro.model;
+package org.xtream.demo.hydro.model.continuous.backward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 
-public class WeirDischargeExpression extends Expression<Double>
+public class TurbineDischargeExpression extends Expression<Double>
 {
 	
 	@Constant
-	protected double weirDischargeMax;
-
+	protected double turbineDischargeMax;
+	
 	@Constant
 	protected Port<Double> nextLevel;
 	@Constant
@@ -23,16 +23,13 @@ public class WeirDischargeExpression extends Expression<Double>
 	protected Port<Double> nextTurbineDischarge;
 	@Constant
 	protected Port<Double> nextWeirDischarge;
-	
-	@Constant
-	protected Port<Double> currentTurbineDischarge;
 
-	public WeirDischargeExpression(Port<Double> weirDischarge, double weirDischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge, Port<Double> currentTurbineDischrage)
+	public TurbineDischargeExpression(Port<Double> turbineDischarge, double turbineDischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge)
 	{
-		super(weirDischarge);
+		super(turbineDischarge);
 		
-		this.weirDischargeMax = weirDischargeMax;
-
+		this.turbineDischargeMax = turbineDischargeMax;
+		
 		this.nextLevel = nextLevel;
 		this.nextArea = nextArea;
 		this.nextLevelMin = 0;
@@ -40,8 +37,6 @@ public class WeirDischargeExpression extends Expression<Double>
 		
 		this.nextTurbineDischarge = nextTurbineDischarge;
 		this.nextWeirDischarge = nextWeirDischarge;
-		
-		this.currentTurbineDischarge = currentTurbineDischrage;
 	}
 
 	@Override
@@ -49,13 +44,14 @@ public class WeirDischargeExpression extends Expression<Double>
 	{
 		if (timepoint > 0)
 		{
-			double inflow = nextTurbineDischarge.get(timepoint) + nextWeirDischarge.get(timepoint);
+			double outflow = nextTurbineDischarge.get(timepoint) + nextWeirDischarge.get(timepoint);
+			double inflow = 0;
 			
-			double minOption = nextLevelMin + inflow * 900 / nextArea - nextLevel.get(timepoint - 1) - currentTurbineDischarge.get(timepoint) * 900 / nextArea;
-			double maxOption = nextLevelMax + inflow * 900 / nextArea - nextLevel.get(timepoint - 1) - currentTurbineDischarge.get(timepoint) * 900 / nextArea;
+			double minOption = nextLevelMin + outflow * 900 / nextArea - nextLevel.get(timepoint - 1) - inflow * 900 / nextArea;
+			double maxOption = nextLevelMax + outflow * 900 / nextArea - nextLevel.get(timepoint - 1) - inflow * 900 / nextArea;
 			
 			minOption = Math.max(minOption, 0.);
-			maxOption = Math.min(maxOption, weirDischargeMax * 900 / nextArea);
+			maxOption = Math.min(maxOption, turbineDischargeMax * 900 / nextArea);
 			
 			minOption = minOption * nextArea / 900;
 			maxOption = maxOption * nextArea / 900;
