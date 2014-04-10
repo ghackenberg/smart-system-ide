@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Equivalence;
+//import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.annotations.Preference;
 
@@ -155,6 +155,8 @@ public class State implements Comparable<State>
 		{
 			// Check equivalence
 			
+			// TODO Use clusters for comparing equivalence
+			/*
 			for (Equivalence equivalence : root.equivalencesRecursive)
 			{
 				if (!get(equivalence.port, timepoint).equals(other.get(equivalence.port, timepoint)))
@@ -162,6 +164,7 @@ public class State implements Comparable<State>
 					return null; // Not comparable
 				}
 			}
+			*/
 		
 			// Check min dominance
 			

@@ -31,11 +31,11 @@ public class CompositeMonitor extends Monitor
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
 	{
 		for (Monitor monitor : monitors)
 		{
-			monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, equivalenceClasses);
+			monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, branch, norm, cluster, sort, stats, equivalenceClasses);
 		}
 	}
 

@@ -31,7 +31,7 @@ public class ProgressMonitor extends Monitor
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
 	{
 		double progress = (timepoint + 1.) / duration * 100;
 		
