@@ -30,17 +30,18 @@ public class CSVMonitor extends Monitor
 	{
 		start = System.currentTimeMillis();
 		
-		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Min objective;Avg objective;Max objective;Maximum memory (in MB);Total memory (in MB);Free memory (in MB);Time");
+		out.println("Timepoint;Generated states;Valid states;Dominant states;Equivalence classes;Min objective;Avg objective;Max objective;Maximum memory (in MB);Total memory (in MB);Free memory (in MB);Branch time (in ms);Norm time (in ms);Cluster time (in ms);Sort time (in ms);Stats time (in ms);Time (in ms)");
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
 	{
 		NumberFormat format = NumberFormat.getInstance();
 		
 		out.print(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses.size() + ";");
 		out.print(format.format(minObjective) + ";" + format.format(avgObjective) + ";" + format.format(maxObjective) + ";");
 		out.print(maxMemory() + ";" + totalMemory() + ";" + freeMemory() + ";");
+		out.print(branch + ";" + norm + ";" + cluster + ";" + sort + ";" + stats + ";");
 		out.print(System.currentTimeMillis() - start);
 		out.println();
 	}

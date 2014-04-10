@@ -90,6 +90,8 @@ public class Engine<T extends Component>
 			
 			// Start threads
 			
+			long branch_start = System.currentTimeMillis();
+			
 			Queue<Key> queue = new LinkedBlockingQueue<>(previousGroups.keySet());
 			
 			for (int proccessor = 0; proccessor < processors; proccessor++)
@@ -123,11 +125,11 @@ public class Engine<T extends Component>
 				}
 			}
 			
-			// Current groups
-			
-			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();
+			long branch_end = System.currentTimeMillis();
 			
 			// Calculate bounds
+			
+			long norm_start = System.currentTimeMillis();
 			
 			double[] minEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
 			double[] maxEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
@@ -156,7 +158,13 @@ public class Engine<T extends Component>
 				}
 			}
 			
+			long norm_end = System.currentTimeMillis();
+			
 			// Sort groups
+			
+			long cluster_start = System.currentTimeMillis();
+			
+			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();
 			
 			for (State current : currentStates)
 			{
@@ -216,10 +224,14 @@ public class Engine<T extends Component>
 				}
 			}
 			
+			long cluster_end = System.currentTimeMillis();
+			
 			// Prepare next iteration
 			
 			if (currentGroups.size() > 0)
 			{
+				long sort_start = System.currentTimeMillis();
+				
 				previousGroups = new TreeMap<>(currentGroups);
 				
 				// Sort states
@@ -231,7 +243,11 @@ public class Engine<T extends Component>
 					dominantStates += previousGroup.getValue().size();
 				}
 				
+				long sort_end = System.currentTimeMillis();
+				
 				// Calculate stats
+				
+				long stats_start = System.currentTimeMillis();
 				
 				double minObjective = Double.MAX_VALUE;
 				double avgObjective = 0;
@@ -263,9 +279,11 @@ public class Engine<T extends Component>
 					}
 				}
 				
+				long stats_end = System.currentTimeMillis();
+				
 				// Print result
 				
-				monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, previousGroups);
+				monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, branch_end - branch_start, norm_end - norm_start, cluster_end - cluster_start, sort_end - sort_start, stats_end - stats_start, previousGroups);
 			}
 			else
 			{

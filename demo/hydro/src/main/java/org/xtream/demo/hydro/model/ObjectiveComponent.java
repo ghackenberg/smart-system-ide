@@ -5,6 +5,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.annotations.Preference;
 import org.xtream.core.model.enumerations.Direction;
 
 public class ObjectiveComponent extends Component
@@ -20,6 +21,10 @@ public class ObjectiveComponent extends Component
 	// Objectives
 	
 	public Objective objective = new Objective(rewardOutput, Direction.MAX);
+	
+	// Preferences
+	
+	public Preference preference = new Preference(rewardOutput, Direction.MAX);
 	
 	// Charts
 	

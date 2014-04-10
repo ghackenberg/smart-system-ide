@@ -11,7 +11,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 100, 100, 0.25);
+		new Workbench<>(RootComponent.class, 96, 200, 100, 0.0);
 	}
 	
 	// Components
@@ -19,23 +19,30 @@ public class RootComponent extends Component
 	public ControlComponent steuerung = new ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
+	public EquivalenceComponent equivalence = new EquivalenceComponent();
 	
 	// Charts
 
 	public Chart inflowChart = new Chart(context.scenarioInflowOutput);
 	public Chart priceChart = new Chart(context.scenarioPriceOutput);
-	public Chart productionChart = new Chart(context.netProductionOutput);
+	public Chart productionChart = new Chart(context.netProductionOutput, context.scenarioPriceOutput);
 	public Chart rewardChart = new Chart(objective.rewardOutput);
 	
 	// Expressions
 	
 	public Expression<Double> scenarioInflow = new ChannelExpression<>(steuerung.scenarioInflowInput, context.scenarioInflowOutput);
 	
-	public Expression<Double> speicherseeLevel = new ChannelExpression<>(steuerung.speicherseeLevelInput, context.speicherseeLevelOutput);
-	public Expression<Double> volumen1Level = new ChannelExpression<>(steuerung.volumen1LevelInput, context.volumen1LevelOutput);
-	public Expression<Double> volumen2Level = new ChannelExpression<>(steuerung.volumen2LevelInput, context.volumen2LevelOutput);
-	public Expression<Double> volumen3Level = new ChannelExpression<>(steuerung.volumen3LevelInput, context.volumen3LevelOutput);
-	public Expression<Double> volumen4Level = new ChannelExpression<>(steuerung.volumen4LevelInput, context.volumen4LevelOutput);
+	public Expression<Double> speicherseeLevelToControl = new ChannelExpression<>(steuerung.speicherseeLevelInput, context.speicherseeLevelOutput);
+	public Expression<Double> volumen1LevelToControl = new ChannelExpression<>(steuerung.volumen1LevelInput, context.volumen1LevelOutput);
+	public Expression<Double> volumen2LevelToControl = new ChannelExpression<>(steuerung.volumen2LevelInput, context.volumen2LevelOutput);
+	public Expression<Double> volumen3LevelToControl = new ChannelExpression<>(steuerung.volumen3LevelInput, context.volumen3LevelOutput);
+	public Expression<Double> volumen4LevelToControl = new ChannelExpression<>(steuerung.volumen4LevelInput, context.volumen4LevelOutput);
+	
+	public Expression<Double> speicherseeLevelToEquivalence = new ChannelExpression<>(equivalence.speicherseeLevelInput, context.speicherseeLevelOutput);
+	public Expression<Double> volumen1LevelToEquivalence = new ChannelExpression<>(equivalence.volumen1LevelInput, context.volumen1LevelOutput);
+	public Expression<Double> volumen2LevelToEquivalence = new ChannelExpression<>(equivalence.volumen2LevelInput, context.volumen2LevelOutput);
+	public Expression<Double> volumen3LevelToEquivalence = new ChannelExpression<>(equivalence.volumen3LevelInput, context.volumen3LevelOutput);
+	public Expression<Double> volumen4LevelToEquivalence = new ChannelExpression<>(equivalence.volumen4LevelInput, context.volumen4LevelOutput);
 	
 	public Expression<Double> hauptkraftwerkTurbineDischarge = new ChannelExpression<>(context.hauptkraftwerkTurbineDischargeInput, steuerung.hauptkraftwerkTurbineDischargeOutput);
 	public Expression<Double> wehr1TurbineDischarge = new ChannelExpression<>(context.wehr1TurbineDischargeInput, steuerung.wehr1TurbineDischargeOutput);
