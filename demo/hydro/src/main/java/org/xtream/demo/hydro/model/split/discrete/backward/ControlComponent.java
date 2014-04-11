@@ -1,11 +1,11 @@
-package org.xtream.demo.hydro.model.discrete.backward;
+package org.xtream.demo.hydro.model.split.discrete.backward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.demo.hydro.model.Constants;
 
-public class ControlComponent extends org.xtream.demo.hydro.model.discrete.ControlComponent
+public class ControlComponent extends org.xtream.demo.hydro.model.split.discrete.ControlComponent
 {
 	
 	// Ports

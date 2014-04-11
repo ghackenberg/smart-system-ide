@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.discrete.backward;
+package org.xtream.demo.hydro.model.split.discrete.backward;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,12 +7,12 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
 
-public class TurbineDischargeExpression extends NonDeterministicExpression<Double>
+public class WeirDischargeExpression extends NonDeterministicExpression<Double>
 {
 	
 	@Constant
-	protected Set<Double> turbineDischargeOptions;
-	
+	protected Set<Double> weirDischargeOptions;
+
 	@Constant
 	protected Port<Double> nextLevel;
 	@Constant
@@ -26,13 +26,16 @@ public class TurbineDischargeExpression extends NonDeterministicExpression<Doubl
 	protected Port<Double> nextTurbineDischarge;
 	@Constant
 	protected Port<Double> nextWeirDischarge;
+	
+	@Constant
+	protected Port<Double> currentTurbineDischarge;
 
-	public TurbineDischargeExpression(Port<Double> turbineDischarge, Set<Double> turbineDischargeOptions, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge)
+	public WeirDischargeExpression(Port<Double> weirDischarge, Set<Double> weirDischargeOptions, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge, Port<Double> currentTurbineDischrage)
 	{
-		super(turbineDischarge);
+		super(weirDischarge);
 		
-		this.turbineDischargeOptions = turbineDischargeOptions;
-		
+		this.weirDischargeOptions = weirDischargeOptions;
+
 		this.nextLevel = nextLevel;
 		this.nextArea = nextArea;
 		this.nextLevelMin = 0;
@@ -40,6 +43,8 @@ public class TurbineDischargeExpression extends NonDeterministicExpression<Doubl
 		
 		this.nextTurbineDischarge = nextTurbineDischarge;
 		this.nextWeirDischarge = nextWeirDischarge;
+		
+		this.currentTurbineDischarge = currentTurbineDischrage;
 	}
 
 	@Override
@@ -49,9 +54,9 @@ public class TurbineDischargeExpression extends NonDeterministicExpression<Doubl
 		
 		if (timepoint > 0)
 		{
-			double flow = (0 - nextTurbineDischarge.get(timepoint) - nextWeirDischarge.get(timepoint)) * 900 / nextArea;
+			double flow = (currentTurbineDischarge.get(timepoint) - nextTurbineDischarge.get(timepoint) - nextWeirDischarge.get(timepoint)) * 900 / nextArea;
 			
-			for (double option : turbineDischargeOptions)
+			for (double option : weirDischargeOptions)
 			{
 				double level = nextLevel.get(timepoint - 1) + flow + option * 900 / nextArea;
 				

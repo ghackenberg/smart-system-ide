@@ -1,9 +1,9 @@
-package org.xtream.demo.hydro.model.discrete.random;
+package org.xtream.demo.hydro.model.split.discrete.random;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 
-public class ControlComponent extends org.xtream.demo.hydro.model.discrete.ControlComponent
+public class ControlComponent extends org.xtream.demo.hydro.model.split.discrete.ControlComponent
 {
 	
 	// Expressions

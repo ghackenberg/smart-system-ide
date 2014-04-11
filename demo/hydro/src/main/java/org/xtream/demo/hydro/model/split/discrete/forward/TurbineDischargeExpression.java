@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.discrete.forward;
+package org.xtream.demo.hydro.model.split.discrete.forward;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,12 +7,12 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
 
-public class WeirDischargeExpression extends NonDeterministicExpression<Double>
+public class TurbineDischargeExpression extends NonDeterministicExpression<Double>
 {
 	
 	@Constant
-	protected Set<Double> weirDischargeOptions;
-
+	protected Set<Double> turbineDischargeOptions;
+	
 	@Constant
 	protected Port<Double> previousLevel;
 	@Constant
@@ -26,16 +26,13 @@ public class WeirDischargeExpression extends NonDeterministicExpression<Double>
 	protected Port<Double> previousTurbineDischarge;
 	@Constant
 	protected Port<Double> previousWeirDischarge;
-	
-	@Constant
-	protected Port<Double> currentTurbineDischarge;
 
-	public WeirDischargeExpression(Port<Double> weirDischarge, Set<Double> weirDischargeOptions, Port<Double> previousLevel, double previousArea, double previousLevelMax, Port<Double> previousTurbineDischarge, Port<Double> previousWeirDischarge, Port<Double> currentTurbineDischrage)
+	public TurbineDischargeExpression(Port<Double> turbineDischarge, Set<Double> turbineDischargeOptions, Port<Double> previousLevel, double previousArea, double previousLevelMax, Port<Double> previousTurbineDischarge, Port<Double> previousWeirDischarge)
 	{
-		super(weirDischarge);
+		super(turbineDischarge);
 		
-		this.weirDischargeOptions = weirDischargeOptions;
-
+		this.turbineDischargeOptions= turbineDischargeOptions;
+		
 		this.previousLevel = previousLevel;
 		this.previousArea = previousArea;
 		this.previousLevelMin = 0;
@@ -43,8 +40,6 @@ public class WeirDischargeExpression extends NonDeterministicExpression<Double>
 		
 		this.previousTurbineDischarge = previousTurbineDischarge;
 		this.previousWeirDischarge = previousWeirDischarge;
-		
-		this.currentTurbineDischarge = currentTurbineDischrage;
 	}
 
 	@Override
@@ -54,9 +49,9 @@ public class WeirDischargeExpression extends NonDeterministicExpression<Double>
 		
 		if (timepoint > 0)
 		{
-			double flow = (previousTurbineDischarge.get(timepoint) + previousWeirDischarge.get(timepoint) - currentTurbineDischarge.get(timepoint)) * 900 / previousArea;
+			double flow = (previousTurbineDischarge.get(timepoint) + previousWeirDischarge.get(timepoint) - 0) * 900 / previousArea;
 			
-			for (double option : weirDischargeOptions)
+			for (double option : turbineDischargeOptions)
 			{
 				double level = previousLevel.get(timepoint - 1) + flow - option * 900 / previousArea;
 				

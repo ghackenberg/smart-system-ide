@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.discrete;
+package org.xtream.demo.hydro.model.split.discrete;
 
 import java.util.Set;
 
