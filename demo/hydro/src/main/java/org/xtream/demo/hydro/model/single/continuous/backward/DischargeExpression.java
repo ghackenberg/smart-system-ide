@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.split.continuous.backward;
+package org.xtream.demo.hydro.model.single.continuous.backward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;

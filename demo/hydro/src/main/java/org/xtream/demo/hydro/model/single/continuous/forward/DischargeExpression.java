@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.split.continuous.forward;
+package org.xtream.demo.hydro.model.single.continuous.forward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;

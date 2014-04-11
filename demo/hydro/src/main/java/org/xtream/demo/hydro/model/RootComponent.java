@@ -16,7 +16,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public ControlComponent steuerung = new org.xtream.demo.hydro.model.discrete.backward.ControlComponent();
+	public ControlComponent steuerung = new org.xtream.demo.hydro.model.single.discrete.backward.ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
 	public EquivalenceComponent equivalence = new EquivalenceComponent();
@@ -31,6 +31,7 @@ public class RootComponent extends Component
 	// Expressions
 	
 	public Expression<Double> scenarioInflow = new ChannelExpression<>(steuerung.scenarioInflowInput, context.scenarioInflowOutput);
+	public Expression<Double> scenarioPrice= new ChannelExpression<>(steuerung.scenarioPriceInput, context.scenarioPriceOutput);
 	
 	public Expression<Double> speicherseeLevelToControl = new ChannelExpression<>(steuerung.speicherseeLevelInput, context.speicherseeLevelOutput);
 	public Expression<Double> volumen1LevelToControl = new ChannelExpression<>(steuerung.volumen1LevelInput, context.volumen1LevelOutput);

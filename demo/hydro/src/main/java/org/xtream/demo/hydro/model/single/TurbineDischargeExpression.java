@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.split;
+package org.xtream.demo.hydro.model.single;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -37,7 +37,7 @@ public class TurbineDischargeExpression extends Expression<Double>
 		}
 		else
 		{
-			return dischrage.get(timepoint) - weirDischargeMax;
+			return Math.max(dischrage.get(timepoint) - weirDischargeMax, 0);
 		}
 	}
 

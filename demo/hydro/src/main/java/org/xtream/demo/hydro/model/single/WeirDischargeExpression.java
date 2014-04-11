@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.split;
+package org.xtream.demo.hydro.model.single;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -33,7 +33,7 @@ public class WeirDischargeExpression extends Expression<Double>
 	{
 		if (price.get(timepoint) >= 0)
 		{
-			return discharge.get(timepoint) - turbineDischargeMax;
+			return Math.max(discharge.get(timepoint) - turbineDischargeMax, 0);
 		}
 		else
 		{

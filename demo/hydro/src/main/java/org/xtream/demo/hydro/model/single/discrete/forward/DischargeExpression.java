@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.split.discrete.forward;
+package org.xtream.demo.hydro.model.single.discrete.forward;
 
 import java.util.HashSet;
 import java.util.Set;

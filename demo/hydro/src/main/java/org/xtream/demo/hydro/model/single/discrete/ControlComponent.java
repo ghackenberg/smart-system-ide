@@ -1,11 +1,11 @@
-package org.xtream.demo.hydro.model.split.discrete;
+package org.xtream.demo.hydro.model.single.discrete;
 
 import java.util.Set;
 
 import org.xtream.core.model.helpers.SetHelper;
 import org.xtream.demo.hydro.model.Constants;
 
-public class ControlComponent extends org.xtream.demo.hydro.model.split.ControlComponent
+public class ControlComponent extends org.xtream.demo.hydro.model.single.ControlComponent
 {
 	
 	// Parameters

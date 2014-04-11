@@ -9,6 +9,7 @@ public abstract class ControlComponent extends Component
 	// Ports
 	
 	public Port<Double> scenarioInflowInput = new Port<>();
+	public Port<Double> scenarioPriceInput = new Port<>();
 	
 	public Port<Double> speicherseeLevelInput = new Port<>();
 	public Port<Double> volumen1LevelInput = new Port<>();
