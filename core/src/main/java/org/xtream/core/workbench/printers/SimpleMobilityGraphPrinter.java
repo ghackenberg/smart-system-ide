@@ -46,8 +46,7 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 	private JTabbedPane tabs;
 	private Graph graphRaw;
 	
-	@SuppressWarnings("rawtypes")
-	Map<Port,Float> map = new HashMap<Port,Float>();
+	Map<Port<?>,Float> map = new HashMap<Port<?>,Float>();
 	
 	public SimpleMobilityGraphPrinter(JTabbedPane tabs, Graph graph)
 	{
@@ -99,7 +98,6 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 		
 		final JPanel graph = new JPanel();
 		graph.setLayout(new BorderLayout());
-		
 		
 		// Top pane
 		
@@ -246,7 +244,7 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 		dot.append("\tfontname = \"Calibri\";\n");
 		dot.append("\tfontsize = 12;\n");
 		dot.append("\tnode [fontname = \"Calibri\", fontsize = 10];\n");
-		dot.append("\tedge [fontname = \"Calibri\", fontsize = 8];\n");
+		dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
 		
 		if (graphRaw != null)
 		{	
@@ -254,8 +252,15 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 			
 			for (Edge e : graphRaw.getEdges())
 			{
-				double length = 1.0;
-				dot.append("\t\"" + e.getSource() + "\" -> \"" + e.getTarget() + "\" [len = \"" + length + "\" ,color = grey, style = dashed, arrowhead = vee, penwidth = " + e.getWeight() + "];\n");
+				Node source = graphRaw.getNode(e.getSource());
+				Node target = graphRaw.getNode(e.getTarget());
+				
+				double length = graphRaw.getEdgeDistance(source, target);
+				
+				if (!source.equals(target))
+				{
+					dot.append("\t\"" + e.getSource() + "\" -> \"" + e.getTarget() + "\" [len = \"" + length + "\", color = grey, style = dashed, arrowhead = vee, penwidth = " + e.getWeight() + "];\n");
+				}
 			}
 			
 			double nodeMaxWeight = 0.0;
@@ -286,53 +291,55 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 
 			for (Component component : root.components) 	
 			{
-			
-			Set<String> set = new HashSet<String>();
-			
-			for (Port<?> port : component.ports)
-			{
+				Set<String> set = new HashSet<String>();
 				
-				//if (port.name.equals("positionOutput"))
-				if (port.name.equals("positionOutput") && !(set.contains(component.name)))
-				{	
-					set.add(component.name);
-					
-					if (!map.containsKey(port))
-					{
-						map.put(port, (float) Math.random());
-					}
-					
-					float saturation = 1.f;
-					
-					double width = 0.1;
-					
-					Edge previous = (Edge) port.get(0);
-					
-					int step = 0;
-					
-					for (int i = 0; i < selectedTime; i++)
+				for (Port<?> port : component.ports)
+				{
+					if (port.name.equals("positionOutput") && !(set.contains(component.name)))
 					{	
-						Edge current = (Edge) port.get(i);
+						set.add(component.name);
 						
-						if (previous != current || ((i) == (selectedTime-1)))
+						if (!map.containsKey(port))
 						{
-							float brightness = ((i-step) + 1.f + ((float) step-1.f) / 2.f)/(selectedTime);
-							Color colorPartitioning = new Color(Color.HSBtoRGB(map.get(port), saturation, brightness));
-							String color = "#" + Integer.toHexString(colorPartitioning.getRed()) + Integer.toHexString(colorPartitioning.getGreen()) + Integer.toHexString(colorPartitioning.getBlue());
-							
-							dot.append("\t\"" + previous.getSource() + "\" -> \"" + previous.getTarget() + "\" [label = \"" + "(" + (i-step) + "-" + (i-1) + ")" + "\", color = \"" + color + "\", fontcolor = \"" + color + "\", penwidth = " + width + "];\n");
-							
-							width = 0.1;
-							step = 0;
+							map.put(port, (float) Math.random());
 						}
 						
-						previous = current;
-						width+= 0.1;
-						step++;
+						double width = 0.1;
+						
+						Edge previous = (Edge) port.get(0);
+						
+						int step = 0;
+						
+						for (int i = 0; i < selectedTime; i++)
+						{	
+							Edge current = (Edge) port.get(i);
+							
+							if (previous != current || ((i) == (selectedTime-1)))
+							{	
+								width+= 0.1;
+								step++;
+								
+								Color colorPartitioning = new Color(Color.HSBtoRGB(map.get(port), 1.f, 0.5f));
+								String color = "#" + Integer.toHexString(colorPartitioning.getRed()) + Integer.toHexString(colorPartitioning.getGreen()) + Integer.toHexString(colorPartitioning.getBlue());
+								
+								if (!previous.getSource().equals(previous.getTarget())) 
+								{
+									dot.append("\t\"" + previous.getSource() + "\" -> \"" + previous.getTarget() + "\" [label = \"" + "(" + ((i-step)>0?(i-step):0) + "-" + (i-1) + ")" + "\", color = \"" + color + "\", fontcolor = \"" + color + "\", penwidth = " + width + "];\n");
+								}
+								width = 0.1;
+								step = 0;
+								previous = current;
+							}
+							else 
+							{
+								width+= 0.1;
+								step++;
+							}
+						}
 					}
 				}
 			}
-		}
+			
 			dot.append("}\n");
 		}
 		
@@ -340,7 +347,7 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 		
 		dot.close();
 	
-		Runtime.getRuntime().exec("dot -Ksfdp -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
+		Runtime.getRuntime().exec("dot -Kneato -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
 		
 		BufferedImage image = ImageIO.read(new File("MobilityGraph.png"));
 		
