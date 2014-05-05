@@ -27,23 +27,20 @@
 	<Node name="Node20" weight="0.2" xpos="50.0" ypos="60.0"/>
 
 	<!-- Stations Start Positions/Destinations-->
-	<Edge name="HomeAHomeA" source="HomeA" target="HomeA" weight="1.0" tag="service"/>
-	<Edge name="HomeBHomeB" source="HomeB" target="HomeB" weight="1.0" tag="service"/>
-	<Edge name="HomeCHomeC" source="HomeC" target="HomeC" weight="1.0" tag="service"/>
+	<Edge name="HomeAHomeA" source="HomeA" target="HomeA" weight="10.0" tag="service"/>
+	<Edge name="HomeBHomeB" source="HomeB" target="HomeB" weight="10.0" tag="service"/>
+	<Edge name="HomeCHomeC" source="HomeC" target="HomeC" weight="10.0" tag="service"/>
 	
-	<Edge name="WorkAWorkA" source="WorkA" target="WorkA" weight="1.0" tag="service"/>
-	<Edge name="WorkBWorkB" source="WorkB" target="WorkB" weight="1.0" tag="service"/>
-	<Edge name="WorkCWorkC" source="WorkC" target="WorkC" weight="1.0" tag="service"/>
+	<Edge name="WorkAWorkA" source="WorkA" target="WorkA" weight="10.0" tag="service"/>
+	<Edge name="WorkBWorkB" source="WorkB" target="WorkB" weight="10.0" tag="service"/>
+	<Edge name="WorkCWorkC" source="WorkC" target="WorkC" weight="10.0" tag="service"/>
 
 	<!-- Streets -->
 	<Edge name="HomeANode27" source="HomeA" target="Node27" weight="2.0" tag="residential"/>
-	<Edge name="Node27HomeA" source="Node27" target="HomeA" weight="2.0" tag="residential"/>
 	
 	<Edge name="HomeBNode10" source="HomeB" target="Node10" weight="2.0" tag="residential"/>
-	<Edge name="Node10HomeB" source="Node10" target="HomeB" weight="2.0" tag="residential"/>
 
 	<Edge name="HomeCNode14" source="HomeC" target="Node14" weight="2.0" tag="residential"/>
-	<Edge name="Node14HomeC" source="Node14" target="HomeC" weight="2.0" tag="residential"/>
 	
 	<Edge name="Node27Node28" source="Node27" target="Node28" weight="1.0" tag="residential"/>
 	<Edge name="Node28Node14" source="Node28" target="Node14" weight="2.0" tag="residential"/>
@@ -64,10 +61,8 @@
 	<Edge name="Node5Node20" source="Node5" target="Node20" weight="1.0" tag="residential"/>
 	<Edge name="Node20Node5" source="Node20" target="Node5" weight="1.0" tag="residential"/>	
 	<Edge name="Node20WorkA" source="Node20" target="WorkA" weight="1.0" tag="residential"/>
-	<Edge name="WorkANode20" source="WorkA" target="Node20" weight="1.0" tag="residential"/>
 	<Edge name="Node20WorkB" source="Node20" target="WorkB" weight="1.0" tag="residential"/>
-	<Edge name="WorkBNode20" source="WorkB" target="Node20" weight="1.0" tag="residential"/>
 	<Edge name="Node20WorkC" source="Node20" target="WorkC" weight="1.0" tag="residential"/>
-	<Edge name="WorkCNode20" source="WorkC" target="Node20" weight="1.0" tag="residential"/>
+
 
 </Graph>

@@ -1,0 +1,56 @@
+<Graph name="Graph1">
+
+	<!-- Nodes -->
+
+	<Node name="Home" weight="1.0" xpos="0.0" ypos="50.0"/>
+	
+	<Node name="NodeA1" weight="1.0" xpos="10.0" ypos="55.0"/>
+	<Node name="NodeA2" weight="1.0" xpos="20.0" ypos="60.0"/>
+	<Node name="NodeA3" weight="1.0" xpos="30.0" ypos="65.0"/>
+	<Node name="NodeA4" weight="1.0" xpos="40.0" ypos="70.0"/>
+	<Node name="NodeA5" weight="1.0" xpos="50.0" ypos="75.0"/>
+	<Node name="NodeA6" weight="1.0" xpos="60.0" ypos="70.0"/>
+	<Node name="NodeA7" weight="1.0" xpos="70.0" ypos="65.0"/>
+	<Node name="NodeA8" weight="1.0" xpos="80.0" ypos="60.0"/>
+	<Node name="NodeA9" weight="1.0" xpos="90.0" ypos="55.0"/>
+	
+	<Node name="NodeB1" weight="1.2" xpos="10.0" ypos="50.0"/>
+	<Node name="NodeB2" weight="1.4" xpos="20.0" ypos="50.0"/>
+	<Node name="NodeB3" weight="1.6" xpos="30.0" ypos="50.0"/>
+	<Node name="NodeB4" weight="1.8" xpos="40.0" ypos="50.0"/>
+	<Node name="NodeB5" weight="2.0" xpos="50.0" ypos="50.0"/>
+	<Node name="NodeB6" weight="1.8" xpos="60.0" ypos="50.0"/>
+	<Node name="NodeB7" weight="1.6" xpos="70.0" ypos="50.0"/>
+	<Node name="NodeB8" weight="1.4" xpos="80.0" ypos="50.0"/>
+	<Node name="NodeB9" weight="1.2" xpos="90.0" ypos="50.0"/>
+
+	<Node name="Work" weight="1.0" xpos="100.0" ypos="50.0"/>
+	
+	<!-- Stations Start Positions/Destinations-->
+	<Edge name="HomeHome" source="Home" target="Home" weight="20.0" tag="service"/>
+	<Edge name="WorkWork" source="Work" target="Work" weight="20.0" tag="service"/>
+
+	<!-- Streets -->
+	<Edge name="HomeNodeA1" source="Home" target="NodeA1" weight="1.0" tag="residential"/>
+	<Edge name="NodeA1NodeA2" source="NodeA1" target="NodeA2" weight="1.0" tag="residential"/>
+	<Edge name="NodeA2NodeA3" source="NodeA2" target="NodeA3" weight="1.0" tag="residential"/>
+	<Edge name="NodeA3NodeA4" source="NodeA3" target="NodeA4" weight="1.0" tag="residential"/>
+	<Edge name="NodeA4NodeA5" source="NodeA4" target="NodeA5" weight="1.0" tag="residential"/>
+	<Edge name="NodeA5NodeA6" source="NodeA5" target="NodeA6" weight="1.0" tag="residential"/>
+	<Edge name="NodeA6NodeA7" source="NodeA6" target="NodeA7" weight="1.0" tag="residential"/>
+	<Edge name="NodeA7NodeA8" source="NodeA7" target="NodeA8" weight="1.0" tag="residential"/>
+	<Edge name="NodeA8NodeA9" source="NodeA8" target="NodeA9" weight="1.0" tag="residential"/>
+	<Edge name="NodeA9Work" source="NodeA9" target="Work" weight="1.0" tag="residential"/>
+	
+	<Edge name="HomeNodeB1" source="Home" target="NodeB1" weight="1.0" tag="residential"/>
+	<Edge name="NodeB1NodeB2" source="NodeB1" target="NodeB2" weight="1.0" tag="residential"/>
+	<Edge name="NodeB2NodeB3" source="NodeB2" target="NodeB3" weight="1.0" tag="residential"/>
+	<Edge name="NodeB3NodeB4" source="NodeB3" target="NodeB4" weight="1.0" tag="residential"/>
+	<Edge name="NodeB4NodeB5" source="NodeB4" target="NodeB5" weight="1.0" tag="residential"/>
+	<Edge name="NodeB5NodeB6" source="NodeB5" target="NodeB6" weight="1.0" tag="residential"/>
+	<Edge name="NodeB6NodeB7" source="NodeB6" target="NodeB7" weight="1.0" tag="residential"/>
+	<Edge name="NodeB7NodeB8" source="NodeB7" target="NodeB8" weight="1.0" tag="residential"/>
+	<Edge name="NodeB8NodeB9" source="NodeB8" target="NodeB9" weight="1.0" tag="residential"/>
+	<Edge name="NodeB9Work" source="NodeB9" target="Work" weight="1.0" tag="residential"/>
+
+</Graph>

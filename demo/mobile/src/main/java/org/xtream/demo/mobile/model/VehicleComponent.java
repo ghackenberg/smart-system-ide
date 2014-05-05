@@ -3,11 +3,12 @@ package org.xtream.demo.mobile.model;
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Expression;
 import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.demo.mobile.model.commons.EnergyModuleComponent;
+import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
 import org.xtream.demo.mobile.model.vehicles.CostsComponent;
 import org.xtream.demo.mobile.model.vehicles.LogicsComponent;
@@ -15,12 +16,12 @@ import org.xtream.demo.mobile.model.vehicles.ModulesComponent;
 import org.xtream.demo.mobile.model.vehicles.PhysicsComponent;
 import org.xtream.demo.mobile.model.vehicles.QualitiesComponent;
 
-public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
+public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsComponent, LogicsComponent, ConstraintsComponent, QualitiesComponent, CostsComponent, ModulesComponent>
 {
 
-	public VehicleComponent(Graph graph, String startPosition, String destinationPosition, Double positionWeight, Double timeWeight, Double powerWeight, Double chargeStateWeight)
+	public VehicleComponent(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight)
 	{
-		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(graph), new CostsComponent(positionWeight, timeWeight, powerWeight, chargeStateWeight), new ModulesComponent());
+		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(graph), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
 		
 		// Previews
 		
@@ -33,6 +34,12 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public Port<Double> positionTraversedLengthOutput = new Port<>();
 	public Port<Edge> positionOutput = new Port<>();
 	public Port<Double> vehicleLengthOutput = new Port<>();
+	public Port<Double> costOutput = new Port<>();
+	public Port<Double> speedAggregateOutput = new Port<>();
+	public Port<Double> powerAggregateOutput = new Port<>();
+	public Port<Double> timeCostOutput = new Port<>();
+	public Port<Double> powerCostOutput = new Port<>();
+	
 	
 	// Equivalences
 	
@@ -44,8 +51,11 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	
 	public ChannelExpression<Double> speed = new ChannelExpression<>(speedOutput, logics.speedOutput);
 	public ChannelExpression<Double> positionTraversedLength = new ChannelExpression<>(positionTraversedLengthOutput, physics.positionTraversedLengthOutput);
-	public ChannelExpression<Edge> position3 = new ChannelExpression<>(positionOutput, logics.positionOutput);
+	public ChannelExpression<Edge> position = new ChannelExpression<>(positionOutput, logics.positionOutput);
 	public ChannelExpression<Double> vehicleLength = new ChannelExpression<>(vehicleLengthOutput, physics.vehicleLengthOutput);
+	
+	public ChannelExpression<Double> timeCosts = new ChannelExpression<>(timeCostOutput, qualities.timeCostsOutput);
+	public ChannelExpression<Double> powerCosts = new ChannelExpression<>(powerCostOutput, qualities.powerCostsOutput);
 	
 	// Channels physics -> logics
 	
@@ -54,34 +64,23 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public ChannelExpression<Edge> positionOutgoingEdges = new ChannelExpression<>(logics.positionOutgoingEdgesInput, physics.positionOutgoingEdgesOutput);
 	public ChannelExpression<Double> positionTraversedLength2 = new ChannelExpression<>(logics.positionTraversedLengthInput, physics.positionTraversedLengthOutput);
 	public ChannelExpression<Double> positionEdgeLength = new ChannelExpression<>(logics.positionEdgeLengthInput, physics.positionEdgeLengthOutput);
-	
-	public ChannelExpression<Boolean> drivingIndicator = new ChannelExpression<>(logics.drivingIndicatorInput, physics.drivingIndicatorOutput);
+	public ChannelExpression<Boolean> drivingIndicator2 = new ChannelExpression<>(logics.drivingIndicatorInput, physics.drivingIndicatorOutput);
 	
 	// Channels logics -> physics
 	
-	public ChannelExpression<Edge> position = new ChannelExpression<>(physics.positionInput, logics.positionOutput);
+	public ChannelExpression<Edge> position2 = new ChannelExpression<>(physics.positionInput, logics.positionOutput);
 	public ChannelExpression<Double> speedInternal = new ChannelExpression<>(physics.speedInput, logics.speedOutput);
-	
-	// Channels logics -> qualities
-	
-	public ChannelExpression<Edge> position2 = new ChannelExpression<>(qualities.positionInput, logics.positionOutput);
-	public ChannelExpression<Edge> positionTarget = new ChannelExpression<>(qualities.positionTargetInput, logics.positionTargetOutput);
 	
 	// Channels qualities -> costs
 	
-	public ChannelExpression<Double> positionCosts = new ChannelExpression<>(costs.positionCostsInput, qualities.positionCostsOutput);
-	public ChannelExpression<Double> timeCosts = new ChannelExpression<>(costs.timeCostsInput, qualities.timeCostsOutput);
-	public ChannelExpression<Double> powerCosts = new ChannelExpression<>(costs.powerCostsInput, qualities.powerCostsOutput);
-	public ChannelExpression<Double> chargeStateCosts = new ChannelExpression<>(costs.chargeStateCostsInput, qualities.chargeStateCostsOutput);
+	public ChannelExpression<Double> timeCosts2 = new ChannelExpression<>(costs.timeCostsInput, qualities.timeCostsOutput);
+	public ChannelExpression<Double> powerCosts2 = new ChannelExpression<>(costs.powerCostsInput, qualities.powerCostsOutput);
 	
 	// Channels: physics -> qualities
 	
 	public ChannelExpression<Double> power = new ChannelExpression<>(qualities.powerInput, physics.powerOutput);
-	public ChannelExpression<Double> chargeState = new ChannelExpression<>(qualities.chargeStateInput, physics.chargeStateOutput);
-	public ChannelExpression<Double> maximumChargeState2 = new ChannelExpression<>(qualities.maximumChargeStateInput, physics.maximumChargeStateOutput);
 	public ChannelExpression<Boolean> targetReached = new ChannelExpression<>(qualities.targetReachedInput, physics.targetReachedOutput);
-	public ChannelExpression<Boolean> drivingIndicator2 = new ChannelExpression<>(qualities.drivingIndicatorInput, physics.drivingIndicatorOutput);
-	public ChannelExpression<Edge> destinationPosition2 = new ChannelExpression<>(qualities.destinationPositionInput, physics.destinationPositionOutput);
+	public ChannelExpression<Boolean> drivingIndicator = new ChannelExpression<>(qualities.drivingIndicatorInput, physics.drivingIndicatorOutput);
 
 	// Channels physics -> constraints
 	
@@ -89,11 +88,47 @@ public class VehicleComponent extends EnergyModuleComponent<PhysicsComponent, Lo
 	public ChannelExpression<Double> minimumChargeState = new ChannelExpression<>(constraints.minimumChargeStateInput, physics.minimumChargeStateOutput);
 	public ChannelExpression<Double> chargeState2 = new ChannelExpression<>(constraints.chargeStateInput, physics.chargeStateOutput);
 	
+	
+	public Expression<Double> costExpression = new Expression<Double>(costOutput)
+	{
+		public double previous = 0.;
+		
+		@Override public Double evaluate(int timepoint)
+		{
+			return previous += costs.costsOutput.get(timepoint);
+		}
+	};
+	
+	public Expression<Double> speedAggregateExpression = new Expression<Double>(speedAggregateOutput)
+	{
+		public double previous = 0.;
+		
+		@Override public Double evaluate(int timepoint)
+		{
+			return previous += logics.speedOutput.get(timepoint);
+		}
+	};
+	
+	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
+	{
+		public double previous = 0.;
+		
+		@Override public Double evaluate(int timepoint)
+		{
+			return previous += physics.powerOutput.get(timepoint);
+		}
+	};
+	
 	// Charts
 
 	public Chart chargeStateChart = new Chart(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
 	public Chart powerChart = new Chart(physics.powerOutput);
+	public Chart powerAggregateChart = new Chart(powerAggregateOutput);
 	public Chart speedChart = new Chart(logics.speedOutput);
+	public Chart speedAbsoluteChart = new Chart(logics.speedAbsoluteOutput);
+	public Chart AggregateChart = new Chart(speedAggregateOutput, powerAggregateOutput);
+	public Chart costChart = new Chart(costs.costsOutput);
+	public Chart costSumChart = new Chart(costOutput);
 	
 	// Histograms
 

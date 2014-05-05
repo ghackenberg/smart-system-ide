@@ -333,7 +333,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> vehicleLengthExpression = new ConstantExpression<Double>(vehicleLengthOutput, 4.);
+	public Expression<Double> vehicleLengthExpression = new ConstantExpression<Double>(vehicleLengthOutput, 2.);
 	
 	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 2.);
 	
@@ -347,7 +347,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 				double milage = 0.2353;
 				double slope = (((Math.abs(Math.pow(speedInput.get(timepoint), 2)))+(positionAltitudeDifferenceOutput.get(timepoint)*speedInput.get(timepoint)))/2);
 				
-				return ((milage*(1.+(slope/(slope*2))))*speedInput.get(timepoint));
+				return ((milage*(1.+(slope/(slope*1.1))))*speedInput.get(timepoint));
 			}
 			else
 			{
@@ -395,7 +395,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> chargeRateExpression = new ConstantExpression<Double>(chargeRateOutput, 1.13);	
+	public Expression<Double> chargeRateExpression = new ConstantExpression<Double>(chargeRateOutput, 5.67);	
 	public Expression<Double> minimumChargeStateExpression = new ConstantExpression<Double>(minimumChargeStateOutput, 0.);
 	public Expression<Double> maximumChargeStateExpression = new ConstantExpression<Double>(maximumChargeStateOutput, 85.0);
 	

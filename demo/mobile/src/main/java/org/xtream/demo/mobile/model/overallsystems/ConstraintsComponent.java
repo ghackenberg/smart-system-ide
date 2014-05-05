@@ -22,11 +22,11 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 		
 		for (int i = 0; i < size; i++)
 		{
-			/*
+			
 			positionTraversedLengthInputs[i] = new Port<>();
 			positionInputs[i] = new Port<>();
 			vehicleLengthInputs[i] = new Port<>();
-			*/
+			
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	{	
 		@Override public Boolean evaluate(int timepoint)
 		{	
-			/*
+			
 			for (int i = 0; i < positionInputs.length; i++)
 			{
 				// Vehicle 1 Position
@@ -69,23 +69,24 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 					
 					if (!(position.equals(position2)) && position.get(timepoint).equals(position2.get(timepoint)))
 					{
-													
-						if (Math.abs(positionTraversedLengthInputs[i].get(timepoint)-(positionTraversedLengthInputs[j].get(timepoint))) < (vehicleLengthInputs[i].get(timepoint)+vehicleLengthInputs[j].get(timepoint))) 
-						{				
-							maximumAllowedVehicles--;
-						}	
 						
-						if (maximumAllowedVehicles < 0)
+						if (maximumAllowedVehicles <= 0)
 						{
 							return false;
 						}
+						
+						if (Math.abs(positionTraversedLengthInputs[i].get(timepoint)-(positionTraversedLengthInputs[j].get(timepoint))) < (vehicleLengthInputs[i].get(timepoint)+vehicleLengthInputs[j].get(timepoint))) 
+						{				
+							maximumAllowedVehicles++;
+						}	
+					
 					}
 	
 				}
 				
 			}
 			
-			*/
+			
 			return true;
 		}
 	};
