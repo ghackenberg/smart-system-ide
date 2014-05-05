@@ -399,6 +399,25 @@ public class Graph
 		throw new IllegalStateException("MaximumPathCost not found: (" + source + "," + target + ")");
 	}
 	
+	public double getEdgeDistance(Node source, Node target) 
+	{
+		if (target.getWeight() == null || target.getWeight() == "0" || target.getWeight() == null || target.getWeight() == "0") 
+		{
+			double differenceX = Math.pow(Double.parseDouble(target.getXpos())-Double.parseDouble(source.getXpos()), 2);
+			double differenceY = Math.pow(Double.parseDouble(target.getYpos())-Double.parseDouble(source.getYpos()), 2);
+			
+			return Math.sqrt(differenceX+differenceY);
+		}
+		else 
+		{
+			double differenceX = Math.pow(Double.parseDouble(target.getXpos())-Double.parseDouble(source.getXpos()), 2);
+			double differenceY = Math.pow(Double.parseDouble(target.getYpos())-Double.parseDouble(source.getYpos()), 2);
+			double differenceZ = Math.pow(Double.parseDouble(target.getWeight())-Double.parseDouble(source.getWeight()), 2);
+			
+			return Math.sqrt(differenceX+differenceY+differenceZ);
+		}
+	}	
+	
 	public double getEdgeCapacity(Node source, Node target) 
 	{
 		return graph.getAllEdges(source, target).size();
