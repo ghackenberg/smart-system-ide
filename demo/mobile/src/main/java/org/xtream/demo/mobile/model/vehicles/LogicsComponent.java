@@ -73,9 +73,11 @@ public class LogicsComponent extends AbstractLogicsComponent
 		{
 			if (drivingIndicatorInput.get(timepoint))
 			{
+				// TODO [Dominik] Spiking, check if vehicle will cross edge to target in next time step
 				if (!(positionTargetOutput.get(timepoint-1).equals(startPositionInput.get(timepoint))) && !(positionOutput.get(timepoint-1).equals(destinationPositionInput.get(timepoint))))
 				{
-					return (Math.random()*3.33);
+					//return (Math.random()*13.33);
+					return (Math.random()*13.33);
 				}
 				else 
 				{
@@ -99,7 +101,7 @@ public class LogicsComponent extends AbstractLogicsComponent
 			{
 				if (!(positionTargetOutput.get(timepoint-1).equals(startPositionInput.get(timepoint))) && !(positionOutput.get(timepoint-1).equals(destinationPositionInput.get(timepoint))))
 				{
-					return (speedOutput.get(timepoint)*60);
+					return (speedOutput.get(timepoint)*15);
 				}
 				else 
 				{
