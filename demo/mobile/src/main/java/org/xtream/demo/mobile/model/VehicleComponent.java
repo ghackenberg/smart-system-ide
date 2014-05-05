@@ -6,7 +6,6 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
@@ -39,11 +38,6 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	public Port<Double> powerAggregateOutput = new Port<>();
 	public Port<Double> timeCostOutput = new Port<>();
 	public Port<Double> powerCostOutput = new Port<>();
-	
-	
-	// Equivalences
-	
-	public Equivalence speedEquivalence = new Equivalence(speedOutput);
 	
 	// Channels
 	

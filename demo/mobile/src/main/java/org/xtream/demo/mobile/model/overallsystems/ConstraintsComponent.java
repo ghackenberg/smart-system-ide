@@ -77,7 +77,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 						
 						if (Math.abs(positionTraversedLengthInputs[i].get(timepoint)-(positionTraversedLengthInputs[j].get(timepoint))) < (vehicleLengthInputs[i].get(timepoint)+vehicleLengthInputs[j].get(timepoint))) 
 						{				
-							maximumAllowedVehicles++;
+							maximumAllowedVehicles--;
 						}	
 					
 					}

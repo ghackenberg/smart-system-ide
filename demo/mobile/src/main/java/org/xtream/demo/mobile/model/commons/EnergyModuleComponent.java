@@ -2,7 +2,6 @@ package org.xtream.demo.mobile.model.commons;
 
 import java.net.URL;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
 import org.xtream.core.model.components.AbstractCostsComponent;
