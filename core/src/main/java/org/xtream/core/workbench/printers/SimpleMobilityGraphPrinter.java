@@ -45,8 +45,9 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 	
 	private JTabbedPane tabs;
 	private Graph graphRaw;
+	private Set<Float> colorValues;
 	
-	Map<Port<?>,Float> map = new HashMap<Port<?>,Float>();
+	private Map<Port<?>,Float> map = new HashMap<Port<?>,Float>();
 	
 	public SimpleMobilityGraphPrinter(JTabbedPane tabs, Graph graph)
 	{
@@ -234,13 +235,16 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 	
 	public void render(JTree tree, int selectedTime, JPanel graph) throws InterruptedException, IOException 
 	{	
+		colorValues = new HashSet<Float>();
 		AbstractComponentTreeNode node = (AbstractComponentTreeNode) tree.getLastSelectedPathComponent();
 		Component root = node.component;
 		
 		PrintStream dot = new PrintStream(new File("MobilityGraph.dot"));
 		
 		dot.append("digraph G {\n");
+		dot.append("\tnormalize = 17.5;\n");
 		dot.append("\toverlap = false;\n");
+		dot.append("\trankdir = LR;\n");
 		dot.append("\tfontname = \"Calibri\";\n");
 		dot.append("\tfontsize = 12;\n");
 		dot.append("\tnode [fontname = \"Calibri\", fontsize = 10];\n");
@@ -259,7 +263,7 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 				
 				if (!source.equals(target))
 				{
-					dot.append("\t\"" + e.getSource() + "\" -> \"" + e.getTarget() + "\" [len = \"" + length + "\", color = grey, style = dashed, arrowhead = vee, penwidth = " + e.getWeight() + "];\n");
+					dot.append("\t\"" + e.getSource() + "\" -> \"" + e.getTarget() + "\" [len = \"" + length + "\", color = grey, style = invis, arrowhead = vee, penwidth = " + e.getWeight() + "];\n");
 				}
 			}
 			
@@ -277,9 +281,17 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 			{
 				int r, g, b;
 				r = g = b = (int) (127+(Double.parseDouble(v.getWeight())/nodeMaxWeight)*128);
-				String color = "#" + Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
+				//String color = "#" + Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
+				String color = String.format("#%02x%02x%02x", r, g, b);
 				
-				dot.append("\t\"" + v.getName() + "\" [label = \"" + v.getName() + "\", style = filled, color = black, fillcolor=\"" + color +"\"];\n");
+				if (v.getName().equals("Origin") || v.getName().equals("Destination"))
+				{
+					dot.append("\t\"" + v.getName() + "\" [label = \"" + v.getName() + "\", shape = ellipse, color = black, fillcolor=\"" + color +"\"];\n");
+				}
+				else 
+				{
+					dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = point, pendwidth = 0.25, color = black, fillcolor=\"" + color +"\"];\n");
+				}
 				// dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = point, color=\"" + color +"\", pos=\""+ v.getXpos() + "," + v.getYpos() + "" + "\"];\n");
 			}
 			
@@ -301,13 +313,14 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 						
 						if (!map.containsKey(port))
 						{
-							map.put(port, (float) Math.random());
+							map.put(port, generateColor(0.07f));
 						}
 						
 						double width = 0.1;
 						
 						Edge previous = (Edge) port.get(0);
 						
+						@SuppressWarnings("unused")
 						int step = 0;
 						
 						for (int i = 0; i < selectedTime; i++)
@@ -319,12 +332,13 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 								width+= 0.1;
 								step++;
 								
-								Color colorPartitioning = new Color(Color.HSBtoRGB(map.get(port), 1.f, 0.5f));
-								String color = "#" + Integer.toHexString(colorPartitioning.getRed()) + Integer.toHexString(colorPartitioning.getGreen()) + Integer.toHexString(colorPartitioning.getBlue());
+								Color colorPartitioning = new Color(Color.HSBtoRGB(map.get(port), 1.f, 0.75f));
+								String color = String.format("#%02x%02x%02x", colorPartitioning.getRed(), colorPartitioning.getGreen(), colorPartitioning.getBlue());
 								
 								if (!previous.getSource().equals(previous.getTarget())) 
 								{
-									dot.append("\t\"" + previous.getSource() + "\" -> \"" + previous.getTarget() + "\" [label = \"" + "(" + ((i-step)>0?(i-step):0) + "-" + (i-1) + ")" + "\", color = \"" + color + "\", fontcolor = \"" + color + "\", penwidth = " + width + "];\n");
+									dot.append("\t\"" + previous.getSource() + "\" -> \"" + previous.getTarget() + "\" [arrowsize = 0.4, color = \"" + color + "\", arrowhead = vee, fontcolor = \"" + color + "\", penwidth = " + width + "];\n");
+									//dot.append("\t\"" + previous.getSource() + "\" -> \"" + previous.getTarget() + "\" [label = \"" + "(" + ((i-step)>0?(i-step):0) + "-" + (i-1) + ")" + "\", color = \"" + color + "\", fontcolor = \"" + color + "\", penwidth = " + width + "];\n");
 								}
 								width = 0.1;
 								step = 0;
@@ -347,13 +361,31 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 		
 		dot.close();
 	
-		Runtime.getRuntime().exec("dot -Kneato -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
+		Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
+		Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tsvg -oMobilityGraph.svg MobilityGraph.dot").waitFor();
 		
 		BufferedImage image = ImageIO.read(new File("MobilityGraph.png"));
 		
 		graph.removeAll();
 		graph.add(new JLabel(new ImageIcon(image)));
 		graph.updateUI();
+		
+	}
+	
+	public float generateColor(float threshold) 
+	{
+		float color = (float) Math.random();
+		
+		for (float item : colorValues)
+		{
+			if (Math.abs(color-item) <= threshold)
+			{
+				return generateColor(threshold);
+			}
+		}
+		
+		colorValues.add(color);
+		return color;
 		
 	}
 
