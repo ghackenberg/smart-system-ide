@@ -29,6 +29,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	// Ports
 
+	public Port<Double> powerOutput = new Port<>();
 	public Port<Double> speedOutput = new Port<>();
 	public Port<Double> positionTraversedLengthOutput = new Port<>();
 	public Port<Edge> positionOutput = new Port<>();
@@ -51,6 +52,9 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	public ChannelExpression<Double> timeCosts = new ChannelExpression<>(timeCostOutput, qualities.timeCostsOutput);
 	public ChannelExpression<Double> powerCosts = new ChannelExpression<>(powerCostOutput, qualities.powerCostsOutput);
 	
+	// Channels physics -> overallsystem
+	public ChannelExpression<Double> power = new ChannelExpression<>(powerOutput, physics.powerOutput);
+	
 	// Channels physics -> logics
 	
 	public ChannelExpression<Edge> startPosition = new ChannelExpression<>(logics.startPositionInput, physics.startPositionOutput);
@@ -72,7 +76,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	// Channels: physics -> qualities
 	
-	public ChannelExpression<Double> power = new ChannelExpression<>(qualities.powerInput, physics.powerOutput);
+	public ChannelExpression<Double> power2 = new ChannelExpression<>(qualities.powerInput, physics.powerOutput);
 	public ChannelExpression<Boolean> targetReached = new ChannelExpression<>(qualities.targetReachedInput, physics.targetReachedOutput);
 	public ChannelExpression<Boolean> drivingIndicator = new ChannelExpression<>(qualities.drivingIndicatorInput, physics.drivingIndicatorOutput);
 

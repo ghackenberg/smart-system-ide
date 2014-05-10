@@ -333,21 +333,29 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> vehicleLengthExpression = new ConstantExpression<Double>(vehicleLengthOutput, 2.);
+	public Expression<Double> vehicleLengthExpression = new ConstantExpression<Double>(vehicleLengthOutput, 0.003);
 	
-	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 2.);
+	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 0.002);
 	
 	
 	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
 	{
 		@Override public Double evaluate(int timepoint)
-		{
+		{		
 			if (speedInput.get(timepoint) > 0)
 			{
 				double milage = 0.2353;
-				double slope = (((Math.abs(Math.pow(speedInput.get(timepoint), 2)))+(positionAltitudeDifferenceOutput.get(timepoint)*speedInput.get(timepoint)))/2);
 				
-				return ((milage*(1.+(slope/(slope*1.1))))*speedInput.get(timepoint));
+				double slope;
+				if (Math.abs(positionAltitudeDifferenceOutput.get(timepoint)+positionAltitudeDifferenceOutput.get(timepoint)) < (Math.pow(speedInput.get(timepoint),2)))
+				{
+					slope = (Math.pow(speedInput.get(timepoint), 2))+positionAltitudeDifferenceOutput.get(timepoint)+positionAltitudeDifferenceOutput.get(timepoint); 
+				}
+				else {
+					slope = 0.;
+				}
+				
+				return (milage*(slope*0.3));
 			}
 			else
 			{
