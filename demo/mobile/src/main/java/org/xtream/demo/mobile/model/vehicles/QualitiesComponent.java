@@ -40,14 +40,11 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 			{
 				return 0.;
 			}
-			else 
-			{
-				return 1.;
-			}
+				return 1.;		
 		}
 	};
 	
-	public Expression<Double> powerExpression = new Expression<Double>(powerCostsOutput)	
+	public Expression<Double> powerCostsExpression = new Expression<Double>(powerCostsOutput)	
 	{
 		@Override 
 		public Double evaluate(int timepoint)
@@ -56,13 +53,16 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 			{
 				return 0.;
 			}
-			else if (powerInput.get(timepoint) == 0)
-			{
-				return 0.;
-			}
 			else 
 			{
-				return (powerInput.get(timepoint)/5.);
+				if (powerInput.get(timepoint) > 0)
+				{
+					return (powerInput.get(timepoint)/0.83);
+				}
+				else 
+				{
+					return 0.;
+				}
 			}
 		}
 	};

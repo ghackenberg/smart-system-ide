@@ -2,6 +2,7 @@ package org.xtream.demo.mobile.model.overallsystems;
 
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractModulesComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -29,6 +30,7 @@ public class ModulesComponent extends AbstractModulesComponent
 		vehicleLengthOutputs = new Port[modules.length];
 		timeCostOutputs = new Port[modules.length];
 		powerCostOutputs = new Port[modules.length];
+		powerOutputs = new Port[modules.length];
 		
 		for (int i = 0; i < modules.length; i++)
 		{
@@ -40,6 +42,7 @@ public class ModulesComponent extends AbstractModulesComponent
 			
 			timeCostOutputs[i] = new Port<>();
 			powerCostOutputs[i] = new Port<>();
+			powerOutputs[i] = new Port<>();
 			
 		}
 		
@@ -54,6 +57,8 @@ public class ModulesComponent extends AbstractModulesComponent
 		timeCost = new ChannelExpression[modules.length];
 		powerCost = new ChannelExpression[modules.length];
 		
+		power = new ChannelExpression[modules.length];
+		
 		for (int i = 0; i < modules.length; i++)
 		{
 			VehicleComponent vehicleModule = (VehicleComponent) modules[i];
@@ -63,19 +68,21 @@ public class ModulesComponent extends AbstractModulesComponent
 			vehicleLength[i] = new ChannelExpression<>(vehicleLengthOutputs[i], vehicleModule.vehicleLengthOutput);
 			timeCost[i] = new ChannelExpression<>(timeCostOutputs[i], vehicleModule.timeCostOutput);
 			powerCost[i] = new ChannelExpression<>(powerCostOutputs[i], vehicleModule.powerCostOutput);
+			power[i] = new ChannelExpression<>(powerOutputs[i], vehicleModule.powerOutput);
+
 		}
 		
 		// Balance charts
 		
 		//balanceCharts = new Chart[modules.length];
-		timeCostCharts = new Chart[modules.length];
-		powerCostCharts = new Chart[modules.length];
+		//timeCostCharts = new Chart[modules.length];
+		//powerCostCharts = new Chart[modules.length];
 		
 		for (int i = 0; i < modules.length; i++)
 		{
 			//balanceCharts[i] = new Chart(balanceOutputs[i]);
-			timeCostCharts[i] = new Chart(timeCostOutputs[i]);
-			powerCostCharts[i] = new Chart(powerCostOutputs[i]);
+			//timeCostCharts[i] = new Chart(timeCostOutputs[i]);
+			//powerCostCharts[i] = new Chart(powerCostOutputs[i]);
 		}
 	}
 	
@@ -89,6 +96,9 @@ public class ModulesComponent extends AbstractModulesComponent
 	
 	public Port<Double>[] timeCostOutputs;
 	public Port<Double>[] powerCostOutputs;
+	public Port<Double>[] powerOutputs;
+	public Port<Double> powerOutput = new Port<>();
+	public Port<Double> powerAggregateOutput = new Port<>();
 	
 	// Channels
 	
@@ -101,12 +111,42 @@ public class ModulesComponent extends AbstractModulesComponent
 	public ChannelExpression<Double>[] timeCost;
 	public ChannelExpression<Double>[] powerCost;
 	
+	public ChannelExpression<Double>[] power;
+	
+	
+	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
+	{
+		@Override public Double evaluate(int timepoint)
+		{
+			double sum = 0;
+			
+			for (int i = 0; i < modules.length; i++)
+			{
+				sum += powerOutputs[i].get(timepoint);
+			}
+			
+			return sum;
+		}
+	};
+	
+	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
+	{
+		public double previous = 0.;
+		
+		@Override public Double evaluate(int timepoint)
+		{
+			return previous += powerOutput.get(timepoint);
+		}
+	};
 	
 	// Charts
 	
 	//public Chart balanceCharts[];
 	
-	public Chart timeCostCharts[];
-	public Chart powerCostCharts[];
+	//public Chart timeCostCharts[];
+	//public Chart powerCostCharts[];
 	
+	public Chart PowerChart = new Chart(powerOutput);
+	public Chart powerPlaceholderChart = new Chart(powerOutput);
+	public Chart powerAggregateChart = new Chart(powerAggregateOutput);
 }

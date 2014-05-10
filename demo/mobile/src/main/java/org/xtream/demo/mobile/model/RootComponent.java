@@ -12,44 +12,20 @@ import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
 {
-	public static int DURATION = 96;
-	public static int COVERAGE = 200;
+	public static int DURATION = 120;
+	public static int COVERAGE = 150;
 	public static int CLASSES = 40;
 	public static double RANDOMNESS = 0.0;
 
 	// Graph
 	
-	//public static Graph graph = new Graph("graph1", "map.xml");
-	
 	// differing heights and distances
-	public static Graph graph = new Graph("graph1", "mapDisproportional.xml");
-	
-	// equal routes
-	//public static Graph graph = new Graph("graph1", "mapConstant.xml");
-	
+	public static Graph graph = new Graph("graph1", "mapSmallDisproportional.xml");
 	
 	public static void main(String[] args)
 	{
 		
-		/*Workbench<RootComponent> workbench = */new Workbench<>(RootComponent.class, DURATION, COVERAGE, CLASSES, RANDOMNESS, graph);
-
-		/*
-		while (true)
-		{
-			if (workbench == null)
-			{
-				workbench = ;
-			}
-			
-			if (workbench.getTimepoint() <= 95)
-			{
-				workbench = new Workbench<>(RootComponent.class, DURATION, COVERAGE, CLASSES, RANDOMNESS, graph);
-			}
-			else {
-				break;
-			}
-		}
-		*/
+		new Workbench<>(RootComponent.class, DURATION, COVERAGE, CLASSES, RANDOMNESS, graph);
 		
 	}
 	
@@ -87,8 +63,10 @@ public class RootComponent extends Component
 		@Override public Double evaluate(int timepoint)
 		{
 			return previous += overallSystem.costsOutput.get(timepoint);
+			
 		}
 	};
+	
 	public Expression<Double> equivalenceExpression = new Expression<Double>(equivalenceOutput)
 	{
 		@Override public Double evaluate(int timepoint)
@@ -99,7 +77,7 @@ public class RootComponent extends Component
 			{
 				VehicleComponent vehicle = (VehicleComponent) iterator;
 				
-				sum += vehicle.physics.chargeStateOutput.get(timepoint);
+				sum += vehicle.physics.chargeStateRelativeOutput.get(timepoint);
 			}
 			
 			return sum;
