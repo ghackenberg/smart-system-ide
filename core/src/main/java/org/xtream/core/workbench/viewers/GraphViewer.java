@@ -26,7 +26,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.optimizer.Viewer;
+import org.xtream.core.workbench.Viewer;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
@@ -34,11 +34,9 @@ import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 public class GraphViewer<T extends Component> extends Viewer<T>
 {
 	
-	private JTabbedPane tabs;
-	
 	public GraphViewer(JTabbedPane tabs)
 	{
-		this.tabs = tabs;
+		super(tabs);
 	}
 
 	@Override

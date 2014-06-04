@@ -15,8 +15,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.optimizer.Key;
-import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
+import org.xtream.core.workbench.Monitor;
 
 public class ChartMonitor extends Monitor
 {
@@ -30,11 +30,9 @@ public class ChartMonitor extends Monitor
 	private DefaultCategoryDataset memory = new DefaultCategoryDataset();
 	private DefaultCategoryDataset time = new DefaultCategoryDataset();
 	
-	private JTabbedPane tabs;
-	
 	public ChartMonitor(JTabbedPane tabs)
 	{
-		this.tabs = tabs;
+		super(tabs);
 	}
 
 	@Override
