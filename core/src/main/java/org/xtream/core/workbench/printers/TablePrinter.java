@@ -9,17 +9,15 @@ import javax.swing.table.TableCellRenderer;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Printer;
 import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
 
 public class TablePrinter<T extends Component> extends Printer<T>
 {
 	
-	private JTabbedPane tabs;
-	
-	public TablePrinter(JTabbedPane pane)
+	public TablePrinter(JTabbedPane tabs)
 	{
-		this.tabs = pane;
+		super(tabs);
 	}
 
 	@Override

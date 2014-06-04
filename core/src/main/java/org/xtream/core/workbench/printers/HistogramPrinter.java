@@ -26,7 +26,7 @@ import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Printer;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
@@ -37,11 +37,9 @@ public class HistogramPrinter<T extends Component> extends Printer<T>
 	private static int PADDING = 25;
 	private static int STROKE = 3;
 	
-	private JTabbedPane tabs;
-	
 	public HistogramPrinter(JTabbedPane tabs)
 	{
-		this.tabs = tabs;
+		super(tabs);
 	}
 
 	@Override

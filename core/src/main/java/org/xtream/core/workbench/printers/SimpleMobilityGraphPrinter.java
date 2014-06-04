@@ -35,7 +35,7 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Printer;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
@@ -43,7 +43,6 @@ import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 {
 	
-	private JTabbedPane tabs;
 	private Graph graphRaw;
 	private Set<Float> colorValues;
 	
@@ -51,7 +50,8 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 	
 	public SimpleMobilityGraphPrinter(JTabbedPane tabs, Graph graph)
 	{
-		this.tabs = tabs;
+		super(tabs);
+		
 		this.graphRaw = graph;
 	}
 

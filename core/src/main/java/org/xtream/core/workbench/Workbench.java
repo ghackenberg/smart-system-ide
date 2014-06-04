@@ -118,10 +118,14 @@ public class Workbench<T extends Component>
 			
 			// Viewers
 			
+			// TODO Factorize viewers
+			
 			Viewer<T> graphViewer = new GraphViewer<>(tabs);
 			Viewer<T> allViewer = new CompositeViewer<>(graphViewer);
 			
 			// Monitors
+			
+			// TODO Factorize monitors
 			
 			Monitor csvMonitor = new CSVMonitor(new PrintStream(new File("Monitor.csv")));
 			Monitor chartMonitor = new ChartMonitor(tabs);
@@ -129,6 +133,8 @@ public class Workbench<T extends Component>
 			Monitor allMonitor = new CompositeMonitor(csvMonitor, chartMonitor, progressMonitor);
 			
 			// Printers
+			
+			// TODO Factorize printers
 			
 			Printer<T> csvPrinter = new CSVPrinter<>(new PrintStream(new File("Printer.csv")));
 			Printer<T> chartPrinter = new ChartPrinter<>(tabs);

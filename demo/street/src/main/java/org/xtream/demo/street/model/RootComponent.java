@@ -22,7 +22,7 @@ public class RootComponent extends Component
 
 	// Charts
 	
-	public Chart costChart = new Chart(net.balance); // TODO cost output port
+	public Chart costChart = new Chart(net.balance); // TODO Cost output port
 	
 	// Expressions
 	
