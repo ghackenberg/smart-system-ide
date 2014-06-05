@@ -50,31 +50,23 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Part implem
 	
 	public SimpleMobilityGraphPrinter(Graph graph)
 	{
+		super("Simple mobility graph printer");
+		
 		this.graphRaw = graph;
 	}
 
 	@Override
 	public void print(final T component, final int timepoint)
 	{
-		// Create grid
+		// Layouts
 		
 		final GridLayout chartLayout = new GridLayout();
-		
 		chartLayout.setHgap(1);
 		chartLayout.setVgap(1);
 		
-		// Create grid
-		
 		final GridLayout previewLayout = new GridLayout();
-		
 		previewLayout.setHgap(1);
 		previewLayout.setVgap(1);
-		
-		// Panel
-		
-		final JPanel charts = new JPanel();
-		
-		charts.setLayout(chartLayout);
 		
 		// Slider 
 		
@@ -91,26 +83,17 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Part implem
 		
 		// Panel
 		
-		final JPanel previews = new JPanel();
-		
-		previews.setLayout(previewLayout);
-		
-		final JPanel graph = new JPanel();
-		graph.setLayout(new BorderLayout());
+		final JPanel graph = new JPanel(new BorderLayout());
 		
 		// Top pane
 		
-		JPanel top = new JPanel();
-		
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.add(new JLabel("Mobility Graph"), BorderLayout.PAGE_START);
 		top.add(new JScrollPane(graph), BorderLayout.CENTER);
 
 		// Bottom pane
 		
-		JPanel bottom = new JPanel();
-		
-		bottom.setLayout(new BorderLayout());
+		JPanel bottom = new JPanel(new BorderLayout());
 		bottom.add(spinner, BorderLayout.WEST);
 		bottom.add(slider, BorderLayout.CENTER);
 		bottom.add(new JLabel("Steps"), BorderLayout.PAGE_START);
@@ -208,19 +191,13 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Part implem
 		
 		// Left pane
 		
-		JPanel left = new JPanel();
-		
-		left.setLayout(new BorderLayout());
+		JPanel left = new JPanel(new BorderLayout());
 		left.add(new JLabel("Component Hierarchy"), BorderLayout.PAGE_START);
 		left.add(new JScrollPane(tree), BorderLayout.CENTER);
 		
 		// Split pane
 
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-		
-		// Show frame
-		
-		tabs.addTab("Trace (SimpleMobilityGraph)", split);
 		
 		// Select row
 		
@@ -229,6 +206,10 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Part implem
 		// Divider location
 		
 		split.setDividerLocation(tree.getPreferredSize().width + 50);
+		
+		// Set component
+		
+		getPanel().add(split);
 	}
 	
 	public void render(JTree tree, int selectedTime, JPanel graph) throws InterruptedException, IOException 

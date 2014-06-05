@@ -21,7 +21,7 @@ import org.xtream.core.workbench.Part;
 
 public class ChartMonitor extends Part implements Monitor
 {
-	
+
 	private static int PADDING = 50;
 	private static int STROKE = 3;
 	
@@ -31,9 +31,10 @@ public class ChartMonitor extends Part implements Monitor
 	private DefaultCategoryDataset memory = new DefaultCategoryDataset();
 	private DefaultCategoryDataset time = new DefaultCategoryDataset();
 	
-	@Override
-	public void start()
+	public ChartMonitor()
 	{
+		super("Chart monitor");
+		
 		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "Count", states, PlotOrientation.VERTICAL, true, true, false);
 		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Count", classes, PlotOrientation.VERTICAL, true, true, false);
 		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Step", "Value", objectives, PlotOrientation.VERTICAL, true, true, false);
@@ -88,15 +89,24 @@ public class ChartMonitor extends Part implements Monitor
 		layout.setHgap(1);
 		layout.setVgap(1);
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(layout);
+		JPanel panel = new JPanel(layout);
 		panel.add(statesPanel);
 		panel.add(classesPanel);
 		panel.add(objectivesPanel);
 		panel.add(memoryPanel);
 		panel.add(timePanel);
 		
-		tabs.addTab("Optimizer", panel);
+		getPanel().add(panel);
+	}
+	
+	@Override
+	public void start()
+	{
+		states.clear();
+		classes.clear();
+		objectives.clear();
+		memory.clear();
+		time.clear();
 	}
 
 	@Override

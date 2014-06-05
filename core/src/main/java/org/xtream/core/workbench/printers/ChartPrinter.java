@@ -34,6 +34,11 @@ public class ChartPrinter<T extends Component> extends Part implements Printer<T
 	
 	private static int PADDING = 25;
 	private static int STROKE = 3;
+	
+	public ChartPrinter()
+	{
+		super("Chart printer");
+	}
 
 	@Override
 	public void print(final T component, final int timepoint)
@@ -234,10 +239,6 @@ public class ChartPrinter<T extends Component> extends Part implements Printer<T
 
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		
-		// Show frame
-		
-		tabs.addTab("Trace (Chart)", split);
-		
 		// Select row
 		
 		tree.setSelectionRow(0);
@@ -245,6 +246,10 @@ public class ChartPrinter<T extends Component> extends Part implements Printer<T
 		// Divider location
 		
 		split.setDividerLocation(tree.getPreferredSize().width + 50);
+		
+		// Set component
+		
+		getPanel().add(split);
 	}
 
 }

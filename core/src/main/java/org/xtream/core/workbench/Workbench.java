@@ -11,7 +11,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
@@ -37,6 +36,12 @@ import org.xtream.core.workbench.printers.SimpleMobilityGraphPrinter;
 import org.xtream.core.workbench.printers.TablePrinter;
 import org.xtream.core.workbench.viewers.GraphViewer;
 
+import bibliothek.extension.gui.dock.theme.EclipseTheme;
+import bibliothek.gui.DockController;
+import bibliothek.gui.dock.DefaultDockable;
+import bibliothek.gui.dock.SplitDockStation;
+import bibliothek.gui.dock.StackDockStation;
+
 public class Workbench<T extends Component>
 {
 	
@@ -44,12 +49,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new GraphViewer<>(), new ChartMonitor(), new ChartPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new ChartPrinter<>(), new TablePrinter<>());
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new GraphViewer<>(), new ChartMonitor(), new SimpleMobilityGraphPrinter<>(graph), new ChartPrinter<>(), new HistogramPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new SimpleMobilityGraphPrinter<>(graph), new ChartPrinter<>(), new HistogramPrinter<>(), new TablePrinter<>());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -114,19 +119,26 @@ public class Workbench<T extends Component>
 			
 			// Tabs
 			
-			JTabbedPane tabs = new JTabbedPane();
-			
+			StackDockStation stack = new StackDockStation();
 			for (Part part : parts)
 			{
-				part.initialize(tabs);
+				stack.drop(new DefaultDockable(part.getPanel(), part.getTitle(), part.getIcon()));
 			}
+			stack.setFrontDockable(stack.getDockable(0));
+
+			SplitDockStation split = new SplitDockStation();
+			split.drop(stack);
+			
+			DockController controller = new DockController();
+			controller.setTheme(new EclipseTheme());
+			controller.add(split);
 			
 			// Frame
 			
 			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
 			frame.setLayout(new BorderLayout());
 			frame.add(toolbar, BorderLayout.PAGE_START);
-			frame.add(tabs, BorderLayout.CENTER);
+			frame.add(split.getComponent(), BorderLayout.CENTER);
 			frame.add(new JLabel("Copyright 2014, Smart Energy Systems Group, Chair for Software & Systems Engineering, Technische Universität München"), BorderLayout.PAGE_END);
 			frame.pack();
 			frame.setVisible(true);
@@ -138,7 +150,7 @@ public class Workbench<T extends Component>
 			
 			for (Part part : parts)
 			{
-				if (part instanceof Viewer<?>)
+				if (part instanceof Viewer)
 				{
 					allViewer.add((Viewer<T>) part);
 				}
@@ -167,7 +179,7 @@ public class Workbench<T extends Component>
 			
 			for (Part part : parts)
 			{
-				if (part instanceof Printer<?>)
+				if (part instanceof Printer)
 				{
 					allPrinter.add((Printer<T>) part);
 				}
