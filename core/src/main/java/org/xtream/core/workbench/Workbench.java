@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,7 +61,7 @@ public class Workbench<T extends Component>
 	@SuppressWarnings("unchecked")
 	private Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Part... parts)
 	{
-		engine = new Engine<>(type);
+		engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() / 2);
 		
 		try
 		{
@@ -135,7 +136,9 @@ public class Workbench<T extends Component>
 			
 			// Frame
 			
-			JFrame frame = new ApplicationFrame("Xtream - Rapid Prototyping Framework for Smart Systems (including Built-in Extensible Optimizer and Visualizer)");
+			ImageIcon icon = new ImageIcon(Workbench.class.getClassLoader().getResource("xtream.png"));
+			
+			JFrame frame = new ApplicationFrame("Xtream - Discrete-Time Optimization Framework");
 			frame.setLayout(new BorderLayout());
 			frame.add(toolbar, BorderLayout.PAGE_START);
 			frame.add(split.getComponent(), BorderLayout.CENTER);
@@ -143,6 +146,7 @@ public class Workbench<T extends Component>
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setIconImage(icon.getImage());
 			
 			// Viewers
 			
