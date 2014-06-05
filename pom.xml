@@ -24,4 +24,17 @@
 		</plugins>	
 	</build>
 	
+	<repositories>
+		<repository>
+			<id>sonatype-public</id>
+			<name>sonatype public</name>
+			<url>https://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>imagej-public</id>
+			<name>imagej public</name>
+			<url>http://maven.imagej.net/content/repositories/public/</url>
+		</repository>
+	</repositories>
+	
 </project>
