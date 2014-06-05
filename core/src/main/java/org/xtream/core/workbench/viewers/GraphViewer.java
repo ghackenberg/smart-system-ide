@@ -33,15 +33,18 @@ import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 {
+	
+	public GraphViewer()
+	{
+		super("Graph viewer");
+	}
 
 	@Override
 	public void view(T root)
 	{
 		// Graph pane
 		
-		final JPanel graph = new JPanel();
-		
-		graph.setLayout(new GridLayout(1, 1));
+		final JPanel graph = new JPanel(new GridLayout(1, 1));
 		
 		// Tree pane
 		
@@ -177,27 +180,19 @@ public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 		
 		// Left pane
 		
-		JPanel left = new JPanel();
-		
-		left.setLayout(new BorderLayout());
+		JPanel left = new JPanel(new BorderLayout());
 		left.add(new JLabel("Component Hierarchy"), BorderLayout.PAGE_START);
 		left.add(new JScrollPane(tree), BorderLayout.CENTER);
 		
 		// Right pane
 		
-		JPanel right = new JPanel();
-		
-		right.setLayout(new BorderLayout());
+		JPanel right = new JPanel(new BorderLayout());
 		right.add(new JLabel("Component Graph"), BorderLayout.PAGE_START);
 		right.add(new JScrollPane(graph), BorderLayout.CENTER);
 		
 		// Split pane
 		
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-		
-		// Add tab
-		
-		tabs.addTab("Architecture", split);
 		
 		// Select row
 		
@@ -206,6 +201,10 @@ public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 		// Divider location
 		
 		split.setDividerLocation(tree.getPreferredSize().width + 50);
+		
+		// Set component
+		
+		getPanel().add(split);
 	}
 
 }

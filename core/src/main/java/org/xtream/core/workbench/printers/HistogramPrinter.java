@@ -36,49 +36,39 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 	
 	private static int PADDING = 25;
 	private static int STROKE = 3;
+	
+	public HistogramPrinter()
+	{
+		super("Histogram printer");
+	}
 
 	@Override
 	public void print(final T component, final int timepoint)
 	{
-		// Create grid
+		// Layouts
 		
 		final GridLayout chartLayout = new GridLayout();
-		
 		chartLayout.setHgap(1);
 		chartLayout.setVgap(1);
 		
-		// Create grid
-		
 		final GridLayout previewLayout = new GridLayout();
-		
 		previewLayout.setHgap(1);
 		previewLayout.setVgap(1);
 		
-		// Panel
+		// Panels
 		
-		final JPanel histograms = new JPanel();
-		
-		histograms.setLayout(chartLayout);
-		
-		// Panel
-		
-		final JPanel previews = new JPanel();
-		
-		previews.setLayout(previewLayout);
+		final JPanel histograms = new JPanel(chartLayout);
+		final JPanel previews = new JPanel(previewLayout);
 		
 		// Top pane
 		
-		JPanel top = new JPanel();
-		
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.add(new JLabel("Component Histograms"), BorderLayout.PAGE_START);
 		top.add(histograms, BorderLayout.CENTER);
 		
 		// Bottom pane
 		
-		JPanel bottom = new JPanel();
-		
-		bottom.setLayout(new BorderLayout());
+		JPanel bottom = new JPanel(new BorderLayout());
 		bottom.add(new JLabel("Child Component Previews"), BorderLayout.PAGE_START);
 		bottom.add(new JScrollPane(previews), BorderLayout.CENTER);
 		
@@ -258,19 +248,13 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 		
 		// Left pane
 		
-		JPanel left = new JPanel();
-		
-		left.setLayout(new BorderLayout());
+		JPanel left = new JPanel(new BorderLayout());
 		left.add(new JLabel("Component Hierarchy"), BorderLayout.PAGE_START);
 		left.add(new JScrollPane(tree), BorderLayout.CENTER);
 		
 		// Split pane
 
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-		
-		// Show frame
-		
-		tabs.addTab("Trace (Histogram)", split);
 		
 		// Select row
 		
@@ -279,6 +263,10 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 		// Divider location
 		
 		split.setDividerLocation(tree.getPreferredSize().width + 50);
+		
+		// Set component
+		
+		getPanel().add(split);
 	}
 
 }

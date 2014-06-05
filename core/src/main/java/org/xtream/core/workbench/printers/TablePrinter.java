@@ -14,6 +14,11 @@ import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
 
 public class TablePrinter<T extends Component> extends Part implements Printer<T>
 {
+	
+	public TablePrinter()
+	{
+		super("Table printer");
+	}
 
 	@Override
 	public void print(T component, int timepoint)
@@ -60,7 +65,7 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 		
 		// Create tab
 		
-		tabs.addTab("Trace (Table)", scroll);
+		getPanel().add(scroll);
 	}
 
 }
