@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -24,21 +23,17 @@ import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.workbench.Printer;
+import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
-public class ChartPrinter<T extends Component> extends Printer<T>
+public class ChartPrinter<T extends Component> extends Part implements Printer<T>
 {
 	
 	private static int PADDING = 25;
 	private static int STROKE = 3;
-	
-	public ChartPrinter(JTabbedPane tabs)
-	{
-		super(tabs);
-	}
 
 	@Override
 	public void print(final T component, final int timepoint)

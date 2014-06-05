@@ -4,7 +4,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
 
-public class CMDPrinter<T extends Component> extends Printer<T>
+public class CMDPrinter<T extends Component> implements Printer<T>
 {
 
 	@Override

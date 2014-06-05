@@ -162,6 +162,8 @@ public class Engine<T extends Component>
 			
 			// Sort groups
 			
+			// TODO Factorize cluster strategy. Provide uniform and k-mean clustering.
+			
 			long cluster_start = System.currentTimeMillis();
 			
 			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();

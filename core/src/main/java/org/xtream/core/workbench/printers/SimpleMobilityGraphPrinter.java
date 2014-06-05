@@ -21,7 +21,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -35,12 +34,13 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.workbench.Printer;
+import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
-public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
+public class SimpleMobilityGraphPrinter<T extends Component> extends Part implements Printer<T>
 {
 	
 	private Graph graphRaw;
@@ -48,10 +48,8 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Printer<T>
 	
 	private Map<Port<?>,Float> map = new HashMap<Port<?>,Float>();
 	
-	public SimpleMobilityGraphPrinter(JTabbedPane tabs, Graph graph)
+	public SimpleMobilityGraphPrinter(Graph graph)
 	{
-		super(tabs);
-		
 		this.graphRaw = graph;
 	}
 

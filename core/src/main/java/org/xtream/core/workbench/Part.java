@@ -2,12 +2,12 @@ package org.xtream.core.workbench;
 
 import javax.swing.JTabbedPane;
 
-public abstract class Monitor extends org.xtream.core.optimizer.Monitor
+public abstract class Part
 {
 	
 	protected JTabbedPane tabs;
 	
-	public Monitor(JTabbedPane tabs)
+	public void initialize(JTabbedPane tabs)
 	{
 		this.tabs = tabs;
 	}

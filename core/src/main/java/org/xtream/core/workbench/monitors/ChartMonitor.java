@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -15,10 +14,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Memory;
+import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
-import org.xtream.core.workbench.Monitor;
+import org.xtream.core.workbench.Part;
 
-public class ChartMonitor extends Monitor
+public class ChartMonitor extends Part implements Monitor
 {
 	
 	private static int PADDING = 50;
@@ -30,11 +31,6 @@ public class ChartMonitor extends Monitor
 	private DefaultCategoryDataset memory = new DefaultCategoryDataset();
 	private DefaultCategoryDataset time = new DefaultCategoryDataset();
 	
-	public ChartMonitor(JTabbedPane tabs)
-	{
-		super(tabs);
-	}
-
 	@Override
 	public void start()
 	{
@@ -116,9 +112,9 @@ public class ChartMonitor extends Monitor
 		objectives.addValue(avgObjective, "Avg objective", "" + timepoint);
 		objectives.addValue(maxObjective, "Max objective", "" + timepoint);
 		
-		memory.addValue(maxMemory(), "Max memory", "" + timepoint);
-		memory.addValue(totalMemory(), "Total memory", "" + timepoint);
-		memory.addValue(usedMemory(), "Used memory", "" + timepoint);
+		memory.addValue(Memory.maxMemory(), "Max memory", "" + timepoint);
+		memory.addValue(Memory.totalMemory(), "Total memory", "" + timepoint);
+		memory.addValue(Memory.usedMemory(), "Used memory", "" + timepoint);
 		
 		time.addValue(branch, "Branch time", "" + timepoint);
 		time.addValue(norm, "Norm time", "" + timepoint);

@@ -1,7 +1,6 @@
 package org.xtream.core.workbench.printers;
 
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.TableCellRenderer;
@@ -9,16 +8,12 @@ import javax.swing.table.TableCellRenderer;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
-import org.xtream.core.workbench.Printer;
+import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
 
-public class TablePrinter<T extends Component> extends Printer<T>
+public class TablePrinter<T extends Component> extends Part implements Printer<T>
 {
-	
-	public TablePrinter(JTabbedPane tabs)
-	{
-		super(tabs);
-	}
 
 	@Override
 	public void print(T component, int timepoint)

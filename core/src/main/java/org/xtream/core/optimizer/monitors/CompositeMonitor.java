@@ -8,7 +8,7 @@ import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
 
-public class CompositeMonitor extends Monitor
+public class CompositeMonitor implements Monitor
 {
 	
 	private List<Monitor> monitors = new ArrayList<>();
@@ -19,6 +19,16 @@ public class CompositeMonitor extends Monitor
 		{
 			this.monitors.add(monitor);
 		}
+	}
+	
+	public void add(Monitor monitor)
+	{
+		monitors.add(monitor);
+	}
+	
+	public void remove(Monitor monitor)
+	{
+		monitors.remove(monitor);
 	}
 
 	@Override
