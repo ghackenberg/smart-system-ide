@@ -31,6 +31,7 @@ import org.xtream.core.optimizer.printers.CompositePrinter;
 import org.xtream.core.optimizer.viewers.CompositeViewer;
 import org.xtream.core.workbench.monitors.ChartMonitor;
 import org.xtream.core.workbench.monitors.ProgressMonitor;
+import org.xtream.core.workbench.printers.AnimationPrinter;
 import org.xtream.core.workbench.printers.ChartPrinter;
 import org.xtream.core.workbench.printers.HistogramPrinter;
 import org.xtream.core.workbench.printers.SimpleMobilityGraphPrinter;
@@ -50,12 +51,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new ChartPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new AnimationPrinter<>(), new ChartPrinter<>(), new TablePrinter<>());
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new SimpleMobilityGraphPrinter<>(graph), new ChartPrinter<>(), new HistogramPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new AnimationPrinter<>(), new SimpleMobilityGraphPrinter<>(graph), new ChartPrinter<>(), new HistogramPrinter<>(), new TablePrinter<>());
 	}
 	
 	@SuppressWarnings("unchecked")
