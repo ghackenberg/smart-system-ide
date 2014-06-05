@@ -7,7 +7,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
 
-public class CSVPrinter<T extends Component> extends Printer<T>
+public class CSVPrinter<T extends Component> implements Printer<T>
 {
 	
 	private PrintStream out;

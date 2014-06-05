@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
 
-public class CMDMonitor extends Monitor
+public class CMDMonitor implements Monitor
 {
 
 	@Override
@@ -19,7 +20,7 @@ public class CMDMonitor extends Monitor
 	@Override
 	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
 	{	
-		System.out.println("Timepoint " + timepoint + " : " + generatedStates + " / " + validStates + " / " + dominantStates + " / " + equivalenceClasses.size() + " / " + usedMemory() + " MB");
+		System.out.println("Timepoint " + timepoint + " : " + generatedStates + " / " + validStates + " / " + dominantStates + " / " + equivalenceClasses.size() + " / " + Memory.usedMemory() + " MB");
 	}
 
 	@Override

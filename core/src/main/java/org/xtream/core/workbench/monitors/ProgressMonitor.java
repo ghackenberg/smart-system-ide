@@ -6,10 +6,11 @@ import java.util.Map;
 import javax.swing.JProgressBar;
 
 import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
 
-public class ProgressMonitor extends Monitor
+public class ProgressMonitor implements Monitor
 {
 	
 	private JProgressBar timeBar;
@@ -48,8 +49,8 @@ public class ProgressMonitor extends Monitor
 	
 	private int getMemoryProgress()
 	{
-		long max = maxMemory();
-		long used = usedMemory();
+		long max = Memory.maxMemory();
+		long used = Memory.usedMemory();
 		
 		double progress = (double) used / max * 100;
 		

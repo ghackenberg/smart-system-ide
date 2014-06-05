@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
 
-public class CalibrationMonitor extends Monitor
+public class CalibrationMonitor implements Monitor
 {
 
 	
@@ -41,7 +42,7 @@ public class CalibrationMonitor extends Monitor
 		this.avg_objective = avgObjective;
 		this.max_objective = maxObjective;
 		
-		used_memory = Math.max(used_memory, usedMemory());
+		used_memory = Math.max(used_memory, Memory.usedMemory());
 	}
 
 	@Override

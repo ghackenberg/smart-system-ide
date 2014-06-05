@@ -6,7 +6,7 @@ import java.util.List;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
 
-public class CompositePrinter<T extends Component> extends Printer<T>
+public class CompositePrinter<T extends Component> implements Printer<T>
 {
 	
 	private List<Printer<T>> printers = new ArrayList<>();
@@ -18,6 +18,16 @@ public class CompositePrinter<T extends Component> extends Printer<T>
 		{
 			this.printers.add(printer);
 		}
+	}
+	
+	public void add(Printer<T> printer)
+	{
+		printers.add(printer);
+	}
+	
+	public void remove(Printer<T> printer)
+	{
+		printers.remove(printer);
 	}
 
 	@Override

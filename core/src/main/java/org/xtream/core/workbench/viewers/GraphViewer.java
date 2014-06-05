@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -26,18 +25,14 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.workbench.Viewer;
+import org.xtream.core.optimizer.Viewer;
+import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
 import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
-public class GraphViewer<T extends Component> extends Viewer<T>
+public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 {
-	
-	public GraphViewer(JTabbedPane tabs)
-	{
-		super(tabs);
-	}
 
 	@Override
 	public void view(T root)

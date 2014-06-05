@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
 
-public class CSVMonitor extends Monitor
+public class CSVMonitor implements Monitor
 {
 	
 	private PrintStream out;
@@ -40,7 +41,7 @@ public class CSVMonitor extends Monitor
 		
 		out.print(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses.size() + ";");
 		out.print(format.format(minObjective) + ";" + format.format(avgObjective) + ";" + format.format(maxObjective) + ";");
-		out.print(maxMemory() + ";" + totalMemory() + ";" + freeMemory() + ";");
+		out.print(Memory.maxMemory() + ";" + Memory.totalMemory() + ";" + Memory.freeMemory() + ";");
 		out.print(branch + ";" + norm + ";" + cluster + ";" + sort + ";" + stats + ";");
 		out.print(System.currentTimeMillis() - start);
 		out.println();
