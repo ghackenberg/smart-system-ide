@@ -17,7 +17,15 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 	
 	public TablePrinter()
 	{
-		super("Table printer");
+		this(0, 0);
+	}
+	public TablePrinter(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public TablePrinter(int x, int y, int width, int height)
+	{
+		super("Table printer", x, y, width, height);
 	}
 
 	@Override

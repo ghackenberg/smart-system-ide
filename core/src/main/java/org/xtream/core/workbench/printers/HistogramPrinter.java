@@ -39,7 +39,15 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 	
 	public HistogramPrinter()
 	{
-		super("Histogram printer");
+		this(0, 0);
+	}
+	public HistogramPrinter(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public HistogramPrinter(int x, int y, int width, int height)
+	{
+		super("Histogram printer", x, y, width, height);
 	}
 
 	@Override

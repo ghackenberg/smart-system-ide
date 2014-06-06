@@ -22,7 +22,7 @@ import org.xtream.core.workbench.Part;
 public class ChartMonitor extends Part implements Monitor
 {
 
-	private static int PADDING = 50;
+	private static int PADDING = 0;
 	private static int STROKE = 3;
 	
 	private DefaultCategoryDataset states = new DefaultCategoryDataset();
@@ -33,13 +33,21 @@ public class ChartMonitor extends Part implements Monitor
 	
 	public ChartMonitor()
 	{
-		super("Chart monitor");
+		this(0, 0);
+	}
+	public ChartMonitor(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public ChartMonitor(int x, int y, int width, int height)
+	{
+		super("Chart monitor", x, y, width, height);
 		
-		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "Count", states, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Count", classes, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Step", "Value", objectives, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Step", "Amount (in MB)", memory, PlotOrientation.VERTICAL, true, true, false);
-		JFreeChart timeChart = ChartFactory.createStackedAreaChart("Branch, norm, cluster, sort and stats time", "Step", "Amount (in ms)", time, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "States", states, PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Clusters", classes, PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Step", "Costs", objectives, PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Step", "Memory (in MB)", memory, PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart timeChart = ChartFactory.createStackedAreaChart("Branch, norm, cluster, sort and stats time", "Step", "Time (in ms)", time, PlotOrientation.VERTICAL, false, true, false);
 		
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
@@ -55,6 +63,12 @@ public class ChartMonitor extends Part implements Monitor
 		memoryChart.getCategoryPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
 		memoryChart.getCategoryPlot().getRenderer().setSeriesStroke(2, new BasicStroke(STROKE));
 		
+		statesChart.setTitle((String) null);
+		classesChart.setTitle((String) null);
+		objectivesChart.setTitle((String) null);
+		memoryChart.setTitle((String) null);
+		timeChart.setTitle((String) null);
+		
 		statesChart.setAntiAlias(true);
 		classesChart.setAntiAlias(true);
 		objectivesChart.setAntiAlias(true);
@@ -66,6 +80,18 @@ public class ChartMonitor extends Part implements Monitor
 		objectivesChart.setTextAntiAlias(true);
 		memoryChart.setTextAntiAlias(true);
 		timeChart.setTextAntiAlias(true);
+		
+		statesChart.getCategoryPlot().getDomainAxis().setLabel(null);
+		classesChart.getCategoryPlot().getDomainAxis().setLabel(null);
+		objectivesChart.getCategoryPlot().getDomainAxis().setLabel(null);
+		memoryChart.getCategoryPlot().getDomainAxis().setLabel(null);
+		timeChart.getCategoryPlot().getDomainAxis().setLabel(null);
+		
+		statesChart.getCategoryPlot().getDomainAxis().setTickMarksVisible(false);
+		classesChart.getCategoryPlot().getDomainAxis().setTickMarksVisible(false);
+		objectivesChart.getCategoryPlot().getDomainAxis().setTickMarksVisible(false);
+		memoryChart.getCategoryPlot().getDomainAxis().setTickMarksVisible(false);
+		timeChart.getCategoryPlot().getDomainAxis().setTickMarksVisible(false);
 		
 		statesChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
 		classesChart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
@@ -85,7 +111,7 @@ public class ChartMonitor extends Part implements Monitor
 		ChartPanel memoryPanel = new ChartPanel(memoryChart);
 		ChartPanel timePanel = new ChartPanel(timeChart);
 		
-		GridLayout layout = new GridLayout(2, 3);
+		GridLayout layout = new GridLayout(5, 1);
 		layout.setHgap(1);
 		layout.setVgap(1);
 		

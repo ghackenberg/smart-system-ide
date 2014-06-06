@@ -36,7 +36,15 @@ public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 	
 	public GraphViewer()
 	{
-		super("Graph viewer");
+		this(0, 0);
+	}
+	public GraphViewer(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public GraphViewer(int x, int y, int width, int height)
+	{
+		super("Graph viewer", x, y, width, height);
 	}
 
 	@Override

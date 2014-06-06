@@ -50,7 +50,15 @@ public class SimpleMobilityGraphPrinter<T extends Component> extends Part implem
 	
 	public SimpleMobilityGraphPrinter(Graph graph)
 	{
-		super("Simple mobility graph printer");
+		this(graph, 0, 0);
+	}
+	public SimpleMobilityGraphPrinter(Graph graph, int x, int y)
+	{
+		this(graph, x, y, 1, 1);
+	}
+	public SimpleMobilityGraphPrinter(Graph graph, int x, int y, int width, int height)
+	{
+		super("Simple mobility graph printer", x, y, width, height);
 		
 		this.graphRaw = graph;
 	}

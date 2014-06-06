@@ -138,7 +138,15 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 
 	public AnimationPrinter()
 	{
-		super("Animation printer");
+		this(0, 0);
+	}
+	public AnimationPrinter(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public AnimationPrinter(int x, int y, int width, int height)
+	{
+		super("Animation printer", x, y, width, height);
 	}
 
 	@Override
