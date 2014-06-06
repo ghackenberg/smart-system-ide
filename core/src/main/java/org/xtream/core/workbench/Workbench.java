@@ -37,12 +37,13 @@ import org.xtream.core.workbench.printers.HistogramPrinter;
 import org.xtream.core.workbench.printers.SimpleMobilityGraphPrinter;
 import org.xtream.core.workbench.printers.TablePrinter;
 import org.xtream.core.workbench.viewers.GraphViewer;
+import org.xtream.core.workbench.viewers.TreeViewer;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
 import bibliothek.gui.dock.DefaultDockable;
 import bibliothek.gui.dock.SplitDockStation;
-import bibliothek.gui.dock.StackDockStation;
+import bibliothek.gui.dock.station.split.SplitDockGrid;
 
 public class Workbench<T extends Component>
 {
@@ -51,12 +52,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new AnimationPrinter<>(), new ChartPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new AnimationPrinter<>(3,0,2,1), new ChartPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new ChartMonitor(), new GraphViewer<>(), new AnimationPrinter<>(), new SimpleMobilityGraphPrinter<>(graph), new ChartPrinter<>(), new HistogramPrinter<>(), new TablePrinter<>());
+		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new AnimationPrinter<>(3,0,2,1), new SimpleMobilityGraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -121,19 +122,18 @@ public class Workbench<T extends Component>
 			
 			// Tabs
 			
-			StackDockStation stack = new StackDockStation();
+			SplitDockGrid grid = new SplitDockGrid();
 			for (Part part : parts)
 			{
-				stack.drop(new DefaultDockable(part.getPanel(), part.getTitle(), part.getIcon()));
+				grid.addDockable(part.getX(), part.getY(), part.getWidth(), part.getHeight(), new DefaultDockable(part.getPanel(), part.getTitle(), part.getIcon()));
 			}
-			stack.setFrontDockable(stack.getDockable(0));
 
-			SplitDockStation split = new SplitDockStation();
-			split.drop(stack);
+			SplitDockStation station = new SplitDockStation();
+			station.dropTree(grid.toTree());
 			
 			DockController controller = new DockController();
 			controller.setTheme(new EclipseTheme());
-			controller.add(split);
+			controller.add(station);
 			
 			// Frame
 			
@@ -142,7 +142,7 @@ public class Workbench<T extends Component>
 			JFrame frame = new ApplicationFrame("Xtream - Discrete-Time Optimization Framework");
 			frame.setLayout(new BorderLayout());
 			frame.add(toolbar, BorderLayout.PAGE_START);
-			frame.add(split.getComponent(), BorderLayout.CENTER);
+			frame.add(station.getComponent(), BorderLayout.CENTER);
 			frame.add(new JLabel("Copyright 2014, Smart Energy Systems Group, Chair for Software & Systems Engineering, Technische Universität München"), BorderLayout.PAGE_END);
 			frame.pack();
 			frame.setVisible(true);

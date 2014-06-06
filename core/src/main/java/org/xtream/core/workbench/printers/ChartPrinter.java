@@ -37,7 +37,15 @@ public class ChartPrinter<T extends Component> extends Part implements Printer<T
 	
 	public ChartPrinter()
 	{
-		super("Chart printer");
+		this(0, 0);
+	}
+	public ChartPrinter(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public ChartPrinter(int x, int y, int width, int height)
+	{
+		super("Chart printer", x, y, width, height);
 	}
 
 	@Override

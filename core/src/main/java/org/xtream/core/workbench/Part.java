@@ -13,34 +13,54 @@ public abstract class Part
 	private String title;
 	private Icon icon;
 	private JPanel panel;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
 	
-	public Part(String title)
+	public Part(String title, int x, int y, int width, int height)
 	{
-		this(title, Part.class.getClassLoader().getResource("part.png"));
+		this(title, Part.class.getClassLoader().getResource("part.png"), x, y, width, height);
 	}
-	public Part(String title, URL icon)
+	public Part(String title, URL icon, int x, int y, int width, int height)
 	{
 		this.title = title;
 		this.icon = new ImageIcon(icon);
 		this.panel = new JPanel(new GridLayout(1, 1));
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
 	}
 	
 	public String getTitle()
 	{
 		return title;
 	}
-	protected void setTitle(String title)
-	{
-		this.title = title;
-	}
 	
 	public Icon getIcon()
 	{
 		return icon;
 	}
-	protected void setIcon(Icon icon)
+	
+	public int getX()
 	{
-		this.icon = icon;
+		return x;
+	}
+	
+	public int getY()
+	{
+		return y;
+	}
+	
+	public int getWidth()
+	{
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
 	}
 	
 	public JPanel getPanel()
