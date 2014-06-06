@@ -1,16 +1,17 @@
 package org.xtream.core.workbench.printers;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.util.concurrent.Callable;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Part;
 
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
@@ -19,6 +20,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.shadow.DirectionalLightShadowFilter;
@@ -32,6 +34,10 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 	private class TestApplication extends SimpleApplication
 	{
 		private static final int SHADOWMAP_SIZE = 2048;
+		
+		private Geometry boxGeometry;
+		private Geometry sphereGeometry;
+		private Geometry planeGeometry;
 		
 		public TestApplication()
 		{
@@ -103,40 +109,39 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 			black.setColor("Specular",ColorRGBA.Black);
 			
 			// Box
-			{
-				Box box = new Box(1,1,1);
-				
-				Geometry geometry = new Geometry("Box", box);
-				geometry.setMaterial(blue);
-				geometry.setLocalTranslation(-2f, 1f, 2f);
-				geometry.setShadowMode(ShadowMode.Cast);
-				
-				rootNode.attachChild(geometry);
-			}
+			Box box = new Box(1,1,1);
+			
+			boxGeometry = new Geometry("Box", box);
+			boxGeometry.setMaterial(blue);
+			boxGeometry.setLocalTranslation(-2f, 1f, 2f);
+			boxGeometry.setShadowMode(ShadowMode.Cast);
+			
+			rootNode.attachChild(boxGeometry);
 			
 			// Sphere
-			{
-				Sphere sphere = new Sphere(20, 20, 1);
-				
-				Geometry geometry = new Geometry("Sphere", sphere);
-				geometry.setMaterial(red);
-				geometry.setLocalTranslation(2f, 1f, -2f);
-				geometry.setShadowMode(ShadowMode.Cast);
-				
-				rootNode.attachChild(geometry);
-			}
+			Sphere sphere = new Sphere(20, 20, 1);
+			
+			sphereGeometry = new Geometry("Sphere", sphere);
+			sphereGeometry.setMaterial(red);
+			sphereGeometry.setLocalTranslation(2f, 1f, -2f);
+			sphereGeometry.setShadowMode(ShadowMode.Cast);
+			
+			rootNode.attachChild(sphereGeometry);
 			
 			// Plane
-			{
-				Box box = new Box(10f, 0.5f, 10f);
-				
-				Geometry geometry = new Geometry("Box", box);
-				geometry.setMaterial(white);
-				geometry.setLocalTranslation(0f, -0.5f, 0f);
-				geometry.setShadowMode(ShadowMode.Receive);
-				
-				rootNode.attachChild(geometry);
-			}
+			Box plane = new Box(10f, 0.5f, 10f);
+			
+			planeGeometry = new Geometry("Box", plane);
+			planeGeometry.setMaterial(white);
+			planeGeometry.setLocalTranslation(0f, -0.5f, 0f);
+			planeGeometry.setShadowMode(ShadowMode.Receive);
+			
+			rootNode.attachChild(planeGeometry);
+		}
+		
+		public void shuffle()
+		{
+			planeGeometry.setLocalTranslation((float) Math.random(), (float) Math.random(), (float) Math.random());
 		}
 	}
 
@@ -153,19 +158,37 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		super("Animation printer", x, y, width, height);
 		
 		AppSettings settings = new AppSettings(true);
-		settings.setWidth(640);
-		settings.setHeight(480);
 		settings.setUseInput(false);
 		
-		Application app = new TestApplication();
+		final TestApplication app = new TestApplication();
+		app.setPauseOnLostFocus(false);
 		app.setSettings(settings);
 		app.createCanvas();
+		app.startCanvas();
 		
 		JmeCanvasContext ctx = (JmeCanvasContext) app.getContext();
 		ctx.setSystemListener(app);
-		ctx.getCanvas().setPreferredSize(new Dimension(640, 480));
 		
-		JSlider slider = new JSlider(0, 95);
+		JSlider slider = new JSlider(0, 95, 0);
+		slider.addChangeListener(new ChangeListener()
+			{
+				@Override
+				public void stateChanged(ChangeEvent e)
+				{
+					app.enqueue(
+						new Callable<Spatial>()
+						{
+							@Override
+							public Spatial call() throws Exception
+							{
+								app.shuffle();
+								return null;
+							}
+						}
+					);
+				}
+			}
+		);
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(ctx.getCanvas(), BorderLayout.CENTER);

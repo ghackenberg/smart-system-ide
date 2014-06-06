@@ -73,6 +73,8 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 			
 			table.getColumn(column).setPreferredWidth(width);
 		}
+		
+		table.collapseAll();
 	}
 
 }
