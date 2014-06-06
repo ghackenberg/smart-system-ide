@@ -58,8 +58,6 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 			table.getColumn(i + 1).setHeaderValue("" + i);
 		}
 		
-		table.expandAll();
-		
 		for (int column = 0; column < table.getColumnCount(); column++)
 		{
 			int width = 0;
@@ -73,8 +71,6 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 			
 			table.getColumn(column).setPreferredWidth(width);
 		}
-		
-		table.collapseAll();
 	}
 
 }
