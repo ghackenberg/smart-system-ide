@@ -15,6 +15,8 @@ import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
 public class TablePrinter<T extends Component> extends Part implements Printer<T>
 {
 	
+	private JXTreeTable table;
+	
 	public TablePrinter()
 	{
 		this(0, 0);
@@ -26,6 +28,12 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 	public TablePrinter(int x, int y, int width, int height)
 	{
 		super("Table printer", x, y, width, height);
+		
+		table = new JXTreeTable();
+		
+		JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		
+		getPanel().add(scroll);
 	}
 
 	@Override
@@ -38,8 +46,7 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 		
 		DefaultTreeTableModel model = new DefaultTreeTableModel(node);
 		
-		JXTreeTable table = new JXTreeTable(model);
-		
+		table.setTreeTableModel(model);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		
 		table.getColumn(0).setPreferredWidth(200);
@@ -66,14 +73,6 @@ public class TablePrinter<T extends Component> extends Part implements Printer<T
 			
 			table.getColumn(column).setPreferredWidth(width);
 		}
-		
-		// Initialize scroll
-		
-		JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
-		// Create tab
-		
-		getPanel().add(scroll);
 	}
 
 }
