@@ -34,7 +34,7 @@ import org.xtream.core.workbench.monitors.ProgressMonitor;
 import org.xtream.core.workbench.printers.AnimationPrinter;
 import org.xtream.core.workbench.printers.ChartPrinter;
 import org.xtream.core.workbench.printers.HistogramPrinter;
-import org.xtream.core.workbench.printers.SimpleMobilityGraphPrinter;
+import org.xtream.core.workbench.printers.GraphPrinter;
 import org.xtream.core.workbench.printers.TablePrinter;
 import org.xtream.core.workbench.viewers.GraphViewer;
 import org.xtream.core.workbench.viewers.TreeViewer;
@@ -57,7 +57,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new AnimationPrinter<>(3,0,2,1), new SimpleMobilityGraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new AnimationPrinter<>(3,0,2,1), new GraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
 	}
 	
 	@SuppressWarnings("unchecked")
