@@ -139,9 +139,9 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 			rootNode.attachChild(planeGeometry);
 		}
 		
-		public void shuffle()
+		public void shuffle(int timepoint)
 		{
-			planeGeometry.setLocalTranslation((float) Math.random(), (float) Math.random(), (float) Math.random());
+			planeGeometry.setLocalTranslation((float) Math.random() * timepoint, (float) Math.random() * timepoint, (float) Math.random() * timepoint);
 		}
 	}
 
@@ -169,22 +169,21 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		app.setSettings(settings);
 		app.createCanvas();
 		
-		JmeCanvasContext ctx = (JmeCanvasContext) app.getContext();
-		ctx.setSystemListener(app);
-		
-		JSlider slider = new JSlider(0, 95, 0);
+		final JSlider slider = new JSlider(0, 95, 0);
 		slider.addChangeListener(new ChangeListener()
 			{
 				@Override
 				public void stateChanged(ChangeEvent e)
 				{
+					final int timepoint = slider.getValue();
+					
 					app.enqueue(
 						new Callable<Spatial>()
 						{
 							@Override
 							public Spatial call() throws Exception
 							{
-								app.shuffle();
+								app.shuffle(timepoint);
 								return null;
 							}
 						}
@@ -192,6 +191,9 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 				}
 			}
 		);
+		
+		JmeCanvasContext ctx = (JmeCanvasContext) app.getContext();
+		ctx.setSystemListener(app);
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(ctx.getCanvas(), BorderLayout.CENTER);
