@@ -1,6 +1,10 @@
 package org.xtream.core.workbench.printers;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
@@ -161,7 +165,13 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		ctx.setSystemListener(app);
 		ctx.getCanvas().setPreferredSize(new Dimension(640, 480));
 		
-		getPanel().add(ctx.getCanvas());
+		JSlider slider = new JSlider(0, 95);
+		
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(ctx.getCanvas(), BorderLayout.CENTER);
+		panel.add(slider, BorderLayout.PAGE_END);
+		
+		getPanel().add(panel);
 	}
 
 	@Override
