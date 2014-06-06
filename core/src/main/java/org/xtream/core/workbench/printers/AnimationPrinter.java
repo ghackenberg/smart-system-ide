@@ -156,7 +156,11 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 	public AnimationPrinter(int x, int y, int width, int height)
 	{
 		super("Animation printer", x, y, width, height);
-		
+	}
+
+	@Override
+	public void print(T component, int timepoint)
+	{
 		AppSettings settings = new AppSettings(true);
 		settings.setUseInput(false);
 		
@@ -164,7 +168,6 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		app.setPauseOnLostFocus(false);
 		app.setSettings(settings);
 		app.createCanvas();
-		app.startCanvas();
 		
 		JmeCanvasContext ctx = (JmeCanvasContext) app.getContext();
 		ctx.setSystemListener(app);
@@ -195,12 +198,7 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		panel.add(slider, BorderLayout.PAGE_END);
 		
 		getPanel().add(panel);
-	}
-
-	@Override
-	public void print(T component, int timepoint)
-	{
-		
+		getPanel().repaint();
 	}
 
 }
