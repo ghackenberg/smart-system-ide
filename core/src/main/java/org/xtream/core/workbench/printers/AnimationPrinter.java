@@ -147,11 +147,7 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 	public AnimationPrinter(int x, int y, int width, int height)
 	{
 		super("Animation printer", x, y, width, height);
-	}
-
-	@Override
-	public void print(T component, int timepoint)
-	{
+		
 		AppSettings settings = new AppSettings(true);
 		settings.setWidth(640);
 		settings.setHeight(480);
@@ -166,6 +162,12 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		ctx.getCanvas().setPreferredSize(new Dimension(640, 480));
 		
 		getPanel().add(ctx.getCanvas());
+	}
+
+	@Override
+	public void print(T component, int timepoint)
+	{
+		
 	}
 
 }

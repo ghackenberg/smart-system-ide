@@ -17,6 +17,7 @@ public abstract class Part
 	private int y;
 	private int width;
 	private int height;
+	private Bus bus;
 	
 	public Part(String title, int x, int y, int width, int height)
 	{
@@ -66,6 +67,27 @@ public abstract class Part
 	public JPanel getPanel()
 	{
 		return panel;
+	}
+	
+	public void connect(Bus bus)
+	{
+		this.bus = bus;
+		
+		bus.components.add(this);
+	}
+	public void handle(Event event)
+	{
+		
+	}
+	public void trigger(Event event)
+	{
+		for (Part component : bus.components)
+		{
+			if (component != this)
+			{
+				component.handle(event);
+			}
+		}
 	}
 	
 }

@@ -120,7 +120,16 @@ public class Workbench<T extends Component>
 			toolbar.add(new JLabel("Memory"));
 			toolbar.add(memoryBar);
 			
-			// Tabs
+			// Bus
+			
+			Bus bus = new Bus();
+			
+			for (Part part : parts)
+			{
+				part.connect(bus);
+			}
+			
+			// Dock
 			
 			SplitDockGrid grid = new SplitDockGrid();
 			for (Part part : parts)
