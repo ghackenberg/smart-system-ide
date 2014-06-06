@@ -1,8 +1,6 @@
 package org.xtream.core.workbench.printers;
 
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -11,9 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.xtream.core.datatypes.Edge;
@@ -25,11 +20,12 @@ import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
+import org.xtream.core.workbench.panels.ImagePanel;
 
 public class GraphPrinter<T extends Component> extends Part implements Printer<T>
 {
 	
-	private JPanel panel;
+	private ImagePanel image;
 	
 	private Graph graph;
 	private Set<Float> colorValues;
@@ -52,9 +48,9 @@ public class GraphPrinter<T extends Component> extends Part implements Printer<T
 		
 		this.graph = graph;
 		
-		panel = new JPanel(new GridLayout(1, 1));
+		image = new ImagePanel();
 		
-		JScrollPane scroll = new JScrollPane(panel);
+		JScrollPane scroll = new JScrollPane(image);
 		
 		getPanel().add(scroll);
 	}
@@ -219,11 +215,7 @@ public class GraphPrinter<T extends Component> extends Part implements Printer<T
 			Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
 			Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tsvg -oMobilityGraph.svg MobilityGraph.dot").waitFor();
 			
-			BufferedImage image = ImageIO.read(new File("MobilityGraph.png"));
-			
-			panel.removeAll();
-			panel.add(new JLabel(new ImageIcon(image)));
-			panel.updateUI();
+			image.setImage(ImageIO.read(new File("MobilityGraph.png")));
 		}
 		catch (Exception e)
 		{
