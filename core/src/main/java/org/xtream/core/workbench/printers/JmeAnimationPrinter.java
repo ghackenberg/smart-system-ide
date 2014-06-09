@@ -28,7 +28,7 @@ import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.system.AppSettings;
 import com.jme3.system.JmeCanvasContext;
 
-public class AnimationPrinter<T extends Component> extends Part implements Printer<T>
+public class JmeAnimationPrinter<T extends Component> extends Part implements Printer<T>
 {
 	
 	private class TestApplication extends SimpleApplication
@@ -145,22 +145,18 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		}
 	}
 
-	public AnimationPrinter()
+	public JmeAnimationPrinter()
 	{
 		this(0, 0);
 	}
-	public AnimationPrinter(int x, int y)
+	public JmeAnimationPrinter(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public AnimationPrinter(int x, int y, int width, int height)
+	public JmeAnimationPrinter(int x, int y, int width, int height)
 	{
-		super("Animation printer", x, y, width, height);
-	}
-
-	@Override
-	public void print(T component, int timepoint)
-	{
+		super("JME3 animation printer", x, y, width, height);
+		
 		AppSettings settings = new AppSettings(true);
 		settings.setUseInput(false);
 		
@@ -200,7 +196,12 @@ public class AnimationPrinter<T extends Component> extends Part implements Print
 		panel.add(slider, BorderLayout.PAGE_END);
 		
 		getPanel().add(panel);
-		getPanel().repaint();
+	}
+
+	@Override
+	public void print(T component, int timepoint)
+	{
+		// TODO react to optimization finish
 	}
 
 }
