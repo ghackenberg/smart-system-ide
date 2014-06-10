@@ -39,7 +39,7 @@ public class LwjglAnimationPrinter<T extends Component> extends Part implements 
 					@Override
 					public void stateChanged(ChangeEvent event)
 					{
-						canvas.update(canvas.getGraphics());
+						canvas.repaint();
 					}
 				}
 			);

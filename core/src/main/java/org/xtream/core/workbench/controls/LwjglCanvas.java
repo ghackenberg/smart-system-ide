@@ -1,5 +1,6 @@
 package org.xtream.core.workbench.controls;
 
+import java.awt.Dimension;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -19,6 +20,8 @@ public class LwjglCanvas extends AWTGLCanvas
 	public LwjglCanvas() throws LWJGLException
 	{
 		super();
+		
+		setPreferredSize(new Dimension(640, 480));
 	}
 	
 	@Override

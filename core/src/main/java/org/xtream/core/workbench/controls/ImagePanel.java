@@ -1,5 +1,6 @@
 package org.xtream.core.workbench.controls;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -16,7 +17,9 @@ public class ImagePanel extends JPanel
 	{
 		this.image = image;
 		
-		repaint();
+		setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+		
+		update(getGraphics());
 	}
 	
 	@Override
