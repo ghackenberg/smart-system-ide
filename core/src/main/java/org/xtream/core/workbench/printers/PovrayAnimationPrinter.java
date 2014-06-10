@@ -6,7 +6,6 @@ import java.io.FileWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 
 import org.xtream.core.model.Component;
@@ -18,6 +17,7 @@ public class PovrayAnimationPrinter<T extends Component> extends Part implements
 {
 	
 	private ImagePanel image;
+	private JSlider slider;
 
 	public PovrayAnimationPrinter()
 	{
@@ -32,12 +32,10 @@ public class PovrayAnimationPrinter<T extends Component> extends Part implements
 		super("Pov-RAY animation printer", x, y, width, height);
 		
 		image = new ImagePanel();
-
-		JScrollPane scroll = new JScrollPane(image);
-		JSlider slider = new JSlider(0, 95, 0);
+		slider = new JSlider(0, 95, 0);
 		
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(scroll, BorderLayout.CENTER);
+		panel.add(image, BorderLayout.CENTER);
 		panel.add(slider, BorderLayout.PAGE_END);
 		
 		getPanel().add(panel);

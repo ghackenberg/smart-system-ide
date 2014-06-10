@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.JScrollPane;
 
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
@@ -50,9 +49,7 @@ public class GraphPrinter<T extends Component> extends Part implements Printer<T
 		
 		image = new ImagePanel();
 		
-		JScrollPane scroll = new JScrollPane(image);
-		
-		getPanel().add(scroll);
+		getPanel().add(image);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class Engine<T extends Component>
 	
 	public Engine(Class<T> type)
 	{
-		this(type, Runtime.getRuntime().availableProcessors());
+		this(type, Runtime.getRuntime().availableProcessors() - 1);
 	}
 	
 	public Engine(Class<T> type, int processors)

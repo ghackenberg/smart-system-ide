@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 
 import javax.swing.ImageIcon;
@@ -14,8 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.datatypes.Graph;
@@ -31,11 +28,10 @@ import org.xtream.core.optimizer.printers.CompositePrinter;
 import org.xtream.core.optimizer.viewers.CompositeViewer;
 import org.xtream.core.workbench.monitors.ChartMonitor;
 import org.xtream.core.workbench.monitors.ProgressMonitor;
-import org.xtream.core.workbench.printers.JmeAnimationPrinter;
 import org.xtream.core.workbench.printers.ChartPrinter;
-import org.xtream.core.workbench.printers.HistogramPrinter;
 import org.xtream.core.workbench.printers.GraphPrinter;
-import org.xtream.core.workbench.printers.PovrayAnimationPrinter;
+import org.xtream.core.workbench.printers.HistogramPrinter;
+import org.xtream.core.workbench.printers.LwjglAnimationPrinter;
 import org.xtream.core.workbench.printers.TablePrinter;
 import org.xtream.core.workbench.viewers.GraphViewer;
 import org.xtream.core.workbench.viewers.TreeViewer;
@@ -53,12 +49,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new JmeAnimationPrinter<>(3,0,2,1), new PovrayAnimationPrinter<>(3,0,2,1), new ChartPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new LwjglAnimationPrinter<>(3,0,2,1), new ChartPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new JmeAnimationPrinter<>(3,0,2,1), new PovrayAnimationPrinter<>(3,0,2,1), new GraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), new LwjglAnimationPrinter<>(3,0,2,1), new GraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -70,7 +66,7 @@ public class Workbench<T extends Component>
 		{
 			// Look and feel
 			
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
 			// Controls
 			
@@ -157,6 +153,7 @@ public class Workbench<T extends Component>
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setIconImage(icon.getImage());
 			
 			// Viewers
@@ -204,23 +201,7 @@ public class Workbench<T extends Component>
 			
 			engine.run(duration, samples, classes, randomness, allViewer, allMonitor, allPrinter);
 		}
-		catch (FileNotFoundException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (ClassNotFoundException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (InstantiationException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (UnsupportedLookAndFeelException e)
+		catch (Exception e)
 		{
 			throw new IllegalStateException(e);
 		}
