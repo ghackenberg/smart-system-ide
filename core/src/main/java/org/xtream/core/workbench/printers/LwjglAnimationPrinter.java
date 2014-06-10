@@ -5,6 +5,8 @@ import java.nio.FloatBuffer;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -104,26 +106,30 @@ public class LwjglAnimationPrinter<T extends Component> extends Part implements 
 
 				GL11.glPushMatrix();
 				{
-					GL11.glColor3f(0.5f,0.5f,1f);
+					GL11.glColor3f(0f,0f,1f);
 					new Sphere().draw(1f, 100, 100);
 				}
 				GL11.glPopMatrix();
 				
 				GL11.glPushMatrix();
 				{
-					GL11.glColor3f(1f,0.5f,0.5f);
-					GL11.glTranslatef(5f, 0f, -5f);
+					GL11.glColor3f(1f,0f,0f);
+					GL11.glTranslatef(5f * (float) Math.random(), 0f, -5f * (float) Math.random());
 					new Cylinder().draw(1f, 1f, 2f, 100, 100);
 				}	
 				GL11.glPopMatrix();
 				
 				GL11.glPushMatrix();
 				{
-					GL11.glColor3f(0.5f,1f,0.5f);
-					GL11.glTranslatef(-5f, 0f, 5f);
+					GL11.glColor3f(0f,1f,0f);
+					GL11.glTranslatef(-5f * (float) Math.random(), 0f, 5f * (float) Math.random());
 					new Disk().draw(1f, 2f, 100, 100);
 				}	
 				GL11.glPopMatrix();
+				
+				// Finish rendering
+				
+				GL11.glFinish();
 				
 				// Swap buffers
 				
@@ -156,6 +162,15 @@ public class LwjglAnimationPrinter<T extends Component> extends Part implements 
 		{
 			canvas = new LwjglCanvas();
 			slider = new JSlider(0, 95, 0);
+			slider.addChangeListener(new ChangeListener()
+				{
+					@Override
+					public void stateChanged(ChangeEvent event)
+					{
+						canvas.update(canvas.getGraphics());
+					}
+				}
+			);
 			
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(canvas, BorderLayout.CENTER);
