@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
@@ -32,22 +34,44 @@ public class PovrayAnimationPrinter<T extends Component> extends Part implements
 		super("Pov-RAY animation printer", x, y, width, height);
 		
 		image = new ImagePanel();
+		
 		slider = new JSlider(0, 95, 0);
+		slider.addChangeListener(new ChangeListener()
+			{
+				@Override
+				public void stateChanged(ChangeEvent e)
+				{
+					shuffle();
+				}
+			}
+		);
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(image, BorderLayout.CENTER);
 		panel.add(slider, BorderLayout.PAGE_END);
 		
 		getPanel().add(panel);
+	}
 
+	@Override
+	public void print(T component, int timepoint)
+	{
+		// TODO react to optimization finish
+	}
+
+	public void shuffle()
+	{
 		try
 		{
 			FileWriter out = new FileWriter("Frame.pov");
 			
 			out.write("#include \"colors.inc\"\n");
 			out.write("camera { location <10,10,10> look_at <0,0,0> }\n");
-			out.write("sphere { <0,0,0> 1 texture { pigment { color Yellow } } }\n");
-			out.write("light_source { <10,10,10> color White }\n");
+			out.write("plane { <0,1,0> 0 texture { pigment { color White } } }\n");
+			out.write("sphere { <0,1,0> 2 texture { pigment { color Red } } }\n");
+			out.write("box { <-5,0,5>, <-3,2,3> texture { pigment { color Blue } } }\n");
+			out.write("box { <5,0,-5>, <3,2,-3> texture { pigment { color Green } } }\n");
+			out.write("light_source { <0,20,10> color White }\n");
 			
 			out.close();
 		
@@ -59,12 +83,6 @@ public class PovrayAnimationPrinter<T extends Component> extends Part implements
 		{
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void print(T component, int timepoint)
-	{
-		// TODO react to optimization finish
 	}
 
 }

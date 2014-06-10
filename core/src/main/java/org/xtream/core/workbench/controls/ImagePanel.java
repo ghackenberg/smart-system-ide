@@ -19,7 +19,7 @@ public class ImagePanel extends JPanel
 		
 		setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
 		
-		update(getGraphics());
+		repaint();
 	}
 	
 	@Override
@@ -39,12 +39,12 @@ public class ImagePanel extends JPanel
 			
 			if (imageRatio > panelRatio)
 			{
-				height /= imageRatio;
+				height = (int) (width / imageRatio);
 				y = (g.getClipBounds().height - height) / 2;
 			}
 			else
 			{
-				width *= imageRatio;
+				width = (int) (height * imageRatio);
 				x = (g.getClipBounds().width - width) / 2;
 			}
 			
