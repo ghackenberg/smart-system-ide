@@ -1,15 +1,17 @@
 package org.xtream.core.workbench.printers;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.nio.FloatBuffer;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Cylinder;
+import org.lwjgl.util.glu.Disk;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.glu.Sphere;
 import org.xtream.core.model.Component;
@@ -19,52 +21,24 @@ import org.xtream.core.workbench.Part;
 public class LwjglAnimationPrinter<T extends Component> extends Part implements Printer<T>
 {
 	
-	private Canvas canvas;
-	private JSlider slider;
+	class LwjglCanvas extends AWTGLCanvas
+	{
 
-	public LwjglAnimationPrinter()
-	{
-		this(0, 0);
-	}
-	public LwjglAnimationPrinter(int x, int y)
-	{
-		this(x, y, 1, 1);
-	}
-	public LwjglAnimationPrinter(int x, int y, int width, int height)
-	{
-		super("LWJGL animation printer", x, y, width, height);
+		private static final long serialVersionUID = 8952851694848706195L;
 		
-		canvas = new Canvas();
-		slider = new JSlider(0, 95, 0);
-		
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(canvas, BorderLayout.CENTER);
-		panel.add(slider, BorderLayout.PAGE_END);
-		
-		getPanel().add(panel);
-	}
-
-	@Override
-	public void print(T component, int timepoint)
-	{
-		try
+		public LwjglCanvas() throws LWJGLException
 		{
-			Display.setParent(canvas);
-			Display.setResizable(true);
-			Display.create();
-			
-			// Projection matrix
-			
-			GL11.glMatrixMode(GL11.GL_PROJECTION);
-			GL11.glLoadIdentity();
-			GLU.gluPerspective(45f, (float)Display.getWidth()/Display.getHeight(), 1f, 1000f);
-			
+			super();
+		}
+		
+		@Override
+		public void initGL()
+		{
 			// Clear framebuffer
 			
 			GL11.glClearColor(1f, 1f, 1f, 0f);
 			GL11.glClearDepth(1f);
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			
 			// Define light
 
@@ -99,26 +73,106 @@ public class LwjglAnimationPrinter<T extends Component> extends Part implements 
 			GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 			
 			GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE);
+		}
+		
+		@Override
+		public void paintGL()
+		{
+			try
+			{
+				// Clear framebuffer
+				
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+				
+				// Viewport
+				
+				GL11.glViewport(0, 0, getWidth(), getHeight());
+				
+				// Projection matrix
+				
+				GL11.glMatrixMode(GL11.GL_PROJECTION);
+				GL11.glLoadIdentity();
+				GLU.gluPerspective(45f, (float)getWidth()/getHeight(), 1f, 1000f);
+				
+				// Modelview matrix
+				
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				GL11.glLoadIdentity();
+				GLU.gluLookAt(10f, 10f, 10f, 0f, 0f, 0f, 0f, 1f, 0f);
+				
+				// Draw sphere
+
+				GL11.glPushMatrix();
+				{
+					GL11.glColor3f(0.5f,0.5f,1f);
+					new Sphere().draw(1f, 100, 100);
+				}
+				GL11.glPopMatrix();
+				
+				GL11.glPushMatrix();
+				{
+					GL11.glColor3f(1f,0.5f,0.5f);
+					GL11.glTranslatef(5f, 0f, -5f);
+					new Cylinder().draw(1f, 1f, 2f, 100, 100);
+				}	
+				GL11.glPopMatrix();
+				
+				GL11.glPushMatrix();
+				{
+					GL11.glColor3f(0.5f,1f,0.5f);
+					GL11.glTranslatef(-5f, 0f, 5f);
+					new Disk().draw(1f, 2f, 100, 100);
+				}	
+				GL11.glPopMatrix();
+				
+				// Swap buffers
+				
+				swapBuffers();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	private LwjglCanvas canvas;
+	private JSlider slider;
+
+	public LwjglAnimationPrinter()
+	{
+		this(0, 0);
+	}
+	public LwjglAnimationPrinter(int x, int y)
+	{
+		this(x, y, 1, 1);
+	}
+	public LwjglAnimationPrinter(int x, int y, int width, int height)
+	{
+		super("LWJGL animation printer", x, y, width, height);
+		
+		try
+		{
+			canvas = new LwjglCanvas();
+			slider = new JSlider(0, 95, 0);
 			
-			// Modelview matrix
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(canvas, BorderLayout.CENTER);
+			panel.add(slider, BorderLayout.PAGE_END);
 			
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			GLU.gluLookAt(10f, 10f, 10f, 0f, 0f, 0f, 0f, 1f, 0f);
-			
-			// Draw sphere
-			
-			GL11.glColor3f(0.5f,0.5f,1.0f);
-			new Sphere().draw(1f, 20, 20);
-			
-			// Update display
-			
-			Display.update(false);
+			getPanel().add(panel);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void print(T component, int timepoint)
+	{
+		// TODO handle optimization finish
 	}
 
 }
