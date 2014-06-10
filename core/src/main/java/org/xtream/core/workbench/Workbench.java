@@ -60,7 +60,7 @@ public class Workbench<T extends Component>
 	@SuppressWarnings("unchecked")
 	private Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Part... parts)
 	{
-		engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() / 2);
+		engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() - 1);
 		
 		try
 		{	
