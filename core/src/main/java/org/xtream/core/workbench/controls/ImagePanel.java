@@ -1,4 +1,4 @@
-package org.xtream.core.workbench.panels;
+package org.xtream.core.workbench.controls;
 
 import java.awt.Graphics;
 import java.awt.Image;

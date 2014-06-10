@@ -18,8 +18,8 @@ import org.xtream.core.model.Port;
 import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
+import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.SelectionEvent;
-import org.xtream.core.workbench.panels.ImagePanel;
 
 public class GraphPrinter<T extends Component> extends Part implements Printer<T>
 {

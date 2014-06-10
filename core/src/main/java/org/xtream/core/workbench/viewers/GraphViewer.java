@@ -15,8 +15,8 @@ import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
+import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.SelectionEvent;
-import org.xtream.core.workbench.panels.ImagePanel;
 
 public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 {
