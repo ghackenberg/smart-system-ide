@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
-import javax.swing.JScrollPane;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -38,9 +37,7 @@ public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 
 		image = new ImagePanel();
 		
-		JScrollPane scroll = new JScrollPane(image);
-		
-		getPanel().add(scroll);
+		getPanel().add(image);
 	}
 
 	@Override
