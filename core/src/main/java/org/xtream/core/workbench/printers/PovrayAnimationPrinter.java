@@ -11,7 +11,7 @@ import javax.swing.JSlider;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Part;
-import org.xtream.core.workbench.panels.ImagePanel;
+import org.xtream.core.workbench.controls.ImagePanel;
 
 public class PovrayAnimationPrinter<T extends Component> extends Part implements Printer<T>
 {

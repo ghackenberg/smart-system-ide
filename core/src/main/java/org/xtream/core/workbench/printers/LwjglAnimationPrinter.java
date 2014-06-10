@@ -10,7 +10,7 @@ import javax.swing.event.ChangeListener;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Part;
-import org.xtream.core.workbench.panels.LwjglCanvas;
+import org.xtream.core.workbench.controls.LwjglCanvas;
 
 public class LwjglAnimationPrinter<T extends Component> extends Part implements Printer<T>
 {
