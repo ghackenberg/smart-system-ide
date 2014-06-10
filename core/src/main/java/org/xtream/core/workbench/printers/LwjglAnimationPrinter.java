@@ -33,6 +33,7 @@ public class LwjglAnimationPrinter<T extends Component> extends Part implements 
 		try
 		{
 			canvas = new LwjglCanvas();
+			
 			slider = new JSlider(0, 95, 0);
 			slider.addChangeListener(new ChangeListener()
 				{
