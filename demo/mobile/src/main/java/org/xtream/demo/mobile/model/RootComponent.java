@@ -12,9 +12,9 @@ import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
 {
-	public static int DURATION = 120;
-	public static int COVERAGE = 150;
-	public static int CLASSES = 40;
+	public static int DURATION = 50;
+	public static int COVERAGE = 50;
+	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.0;
 
 	// Graph
