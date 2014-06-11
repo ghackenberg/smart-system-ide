@@ -1,12 +1,25 @@
 package org.xtream.demo.mobile.model.vehicles;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.xtream.core.datatypes.Edge;
+import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractLogicsComponent;
 
 public class LogicsComponent extends AbstractLogicsComponent
 {
+	
+	public LogicsComponent(Graph graph) 
+	{
+		this.graph = graph;
+	}
+	
+	// Parameters
+	
+	private Graph graph;
 	
 	// Inputs
 	
@@ -23,6 +36,7 @@ public class LogicsComponent extends AbstractLogicsComponent
 	public Port<Edge> positionTargetOutput = new Port<>();
 	public Port<Double> speedOutput = new Port<>();
 	public Port<Double> speedAbsoluteOutput = new Port<>();
+	
 	
 	// Expressions
 	
@@ -49,14 +63,32 @@ public class LogicsComponent extends AbstractLogicsComponent
 		}
 	};
 	
+
 	public Expression<Edge> positionTargetExpression = new Expression<Edge>(positionTargetOutput)	
 	{
+		private List<Edge> edgeList = new LinkedList<Edge>();
+		
 		@Override 
 		public Edge evaluate(int timepoint)
 		{
+
 			if (positionTraversedLengthInput.get(timepoint) >= positionEdgeLengthInput.get(timepoint))
 			{
-				return positionOutgoingEdgesInput.get(timepoint);	
+				
+				if (edgeList.isEmpty())
+				{
+					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
+					edgeList.add(destinationPositionInput.get(timepoint));
+					
+					return edgeList.get(0);
+				}
+				else 
+				{
+					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
+					
+					return edgeList.get(0);
+				}
+			
 			}
 			else 
 			{

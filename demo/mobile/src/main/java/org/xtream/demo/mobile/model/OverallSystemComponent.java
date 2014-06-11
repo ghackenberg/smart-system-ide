@@ -28,17 +28,60 @@ public class OverallSystemComponent extends EnergyModuleComponent<PhysicsCompone
 		
 		// Time, Power
 		
-		modules[0] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[1] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[2] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[3] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[4] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[5] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[6] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[7] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[8] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
-		modules[9] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 10., 1.);
+		/*
+		modules[0] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);		
+		modules[1] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);		
+		modules[2] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);		
+		modules[3] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);		
+		modules[4] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);		
+		modules[5] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);	
+		modules[6] = new VehicleComponent(graph, "OriginA", "DestinationA", 100., 1.);	
 		
+		modules[7] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);		
+		modules[8] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		modules[9] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		modules[10] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		modules[11] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		modules[12] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		modules[13] = new VehicleComponent(graph, "OriginB", "DestinationB", 100., 1.);
+		
+		modules[14] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);		
+		modules[15] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		modules[16] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		modules[17] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		modules[18] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		modules[19] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		modules[20] = new VehicleComponent(graph, "OriginC", "DestinationC", 100., 1.);
+		
+		*/
+		
+		
+		for (int i = 0; i < size; i++) 
+		{
+			if (i<40) {
+				modules[i] = new VehicleComponent(graph, "OriginA", "DestinationA", 200., 1.);		
+			}
+			else if(i >= 40 && i < 80 )
+			{
+				modules[i] = new VehicleComponent(graph, "OriginB", "DestinationB", 200., 1.);		
+			}
+			else {
+				modules[i] = new VehicleComponent(graph, "OriginC", "DestinationC", 200., 1.);		
+			}
+		}
+		
+		
+		/*
+		for (int i = 0; i < size; i++) 
+		{
+			modules[i] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 100., 1.);
+		}
+		
+		for (int i = 0; i < size; i++) 
+		{
+			modules[i] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 1., 1.);
+		}
+		*/
 		
 		/*
 		modules[0] = new VehicleComponent(graph, "OriginOrigin", "DestinationDestination", 1., 10.);

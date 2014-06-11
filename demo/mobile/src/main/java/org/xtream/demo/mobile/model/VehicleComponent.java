@@ -20,7 +20,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 
 	public VehicleComponent(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight)
 	{
-		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(), new ConstraintsComponent(), new QualitiesComponent(graph), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
+		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(graph), new ConstraintsComponent(), new QualitiesComponent(graph), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
 		
 		// Previews
 		
@@ -39,6 +39,9 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	public Port<Double> powerAggregateOutput = new Port<>();
 	public Port<Double> timeCostOutput = new Port<>();
 	public Port<Double> powerCostOutput = new Port<>();
+	public Port<Edge> startPositionOutput = new Port<>();
+	public Port<Edge> destinationPositionOutput = new Port<>();
+	
 	
 	// Channels
 	
@@ -52,13 +55,16 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	public ChannelExpression<Double> timeCosts = new ChannelExpression<>(timeCostOutput, qualities.timeCostsOutput);
 	public ChannelExpression<Double> powerCosts = new ChannelExpression<>(powerCostOutput, qualities.powerCostsOutput);
 	
+	public ChannelExpression<Edge> startPosition = new ChannelExpression<>(startPositionOutput, physics.startPositionOutput);
+	public ChannelExpression<Edge> destinationPosition = new ChannelExpression<>(destinationPositionOutput, physics.destinationPositionOutput);
+	
 	// Channels physics -> overallsystem
 	public ChannelExpression<Double> power = new ChannelExpression<>(powerOutput, physics.powerOutput);
 	
 	// Channels physics -> logics
 	
-	public ChannelExpression<Edge> startPosition = new ChannelExpression<>(logics.startPositionInput, physics.startPositionOutput);
-	public ChannelExpression<Edge> destinationPosition = new ChannelExpression<>(logics.destinationPositionInput, physics.destinationPositionOutput);
+	public ChannelExpression<Edge> startPosition2 = new ChannelExpression<>(logics.startPositionInput, physics.startPositionOutput);
+	public ChannelExpression<Edge> destinationPosition2 = new ChannelExpression<>(logics.destinationPositionInput, physics.destinationPositionOutput);
 	public ChannelExpression<Edge> positionOutgoingEdges = new ChannelExpression<>(logics.positionOutgoingEdgesInput, physics.positionOutgoingEdgesOutput);
 	public ChannelExpression<Double> positionTraversedLength2 = new ChannelExpression<>(logics.positionTraversedLengthInput, physics.positionTraversedLengthOutput);
 	public ChannelExpression<Double> positionEdgeLength = new ChannelExpression<>(logics.positionEdgeLengthInput, physics.positionEdgeLengthOutput);
