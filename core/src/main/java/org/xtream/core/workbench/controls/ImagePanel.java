@@ -1,5 +1,6 @@
 package org.xtream.core.workbench.controls;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,6 +13,11 @@ public class ImagePanel extends JPanel
 	private static final long serialVersionUID = -556945236338956136L;
 	
 	private Image image;
+	
+	public ImagePanel()
+	{
+		setBackground(Color.WHITE);
+	}
 	
 	public void setImage(Image image)
 	{
