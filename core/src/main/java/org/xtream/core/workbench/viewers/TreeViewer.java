@@ -1,5 +1,6 @@
 package org.xtream.core.workbench.viewers;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -10,8 +11,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
-import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
-import org.xtream.core.workbench.nodes.ChartComponentTreeNode;
+import org.xtream.core.workbench.nodes.ComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class TreeViewer<T extends Component> extends Part implements Viewer<T>
@@ -33,7 +33,7 @@ public class TreeViewer<T extends Component> extends Part implements Viewer<T>
 		
 		tree = new JTree();
 		
-		getPanel().add(tree);
+		getPanel().add(new JScrollPane(tree));
 	}
 
 	@Override
@@ -42,14 +42,14 @@ public class TreeViewer<T extends Component> extends Part implements Viewer<T>
 		// Tree pane
 		final Part self = this;
 		
-		tree.setModel(new DefaultTreeModel(new ChartComponentTreeNode(null, root)));
+		tree.setModel(new DefaultTreeModel(new ComponentTreeNode(null, root)));
 		tree.setCellRenderer(new ComponentTreeCellRenderer());
 		tree.addTreeSelectionListener(new TreeSelectionListener()
 			{
 				@Override
 				public void valueChanged(TreeSelectionEvent event)
 				{
-					AbstractComponentTreeNode node = (AbstractComponentTreeNode) tree.getLastSelectedPathComponent();
+					ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
 					
 					trigger(new SelectionEvent(self, node.component));
 				}

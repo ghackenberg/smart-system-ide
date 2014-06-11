@@ -7,17 +7,22 @@ import javax.swing.tree.TreeNode;
 
 import org.xtream.core.model.Component;
 
-public abstract class AbstractComponentTreeNode implements TreeNode
+public class ComponentTreeNode implements TreeNode
 {
 	
-	public AbstractComponentTreeNode parent;
+	public ComponentTreeNode parent;
 	public Component component;
-	public Vector<AbstractComponentTreeNode> children = new Vector<>();
+	public Vector<ComponentTreeNode> children = new Vector<>();
 	
-	public AbstractComponentTreeNode(AbstractComponentTreeNode parent, Component component)
+	public ComponentTreeNode(ComponentTreeNode parent, Component component)
 	{
 		this.parent = parent;
 		this.component = component;
+		
+		for (Component child : component.components)
+		{
+			children.addElement(new ComponentTreeNode(this, child));
+		}
 	}
 	
 	@Override
@@ -47,9 +52,9 @@ public abstract class AbstractComponentTreeNode implements TreeNode
 	@Override
 	public int getIndex(TreeNode node)
 	{
-		if (node instanceof AbstractComponentTreeNode)
+		if (node instanceof ComponentTreeNode)
 		{
-			AbstractComponentTreeNode childComponent = (AbstractComponentTreeNode) node;
+			ComponentTreeNode childComponent = (ComponentTreeNode) node;
 			
 			for (int i = 0; i < children.size(); i++)
 			{

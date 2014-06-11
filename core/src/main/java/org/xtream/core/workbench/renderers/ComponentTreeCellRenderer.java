@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.xtream.core.workbench.nodes.AbstractComponentTreeNode;
+import org.xtream.core.workbench.nodes.ComponentTreeNode;
 
 public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -24,7 +24,7 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 	{
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row,hasFocus);
 		
-		AbstractComponentTreeNode node = (AbstractComponentTreeNode) value;
+		ComponentTreeNode node = (ComponentTreeNode) value;
 		
 		if (node.component.icon != null)
 		{	
