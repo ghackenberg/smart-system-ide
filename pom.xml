@@ -35,11 +35,6 @@
 			<name>imagej public</name>
 			<url>http://maven.imagej.net/content/repositories/public/</url>
 		</repository>
-		<repository>
-			<id>jogamp-public</id>
-			<name>jogamp public</name>
-			<url>http://jogamp.org/deployment/maven/</url>
-		</repository>
 	</repositories>
 	
 </project>
