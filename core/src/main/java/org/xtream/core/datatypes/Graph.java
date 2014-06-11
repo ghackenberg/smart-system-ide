@@ -34,6 +34,7 @@ public class Graph
 	private Map<String, DefaultWeightedEdge> graphEdgeMap = new HashMap<String, DefaultWeightedEdge>();
 	private Map<DefaultWeightedEdge, Edge> interEdgeMap = new HashMap<DefaultWeightedEdge, Edge>();
 	private Map<Integer, Double> maxCostMap = new HashMap<Integer, Double>();
+	private Map<Integer, List<GraphPath<Node, DefaultWeightedEdge>>> kShortestPathsMap = new HashMap<Integer, List<GraphPath<Node, DefaultWeightedEdge>>>();
 	
 	private String name;
 	
@@ -349,6 +350,38 @@ public class Graph
 		throw new IllegalStateException("ShortestPath not found: (" + source + "," + target + ")");
 	}
 	
+	public List<Edge> getKShortestPath(Node source, Node target, int k)
+	{
+		System.out.println(source + "" + target + "" + k);
+		List<Edge> edgeList = new LinkedList<Edge>();
+		
+		if (source.equals(target)) 
+		{
+			edgeList.add(getConnectingEdge(source, target));
+			
+			return edgeList;
+		}
+		
+		KShortestPaths<Node, DefaultWeightedEdge> kShortestPaths = new KShortestPaths<Node, DefaultWeightedEdge>(graph, source, k);
+		
+		List<GraphPath<Node, DefaultWeightedEdge>> list = kShortestPaths.getPaths(target);
+		
+		if (list != null) 
+		{
+			GraphPath<Node, DefaultWeightedEdge> last = list.get(list.size()-1);
+			
+			for (DefaultWeightedEdge e : last.getEdgeList())
+			{
+				edgeList.add(interEdgeMap.get(e));
+			}
+			
+			return edgeList;
+		}
+		
+		throw new IllegalStateException("KShortestPath not found: (" + source + "," + target + ")");
+		
+	}
+	
 	public double getShortestPathCost(Node source, Node target)
 	{
 		if (source.equals(target)) 
@@ -449,6 +482,46 @@ public class Graph
 	public String toString()
 	{
 		return name;
+	}
+
+	public List<Edge> generatePath(Node source, Node target) {
+	
+		List<Edge> edgeList = new LinkedList<Edge>();
+		int alternatives = 2;
+		
+		if (source.equals(target)) 
+		{
+			edgeList.add(getConnectingEdge(source, target));
+			
+			return edgeList;
+		}
+		
+		int hashValue = Objects.hash(source, target, alternatives);
+		List<GraphPath<Node, DefaultWeightedEdge>> list;
+		
+		if (!kShortestPathsMap.containsKey(hashValue)) 
+		{
+			KShortestPaths<Node, DefaultWeightedEdge> kShortestPaths = new KShortestPaths<Node, DefaultWeightedEdge>(graph, source, alternatives);
+			list = kShortestPaths.getPaths(target);
+			kShortestPathsMap.put(hashValue, list);
+		}
+		
+		else {
+			list = kShortestPathsMap.get(hashValue);
+		}
+		
+		if (list != null) 
+		{
+			GraphPath<Node, DefaultWeightedEdge> last = list.get((int) (list.size()*(Math.random()*0.51)));
+			
+			for (DefaultWeightedEdge e : last.getEdgeList())
+			{
+				edgeList.add(interEdgeMap.get(e));
+			}
+			return edgeList;
+		}
+		
+		throw new IllegalStateException("KShortestPath not found: (" + source + "," + target + ")");
 	}
 }
 	
