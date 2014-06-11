@@ -12,15 +12,15 @@ import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
 {
-	public static int DURATION = 50;
-	public static int COVERAGE = 50;
-	public static int CLASSES = 50;
+	public static int DURATION = 120;
+	public static int COVERAGE = 15;
+	public static int CLASSES = 40;
 	public static double RANDOMNESS = 0.0;
 
 	// Graph
 	
 	// differing heights and distances
-	public static Graph graph = new Graph("graph1", "mapSmallDisproportional.xml");
+	public static Graph graph = new Graph("graph1", "TESTMAP.xml");
 	
 	public static void main(String[] args)
 	{
@@ -36,7 +36,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public OverallSystemComponent overallSystem = new OverallSystemComponent(10, graph);
+	public OverallSystemComponent overallSystem = new OverallSystemComponent(120, graph);
 	
 	// Objectives
 	
