@@ -1,10 +1,10 @@
 package org.xtream.core.model.expressions;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
-import org.xtream.core.model.builders.SetBuilder;
 
 public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpression<T>
 {
@@ -19,11 +19,17 @@ public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpre
 		this.set = set;
 	}
 	
-	public ConstantNonDeterministicExpression(Port<T> port, SetBuilder<T> builder)
+	@SafeVarargs
+	public ConstantNonDeterministicExpression(Port<T> port, T... values)
 	{
 		super(port);
 		
-		this.set = builder.set;
+		set = new HashSet<>();
+		
+		for (T value : values)
+		{
+			set.add(value);
+		}
 	}
 
 	@Override

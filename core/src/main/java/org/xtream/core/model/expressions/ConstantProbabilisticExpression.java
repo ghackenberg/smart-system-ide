@@ -1,10 +1,11 @@
 package org.xtream.core.model.expressions;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.xtream.core.model.Pair;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
-import org.xtream.core.model.builders.MapBuilder;
 
 public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<T>
 {
@@ -12,11 +13,24 @@ public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<
 	@Constant
 	public Map<T, Double> map;
 	
-	public ConstantProbabilisticExpression(Port<T> port, MapBuilder<T> builder)
+	public ConstantProbabilisticExpression(Port<T> port, Map<T, Double> map)
 	{
 		super(port);
 		
-		this.map = builder.map;
+		this.map = map;
+	}
+	
+	@SafeVarargs
+	public ConstantProbabilisticExpression(Port<T> port, Pair<T>... values)
+	{
+		super(port);
+		
+		map = new HashMap<>();
+		
+		for (Pair<T> pair : values)
+		{
+			map.put(pair.key, pair.value);
+		}
 	}
 
 	@Override

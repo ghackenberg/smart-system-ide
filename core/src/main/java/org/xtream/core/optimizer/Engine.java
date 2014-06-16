@@ -59,7 +59,7 @@ public class Engine<T extends Component>
 	{
 		// Start monitor
 		
-		monitor.start(roots.get(0));
+		monitor.start();
 		
 		// Prepare initial state
 		
@@ -321,7 +321,7 @@ public class Engine<T extends Component>
 		
 		// Stop monitor
 		
-		monitor.stop(roots.get(0), timepoint);
+		monitor.stop();
 	}
 
 }

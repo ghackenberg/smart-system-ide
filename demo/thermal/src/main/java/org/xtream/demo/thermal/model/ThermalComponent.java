@@ -39,6 +39,38 @@ public abstract class ThermalComponent extends EnergyComponent
 	
 	public Chart temperatureChart = new Chart(minimumOutput, temperatureOutput, maximumOutput);
 	
+	// Nodes
+	
+	/*
+	public Node transform = new Translate()
+	{
+		
+	};
+	public Node house = new Box()
+	{
+		
+	};
+	public Node temperatureBar = new Box()
+	{
+		
+	};
+	public Node group = new Group()
+	{
+		public Node transform = new Translate()
+		{
+			
+		};
+		public Node box = new Box()
+		{
+			
+		};
+		public Node cylinder = new Cylinder()
+		{
+			
+		};
+	};
+	*/
+	
 	// Expressions
 	
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
