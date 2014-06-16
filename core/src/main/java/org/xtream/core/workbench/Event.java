@@ -1,11 +1,13 @@
 package org.xtream.core.workbench;
 
-public class Event
+import org.xtream.core.model.Component;
+
+public class Event<T extends Component>
 {
 	
-	public Part source;
+	public Part<T> source;
 	
-	public Event(Part source)
+	public Event(Part<T> source)
 	{
 		this.source = source;
 	}

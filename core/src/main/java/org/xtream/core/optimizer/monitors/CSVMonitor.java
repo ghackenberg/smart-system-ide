@@ -5,12 +5,14 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
+import org.xtream.core.optimizer.Statistics;
 
-public class CSVMonitor implements Monitor
+public class CSVMonitor<T extends Component> implements Monitor<T>
 {
 	
 	private PrintStream out;
@@ -27,7 +29,7 @@ public class CSVMonitor implements Monitor
 	}
 
 	@Override
-	public void start()
+	public void start(T root)
 	{
 		start = System.currentTimeMillis();
 		
@@ -35,20 +37,20 @@ public class CSVMonitor implements Monitor
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{
 		NumberFormat format = NumberFormat.getInstance();
 		
-		out.print(timepoint + ";" + generatedStates + ";" + validStates + ";" + dominantStates + ";" + equivalenceClasses.size() + ";");
-		out.print(format.format(minObjective) + ";" + format.format(avgObjective) + ";" + format.format(maxObjective) + ";");
+		out.print(timepoint + ";" + statistics.generatedStates + ";" + statistics.validStates + ";" + statistics.dominantStates + ";" + equivalenceClasses.size() + ";");
+		out.print(format.format(statistics.minObjective) + ";" + format.format(statistics.avgObjective) + ";" + format.format(statistics.maxObjective) + ";");
 		out.print(Memory.maxMemory() + ";" + Memory.totalMemory() + ";" + Memory.freeMemory() + ";");
-		out.print(branch + ";" + norm + ";" + cluster + ";" + sort + ";" + stats + ";");
+		out.print(statistics.branch + ";" + statistics.norm + ";" + statistics.cluster + ";" + statistics.sort + ";" + statistics.stats + ";");
 		out.print(System.currentTimeMillis() - start);
 		out.println();
 	}
 
 	@Override
-	public void stop()
+	public void stop(T root, int timepoint)
 	{	
 		out.close();
 	}

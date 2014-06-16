@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer;
+package org.xtream.core.output;
 
 import org.xtream.core.model.Component;
 

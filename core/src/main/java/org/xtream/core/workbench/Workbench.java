@@ -11,28 +11,25 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Engine;
-import org.xtream.core.optimizer.Monitor;
-import org.xtream.core.optimizer.Printer;
-import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.optimizer.monitors.CSVMonitor;
 import org.xtream.core.optimizer.monitors.CompositeMonitor;
-import org.xtream.core.optimizer.printers.CSVPrinter;
-import org.xtream.core.optimizer.printers.CompositePrinter;
-import org.xtream.core.optimizer.viewers.CompositeViewer;
+import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.monitors.ChartMonitor;
 import org.xtream.core.workbench.monitors.ProgressMonitor;
+import org.xtream.core.workbench.printers.AnimationPrinter;
 import org.xtream.core.workbench.printers.ChartPrinter;
 import org.xtream.core.workbench.printers.GraphPrinter;
 import org.xtream.core.workbench.printers.HistogramPrinter;
-import org.xtream.core.workbench.printers.JoglAnimationPrinter;
-import org.xtream.core.workbench.printers.TablePrinter;
 import org.xtream.core.workbench.viewers.GraphViewer;
 import org.xtream.core.workbench.viewers.TreeViewer;
 
@@ -46,24 +43,46 @@ public class Workbench<T extends Component>
 {
 	
 	private Engine<T> engine;
+	private T root;
+	private Bus<T> bus;
+	private JSlider slider;
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), /*new JmeAnimationPrinter<>(3,0,2,1), new PovrayAnimationPrinter<>(3,0,2,1), new LwjglAnimationPrinter<>(3,0,2,1),*/ new JoglAnimationPrinter<>(3,0,2,1), new ChartPrinter<>(1,1,2,1), new TablePrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreeViewer<T>(0,0,1,2), new GraphViewer<T>(1,0,2,1), new AnimationPrinter<T>(3,0,2,1), new ChartPrinter<T>(1,1,4,1), new ChartMonitor<T>(5,0,1,2));
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<>(0,0,1,2), new GraphViewer<>(1,0,2,1), /*new JmeAnimationPrinter<>(3,0,2,1), new PovrayAnimationPrinter<>(3,0,2,1), new LwjglAnimationPrinter<>(3,0,2,1),*/ new JoglAnimationPrinter<>(3,0,2,1), new GraphPrinter<>(graph,3,0,2,1), new ChartPrinter<>(1,1,2,1), new HistogramPrinter<>(3,1,2,1), new ChartMonitor(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreeViewer<T>(0,0,1,2), new GraphViewer<T>(1,0,2,1), new GraphPrinter<T>(graph,3,0,2,1), new ChartPrinter<T>(1,1,2,1), new HistogramPrinter<T>(3,1,2,1), new ChartMonitor<T>(5,0,1,2));
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Part... parts)
+	@SafeVarargs
+	private Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Part<T>... parts)
 	{
-		engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() - 1);
-		
 		try
-		{	
+		{
+			// Engine
+			
+			engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() - 1);
+			
+			// Bus
+			
+			bus = new Bus<T>();
+			for (Part<T> part : parts)
+			{
+				part.setBus(bus);
+			}
+			
+			// Root
+			
+			root = type.newInstance();
+			root.init();
+			for (Part<T> part : parts)
+			{
+				part.setRoot(root);
+			}
+			
 			// Controls
 			
 			JTextField durationField = new JTextField("" + duration, 5);
@@ -91,41 +110,55 @@ public class Workbench<T extends Component>
 			timeBar.setForeground(Color.GREEN);
 			memoryBar.setForeground(Color.RED);
 			
+			slider = new JSlider(0, 0, 0);
+			slider.setMajorTickSpacing(10);
+			slider.setMinorTickSpacing(1);
+			slider.setPaintLabels(true);
+			slider.setPaintTicks(true);
+			slider.addChangeListener(new ChangeListener()
+				{		
+					@Override
+					public void stateChanged(ChangeEvent event)
+					{
+						bus.trigger(new JumpEvent<T>(null, slider.getValue()));
+					}
+				}
+			);
+			
+			JButton play = new JButton("Play");
+			
 			// Toolbar
 			
-			JToolBar toolbar = new JToolBar("Toolbar");
-			toolbar.setFloatable(false);
-			toolbar.setLayout(new FlowLayout(FlowLayout.LEFT));
-			toolbar.add(new JLabel("Duration"));
-			toolbar.add(durationField);
-			toolbar.add(new JLabel("Classes"));
-			toolbar.add(classesField);
-			toolbar.add(new JLabel("Samples"));
-			toolbar.add(samplesField);
-			toolbar.add(new JLabel("Randomness"));
-			toolbar.add(randomnessField);
-			toolbar.addSeparator();
-			toolbar.add(startButton);
-			toolbar.add(stopButton);
-			toolbar.addSeparator();
-			toolbar.add(new JLabel("Time"));
-			toolbar.add(timeBar);
-			toolbar.add(new JLabel("Memory"));
-			toolbar.add(memoryBar);
+			JToolBar topbar = new JToolBar("Toolbar");
+			topbar.setFloatable(false);
+			topbar.setLayout(new FlowLayout(FlowLayout.LEFT));
+			topbar.add(new JLabel("Duration"));
+			topbar.add(durationField);
+			topbar.add(new JLabel("Classes"));
+			topbar.add(classesField);
+			topbar.add(new JLabel("Samples"));
+			topbar.add(samplesField);
+			topbar.add(new JLabel("Randomness"));
+			topbar.add(randomnessField);
+			topbar.addSeparator();
+			topbar.add(startButton);
+			topbar.add(stopButton);
+			topbar.addSeparator();
+			topbar.add(new JLabel("Time"));
+			topbar.add(timeBar);
+			topbar.add(new JLabel("Memory"));
+			topbar.add(memoryBar);
 			
-			// Bus
-			
-			Bus bus = new Bus();
-			
-			for (Part part : parts)
-			{
-				part.connect(bus);
-			}
+			JToolBar bottombar = new JToolBar("Toolbar");
+			bottombar.setFloatable(false);
+			bottombar.setLayout(new BorderLayout());
+			bottombar.add(slider, BorderLayout.CENTER);
+			bottombar.add(play, BorderLayout.LINE_START);
 			
 			// Dock
 			
 			SplitDockGrid grid = new SplitDockGrid();
-			for (Part part : parts)
+			for (Part<T> part : parts)
 			{
 				grid.addDockable(part.getX(), part.getY(), part.getWidth(), part.getHeight(), new DefaultDockable(part.getPanel(), part.getTitle(), part.getIcon()));
 			}
@@ -141,61 +174,27 @@ public class Workbench<T extends Component>
 			
 			ImageIcon icon = new ImageIcon(Workbench.class.getClassLoader().getResource("xtream.png"));
 			
-			JFrame frame = new ApplicationFrame("Xtream - Discrete-Time Optimization Framework");
+			JFrame frame = new ApplicationFrame("Xtream - Discrete-Time Dynamic Optimization Framework");
 			frame.setLayout(new BorderLayout());
-			frame.add(toolbar, BorderLayout.PAGE_START);
+			frame.add(topbar, BorderLayout.PAGE_START);
 			frame.add(station.getComponent(), BorderLayout.CENTER);
-			frame.add(new JLabel("Copyright 2014, Smart Energy Systems Group, Chair for Software & Systems Engineering, Technische Universität München"), BorderLayout.PAGE_END);
+			frame.add(bottombar, BorderLayout.PAGE_END);
 			frame.pack();
 			frame.setVisible(true);
 			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setIconImage(icon.getImage());
 			
-			// Viewers
-			
-			CompositeViewer<T> allViewer = new CompositeViewer<>();
-			
-			for (Part part : parts)
-			{
-				if (part instanceof Viewer)
-				{
-					allViewer.add((Viewer<T>) part);
-				}
-			}
-			
 			// Monitors
 			
-			CompositeMonitor allMonitor = new CompositeMonitor();
+			CompositeMonitor<T> allMonitor = new CompositeMonitor<>();
 			
-			allMonitor.add(new CSVMonitor(new PrintStream(new File("Monitor.csv"))));
-			allMonitor.add(new ProgressMonitor(timeBar, memoryBar, duration));
-			
-			for (Part part : parts)
-			{
-				if (part instanceof Monitor)
-				{
-					allMonitor.add((Monitor) part);
-				}
-			}
-			
-			// Printers
-			
-			CompositePrinter<T> allPrinter = new CompositePrinter<>();
-			
-			allPrinter.add(new CSVPrinter<T>(new PrintStream(new File("Printer.csv"))));
-			
-			for (Part part : parts)
-			{
-				if (part instanceof Printer)
-				{
-					allPrinter.add((Printer<T>) part);
-				}
-			}
+			allMonitor.add(new CSVMonitor<T>(new PrintStream(new File("Monitor.csv"))));
+			allMonitor.add(new ProgressMonitor<T>(root, timeBar, memoryBar, slider, duration));
 			
 			// run
 			
-			engine.run(duration, samples, classes, randomness, allViewer, allMonitor, allPrinter);
+			engine.run(duration, samples, classes, randomness, allMonitor);
 		}
 		catch (Exception e)
 		{

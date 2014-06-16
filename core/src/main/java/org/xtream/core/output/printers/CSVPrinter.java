@@ -1,11 +1,11 @@
-package org.xtream.core.optimizer.printers;
+package org.xtream.core.output.printers;
 
 import java.io.PrintStream;
 import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.output.Printer;
 
 public class CSVPrinter<T extends Component> implements Printer<T>
 {

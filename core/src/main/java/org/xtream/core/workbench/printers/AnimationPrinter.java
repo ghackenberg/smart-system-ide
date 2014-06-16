@@ -1,7 +1,5 @@
 package org.xtream.core.workbench.printers;
 
-import java.awt.BorderLayout;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
@@ -9,34 +7,30 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
+import org.xtream.core.workbench.events.JumpEvent;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class JoglAnimationPrinter<T extends Component> extends Part implements Printer<T>
+public class AnimationPrinter<T extends Component> extends Part<T>
 {
 	
 	private GLJPanel canvas;
-	private JSlider slider;
 
-	public JoglAnimationPrinter()
+	public AnimationPrinter()
 	{
 		this(0, 0);
 	}
-	public JoglAnimationPrinter(int x, int y)
+	public AnimationPrinter(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public JoglAnimationPrinter(int x, int y, int width, int height)
+	public AnimationPrinter(int x, int y, int width, int height)
 	{
-		super("JOGL animation printer", x, y, width, height);
+		super("Animation printer", x, y, width, height);
 		
 		try
 		{
@@ -148,33 +142,21 @@ public class JoglAnimationPrinter<T extends Component> extends Part implements P
 				}
 			);
 			
-			slider = new JSlider(0, 95, 0);
-			slider.addChangeListener(new ChangeListener()
-				{
-					@Override
-					public void stateChanged(ChangeEvent event)
-					{
-						canvas.repaint();
-					}
-				}
-			);
-			
-			JPanel panel = new JPanel(new BorderLayout());
-			panel.add(canvas, BorderLayout.CENTER);
-			panel.add(slider, BorderLayout.PAGE_END);
-			
-			getPanel().add(panel);
+			getPanel().add(canvas);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
-	public void print(T component, int timepoint)
+	public void handle(Event<T> event)
 	{
-		// TODO handle optimization finish
+		if (event instanceof JumpEvent)
+		{
+			canvas.repaint();
+		}
 	}
 
 }

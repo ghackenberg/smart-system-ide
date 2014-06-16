@@ -55,42 +55,42 @@ public class Engine<T extends Component>
 		}
 	}
 	
-	public void run(int duration, int samples, int classes, double randomness, Viewer<T> viewer, Monitor monitor, Printer<T> printer)
+	public void run(int duration, int samples, int classes, double randomness, Monitor<T> monitor)
 	{
-		viewer.view(roots.get(0));
-		
 		// Start monitor
 		
-		monitor.start();
+		monitor.start(roots.get(0));
 		
 		// Prepare initial state
 		
 		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
 		
-		State start = new State(roots.get(0).portsRecursive.size(), roots.get(0).fieldsRecursive.size());
+		State best = new State(roots.get(0).portsRecursive.size(), roots.get(0).fieldsRecursive.size());
 		
-		start.connect(roots.get(0));
-		start.save();
+		best.connect(roots.get(0));
+		best.save();
 		
 		List<State> initialGroup = new ArrayList<>();
 		
-		initialGroup.add(start);
+		initialGroup.add(best);
 		
 		previousGroups.put(new Key(), initialGroup);
 		
 		// Run optimization
 		
+		Statistics statistics = new Statistics();
+		
 		for (timepoint = 0; timepoint < duration; timepoint++)
 		{
 			// Prepare statistics
 			
-			int generatedStates = 0;
-			int validStates = 0;
-			int dominantStates = 0;
+			statistics.generatedStates = 0;
+			statistics.validStates = 0;
+			statistics.dominantStates = 0;
 			
 			// Start threads
 			
-			long branch_start = System.currentTimeMillis();
+			statistics.branch = System.currentTimeMillis();
 			
 			Queue<Key> queue = new LinkedBlockingQueue<>(previousGroups.keySet());
 			
@@ -114,8 +114,8 @@ public class Engine<T extends Component>
 				{
 					threads.get(processor).join();
 					
-					generatedStates += workers.get(processor).generatedCount;
-					validStates += workers.get(processor).validCount;
+					statistics.generatedStates += workers.get(processor).generatedCount;
+					statistics.validStates += workers.get(processor).validCount;
 					
 					currentStates.addAll(workers.get(processor).currentStates);
 				}
@@ -125,11 +125,11 @@ public class Engine<T extends Component>
 				}
 			}
 			
-			long branch_end = System.currentTimeMillis();
+			statistics.branch = System.currentTimeMillis() - statistics.branch;
 			
 			// Calculate bounds
 			
-			long norm_start = System.currentTimeMillis();
+			statistics.norm = System.currentTimeMillis();
 			
 			double[] minEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
 			double[] maxEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
@@ -158,13 +158,13 @@ public class Engine<T extends Component>
 				}
 			}
 			
-			long norm_end = System.currentTimeMillis();
+			statistics.norm = System.currentTimeMillis() - statistics.norm;
 			
 			// Sort groups
 			
 			// TODO Factorize cluster strategy. Provide uniform and k-mean clustering.
 			
-			long cluster_start = System.currentTimeMillis();
+			statistics.cluster = System.currentTimeMillis();
 			
 			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();
 			
@@ -226,13 +226,13 @@ public class Engine<T extends Component>
 				}
 			}
 			
-			long cluster_end = System.currentTimeMillis();
+			statistics.cluster = System.currentTimeMillis() - statistics.cluster;
 			
 			// Prepare next iteration
 			
 			if (currentGroups.size() > 0)
 			{
-				long sort_start = System.currentTimeMillis();
+				statistics.sort = System.currentTimeMillis();
 				
 				previousGroups = new TreeMap<>(currentGroups);
 				
@@ -242,18 +242,18 @@ public class Engine<T extends Component>
 				{
 					Collections.sort(previousGroup.getValue());
 					
-					dominantStates += previousGroup.getValue().size();
+					statistics.dominantStates += previousGroup.getValue().size();
 				}
 				
-				long sort_end = System.currentTimeMillis();
+				statistics.sort = System.currentTimeMillis() - statistics.sort;
 				
 				// Calculate stats
 				
-				long stats_start = System.currentTimeMillis();
+				statistics.stats = System.currentTimeMillis();
 				
-				double minObjective = Double.MAX_VALUE;
-				double avgObjective = 0;
-				double maxObjective = Double.MIN_VALUE;
+				statistics.minObjective = Double.MAX_VALUE;
+				statistics.avgObjective = 0;
+				statistics.maxObjective = Double.MIN_VALUE;
 
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
@@ -263,9 +263,9 @@ public class Engine<T extends Component>
 						{
 							double currentObjective = state.get(objective.port, timepoint);
 							
-							minObjective = Math.min(minObjective, currentObjective);
-							avgObjective += currentObjective / dominantStates;
-							maxObjective = Math.max(maxObjective, currentObjective);
+							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
+							statistics.avgObjective += currentObjective / statistics.dominantStates;
+							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}
 					for (Objective objective : roots.get(0).maxObjectivesRecursive)
@@ -274,18 +274,42 @@ public class Engine<T extends Component>
 						{
 							double currentObjective = state.get(objective.port, timepoint);
 							
-							minObjective = Math.min(minObjective, currentObjective);
-							avgObjective += currentObjective / dominantStates;
-							maxObjective = Math.max(maxObjective, currentObjective);
+							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
+							statistics.avgObjective += currentObjective / statistics.dominantStates;
+							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}
 				}
 				
-				long stats_end = System.currentTimeMillis();
+				statistics.stats = System.currentTimeMillis() - statistics.stats;
+				
+				// Select best
+				
+				best = previousGroups.get(previousGroups.firstKey()).get(0);
+				
+				for (Entry<Key, List<State>> entry : previousGroups.entrySet())
+				{
+					for (Objective objective : roots.get(0).minObjectivesRecursive)
+					{
+						if (best.get(objective.port, timepoint) > entry.getValue().get(0).get(objective.port, timepoint))
+						{
+							best = entry.getValue().get(0);
+						}
+					}
+					for (Objective objective : roots.get(0).maxObjectivesRecursive)
+					{
+						if (best.get(objective.port, timepoint) < entry.getValue().get(0).get(objective.port, timepoint))
+						{
+							best = entry.getValue().get(0);
+						}
+					}
+				}
+				
+				best.restore(roots.get(0));
 				
 				// Print result
 				
-				monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, branch_end - branch_start, norm_end - norm_start, cluster_end - cluster_start, sort_end - sort_start, stats_end - stats_start, previousGroups);
+				monitor.handle(timepoint, statistics, previousGroups, best);
 			}
 			else
 			{
@@ -293,37 +317,11 @@ public class Engine<T extends Component>
 			}
 		}
 		
-		// Select best
-		
-		State best = previousGroups.get(previousGroups.firstKey()).get(0);
-		
-		for (Entry<Key, List<State>> entry : previousGroups.entrySet())
-		{
-			for (Objective objective : roots.get(0).minObjectivesRecursive)
-			{
-				if (best.get(objective.port, timepoint - 1) > entry.getValue().get(0).get(objective.port, timepoint - 1))
-				{
-					best = entry.getValue().get(0);
-				}
-			}
-			for (Objective objective : roots.get(0).maxObjectivesRecursive)
-			{
-				if (best.get(objective.port, timepoint - 1) < entry.getValue().get(0).get(objective.port, timepoint - 1))
-				{
-					best = entry.getValue().get(0);
-				}
-			}
-		}
-		
 		best.restore(roots.get(0));
 		
 		// Stop monitor
 		
-		monitor.stop();
-		
-		// Print component
-		
-		printer.print(roots.get(0), timepoint);
+		monitor.stop(roots.get(0), timepoint);
 	}
 
 }

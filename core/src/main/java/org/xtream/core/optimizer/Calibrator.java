@@ -6,8 +6,6 @@ import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.monitors.CalibrationMonitor;
-import org.xtream.core.optimizer.printers.CompositePrinter;
-import org.xtream.core.optimizer.viewers.CompositeViewer;
 
 public abstract class Calibrator<T extends Component>
 {
@@ -60,9 +58,9 @@ public abstract class Calibrator<T extends Component>
 						
 						for (int iteration = 0; iteration < iterations; iteration++)
 						{
-							CalibrationMonitor monitor = new CalibrationMonitor();
+							CalibrationMonitor<T> monitor = new CalibrationMonitor<>();
 							
-							new Engine<>(type, processors).run(duration, samples, classes, random, new CompositeViewer<T>(), monitor, new CompositePrinter<T>());
+							new Engine<>(type, processors).run(duration, samples, classes, random, monitor);
 							
 							System.out.print(iteration + " ");					
 							

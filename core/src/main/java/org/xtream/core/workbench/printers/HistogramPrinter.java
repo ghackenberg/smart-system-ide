@@ -16,12 +16,12 @@ import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.Printer;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
+import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.events.SelectionEvent;
 
-public class HistogramPrinter<T extends Component> extends Part implements Printer<T>
+public class HistogramPrinter<T extends Component> extends Part<T>
 {
 	
 	private static int PADDING = 0;
@@ -47,21 +47,13 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 		
 		getPanel().add(panel);
 	}
-
-	@Override
-	public void print(final T component, final int timepoint)
-	{
-		this.timepoint = timepoint;
-		
-		update();
-	}
 	
 	@Override
-	public void handle(Event event)
+	public void handle(Event<T> event)
 	{
 		if (event instanceof SelectionEvent)
 		{
-			SelectionEvent selection = (SelectionEvent) event;
+			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
 			for (Object object : selection.objects)
 			{
@@ -74,6 +66,14 @@ public class HistogramPrinter<T extends Component> extends Part implements Print
 					break;
 				}
 			}
+		}
+		else if (event instanceof JumpEvent)
+		{
+			JumpEvent<T> jump = (JumpEvent<T>) event;
+			
+			timepoint = jump.timepoint;
+			
+			update();
 		}
 	}
 	

@@ -7,8 +7,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import org.xtream.core.model.Component;
 
-public abstract class Part
+
+public abstract class Part<T extends Component>
 {
 	private String title;
 	private Icon icon;
@@ -17,7 +19,8 @@ public abstract class Part
 	private int y;
 	private int width;
 	private int height;
-	private Bus bus;
+	private Bus<T> bus;
+	private T root;
 	
 	public Part(String title, int x, int y, int width, int height)
 	{
@@ -69,19 +72,33 @@ public abstract class Part
 		return panel;
 	}
 	
-	public void connect(Bus bus)
+	public void setRoot(T root)
+	{
+		this.root = root;
+	}
+	public T getRoot()
+	{
+		return root;
+	}
+	
+	public void setBus(Bus<T> bus)
 	{
 		this.bus = bus;
 		
 		bus.components.add(this);
 	}
-	public void handle(Event event)
+	public Bus<T> getBus()
+	{
+		return bus;
+	}
+	
+	public void handle(Event<T> event)
 	{
 		
 	}
-	public void trigger(Event event)
+	public void trigger(Event<T> event)
 	{
-		for (Part component : bus.components)
+		for (Part<T> component : bus.components)
 		{
 			if (component != this)
 			{

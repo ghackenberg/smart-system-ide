@@ -1,8 +1,8 @@
-package org.xtream.core.optimizer.printers;
+package org.xtream.core.output.printers;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.Printer;
+import org.xtream.core.output.Printer;
 
 public class CMDPrinter<T extends Component> implements Printer<T>
 {

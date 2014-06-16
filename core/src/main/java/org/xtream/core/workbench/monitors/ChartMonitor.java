@@ -13,13 +13,15 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
+import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
+import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.workbench.Part;
 
-public class ChartMonitor extends Part implements Monitor
+public class ChartMonitor<T extends Component> extends Part<T> implements Monitor<T>
 {
 
 	private static int PADDING = 0;
@@ -126,7 +128,7 @@ public class ChartMonitor extends Part implements Monitor
 	}
 	
 	@Override
-	public void start()
+	public void start(T root)
 	{
 		states.clear();
 		classes.clear();
@@ -136,31 +138,31 @@ public class ChartMonitor extends Part implements Monitor
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{
-		states.addValue(generatedStates, "Generated states", "" + timepoint);
-		states.addValue(validStates, "Valid states", "" + timepoint);
-		states.addValue(dominantStates, "Dominant states", "" + timepoint);
+		states.addValue(statistics.generatedStates, "Generated states", "" + timepoint);
+		states.addValue(statistics.validStates, "Valid states", "" + timepoint);
+		states.addValue(statistics.dominantStates, "Dominant states", "" + timepoint);
 		
 		classes.addValue(equivalenceClasses.size(), "Equivalence classes", "" + timepoint);
 		
-		objectives.addValue(minObjective, "Min objective", "" + timepoint);
-		objectives.addValue(avgObjective, "Avg objective", "" + timepoint);
-		objectives.addValue(maxObjective, "Max objective", "" + timepoint);
+		objectives.addValue(statistics.minObjective, "Min objective", "" + timepoint);
+		objectives.addValue(statistics.avgObjective, "Avg objective", "" + timepoint);
+		objectives.addValue(statistics.maxObjective, "Max objective", "" + timepoint);
 		
 		memory.addValue(Memory.maxMemory(), "Max memory", "" + timepoint);
 		memory.addValue(Memory.totalMemory(), "Total memory", "" + timepoint);
 		memory.addValue(Memory.usedMemory(), "Used memory", "" + timepoint);
 		
-		time.addValue(branch, "Branch time", "" + timepoint);
-		time.addValue(norm, "Norm time", "" + timepoint);
-		time.addValue(cluster, "Cluster time", "" + timepoint);
-		time.addValue(sort, "Sort time", "" + timepoint);
-		time.addValue(stats, "Stats time", "" + timepoint);
+		time.addValue(statistics.branch, "Branch time", "" + timepoint);
+		time.addValue(statistics.norm, "Norm time", "" + timepoint);
+		time.addValue(statistics.cluster, "Cluster time", "" + timepoint);
+		time.addValue(statistics.sort, "Sort time", "" + timepoint);
+		time.addValue(statistics.stats, "Stats time", "" + timepoint);
 	}
 
 	@Override
-	public void stop()
+	public void stop(T root, int timepoint)
 	{
 		
 	}
