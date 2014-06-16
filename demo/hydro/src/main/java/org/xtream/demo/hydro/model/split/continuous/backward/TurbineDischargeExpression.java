@@ -2,26 +2,22 @@ package org.xtream.demo.hydro.model.split.continuous.backward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 
 public class TurbineDischargeExpression extends Expression<Double>
 {
 	
-	@Constant
 	protected double turbineDischargeMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextLevel;
-	@Constant
 	protected double nextArea;
-	@Constant
 	protected double nextLevelMin;
-	@Constant
 	protected double nextLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextTurbineDischarge;
-	@Constant
+	@Reference
 	protected Port<Double> nextWeirDischarge;
 
 	public TurbineDischargeExpression(Port<Double> turbineDischarge, double turbineDischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge)

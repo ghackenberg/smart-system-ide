@@ -4,13 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
 
 public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpression<T>
 {
 	
-	@Constant
-	public Set<T> set;
+	private Set<T> set;
 	
 	public ConstantNonDeterministicExpression(Port<T> port, Set<T> set)
 	{

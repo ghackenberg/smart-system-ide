@@ -11,17 +11,20 @@ import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.Port;
+import org.xtream.core.model.markers.Equivalence;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.objectives.MaxObjective;
+import org.xtream.core.model.markers.objectives.MinObjective;
 
 public class Engine<T extends Component>
 {
 	
-	public Class<T> type;
-	public int processors;
-	public List<Thread> threads;
-	public List<Worker> workers;
-	public List<T> roots;
-	public int timepoint;
+	private int processors;
+	private List<Thread> threads;
+	private List<Worker> workers;
+	private List<T> roots;
+	private int timepoint;
 	
 	public Engine(Class<T> type)
 	{
@@ -30,7 +33,6 @@ public class Engine<T extends Component>
 	
 	public Engine(Class<T> type, int processors)
 	{
-		this.type = type;
 		this.processors = processors;
 		
 		threads = new ArrayList<>(processors);
@@ -65,10 +67,9 @@ public class Engine<T extends Component>
 		
 		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
 		
-		State best = new State(roots.get(0).portsRecursive.size(), roots.get(0).fieldsRecursive.size());
+		State best = new State(roots.get(0).getDescendantsByClass(Port.class).size(), 0);
 		
 		best.connect(roots.get(0));
-		best.save();
 		
 		List<State> initialGroup = new ArrayList<>();
 		
@@ -114,10 +115,10 @@ public class Engine<T extends Component>
 				{
 					threads.get(processor).join();
 					
-					statistics.generatedStates += workers.get(processor).generatedCount;
-					statistics.validStates += workers.get(processor).validCount;
+					statistics.generatedStates += workers.get(processor).getGeneratedCount();
+					statistics.validStates += workers.get(processor).getValidCount();
 					
-					currentStates.addAll(workers.get(processor).currentStates);
+					currentStates.addAll(workers.get(processor).getCurrentStates());
 				}
 				catch (InterruptedException e)
 				{
@@ -131,10 +132,10 @@ public class Engine<T extends Component>
 			
 			statistics.norm = System.currentTimeMillis();
 			
-			double[] minEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
-			double[] maxEquivalences = new double[roots.get(0).equivalencesRecursive.size()];
+			double[] minEquivalences = new double[roots.get(0).getDescendantsByClass(Equivalence.class).size()];
+			double[] maxEquivalences = new double[roots.get(0).getDescendantsByClass(Equivalence.class).size()];
 			
-			for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+			for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
 			{
 				minEquivalences[i] = Double.MAX_VALUE;
 				maxEquivalences[i] = Double.MIN_VALUE;
@@ -142,14 +143,14 @@ public class Engine<T extends Component>
 			
 			for (State current : currentStates)
 			{
-				for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+				for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
 				{
-					minEquivalences[i] = Math.min(minEquivalences[i], current.get(roots.get(0).equivalencesRecursive.get(i).port, timepoint));
-					maxEquivalences[i] = Math.max(maxEquivalences[i], current.get(roots.get(0).equivalencesRecursive.get(i).port, timepoint));
+					minEquivalences[i] = Math.min(minEquivalences[i], current.getValue(roots.get(0).getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint));
+					maxEquivalences[i] = Math.max(maxEquivalences[i], current.getValue(roots.get(0).getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint));
 				}
 			}
 			
-			for (int i = 0; i < roots.get(0).equivalencesRecursive.size(); i++)
+			for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
 			{
 				if (minEquivalences[i] == maxEquivalences[i])
 				{
@@ -257,22 +258,22 @@ public class Engine<T extends Component>
 
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
-					for (Objective objective : roots.get(0).minObjectivesRecursive)
+					for (Objective objective : roots.get(0).getDescendantsByClass(MinObjective.class))
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double currentObjective = state.get(objective.port, timepoint);
+							double currentObjective = state.getValue(objective.getPort(), timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
 							statistics.avgObjective += currentObjective / statistics.dominantStates;
 							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}
-					for (Objective objective : roots.get(0).maxObjectivesRecursive)
+					for (Objective objective : roots.get(0).getDescendantsByClass(MaxObjective.class))
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double currentObjective = state.get(objective.port, timepoint);
+							double currentObjective = state.getValue(objective.getPort(), timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
 							statistics.avgObjective += currentObjective / statistics.dominantStates;
@@ -289,16 +290,16 @@ public class Engine<T extends Component>
 				
 				for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 				{
-					for (Objective objective : roots.get(0).minObjectivesRecursive)
+					for (Objective objective : roots.get(0).getDescendantsByClass(MinObjective.class))
 					{
-						if (best.get(objective.port, timepoint) > entry.getValue().get(0).get(objective.port, timepoint))
+						if (best.getValue(objective.getPort(), timepoint) > entry.getValue().get(0).getValue(objective.getPort(), timepoint))
 						{
 							best = entry.getValue().get(0);
 						}
 					}
-					for (Objective objective : roots.get(0).maxObjectivesRecursive)
+					for (Objective objective : roots.get(0).getDescendantsByClass(MaxObjective.class))
 					{
-						if (best.get(objective.port, timepoint) < entry.getValue().get(0).get(objective.port, timepoint))
+						if (best.getValue(objective.getPort(), timepoint) < entry.getValue().get(0).getValue(objective.getPort(), timepoint))
 						{
 							best = entry.getValue().get(0);
 						}

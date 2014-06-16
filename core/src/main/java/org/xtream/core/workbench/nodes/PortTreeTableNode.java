@@ -41,9 +41,9 @@ public class PortTreeTableNode implements TreeTableNode
 			
 			Component component = componentNode.component;
 			
-			for (int index = 0; index < component.ports.size(); index++)
+			for (int index = 0; index < component.getChildrenByClass(Port.class).size(); index++)
 			{
-				if (port == component.ports.get(index))
+				if (port == component.getChildrenByClass(Port.class).get(index))
 				{
 					return index;
 				}
@@ -74,7 +74,7 @@ public class PortTreeTableNode implements TreeTableNode
 	@Override
 	public int getColumnCount()
 	{
-		return port.state.timepoint + 2;
+		return port.getState().getTimepoint() + 2;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class PortTreeTableNode implements TreeTableNode
 	{
 		if (column == 0)
 		{
-			return port.name;
+			return port.getName();
 		}
 		else
 		{

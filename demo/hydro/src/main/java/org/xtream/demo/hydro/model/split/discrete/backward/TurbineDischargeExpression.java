@@ -4,27 +4,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
 
 public class TurbineDischargeExpression extends NonDeterministicExpression<Double>
 {
 	
-	@Constant
 	protected Set<Double> turbineDischargeOptions;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextLevel;
-	@Constant
 	protected double nextArea;
-	@Constant
 	protected double nextLevelMin;
-	@Constant
 	protected double nextLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextTurbineDischarge;
-	@Constant
+	@Reference
 	protected Port<Double> nextWeirDischarge;
 
 	public TurbineDischargeExpression(Port<Double> turbineDischarge, Set<Double> turbineDischargeOptions, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge)

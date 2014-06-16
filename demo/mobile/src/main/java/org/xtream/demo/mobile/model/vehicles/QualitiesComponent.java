@@ -1,21 +1,11 @@
 package org.xtream.demo.mobile.model.vehicles;
 
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractQualitiesComponent;
 
 public class QualitiesComponent extends AbstractQualitiesComponent
 {
-	public QualitiesComponent(Graph graph) 
-	{
-		this.graph = graph;
-	}
-	
-	// Parameters
-	
-	@SuppressWarnings("unused")
-	private Graph graph;
 	
 	// Inputs
 	
@@ -40,7 +30,10 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 			{
 				return 0.;
 			}
-				return 1.;		
+			else
+			{
+				return 1.;
+			}
 		}
 	};
 	

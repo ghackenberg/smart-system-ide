@@ -2,24 +2,20 @@ package org.xtream.demo.hydro.model.single.continuous.backward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 
 public class DischargeExpression extends Expression<Double>
 {
 	
-	@Constant
 	protected double dischargeMax;
 
-	@Constant
+	@Reference
 	protected Port<Double> nextLevel;
-	@Constant
 	protected double nextArea;
-	@Constant
 	protected double nextLevelMin;
-	@Constant
 	protected double nextLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextDischarge;
 
 	public DischargeExpression(Port<Double> discharge, double dischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextDischarge)
@@ -53,7 +49,7 @@ public class DischargeExpression extends Expression<Double>
 			}
 			else
 			{
-				System.out.println(port.qualifiedName + " (No option!)");
+				System.out.println(getPort().getQualifiedName() + " (No option!)");
 				
 				return 0.;
 			}

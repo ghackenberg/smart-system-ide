@@ -32,7 +32,7 @@ public class ComponentTreeTableNode implements TreeTableNode
 	@Override
 	public int getChildCount()
 	{
-		return component.ports.size() + component.components.size();
+		return component.getChildrenByClass(Port.class).size() + component.getChildrenByClass(Component.class).size();
 	}
 
 	@Override
@@ -44,11 +44,11 @@ public class ComponentTreeTableNode implements TreeTableNode
 			
 			Component argumentComponent = componentNode.component;
 			
-			for (int index = 0; index < argumentComponent.components.size(); index++)
+			for (int index = 0; index < argumentComponent.getChildrenByClass(Component.class).size(); index++)
 			{
-				if (component == argumentComponent.components.get(index))
+				if (component == argumentComponent.getChildrenByClass(Component.class).get(index))
 				{
-					return argumentComponent.ports.size() + index;
+					return argumentComponent.getChildrenByClass(Port.class).size() + index;
 				}
 			}
 		}
@@ -58,7 +58,7 @@ public class ComponentTreeTableNode implements TreeTableNode
 	@Override
 	public boolean isLeaf()
 	{
-		return component.ports.size() == 0 && component.components.size() == 0;
+		return component.getChildrenByClass(Port.class).size() == 0 && component.getChildrenByClass(Component.class).size() == 0;
 	}
 
 	@Override
@@ -66,11 +66,11 @@ public class ComponentTreeTableNode implements TreeTableNode
 	{
 		Vector<TreeTableNode> children = new Vector<>();
 		
-		for (Port<?> port : component.ports)
+		for (Port<?> port : component.getChildrenByClass(Port.class))
 		{
 			children.add(new PortTreeTableNode(this, port));
 		}
-		for (Component childComponent : component.components)
+		for (Component childComponent : component.getChildrenByClass(Component.class))
 		{
 			children.add(new ComponentTreeTableNode(this, childComponent, timepoint));
 		}
@@ -81,13 +81,13 @@ public class ComponentTreeTableNode implements TreeTableNode
 	@Override
 	public TreeTableNode getChildAt(int index)
 	{
-		if (index < component.ports.size())
+		if (index < component.getChildrenByClass(Port.class).size())
 		{
-			return new PortTreeTableNode(this, component.ports.get(index));
+			return new PortTreeTableNode(this, component.getChildrenByClass(Port.class).get(index));
 		}
 		else
 		{
-			return new ComponentTreeTableNode(this, component.components.get(index - component.ports.size()), timepoint);
+			return new ComponentTreeTableNode(this, component.getChildrenByClass(Component.class).get(index - component.getChildrenByClass(Port.class).size()), timepoint);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class ComponentTreeTableNode implements TreeTableNode
 	{
 		if (column == 0)
 		{
-			return component.name + " : " + component.getClass().getSimpleName();
+			return component.getName() + " : " + component.getClass().getSimpleName();
 		}
 		else
 		{

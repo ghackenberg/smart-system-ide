@@ -5,13 +5,11 @@ import java.util.Map;
 
 import org.xtream.core.data.Pair;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
 
 public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<T>
 {
 	
-	@Constant
-	public Map<T, Double> map;
+	private Map<T, Double> map;
 	
 	public ConstantProbabilisticExpression(Port<T> port, Map<T, Double> map)
 	{

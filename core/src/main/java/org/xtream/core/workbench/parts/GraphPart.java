@@ -149,15 +149,15 @@ public class GraphPart<T extends Component> extends Part<T>
 	
 				// TODO [Dominik] Bug: not rendering when sequence is not yet complete
 	
-				for (Component component : root.components) 	
+				for (Component component : root.getChildrenByClass(Component.class)) 	
 				{
 					Set<String> set = new HashSet<String>();
 					
-					for (Port<?> port : component.ports)
+					for (Port<?> port : component.getChildrenByClass(Port.class))
 					{
-						if (port.name.equals("positionOutput") && !(set.contains(component.name)))
+						if (port.getName().equals("positionOutput") && !(set.contains(component.getName())))
 						{	
-							set.add(component.name);
+							set.add(component.getName());
 							
 							if (!map.containsKey(port))
 							{

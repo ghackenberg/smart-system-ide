@@ -84,28 +84,28 @@ public class ChartPart<T extends Component> extends Part<T>
 
 		// Charts
 		
-		if (component.charts.size() > 0)
+		if (component.getChildrenByClass(Timeline.class).size() > 0)
 		{	
 			// Calculate grid layout
 			
-			int cols = (int) Math.ceil(Math.sqrt(component.charts.size()));
-			int rows = (int) Math.ceil(Math.sqrt(component.charts.size()));
+			int cols = (int) Math.ceil(Math.sqrt(component.getChildrenByClass(Timeline.class).size()));
+			int rows = (int) Math.ceil(Math.sqrt(component.getChildrenByClass(Timeline.class).size()));
 			
 			panel.setLayout(new GridLayout(cols, rows));
 			
 			// Show charts
 			
-			for (Timeline definition : component.charts)
+			for (Timeline definition : component.getChildrenByClass(Timeline.class))
 			{
 				DefaultCategoryDataset dataset = getDataset(definition);
 				
-				JFreeChart chart = ChartFactory.createLineChart(definition.name, null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+				JFreeChart chart = ChartFactory.createLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 				
 				chart.setAntiAlias(true);
 				chart.setTextAntiAlias(true);
 				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 				
-				for (int i = 0; i < definition.ports.length; i++)
+				for (int i = 0; i < definition.getPorts().length; i++)
 				{
 					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
 				}
@@ -130,15 +130,15 @@ public class ChartPart<T extends Component> extends Part<T>
 	{
 		this.timepoint = timepoint;
 		
-		for (Timeline definition : component.charts)
+		for (Timeline definition : component.getChildrenByClass(Timeline.class))
 		{
 			//datasets.get(definition).clear();
 			
-			for (Port<Double> port : definition.ports)
+			for (Port<Double> port : definition.getPorts())
 			{
 				for (int i = 0; i < timepoint; i++)
 				{
-					datasets.get(definition).addValue(port.get(i), port.name, "" + i);
+					datasets.get(definition).addValue(port.get(i), port.getName(), "" + i);
 				}
 			}
 		}

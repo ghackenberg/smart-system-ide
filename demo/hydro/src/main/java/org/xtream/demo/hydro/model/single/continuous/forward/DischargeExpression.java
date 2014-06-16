@@ -2,24 +2,20 @@ package org.xtream.demo.hydro.model.single.continuous.forward;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 
 public class DischargeExpression extends Expression<Double>
 {
 	
-	@Constant
 	protected double dischargeMax;
 
-	@Constant
+	@Reference
 	protected Port<Double> previousLevel;
-	@Constant
 	protected double previousArea;
-	@Constant
 	protected double previousLevelMin;
-	@Constant
 	protected double previousLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> previousDischarge;
 
 	public DischargeExpression(Port<Double> weirDischarge, double dischargeMax, Port<Double> previousLevel, double previousArea, double previousLevelMax, Port<Double> previousDischarge)

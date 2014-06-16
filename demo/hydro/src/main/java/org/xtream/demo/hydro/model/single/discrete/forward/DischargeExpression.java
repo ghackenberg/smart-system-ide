@@ -4,25 +4,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
 
 public class DischargeExpression extends NonDeterministicExpression<Double>
 {
 	
-	@Constant
 	protected Set<Double> dischargeOptions;
 
-	@Constant
+	@Reference
 	protected Port<Double> previousLevel;
-	@Constant
 	protected double previousArea;
-	@Constant
 	protected double previousLevelMin;
-	@Constant
 	protected double previousLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> previousDischarge;
 
 	public DischargeExpression(Port<Double> discharge, Set<Double> dischargeOptions, Port<Double> previousLevel, double previousArea, double previousLevelMax, Port<Double> previousDischarge)

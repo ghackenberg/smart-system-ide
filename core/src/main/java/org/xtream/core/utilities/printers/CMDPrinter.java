@@ -16,9 +16,9 @@ public class CMDPrinter<T extends Component> implements Printer<T>
 			System.out.println("Timepoint " + i);
 			System.out.println();
 			
-			for (Port<?> port : component.portsRecursive)
+			for (Port<?> port : component.getDescendantsByClass(Port.class))
 			{
-				System.out.println(port.qualifiedName + " = " + port.get(i));
+				System.out.println(port.getQualifiedName() + " = " + port.get(i));
 			}
 		}
 	}

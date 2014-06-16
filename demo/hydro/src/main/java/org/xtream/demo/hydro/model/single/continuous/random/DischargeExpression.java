@@ -2,12 +2,10 @@ package org.xtream.demo.hydro.model.single.continuous.random;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
 
 public class DischargeExpression extends Expression<Double>
 {
 	
-	@Constant
 	protected double weirDischargeMax;
 	
 	public DischargeExpression(Port<Double> port, double weirDischargeMax)

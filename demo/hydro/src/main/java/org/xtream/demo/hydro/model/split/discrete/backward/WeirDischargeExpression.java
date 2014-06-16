@@ -4,30 +4,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constant;
+import org.xtream.core.model.Reference;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
 
 public class WeirDischargeExpression extends NonDeterministicExpression<Double>
 {
 	
-	@Constant
 	protected Set<Double> weirDischargeOptions;
 
-	@Constant
+	@Reference
 	protected Port<Double> nextLevel;
-	@Constant
 	protected double nextArea;
-	@Constant
 	protected double nextLevelMin;
-	@Constant
 	protected double nextLevelMax;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> nextTurbineDischarge;
-	@Constant
+	@Reference
 	protected Port<Double> nextWeirDischarge;
-	
-	@Constant
+
+	@Reference
 	protected Port<Double> currentTurbineDischarge;
 
 	public WeirDischargeExpression(Port<Double> weirDischarge, Set<Double> weirDischargeOptions, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge, Port<Double> currentTurbineDischrage)

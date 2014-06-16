@@ -3,10 +3,11 @@ package org.xtream.demo.hydro.model;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Objective;
-import org.xtream.core.model.annotations.Preference;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.enumerations.Direction;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.Preference;
+import org.xtream.core.model.markers.objectives.MaxObjective;
+import org.xtream.core.model.markers.preferences.MaxPreference;
 
 public class ObjectiveComponent extends Component
 {
@@ -20,11 +21,11 @@ public class ObjectiveComponent extends Component
 	
 	// Objectives
 	
-	public Objective objective = new Objective(rewardOutput, Direction.MAX);
+	public Objective objective = new MaxObjective(rewardOutput);
 	
 	// Preferences
 	
-	public Preference preference = new Preference(rewardOutput, Direction.MAX);
+	public Preference preference = new MaxPreference(rewardOutput);
 	
 	// Charts
 	

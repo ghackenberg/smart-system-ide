@@ -131,11 +131,9 @@ public class ModulesComponent extends AbstractModulesComponent
 	
 	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += powerOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : powerAggregateOutput.get(timepoint - 1)) + powerOutput.get(timepoint);
 		}
 	};
 	

@@ -1,23 +1,24 @@
 package org.xtream.core.model.charts;
 
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.Reference;
 
-public class Histogram extends Chart
+public class Histogram<T> extends Chart
 {
-	
-	public String name;
-	public String qualifiedName;
-	
-	public Component parent;
-	
-	public Port<?>[] ports;
+
+	@Reference
+	private Port<T>[] ports;
 	
 	@SafeVarargs
-	public Histogram(Port<?>... ports)
+	public Histogram(Port<T>... ports)
 	{
 		this.ports = ports;
+	}
+	
+	public Port<T>[] getPorts()
+	{
+		return ports;
 	}
 
 }

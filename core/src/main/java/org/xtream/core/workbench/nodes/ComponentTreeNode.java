@@ -19,7 +19,7 @@ public class ComponentTreeNode implements TreeNode
 		this.parent = parent;
 		this.component = component;
 		
-		for (Component child : component.components)
+		for (Component child : component.getChildrenByClass(Component.class))
 		{
 			children.addElement(new ComponentTreeNode(this, child));
 		}
