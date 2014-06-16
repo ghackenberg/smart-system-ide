@@ -2,7 +2,7 @@ package org.xtream.core.model;
 
 import org.xtream.core.optimizer.State;
 
-public class Port<T>
+public class Port<T> extends Element
 {
 
 	public String name;

@@ -1,8 +1,8 @@
 package org.xtream.core.model.components;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
 
 public abstract class AbstractModulesComponent extends Component
@@ -16,7 +16,7 @@ public abstract class AbstractModulesComponent extends Component
 		modules = new AbstractModuleComponent[0];
 		costsOutputs = new Port[0];
 		costs = new ChannelExpression[0];
-		modulePreviews = new Chart[0];
+		modulePreviews = new Timeline[0];
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -38,10 +38,10 @@ public abstract class AbstractModulesComponent extends Component
 			costs[i] = new ChannelExpression<>(costsOutputs[i], modules[i].costsOutput);
 		}
 		
-		modulePreviews = new Chart[modules.length];
+		modulePreviews = new Timeline[modules.length];
 		for (int i = 0; i < modules.length; i++)
 		{
-			modulePreviews[i] = new Chart(modules[i].modulePreview.ports);
+			modulePreviews[i] = new Timeline(modules[i].modulePreview.ports);
 		}
 	}
 	
@@ -59,6 +59,6 @@ public abstract class AbstractModulesComponent extends Component
 	
 	// Previews
 	
-	public Chart modulePreviews[];
+	public Timeline modulePreviews[];
 
 }

@@ -1,10 +1,10 @@
 package org.xtream.demo.hydro.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constraint;
+import org.xtream.core.model.charts.Timeline;
 
 public class VolumeComponent extends Component
 {
@@ -42,10 +42,10 @@ public class VolumeComponent extends Component
 	
 	// Charts
 	
-	public Chart levelChart = new Chart(levelMinOutput, levelOutput, levelMaxOutput);
-	public Chart flowChart = new Chart(inflowInput, outflowInput);
+	public Timeline levelChart = new Timeline(levelMinOutput, levelOutput, levelMaxOutput);
+	public Timeline flowChart = new Timeline(inflowInput, outflowInput);
 	
-	public Chart levelPreview = new Chart(levelMinOutput, levelOutput, levelMaxOutput);
+	public Timeline levelPreview = new Timeline(levelMinOutput, levelOutput, levelMaxOutput);
 	
 	// Expressions
 	

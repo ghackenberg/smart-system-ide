@@ -10,9 +10,11 @@ import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.annotations.Preference;
+import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.expressions.ChannelExpression;
 
-public abstract class Component
+public abstract class Component extends Element
 {
 
 	public URL icon;
@@ -32,8 +34,8 @@ public abstract class Component
 	public List<Preference> maxDominances= new ArrayList<>();
 	public List<Objective> minObjectives= new ArrayList<>();
 	public List<Objective> maxObjectives= new ArrayList<>();
-	public List<Chart> charts = new ArrayList<>();
-	public List<Chart> previews = new ArrayList<>();
+	public List<Timeline> charts = new ArrayList<>();
+	public List<Timeline> previews = new ArrayList<>();
 	public List<Histogram> histograms = new ArrayList<>();
 	public List<Histogram> histogramPreviews = new ArrayList<>();
 	
@@ -48,8 +50,8 @@ public abstract class Component
 	public List<Preference> maxDominancesRecursive = new ArrayList<>();
 	public List<Objective> minObjectivesRecursive= new ArrayList<>();
 	public List<Objective> maxObjectivesRecursive= new ArrayList<>();
-	public List<Chart> chartsRecursive = new ArrayList<>();
-	public List<Chart> previewsRecursive = new ArrayList<>();
+	public List<Timeline> chartsRecursive = new ArrayList<>();
+	public List<Timeline> previewsRecursive = new ArrayList<>();
 	public List<Histogram> histogramsRecursive = new ArrayList<>();
 	public List<Histogram> histogramPreviewsRecursive = new ArrayList<>();
 	
@@ -185,9 +187,9 @@ public abstract class Component
 			
 			load(objective, name, qualifiedName);
 		}
-		else if (object instanceof Chart)
+		else if (object instanceof Timeline)
 		{
-			Chart chart = (Chart) object;
+			Timeline chart = (Timeline) object;
 			
 			load(chart, name, qualifiedName);
 		}
@@ -335,7 +337,7 @@ public abstract class Component
 		objective.parent = this;
 	}
 	
-	private void load(Chart chart, String name, String qualifiedName)
+	private void load(Timeline chart, String name, String qualifiedName)
 	{
 		if (name.contains("Chart"))
 		{

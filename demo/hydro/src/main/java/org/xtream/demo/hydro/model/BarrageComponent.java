@@ -1,9 +1,9 @@
 package org.xtream.demo.hydro.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 
 public class BarrageComponent extends Component
 {
@@ -36,11 +36,11 @@ public class BarrageComponent extends Component
 	
 	// Charts
 	
-	public Chart dischargeChart = new Chart(turbineDischargeInput, weirDischargeInput);
-	public Chart levelChart = new Chart(headLevelInput, tailLevelInput);
-	public Chart productionChart = new Chart(productionOutput);
+	public Timeline dischargeChart = new Timeline(turbineDischargeInput, weirDischargeInput);
+	public Timeline levelChart = new Timeline(headLevelInput, tailLevelInput);
+	public Timeline productionChart = new Timeline(productionOutput);
 	
-	public Chart productionPreview = new Chart(productionOutput);
+	public Timeline productionPreview = new Timeline(productionOutput);
 	
 	// Expressions
 	

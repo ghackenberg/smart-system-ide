@@ -1,6 +1,6 @@
 package org.xtream.core.model;
 
-public class Vector
+public abstract class Element
 {
 
 }

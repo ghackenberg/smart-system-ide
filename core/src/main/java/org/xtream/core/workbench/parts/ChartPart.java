@@ -13,9 +13,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
@@ -28,7 +28,7 @@ public class ChartPart<T extends Component> extends Part<T>
 	private static int STROKE = 3;
 	
 	private JPanel panel;
-	private Map<Chart, DefaultCategoryDataset> datasets = new HashMap<>();
+	private Map<Timeline, DefaultCategoryDataset> datasets = new HashMap<>();
 	private Component component;
 	private int timepoint = 0;
 	
@@ -95,7 +95,7 @@ public class ChartPart<T extends Component> extends Part<T>
 			
 			// Show charts
 			
-			for (Chart definition : component.charts)
+			for (Timeline definition : component.charts)
 			{
 				DefaultCategoryDataset dataset = getDataset(definition);
 				
@@ -130,7 +130,7 @@ public class ChartPart<T extends Component> extends Part<T>
 	{
 		this.timepoint = timepoint;
 		
-		for (Chart definition : component.charts)
+		for (Timeline definition : component.charts)
 		{
 			//datasets.get(definition).clear();
 			
@@ -148,7 +148,7 @@ public class ChartPart<T extends Component> extends Part<T>
 		panel.updateUI();
 	}
 	
-	public DefaultCategoryDataset getDataset(Chart definition)
+	public DefaultCategoryDataset getDataset(Timeline definition)
 	{
 		DefaultCategoryDataset dataset = datasets.get(definition);
 		

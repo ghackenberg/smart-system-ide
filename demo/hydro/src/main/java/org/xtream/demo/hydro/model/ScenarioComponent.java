@@ -5,10 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -77,8 +77,8 @@ public class ScenarioComponent extends Component
 	
 	// Charts
 	
-	public Chart inflowChart = new Chart(inflowOutput);
-	public Chart priceChart = new Chart(priceOutput);
+	public Timeline inflowChart = new Timeline(inflowOutput);
+	public Timeline priceChart = new Timeline(priceOutput);
 	
 	// Expressions
 	

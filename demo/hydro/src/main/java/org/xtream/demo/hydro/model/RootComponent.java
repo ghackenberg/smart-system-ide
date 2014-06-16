@@ -1,8 +1,8 @@
 package org.xtream.demo.hydro.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
 
@@ -23,10 +23,10 @@ public class RootComponent extends Component
 	
 	// Charts
 
-	public Chart inflowChart = new Chart(context.scenarioInflowOutput);
-	public Chart priceChart = new Chart(context.scenarioPriceOutput);
-	public Chart productionChart = new Chart(context.netProductionOutput, context.scenarioPriceOutput);
-	public Chart rewardChart = new Chart(objective.rewardOutput);
+	public Timeline inflowChart = new Timeline(context.scenarioInflowOutput);
+	public Timeline priceChart = new Timeline(context.scenarioPriceOutput);
+	public Timeline productionChart = new Timeline(context.netProductionOutput, context.scenarioPriceOutput);
+	public Timeline rewardChart = new Timeline(objective.rewardOutput);
 	
 	// Expressions
 	

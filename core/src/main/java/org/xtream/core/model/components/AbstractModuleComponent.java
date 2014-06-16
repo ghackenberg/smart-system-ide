@@ -2,10 +2,10 @@ package org.xtream.core.model.components;
 
 import java.net.URL;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.aggregators.SumAggregatorComponent;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
 
 public abstract class AbstractModuleComponent<PhysicsComponent extends AbstractPhysicsComponent, LogicsComponent extends AbstractLogicsComponent, ConstraintsComponent extends AbstractConstraintsComponent, QualitiesComponent extends AbstractQualitiesComponent, CostsComponent extends AbstractCostsComponent, ModulesComponent extends AbstractModulesComponent> extends Component
@@ -61,6 +61,6 @@ public abstract class AbstractModuleComponent<PhysicsComponent extends AbstractP
 	
 	// Previews
 	
-	public Chart modulePreview;
+	public Timeline modulePreview;
 
 }

@@ -1,9 +1,9 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constraint;
+import org.xtream.core.model.charts.Timeline;
 
 public class NetComponent extends EnergyComponent
 {
@@ -43,11 +43,11 @@ public class NetComponent extends EnergyComponent
 	
 	// Charts
 	
-	public Chart energyChart = new Chart(productionOutput, consumptionOutput, balanceOutput);
+	public Timeline energyChart = new Timeline(productionOutput, consumptionOutput, balanceOutput);
 	
 	// Previews
 	
-	public Chart energyPreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
+	public Timeline energyPreview = new Timeline(productionOutput, consumptionOutput, balanceOutput);
 	
 	// Expressions
 

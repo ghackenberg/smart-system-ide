@@ -1,11 +1,11 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
@@ -54,8 +54,8 @@ public abstract class RootComponent extends Component
 			probabilities[i] = new ChannelExpression<>(thermals[i].probabilityInput, probabilityOutput);
 		}
 		
-		temperatureChart = new Chart(thermals[0].minimumOutput, temperatureOutput, thermals[0].maximumOutput);
-		levelChart = new Chart(storage.minimumOutput, levelOutput, storage.maximumOutput);
+		temperatureChart = new Timeline(thermals[0].minimumOutput, temperatureOutput, thermals[0].maximumOutput);
+		levelChart = new Timeline(storage.minimumOutput, levelOutput, storage.maximumOutput);
 	}
 	
 	// Parameters
@@ -93,9 +93,9 @@ public abstract class RootComponent extends Component
 	
 	// Charts
 	
-	public Chart costChart = new Chart(costOutput);
-	public Chart temperatureChart;
-	public Chart levelChart;
+	public Timeline costChart = new Timeline(costOutput);
+	public Timeline temperatureChart;
+	public Timeline levelChart;
 	
 	// Expressions
 	

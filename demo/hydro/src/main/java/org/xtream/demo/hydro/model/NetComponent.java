@@ -1,9 +1,9 @@
 package org.xtream.demo.hydro.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 
 public class NetComponent extends Component
 {
@@ -20,9 +20,9 @@ public class NetComponent extends Component
 	
 	// Charts
 	
-	public Chart productionChart = new Chart(productionOutput, hauptkraftwerkProductionInput, wehr1ProductionInput, wehr2ProductionInput, wehr3ProductionInput, wehr4ProductionInput);
+	public Timeline productionChart = new Timeline(productionOutput, hauptkraftwerkProductionInput, wehr1ProductionInput, wehr2ProductionInput, wehr3ProductionInput, wehr4ProductionInput);
 	
-	public Chart productionPreview = new Chart(productionOutput);
+	public Timeline productionPreview = new Timeline(productionOutput);
 	
 	// Expressions
 	

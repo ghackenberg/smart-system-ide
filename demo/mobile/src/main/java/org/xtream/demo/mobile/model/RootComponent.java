@@ -1,12 +1,12 @@
 package org.xtream.demo.mobile.model;
 
 import org.xtream.core.datatypes.Graph;
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.workbench.Workbench;
 
@@ -48,11 +48,11 @@ public class RootComponent extends Component
 	
 	// Charts
 	
-	public Chart costChart = new Chart(costOutput);
+	public Timeline costChart = new Timeline(costOutput);
 	
 	// Previews
 	
-	public Chart costPreview = new Chart(costOutput);
+	public Timeline costPreview = new Timeline(costOutput);
 
 	// Expressions
 	

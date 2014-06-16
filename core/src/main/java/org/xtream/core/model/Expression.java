@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.xtream.core.model.annotations.Constant;
 
-public abstract class Expression<T>
+public abstract class Expression<T> extends Element
 {
 	@Constant
 	public List<Field> fields = new ArrayList<>();

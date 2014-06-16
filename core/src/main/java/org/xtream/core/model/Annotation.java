@@ -1,6 +1,6 @@
 package org.xtream.core.model;
 
-public class Annotation<T>
+public class Annotation<T> extends Element
 {
 	
 	public String name;

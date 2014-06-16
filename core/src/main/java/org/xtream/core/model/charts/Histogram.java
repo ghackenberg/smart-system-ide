@@ -1,6 +1,10 @@
-package org.xtream.core.model;
+package org.xtream.core.model.charts;
 
-public class Histogram
+import org.xtream.core.model.Chart;
+import org.xtream.core.model.Component;
+import org.xtream.core.model.Port;
+
+public class Histogram extends Chart
 {
 	
 	public String name;

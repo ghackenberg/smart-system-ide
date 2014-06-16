@@ -2,10 +2,10 @@ package org.xtream.demo.mobile.model;
 
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.Histogram;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
@@ -24,7 +24,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 		
 		// Previews
 		
-		modulePreview = new Chart(physics.powerOutput);
+		modulePreview = new Timeline(physics.powerOutput);
 	}
 	
 	// Ports
@@ -125,14 +125,14 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	// Charts
 
-	public Chart chargeStateChart = new Chart(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
-	public Chart powerChart = new Chart(physics.powerOutput);
-	public Chart powerAggregateChart = new Chart(powerAggregateOutput);
-	public Chart speedChart = new Chart(logics.speedOutput);
-	public Chart speedAbsoluteChart = new Chart(logics.speedAbsoluteOutput);
-	public Chart AggregateChart = new Chart(speedAggregateOutput, powerAggregateOutput);
-	public Chart costChart = new Chart(costs.costsOutput);
-	public Chart costSumChart = new Chart(costOutput);
+	public Timeline chargeStateChart = new Timeline(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
+	public Timeline powerChart = new Timeline(physics.powerOutput);
+	public Timeline powerAggregateChart = new Timeline(powerAggregateOutput);
+	public Timeline speedChart = new Timeline(logics.speedOutput);
+	public Timeline speedAbsoluteChart = new Timeline(logics.speedAbsoluteOutput);
+	public Timeline AggregateChart = new Timeline(speedAggregateOutput, powerAggregateOutput);
+	public Timeline costChart = new Timeline(costs.costsOutput);
+	public Timeline costSumChart = new Timeline(costOutput);
 	
 	// Histograms
 
