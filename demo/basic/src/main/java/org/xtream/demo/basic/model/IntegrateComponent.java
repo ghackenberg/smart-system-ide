@@ -1,10 +1,10 @@
 package org.xtream.demo.basic.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Objective;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.enumerations.Direction;
 
 public class IntegrateComponent extends Component
@@ -77,6 +77,6 @@ public class IntegrateComponent extends Component
 	// CHARTS //
 	////////////
 	
-	public Chart outputChart = new Chart(output); 
+	public Timeline outputChart = new Timeline(output); 
 	
 }

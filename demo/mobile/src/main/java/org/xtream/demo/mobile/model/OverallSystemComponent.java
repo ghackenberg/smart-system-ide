@@ -2,7 +2,7 @@ package org.xtream.demo.mobile.model;
 
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
-import org.xtream.core.model.Chart;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.mobile.model.commons.EnergyModuleComponent;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
@@ -129,7 +129,7 @@ public class OverallSystemComponent extends EnergyModuleComponent<PhysicsCompone
 		
 		// Previews
 		
-		modulePreview = new Chart(productionOutput, consumptionOutput, balanceOutput);
+		modulePreview = new Timeline(productionOutput, consumptionOutput, balanceOutput);
 	}
 	
 	// Channels

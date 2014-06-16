@@ -1,9 +1,9 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constraint;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
 
 public abstract class ThermalComponent extends EnergyComponent
@@ -37,7 +37,7 @@ public abstract class ThermalComponent extends EnergyComponent
 	
 	// Charts
 	
-	public Chart temperatureChart = new Chart(minimumOutput, temperatureOutput, maximumOutput);
+	public Timeline temperatureChart = new Timeline(minimumOutput, temperatureOutput, maximumOutput);
 	
 	// Nodes
 	

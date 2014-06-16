@@ -3,7 +3,7 @@ package org.xtream.core.model.expressions;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xtream.core.model.Pair;
+import org.xtream.core.data.Pair;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constant;
 

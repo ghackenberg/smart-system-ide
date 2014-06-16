@@ -10,7 +10,7 @@ public class SetHelper
 	{
 		Set<Double> set = new HashSet<>();
 		
-		for (int step = 0; step <= steps; step++)
+		for (double step = 0; step <= steps; step++)
 		{
 			set.add(min + step / steps * (max - min));
 		}

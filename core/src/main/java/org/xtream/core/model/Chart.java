@@ -1,19 +1,6 @@
 package org.xtream.core.model;
 
-public class Chart
+public abstract class Chart extends Element
 {
-	
-	public String name;
-	public String qualifiedName;
-	
-	public Component parent;
-	
-	public Port<Double>[] ports;
-	
-	@SafeVarargs
-	public Chart(Port<Double>... ports)
-	{
-		this.ports = ports;
-	}
 
 }

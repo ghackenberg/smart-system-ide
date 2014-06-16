@@ -1,4 +1,4 @@
-package org.xtream.core.model;
+package org.xtream.core.data;
 
 public class Pair<T>
 {
