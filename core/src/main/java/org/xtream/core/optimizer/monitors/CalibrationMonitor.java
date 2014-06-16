@@ -3,12 +3,14 @@ package org.xtream.core.optimizer.monitors;
 import java.util.List;
 import java.util.Map;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
+import org.xtream.core.optimizer.Statistics;
 
-public class CalibrationMonitor implements Monitor
+public class CalibrationMonitor<T extends Component> implements Monitor<T>
 {
 
 	
@@ -25,28 +27,28 @@ public class CalibrationMonitor implements Monitor
 	public long used_memory;
 
 	@Override
-	public void start()
+	public void start(T root)
 	{
 		used_time = System.currentTimeMillis();
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{
 		this.timepoint = timepoint;
-		this.generated_states += generatedStates;
-		this.valid_states += validStates;
-		this.dominant_states += dominantStates;
+		this.generated_states += statistics.generatedStates;
+		this.valid_states += statistics.validStates;
+		this.dominant_states += statistics.dominantStates;
 		this.clusters += equivalenceClasses.size();
-		this.min_objective = minObjective;
-		this.avg_objective = avgObjective;
-		this.max_objective = maxObjective;
+		this.min_objective = statistics.minObjective;
+		this.avg_objective = statistics.avgObjective;
+		this.max_objective = statistics.maxObjective;
 		
 		used_memory = Math.max(used_memory, Memory.usedMemory());
 	}
 
 	@Override
-	public void stop()
+	public void stop(T root, int timepoint)
 	{
 		used_time = System.currentTimeMillis() - used_time;
 	}

@@ -8,13 +8,12 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
 import org.xtream.core.workbench.nodes.ComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
-public class TreeViewer<T extends Component> extends Part implements Viewer<T>
+public class TreeViewer<T extends Component> extends Part<T>
 {
 	
 	private JTree tree;
@@ -37,10 +36,12 @@ public class TreeViewer<T extends Component> extends Part implements Viewer<T>
 	}
 
 	@Override
-	public void view(T root)
+	public void setRoot(T root)
 	{
+		super.setRoot(root);
+		
 		// Tree pane
-		final Part self = this;
+		final Part<T> self = this;
 		
 		tree.setModel(new DefaultTreeModel(new ComponentTreeNode(null, root)));
 		tree.setCellRenderer(new ComponentTreeCellRenderer());
@@ -51,7 +52,7 @@ public class TreeViewer<T extends Component> extends Part implements Viewer<T>
 				{
 					ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
 					
-					trigger(new SelectionEvent(self, node.component));
+					trigger(new SelectionEvent<T>(self, node.component));
 				}
 			}
 		);

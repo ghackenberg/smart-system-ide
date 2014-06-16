@@ -4,57 +4,60 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.State;
+import org.xtream.core.optimizer.Statistics;
 
-public class CompositeMonitor implements Monitor
+public class CompositeMonitor<T extends Component> implements Monitor<T>
 {
 	
-	private List<Monitor> monitors = new ArrayList<>();
+	private List<Monitor<T>> monitors = new ArrayList<>();
 	
-	public CompositeMonitor(Monitor... monitors)
+	@SafeVarargs
+	public CompositeMonitor(Monitor<T>... monitors)
 	{
-		for (Monitor monitor : monitors)
+		for (Monitor<T> monitor : monitors)
 		{
 			this.monitors.add(monitor);
 		}
 	}
 	
-	public void add(Monitor monitor)
+	public void add(Monitor<T> monitor)
 	{
 		monitors.add(monitor);
 	}
 	
-	public void remove(Monitor monitor)
+	public void remove(Monitor<T> monitor)
 	{
 		monitors.remove(monitor);
 	}
 
 	@Override
-	public void start()
+	public void start(T root)
 	{
-		for (Monitor monitor : monitors)
+		for (Monitor<T> monitor : monitors)
 		{
-			monitor.start();
+			monitor.start(root);
 		}
 	}
 
 	@Override
-	public void handle(int timepoint, int generatedStates, int validStates, int dominantStates, double minObjective, double avgObjective, double maxObjective, long branch, long norm, long cluster, long sort, long stats, Map<Key, List<State>> equivalenceClasses)
+	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{
-		for (Monitor monitor : monitors)
+		for (Monitor<T> monitor : monitors)
 		{
-			monitor.handle(timepoint, generatedStates, validStates, dominantStates, minObjective, avgObjective, maxObjective, branch, norm, cluster, sort, stats, equivalenceClasses);
+			monitor.handle(timepoint, statistics, equivalenceClasses, best);
 		}
 	}
 
 	@Override
-	public void stop()
+	public void stop(T root, int timepoint)
 	{
-		for (Monitor monitor : monitors)
+		for (Monitor<T> monitor : monitors)
 		{
-			monitor.stop();
+			monitor.stop(root, timepoint);
 		}
 	}
 

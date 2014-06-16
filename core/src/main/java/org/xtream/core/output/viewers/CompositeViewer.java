@@ -1,10 +1,10 @@
-package org.xtream.core.optimizer.viewers;
+package org.xtream.core.output.viewers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.Viewer;
+import org.xtream.core.output.Viewer;
 
 public class CompositeViewer<T extends Component> implements Viewer<T>
 {

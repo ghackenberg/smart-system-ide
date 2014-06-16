@@ -3,15 +3,16 @@ package org.xtream.core.workbench.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 
-public class SelectionEvent extends Event
+public class SelectionEvent<T extends Component> extends Event<T>
 {
 	
 	public List<Object> objects;
 	
-	public SelectionEvent(Part source, Object object)
+	public SelectionEvent(Part<T> source, Object object)
 	{
 		super(source);
 		
@@ -21,7 +22,7 @@ public class SelectionEvent extends Event
 	}
 	
 	@SafeVarargs
-	public SelectionEvent(Part source, Object... objects)
+	public SelectionEvent(Part<T> source, Object... objects)
 	{
 		super(source);
 		
@@ -33,7 +34,7 @@ public class SelectionEvent extends Event
 		}
 	}
 	
-	public SelectionEvent(Part source, List<Object> objects)
+	public SelectionEvent(Part<T> source, List<Object> objects)
 	{
 		super(source);
 		

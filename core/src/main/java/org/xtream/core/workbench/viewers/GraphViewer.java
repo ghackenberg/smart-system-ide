@@ -12,13 +12,12 @@ import javax.imageio.ImageIO;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.optimizer.Viewer;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.SelectionEvent;
 
-public class GraphViewer<T extends Component> extends Part implements Viewer<T>
+public class GraphViewer<T extends Component> extends Part<T>
 {
 	
 	private ImagePanel image;
@@ -39,19 +38,13 @@ public class GraphViewer<T extends Component> extends Part implements Viewer<T>
 		
 		getPanel().add(image);
 	}
-
-	@Override
-	public void view(T root)
-	{
-		
-	}
 	
 	@Override
-	public void handle(Event event)
+	public void handle(Event<T> event)
 	{
 		if (event instanceof SelectionEvent)
 		{
-			SelectionEvent selection = (SelectionEvent) event;
+			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
 			for (Object object : selection.objects)
 			{

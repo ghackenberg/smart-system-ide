@@ -38,41 +38,6 @@
 			<version>1.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>com.jme3</groupId>
-			<artifactId>jME3-core</artifactId>
-			<version>3.0.0.20140325-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jme3</groupId>
-			<artifactId>jME3-desktop</artifactId>
-			<version>3.0.0.20140325-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jme3</groupId>
-			<artifactId>jME3-lwjgl</artifactId>
-			<version>3.0.0.20140325-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jme3</groupId>
-			<artifactId>jME3-lwjgl-natives</artifactId>
-			<version>3.0.0.20140325-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.jme3</groupId>
-			<artifactId>lwjgl</artifactId>
-			<version>3.0.0.20140325-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl.lwjgl</groupId>
-			<artifactId>lwjgl</artifactId>
-			<version>2.9.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lwjgl.lwjgl</groupId>
-			<artifactId>lwjgl_util</artifactId>
-			<version>2.9.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.jogamp.gluegen</groupId>
 			<artifactId>gluegen-rt-main</artifactId>
 			<version>2.1.5-01</version>

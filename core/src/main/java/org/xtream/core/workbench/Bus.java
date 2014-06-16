@@ -3,9 +3,19 @@ package org.xtream.core.workbench;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bus
+import org.xtream.core.model.Component;
+
+public class Bus<T extends Component>
 {
 	
-	public List<Part> components = new ArrayList<>();
+	public List<Part<T>> components = new ArrayList<>();
+	
+	public void trigger(Event<T> event)
+	{
+		for (Part<T> part : components)
+		{
+			part.trigger(event);
+		}
+	}
 
 }
