@@ -1,11 +1,12 @@
 package org.xtream.core.optimizer;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.markers.Equivalence;
 
 public class Key implements Comparable<Key>
 {
 	
-	public double[] equivalences;
+	private double[] equivalences;
 	
 	public Key()
 	{
@@ -14,15 +15,15 @@ public class Key implements Comparable<Key>
 	
 	public Key(Component root, State state, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
 	{
-		equivalences = new double[root.equivalencesRecursive.size()];
+		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 		
-		double scale = Math.pow(classes, 1. / root.equivalencesRecursive.size());
+		double scale = Math.pow(classes, 1. / root.getDescendantsByClass(Equivalence.class).size());
 		
 		if (timepoint >= 0)
 		{
-			for (int i = 0; i < root.equivalencesRecursive.size(); i++)
+			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				double originalValue = state.get(root.equivalencesRecursive.get(i).port, timepoint);
+				double originalValue = state.getValue(root.getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint);
 				double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
 				double discreteValue = Math.floor(normalizedValue);
 				

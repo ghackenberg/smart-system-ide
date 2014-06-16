@@ -12,7 +12,6 @@ import org.xtream.core.optimizer.Statistics;
 
 public class CalibrationMonitor<T extends Component> implements Monitor<T>
 {
-
 	
 	public int timepoint;
 	public int generated_states;

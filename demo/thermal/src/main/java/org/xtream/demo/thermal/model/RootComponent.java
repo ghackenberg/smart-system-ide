@@ -3,12 +3,12 @@ package org.xtream.demo.thermal.model;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
+import org.xtream.core.model.markers.Equivalence;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.objectives.MinObjective;
 import org.xtream.demo.thermal.model.stage.Stage;
 
 public abstract class RootComponent extends Component
@@ -89,7 +89,7 @@ public abstract class RootComponent extends Component
 	
 	// Objectives
 	
-	public Objective costObjective = new Objective(costOutput, Direction.MIN);
+	public Objective costObjective = new MinObjective(costOutput);
 	
 	// Charts
 	

@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Element;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
@@ -64,26 +66,26 @@ public class ArchitecturePart<T extends Component> extends Part<T>
 	{
 		try
 		{
-			Map<Component, Map<Component, List<String>>> edges = new HashMap<>();
-			for (ChannelExpression<?> channel : root.channels)
+			Map<Element, Map<Element, List<String>>> edges = new HashMap<>();
+			for (ChannelExpression<?> channel : root.getChildrenByClass(ChannelExpression.class))
 			{
-				Map<Component, List<String>> source = edges.get(channel.source.parent);
+				Map<Element, List<String>> source = edges.get(channel.getSource().getParent());
 				
 				if (source == null)
 				{
 					source = new HashMap<>();
-					edges.put(channel.source.parent, source);
+					edges.put(channel.getSource().getParent(), source);
 				}
 				
-				List<String> target = source.get(channel.port.parent);
+				List<String> target = source.get(channel.getPort().getParent());
 				
 				if (target == null)
 				{
 					target = new LinkedList<>();
-					source.put(channel.port.parent, target);
+					source.put(channel.getPort().getParent(), target);
 				}
 				
-				target.add(channel.name);
+				target.add(channel.getName());
 			}
 			
 			PrintStream dot = new PrintStream(new File("Graph.dot"));
@@ -93,38 +95,38 @@ public class ArchitecturePart<T extends Component> extends Part<T>
 			dot.append("\tfontsize = 13;\n");
 			dot.append("\tnode [fontname = \"Calibri\", fontsize = 11];\n");
 			dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
-			for (Component component : root.components)
+			for (Component component : root.getChildrenByClass(Component.class))
 			{
-				if (component.ports.size() > 0)
+				if (component.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\"" + component.name + "_inputs\" [label = \"\", shape = point, color = white];\n");
+					dot.append("\t\"" + component.getName() + "_inputs\" [label = \"\", shape = point, color = white];\n");
 				}
 			}
-			for (Component component : root.components)
+			for (Component component : root.getChildrenByClass(Component.class))
 			{
-				if (component.ports.size() > 0)
+				if (component.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\"" + component.name + "_outputs\" [label = \"\", shape = point, color = white];\n");
+					dot.append("\t\"" + component.getName() + "_outputs\" [label = \"\", shape = point, color = white];\n");
 				}
 			}
-			dot.append("\tsubgraph \"cluster_" + root.name + "\" {\n");
-			dot.append("\t\tlabel = \"" + root.name + " : " + root.getClass().getSimpleName() + "\";\n");
+			dot.append("\tsubgraph \"cluster_" + root.getName() + "\" {\n");
+			dot.append("\t\tlabel = \"" + root.getName() + " : " + root.getClass().getSimpleName() + "\";\n");
 			dot.append("\t\tstyle = filled;\n");
 			dot.append("\t\tfillcolor = gray95;\n");
-			for (Component component : root.components)
+			for (Component component : root.getChildrenByClass(Component.class))
 			{
-				if (component.ports.size() > 0)
+				if (component.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\t\"" + component.name + "\" [label = \"" + component.name + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.components.size() / 10.) + " style = filled, fillcolor = gray85];\n");
+					dot.append("\t\t\"" + component.getName() + "\" [label = \"" + component.getName() + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.getChildrenByClass(Component.class).size() / 10.) + " style = filled, fillcolor = gray85];\n");
 				}
 			}
 			dot.append("\t}\n");
-			for (Entry<Component, Map<Component, List<String>>> source : edges.entrySet())
+			for (Entry<Element, Map<Element, List<String>>> source : edges.entrySet())
 			{
-				for (Entry<Component, List<String>> target : source.getValue().entrySet())
+				for (Entry<Element, List<String>> target : source.getValue().entrySet())
 				{
-					String sourceName = source.getKey() == root ? target.getKey().name + "_inputs" : source.getKey().name;
-					String targetName = target.getKey() == root ? source.getKey().name + "_outputs" : target.getKey().name;
+					String sourceName = source.getKey() == root ? target.getKey().getName() + "_inputs" : source.getKey().getName();
+					String targetName = target.getKey() == root ? source.getKey().getName() + "_outputs" : target.getKey().getName();
 					
 					String label = "";
 					

@@ -20,7 +20,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 
 	public VehicleComponent(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight)
 	{
-		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(graph), new ConstraintsComponent(), new QualitiesComponent(graph), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
+		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(graph), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
 		
 		// Previews
 		
@@ -95,31 +95,25 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += costs.costsOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : costOutput.get(timepoint - 1)) + costs.costsOutput.get(timepoint);
 		}
 	};
 	
 	public Expression<Double> speedAggregateExpression = new Expression<Double>(speedAggregateOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += logics.speedOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : speedAggregateOutput.get(timepoint - 1)) + logics.speedOutput.get(timepoint);
 		}
 	};
 	
 	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
 	{
-		public double previous = 0.;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += physics.powerOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : powerAggregateOutput.get(timepoint - 1)) + physics.powerOutput.get(timepoint);
 		}
 	};
 	
@@ -136,6 +130,6 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	// Histograms
 
-	public Histogram positionHistogram = new Histogram(logics.positionOutput);
+	public Histogram<Edge> positionHistogram = new Histogram<>(logics.positionOutput);
 
 }

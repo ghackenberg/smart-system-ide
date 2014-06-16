@@ -85,24 +85,24 @@ public class HistogramPart<T extends Component> extends Part<T>
 
 		// Charts
 		
-		if (root.histograms.size() > 0)
+		if (root.getChildrenByClass(Histogram.class).size() > 0)
 		{	
 			// Calculate grid layout
 			
-			int cols = (int) Math.ceil(Math.sqrt(root.histograms.size()));
-			int rows = (int) Math.ceil(Math.sqrt(root.histograms.size()));
+			int cols = (int) Math.ceil(Math.sqrt(root.getChildrenByClass(Histogram.class).size()));
+			int rows = (int) Math.ceil(Math.sqrt(root.getChildrenByClass(Histogram.class).size()));
 			
 			panel.setLayout(new GridLayout(cols, rows));
 			
 			// Show charts
 			
-			for (Histogram definition : root.histograms)
+			for (Histogram<?> definition : root.getChildrenByClass(Histogram.class))
 			{
 				DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 				
 				Map<String, Integer> map = new HashMap<String, Integer>();
 				
-				for (Port<?> port : definition.ports)
+				for (Port<?> port : definition.getPorts())
 				{
 					for (int i = 0; i < timepoint; i++)
 					{
@@ -123,13 +123,13 @@ public class HistogramPart<T extends Component> extends Part<T>
 					
 				}
 			
-				JFreeChart chart = ChartFactory.createBarChart(definition.name, null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+				JFreeChart chart = ChartFactory.createBarChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 				
 				chart.setAntiAlias(true);
 				chart.setTextAntiAlias(true);
 				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 				
-				for (int i = 0; i < definition.ports.length; i++)
+				for (int i = 0; i < definition.getPorts().length; i++)
 				{
 					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
 				}

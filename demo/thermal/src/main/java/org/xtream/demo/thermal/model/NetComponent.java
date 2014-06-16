@@ -2,8 +2,8 @@ package org.xtream.demo.thermal.model;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.markers.Constraint;
 
 public class NetComponent extends EnergyComponent
 {

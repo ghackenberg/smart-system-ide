@@ -66,14 +66,12 @@ public class LogicsComponent extends AbstractLogicsComponent
 
 	public Expression<Edge> positionTargetExpression = new Expression<Edge>(positionTargetOutput)	
 	{
-		private List<Edge> edgeList = new LinkedList<Edge>();
-		
 		@Override 
 		public Edge evaluate(int timepoint)
 		{
-
 			if (positionTraversedLengthInput.get(timepoint) >= positionEdgeLengthInput.get(timepoint))
 			{
+				List<Edge> edgeList = new LinkedList<Edge>();
 				
 				if (edgeList.isEmpty())
 				{

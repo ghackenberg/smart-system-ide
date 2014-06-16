@@ -41,7 +41,7 @@ public abstract class AbstractModulesComponent extends Component
 		modulePreviews = new Timeline[modules.length];
 		for (int i = 0; i < modules.length; i++)
 		{
-			modulePreviews[i] = new Timeline(modules[i].modulePreview.ports);
+			modulePreviews[i] = new Timeline(modules[i].modulePreview.getPorts());
 		}
 	}
 	

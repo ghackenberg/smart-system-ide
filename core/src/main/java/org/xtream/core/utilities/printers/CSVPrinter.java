@@ -38,9 +38,9 @@ public class CSVPrinter<T extends Component> implements Printer<T>
 		
 		out.println();
 		
-		for (Port<?> port : component.portsRecursive)
+		for (Port<?> port : component.getDescendantsByClass(Port.class))
 		{
-			out.print(port.qualifiedName);
+			out.print(port.getQualifiedName());
 			
 			for (int i = 0; i < timepoint; i++)
 			{

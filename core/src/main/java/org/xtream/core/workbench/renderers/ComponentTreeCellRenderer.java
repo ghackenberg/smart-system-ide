@@ -26,13 +26,13 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 		
 		ComponentTreeNode node = (ComponentTreeNode) value;
 		
-		if (node.component.icon != null)
+		if (node.component.getIcon() != null)
 		{	
-			ImageIcon icon = icons.get(node.component.icon);
+			ImageIcon icon = icons.get(node.component.getIcon());
 			
 			if (icon == null)
 			{
-				ImageIcon image = new ImageIcon(node.component.icon);
+				ImageIcon image = new ImageIcon(node.component.getIcon());
 				
 				if (image.getIconWidth() == 16 && image.getIconHeight() == 16)
 				{
@@ -43,7 +43,7 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 					icon = new ImageIcon(image.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 				}
 				
-				icons.put(node.component.icon, icon);
+				icons.put(node.component.getIcon(), icon);
 			}
 			
 			setIcon(icon);

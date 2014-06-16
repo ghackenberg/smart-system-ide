@@ -1,11 +1,12 @@
 package org.xtream.demo.basic.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Objective;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.enumerations.Direction;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.objectives.MinObjective;
 
 public class IntegrateComponent extends Component
 {
@@ -40,12 +41,9 @@ public class IntegrateComponent extends Component
 
 	public Expression<Double> outputExpression = new Expression<Double>(output)
 	{
-		// NOTE Will be managed by the optimizer (like all public fields of expressions except with annotation @Constant)!
-		public double previous = 0;
-		
 		@Override public Double evaluate(int timepoint)
 		{
-			return previous += input.get(timepoint);
+			return (timepoint == 0 ? 0 : output.get(timepoint - 1)) + input.get(timepoint);
 		}
 	};
 	
@@ -71,12 +69,12 @@ public class IntegrateComponent extends Component
 	// OBJECTIVES //
 	////////////////
 	
-	public Objective outputObjective = new Objective(output, Direction.MIN);
+	public Objective outputObjective = new MinObjective(output);
 	
 	////////////
 	// CHARTS //
 	////////////
 	
-	public Timeline outputChart = new Timeline(output); 
+	public Chart outputChart = new Timeline(output); 
 	
 }

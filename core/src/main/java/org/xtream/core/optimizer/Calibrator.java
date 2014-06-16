@@ -10,7 +10,7 @@ import org.xtream.core.utilities.monitors.CalibrationMonitor;
 public abstract class Calibrator<T extends Component>
 {
 	
-	public Class<T> type;
+	private Class<T> type;
 	
 	public Calibrator(Class<T> type)
 	{

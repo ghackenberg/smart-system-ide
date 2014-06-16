@@ -1,32 +1,31 @@
 package org.xtream.core.optimizer;
 
-import java.lang.reflect.Field;
-
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 //import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.annotations.Objective;
-import org.xtream.core.model.annotations.Preference;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.Preference;
+import org.xtream.core.model.markers.objectives.MaxObjective;
+import org.xtream.core.model.markers.objectives.MinObjective;
+import org.xtream.core.model.markers.preferences.MaxPreference;
+import org.xtream.core.model.markers.preferences.MinPreference;
 
 public class State implements Comparable<State>
 {
-	public Component root;
+	private Component root;
 	
-	public int timepoint;
+	private int timepoint;
 	
-	public State previous;
+	private State previous;
 	
-	public Object[] values;
-	
-	public Object[] fields;
+	private Object[] values;
 	
 	public State(int portCount, int fieldCount)
 	{
-		this(portCount, fieldCount, -1, null);
+		this(portCount, -1, null);
 	}
 	
-	public State(int portCount, int fieldCount, int timepoint, State previous)
+	public State(int portCount, int timepoint, State previous)
 	{
 		this.timepoint = timepoint;
 		this.previous = previous;
@@ -35,123 +34,56 @@ public class State implements Comparable<State>
 		{
 			values = new Object[portCount];
 		}
-		if (fieldCount > 0)
-		{
-			fields = new Object[fieldCount];
-		}
 	}
 	
 	public void connect(Component root)
 	{
 		this.root = root;
 		
-		for (Port<?> port : root.portsRecursive)
+		for (Port<?> port : root.getDescendantsByClass(Port.class))
 		{
-			port.state = this;
+			port.setState(this);
 		}
 	}
 	
 	public void restore(Component root)
 	{
 		connect(root);
-		
-		int index = 0;
-		
-		for (Expression<?> expression : root.expressionsRecursive)
-		{
-			for (Field field : expression.fields)
-			{
-				try
-				{
-					field.setAccessible(true);
-					
-					//if (field.getAnnotation(Constant.class) == null)
-					//{
-						field.set(expression, fields[index++]);
-					//}
-				}
-				catch (IllegalArgumentException e)
-				{
-					throw new IllegalStateException(e);
-				}
-				catch (IllegalAccessException e)
-				{
-					throw new IllegalStateException(e);
-				}
-			}
-		}
 	}
 	
-	public void save()
+	public int getTimepoint()
 	{
-		int index = 0;
-		
-		for (Expression<?> expression : root.expressionsRecursive)
-		{
-			for (Field field : expression.fields)
-			{
-				try
-				{
-					field.setAccessible(true);
-					
-					//if (field.getAnnotation(Constant.class) == null)
-					//{
-						fields[index++] = field.get(expression);
-					//}
-				}
-				catch (IllegalArgumentException e)
-				{
-					throw new IllegalStateException(e);
-				}
-				catch (IllegalAccessException e)
-				{
-					throw new IllegalStateException(e);
-				}
-			}
-		}
+		return timepoint;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T get(Port<T> port, int timepoint)
+	public <T> T getValue(Port<T> port, int timepoint)
 	{
 		if (this.timepoint == timepoint)
 		{
-			return (T) values[port.number];
+			return (T) values[port.getNumber()];
 		}
 		else
 		{
-			return previous.get(port, timepoint);
+			return previous.getValue(port, timepoint);
 		}
 	}
 	
-	public <T> void set(Port<T> port, int timepoint, T value)
+	public <T> void setValue(Port<T> port, int timepoint, T value)
 	{
 		if (this.timepoint == timepoint)
 		{
-			values[port.number] = value;
+			values[port.getNumber()] = value;
 		}
 		else
 		{
-			previous.set(port, timepoint, value);
-		}
-	}
-	
-	public void dump()
-	{
-		int index = 0;
-
-		for (Expression<?> expression : root.expressionsRecursive)
-		{
-			for (Field field : expression.fields)
-			{
-				System.out.println(expression.qualifiedName + "." + field.getName() + " = " + fields[index++]);
-			}
+			previous.setValue(port, timepoint, value);
 		}
 	}
 	
 	public Integer compareDominanceTo(State other)
 	{
-		if (root.minDominancesRecursive.size() > 0 || root.maxDominancesRecursive.size() > 0)
+		if (root.getDescendantsByClass(MinPreference.class).size() > 0 || root.getDescendantsByClass(MaxPreference.class).size() > 0)
 		{
 			// Check equivalence
 			
@@ -170,9 +102,9 @@ public class State implements Comparable<State>
 			
 			double difference = 0;
 			
-			for (Preference preference : root.minDominancesRecursive)
+			for (Preference preference : root.getDescendantsByClass(MinPreference.class))
 			{
-				double temp = get(preference.port, timepoint) - other.get(preference.port, timepoint);
+				double temp = getValue(preference.getPort(), timepoint) - other.getValue(preference.getPort(), timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -188,9 +120,9 @@ public class State implements Comparable<State>
 			
 			difference *= -1;
 			
-			for (Preference preference : root.maxDominancesRecursive)
+			for (Preference preference : root.getDescendantsByClass(MaxPreference.class))
 			{
-				double temp = get(preference.port, timepoint) - other.get(preference.port, timepoint);
+				double temp = getValue(preference.getPort(), timepoint) - other.getValue(preference.getPort(), timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -215,15 +147,15 @@ public class State implements Comparable<State>
 	@Override
 	public int compareTo(State other)
 	{
-		if (root.minObjectivesRecursive.size() == 1 || root.maxObjectivesRecursive.size() == 1)
+		if (root.getDescendantsByClass(MinObjective.class).size() == 1 || root.getDescendantsByClass(MaxObjective.class).size() == 1)
 		{
-			for (Objective objective : root.minObjectivesRecursive)
+			for (Objective objective : root.getDescendantsByClass(MinObjective.class))
 			{
-				return (int) Math.signum(get(objective.port, timepoint) - other.get(objective.port, timepoint));
+				return (int) Math.signum(getValue(objective.getPort(), timepoint) - other.getValue(objective.getPort(), timepoint));
 			}
-			for (Objective objective : root.maxObjectivesRecursive)
+			for (Objective objective : root.getDescendantsByClass(MaxObjective.class))
 			{
-				return (int) Math.signum(get(objective.port, timepoint) - other.get(objective.port, timepoint)) * -1;
+				return (int) Math.signum(getValue(objective.getPort(), timepoint) - other.getValue(objective.getPort(), timepoint)) * -1;
 			}
 			
 			throw new IllegalStateException();

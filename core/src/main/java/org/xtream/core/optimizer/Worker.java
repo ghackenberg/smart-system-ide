@@ -8,20 +8,20 @@ import java.util.Queue;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.annotations.Constraint;
+import org.xtream.core.model.markers.Constraint;
 
 public class Worker implements Runnable
 {
-	public Component root;
-	public int timepoint;
-	public int samples;
-	public double randomness;
-	public Map<Key, List<State>> previousGroups;
-	public Queue<Key> queue;
+	private Component root;
+	private int timepoint;
+	private int samples;
+	private double randomness;
+	private Map<Key, List<State>> previousGroups;
+	private Queue<Key> queue;
 	
-	public int generatedCount = 0;
-	public int validCount = 0;
-	public List<State> currentStates = new ArrayList<>();
+	private int generatedCount = 0;
+	private int validCount = 0;
+	private List<State> currentStates = new ArrayList<>();
 	
 	public Worker(Component root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
@@ -31,6 +31,21 @@ public class Worker implements Runnable
 		this.randomness = randomness;
 		this.previousGroups = previousGroups;
 		this.queue = queue;
+	}
+	
+	public int getGeneratedCount()
+	{
+		return generatedCount;
+	}
+	
+	public int getValidCount()
+	{
+		return validCount;
+	}
+	
+	public List<State> getCurrentStates()
+	{
+		return currentStates;
 	}
 	
 	@Override
@@ -65,11 +80,11 @@ public class Worker implements Runnable
 					{
 						// Create Status
 						
-						State current = new State(root.portsRecursive.size(), root.fieldsRecursive.size(), timepoint, previous);
+						State current = new State(root.getDescendantsByClass(Port.class).size(), timepoint, previous);
 						
 						current.connect(root);
 						
-						for (Port<?> port : root.portsRecursive)
+						for (Port<?> port : root.getDescendantsByClass(Port.class))
 						{
 							port.get(timepoint);
 						}
@@ -78,9 +93,9 @@ public class Worker implements Runnable
 						
 						boolean valid = true;
 						
-						for (Constraint constraint : root.constraintsRecursive)
+						for (Constraint constraint : root.getDescendantsByClass(Constraint.class))
 						{
-							valid = valid && constraint.port.get(timepoint);
+							valid = valid && constraint.getPort().get(timepoint);
 							
 							//if (!constraint.port.get(timepoint))
 							//{
@@ -95,8 +110,6 @@ public class Worker implements Runnable
 							validCount++;
 							
 							currentStates.add(current);
-							
-							current.save();
 						}
 					}
 					catch (IllegalStateException e)
