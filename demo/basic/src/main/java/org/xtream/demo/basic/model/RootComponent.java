@@ -2,11 +2,10 @@ package org.xtream.demo.basic.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Pair;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Constraint;
 import org.xtream.core.model.annotations.Equivalence;
-import org.xtream.core.model.builders.MapBuilder;
-import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
@@ -64,9 +63,9 @@ public class RootComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 	
-	public Expression<Double> test1Expression = new ConstantNonDeterministicExpression<>(firstOutput, new SetBuilder<Double>().add(1.).add(2.).add(3.).add(4.).add(5.).add(6.).add(7.).add(8.));
+	public Expression<Double> test1Expression = new ConstantNonDeterministicExpression<>(firstOutput, 1., 2., 3., 4., 5., 6., 7., 8.);
 	
-	public Expression<Double> test2Expression = new ConstantProbabilisticExpression<>(secondOutput, new MapBuilder<Double>().put(1., 0.5).put(2., 0.25).put(3.,  0.25));
+	public Expression<Double> test2Expression = new ConstantProbabilisticExpression<>(secondOutput, new Pair<>(1., 0.5), new Pair<>(2., 0.25), new Pair<>(3.,  0.25));
 	
 	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximumOutput)
 	{

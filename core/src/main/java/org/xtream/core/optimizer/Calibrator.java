@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.monitors.CalibrationMonitor;
+import org.xtream.core.utilities.monitors.CalibrationMonitor;
 
 public abstract class Calibrator<T extends Component>
 {

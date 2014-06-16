@@ -2,15 +2,21 @@ package org.xtream.core.workbench;
 
 import java.awt.GridLayout;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.optimizer.Key;
+import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.optimizer.State;
+import org.xtream.core.optimizer.Statistics;
 
 
-public abstract class Part<T extends Component>
+public abstract class Part<T extends Component> implements Monitor<T>
 {
 	private String title;
 	private Icon icon;
@@ -105,6 +111,24 @@ public abstract class Part<T extends Component>
 				component.handle(event);
 			}
 		}
+	}
+	
+	@Override
+	public void start()
+	{
+		
+	}
+	
+	@Override
+	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> clusters, State best)
+	{
+		
+	}
+	
+	@Override
+	public void stop()
+	{
+		
 	}
 	
 }

@@ -3,8 +3,6 @@ package org.xtream.core.workbench;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.io.File;
-import java.io.PrintStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,17 +19,16 @@ import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Engine;
-import org.xtream.core.optimizer.monitors.CSVMonitor;
-import org.xtream.core.optimizer.monitors.CompositeMonitor;
+import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.monitors.ChartMonitor;
-import org.xtream.core.workbench.monitors.ProgressMonitor;
-import org.xtream.core.workbench.printers.AnimationPrinter;
-import org.xtream.core.workbench.printers.ChartPrinter;
-import org.xtream.core.workbench.printers.GraphPrinter;
-import org.xtream.core.workbench.printers.HistogramPrinter;
-import org.xtream.core.workbench.viewers.GraphViewer;
-import org.xtream.core.workbench.viewers.TreeViewer;
+import org.xtream.core.workbench.parts.AnimationPart;
+import org.xtream.core.workbench.parts.ArchitecturePart;
+import org.xtream.core.workbench.parts.ChartPart;
+import org.xtream.core.workbench.parts.GraphPart;
+import org.xtream.core.workbench.parts.HistogramPart;
+import org.xtream.core.workbench.parts.MonitorPart;
+import org.xtream.core.workbench.parts.TreePart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
@@ -49,12 +46,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<T>(0,0,1,2), new GraphViewer<T>(1,0,2,1), new AnimationPrinter<T>(3,0,2,1), new ChartPrinter<T>(1,1,4,1), new ChartMonitor<T>(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new TreeViewer<T>(0,0,1,2), new GraphViewer<T>(1,0,2,1), new GraphPrinter<T>(graph,3,0,2,1), new ChartPrinter<T>(1,1,2,1), new HistogramPrinter<T>(3,1,2,1), new ChartMonitor<T>(5,0,1,2));
+		this(type, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,2,1), new HistogramPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
@@ -189,8 +186,12 @@ public class Workbench<T extends Component>
 			
 			CompositeMonitor<T> allMonitor = new CompositeMonitor<>();
 			
-			allMonitor.add(new CSVMonitor<T>(new PrintStream(new File("Monitor.csv"))));
-			allMonitor.add(new ProgressMonitor<T>(root, timeBar, memoryBar, slider, duration));
+			allMonitor.add(new EngineMonitor<T>(root, timeBar, memoryBar, slider, duration));
+			
+			for (Monitor<T> monitor : parts)
+			{
+				allMonitor.add(monitor);
+			}
 			
 			// run
 			

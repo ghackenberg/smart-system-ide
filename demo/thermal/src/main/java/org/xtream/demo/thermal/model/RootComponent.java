@@ -6,7 +6,6 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.annotations.Objective;
-import org.xtream.core.model.builders.SetBuilder;
 import org.xtream.core.model.enumerations.Direction;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
@@ -121,6 +120,6 @@ public abstract class RootComponent extends Component
 			return storage.levelOutput.get(timepoint);
 		}
 	};
-	public Expression<Double> probabilityExpression = new ConstantNonDeterministicExpression<>(probabilityOutput, new SetBuilder<Double>().add(0.).add(.25).add(.5).add(.75).add(1.));
+	public Expression<Double> probabilityExpression = new ConstantNonDeterministicExpression<>(probabilityOutput, 0., .25, .5, .75, 1.);
 
 }
