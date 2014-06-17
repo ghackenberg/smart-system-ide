@@ -17,7 +17,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public ControlComponent steuerung = new org.xtream.demo.hydro.model.single.discrete.backward.ControlComponent();
+	public ControlComponent steuerung = new org.xtream.demo.hydro.model.single.continuous.backward.ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
 	public EquivalenceComponent equivalence = new EquivalenceComponent();

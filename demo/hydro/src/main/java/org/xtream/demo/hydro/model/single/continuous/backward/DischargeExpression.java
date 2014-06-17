@@ -50,7 +50,7 @@ public class DischargeExpression extends Expression<Double>
 			}
 			else
 			{
-				System.out.println(getPort().getQualifiedName() + " (No option!)");
+				//System.out.println(getPort().getQualifiedName() + " (No option!)");
 				
 				return 0.;
 			}

@@ -279,7 +279,7 @@ public class Engine<T extends Component>
 					}
 					for (Objective objective : root.getDescendantsByClass(MaxObjective.class))
 					{
-						if (objective.getPort().get(best, timepoint) > objective.getPort().get(entry.getValue().get(0), timepoint))
+						if (objective.getPort().get(best, timepoint) < objective.getPort().get(entry.getValue().get(0), timepoint))
 						{
 							best = entry.getValue().get(0);
 						}
