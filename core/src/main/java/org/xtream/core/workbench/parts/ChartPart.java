@@ -42,7 +42,7 @@ public class ChartPart<T extends Component> extends Part<T>
 	}
 	public ChartPart(int x, int y, int width, int height)
 	{
-		super("Chart printer", x, y, width, height);
+		super("Charts", x, y, width, height);
 		
 		panel = new JPanel();
 		

@@ -36,27 +36,27 @@ public class JoglVisitor extends Visitor
 	
 	public void handle(Background background)
 	{
-		System.out.println("Background!");
+		//System.out.println("Background!");
 	}
 	
 	public void handle(Ambient light)
 	{
-		System.out.println("Ambient light!");
+		//System.out.println("Ambient light!");
 	}
 	
 	public void handle(Point light)
 	{
-		System.out.println("Point light!");
+		//System.out.println("Point light!");
 	}
 	
 	public void handle(Directional light)
 	{
-		System.out.println("Directional light!");
+		//System.out.println("Directional light!");
 	}
 	
 	public void handle(Camera camera)
 	{
-		System.out.println("Camera!");
+		//System.out.println("Camera!");
 	}
 	
 	public void handle(Group group)
@@ -71,37 +71,37 @@ public class JoglVisitor extends Visitor
 	
 	public void handle(Box box)
 	{
-		System.out.println("Box!");
+		//System.out.println("Box!");
 	}
 	
 	public void handle(Sphere sphere)
 	{
-		System.out.println("Sphere!");
+		//System.out.println("Sphere!");
 	}
 	
 	public void handle(Cylinder cylinder)
 	{
-		System.out.println("Cylinder!");
+		//System.out.println("Cylinder!");
 	}
 	
 	public void handleBefore(Rotation rotation)
 	{
-		System.out.println("Rotation!");
+		//System.out.println("Rotation!");
 	}
 	
 	public void handleBefore(Scale scale)
 	{
-		System.out.println("Scale!");
+		//System.out.println("Scale!");
 	}
 	
 	public void handleBefore(Translation translation)
 	{
-		System.out.println("Translation!");
+		//System.out.println("Translation!");
 	}
 	
 	public void handleAfter(Transform transform)
 	{
-		System.out.println("Transform!");
+		//System.out.println("Transform!");
 	}
 
 }

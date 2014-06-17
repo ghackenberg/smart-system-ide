@@ -34,7 +34,7 @@ public class ArchitecturePart<T extends Component> extends Part<T>
 	}
 	public ArchitecturePart(int x, int y, int width, int height)
 	{
-		super("Graph viewer", x, y, width, height);
+		super("Model architecture", x, y, width, height);
 
 		image = new ImagePanel();
 		

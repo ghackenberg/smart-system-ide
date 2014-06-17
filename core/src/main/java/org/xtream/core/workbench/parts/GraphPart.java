@@ -43,7 +43,7 @@ public class GraphPart<T extends Component> extends Part<T>
 	}
 	public GraphPart(Graph graph, int x, int y, int width, int height)
 	{
-		super("Graph printer", x, y, width, height);
+		super("Navigation graph", x, y, width, height);
 		
 		this.graph = graph;
 		

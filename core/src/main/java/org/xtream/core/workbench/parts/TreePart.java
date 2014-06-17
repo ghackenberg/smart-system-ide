@@ -28,7 +28,7 @@ public class TreePart<T extends Component> extends Part<T>
 	}
 	public TreePart(int x, int y, int width, int height)
 	{
-		super("Tree viewer", x, y, width, height);
+		super("Component tree", x, y, width, height);
 		
 		tree = new JTree();
 		
