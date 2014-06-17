@@ -12,12 +12,12 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 96 * 7, 500, 100, 0.0);
+		new Workbench<>(new RootComponent(), 96 * 7, 100, 100, 0.0);
 	}
 	
 	// Components
 	
-	public ControlComponent steuerung = new org.xtream.demo.hydro.model.single.discrete.random.ControlComponent();
+	public ControlComponent steuerung = new org.xtream.demo.hydro.model.single.discrete.backward.ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
 	public EquivalenceComponent equivalence = new EquivalenceComponent();
