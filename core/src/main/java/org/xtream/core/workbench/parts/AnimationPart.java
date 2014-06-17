@@ -9,6 +9,7 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.utilities.visitors.JoglVisitor;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
@@ -81,6 +82,8 @@ public class AnimationPart<T extends Component> extends Part<T>
 						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[] {0f, 20f, 5f, 0f}, 0);
 						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, new float[] {1f, 1f, 1f, 1f}, 0);
 						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, new float[] {1f, 1f, 1f, 1f}, 0);
+						
+						// TODO [Stefanie] Move OpenGL ClearColor/Depth and Light calls to JoglVisitor 
 					}
 					@Override
 					public void dispose(GLAutoDrawable drawable)
@@ -138,6 +141,10 @@ public class AnimationPart<T extends Component> extends Part<T>
 							glut.glutSolidCylinder(1f, 2f, 100, 100);
 						}
 						gl2.glPopMatrix();
+						
+						// TODO [Stefanie] Move OpenGL calls to JoglVisitor
+						
+						new JoglVisitor().handle(getRoot());
 					}
 				}
 			);
