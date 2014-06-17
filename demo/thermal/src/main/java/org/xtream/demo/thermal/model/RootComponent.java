@@ -17,8 +17,8 @@ public abstract class RootComponent extends Component
 {
 	
 	public static int DURATION = 96;
-	public static int SAMPLES = 64;
-	public static int CLASSES = 16;
+	public static int SAMPLES = 100;
+	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.0;
 	
 	public RootComponent(Stage stage)
