@@ -26,7 +26,6 @@ import org.xtream.core.workbench.parts.AnimationPart;
 import org.xtream.core.workbench.parts.ArchitecturePart;
 import org.xtream.core.workbench.parts.ChartPart;
 import org.xtream.core.workbench.parts.GraphPart;
-import org.xtream.core.workbench.parts.HistogramPart;
 import org.xtream.core.workbench.parts.MonitorPart;
 import org.xtream.core.workbench.parts.TreePart;
 
@@ -50,7 +49,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,2,1), new HistogramPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs

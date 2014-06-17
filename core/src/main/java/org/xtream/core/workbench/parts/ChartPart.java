@@ -13,8 +13,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
@@ -28,7 +30,7 @@ public class ChartPart<T extends Component> extends Part<T>
 	private static int STROKE = 3;
 	
 	private JPanel panel;
-	private Map<Timeline, DefaultCategoryDataset> datasets = new HashMap<>();
+	private Map<Chart, DefaultCategoryDataset> datasets = new HashMap<>();
 	private Component component;
 	private int timepoint = 0;
 	
@@ -95,25 +97,44 @@ public class ChartPart<T extends Component> extends Part<T>
 			
 			// Show charts
 			
-			for (Timeline definition : component.getChildrenByClass(Timeline.class))
+			for (Chart definition : component.getChildrenByClass(Chart.class))
 			{
 				DefaultCategoryDataset dataset = getDataset(definition);
 				
-				JFreeChart chart = ChartFactory.createLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+				JFreeChart jfreechart;
 				
-				chart.setAntiAlias(true);
-				chart.setTextAntiAlias(true);
-				chart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
-				
-				for (int i = 0; i < definition.getPorts().length; i++)
+				if (definition instanceof Timeline)
 				{
-					chart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+					jfreechart = ChartFactory.createLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					
+					Timeline timeline = (Timeline) definition;
+					
+					for (int i = 0; i < timeline.getPorts().length; i++)
+					{
+						jfreechart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+					}
 				}
-				chart.getCategoryPlot().getDomainAxis().setTickLabelsVisible(false);
+				else if (definition instanceof Histogram)
+				{
+					jfreechart = ChartFactory.createBarChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					
+					Histogram<?> histogram = (Histogram<?>) definition;
+					
+					for (int i = 0; i < histogram.getPorts().length; i++)
+					{
+						jfreechart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+					}
+				}
+				else
+				{
+					throw new IllegalStateException();
+				}
 				
-				ChartPanel panel = new ChartPanel(chart);
+				jfreechart.setAntiAlias(true);
+				jfreechart.setTextAntiAlias(true);
+				jfreechart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 				
-				this.panel.add(panel);
+				panel.add(new ChartPanel(jfreechart));
 			}
 			
 			// Update datasets
@@ -130,16 +151,51 @@ public class ChartPart<T extends Component> extends Part<T>
 	{
 		this.timepoint = timepoint;
 		
-		for (Timeline definition : component.getChildrenByClass(Timeline.class))
+		for (Chart chart : component.getChildrenByClass(Chart.class))
 		{
 			//datasets.get(definition).clear();
 			
-			for (Port<Double> port : definition.getPorts())
+			if (chart instanceof Timeline)
 			{
-				for (int i = 0; i < timepoint; i++)
+				Timeline timeline = (Timeline) chart;
+				
+				for (Port<Double> port : timeline.getPorts())
 				{
-					datasets.get(definition).addValue(port.get(getState(), i), port.getName(), "" + i);
+					for (int i = 0; i < timepoint; i++)
+					{
+						datasets.get(timeline).addValue(port.get(getState(), i), port.getName(), "" + i);
+					}
 				}
+			}
+			else if (chart instanceof Histogram)
+			{
+				Histogram<?> histogram = (Histogram<?>) chart;
+				
+				for (Port<?> port : histogram.getPorts())
+				{
+					Map<String, Integer> map = new HashMap<String, Integer>();
+					
+					for (int i = 0; i < timepoint; i++)
+					{
+						if (!(map.containsKey(port.get(getState(), i).toString())))
+						{
+							map.put(port.get(getState(), i).toString(), 1);
+						}
+						else 
+						{
+							map.put(port.get(getState(), i).toString(), 1 + map.get(port.get(getState(), i).toString()));
+						}
+					}
+					
+					for (String i : map.keySet())
+					{
+						datasets.get(histogram).setValue(map.get(i), i, "value");
+					}
+				}
+			}
+			else
+			{
+				throw new IllegalStateException();
 			}
 		}
 		
@@ -148,7 +204,7 @@ public class ChartPart<T extends Component> extends Part<T>
 		panel.updateUI();
 	}
 	
-	public DefaultCategoryDataset getDataset(Timeline definition)
+	public DefaultCategoryDataset getDataset(Chart definition)
 	{
 		DefaultCategoryDataset dataset = datasets.get(definition);
 		
