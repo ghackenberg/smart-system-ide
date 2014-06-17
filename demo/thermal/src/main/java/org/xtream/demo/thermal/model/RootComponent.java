@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -93,9 +94,9 @@ public abstract class RootComponent extends Component
 	
 	// Charts
 	
-	public Timeline costChart = new Timeline(costOutput);
-	public Timeline temperatureChart;
-	public Timeline levelChart;
+	public Chart costChart = new Timeline(costOutput);
+	public Chart temperatureChart;
+	public Chart levelChart;
 	
 	// Expressions
 	

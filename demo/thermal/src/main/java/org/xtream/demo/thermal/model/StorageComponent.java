@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
@@ -41,11 +42,7 @@ public abstract class StorageComponent extends EnergyComponent
 	
 	// Charts
 	
-	public Timeline energyChart = new Timeline(minimumOutput, levelOutput, maximumOutput);
-	
-	// Previews
-	
-	public Timeline energyPreview = new Timeline(minimumOutput, levelOutput, maximumOutput);
+	public Chart energyChart = new Timeline(minimumOutput, levelOutput, maximumOutput);
 	
 	// Expressions
 

@@ -1,5 +1,6 @@
 package org.xtream.demo.street.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -17,9 +18,7 @@ public class NetComponent extends Component
 	
 	// Charts
 	
-	public Timeline balanceChart = new Timeline(balance);
-	
-	public Timeline balancePreview = new Timeline(balance); 
+	public Chart balanceChart = new Timeline(balance);
 	
 	// Expressions
 	

@@ -2,6 +2,7 @@ package org.xtream.demo.mobile.model;
 
 import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
@@ -119,17 +120,15 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	// Charts
 
-	public Timeline chargeStateChart = new Timeline(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
-	public Timeline powerChart = new Timeline(physics.powerOutput);
-	public Timeline powerAggregateChart = new Timeline(powerAggregateOutput);
-	public Timeline speedChart = new Timeline(logics.speedOutput);
-	public Timeline speedAbsoluteChart = new Timeline(logics.speedAbsoluteOutput);
-	public Timeline AggregateChart = new Timeline(speedAggregateOutput, powerAggregateOutput);
-	public Timeline costChart = new Timeline(costs.costsOutput);
-	public Timeline costSumChart = new Timeline(costOutput);
-	
-	// Histograms
+	public Chart chargeStateChart = new Timeline(physics.chargeStateOutput, physics.minimumChargeStateOutput, physics.maximumChargeStateOutput);
+	public Chart powerChart = new Timeline(physics.powerOutput);
+	public Chart powerAggregateChart = new Timeline(powerAggregateOutput);
+	public Chart speedChart = new Timeline(logics.speedOutput);
+	public Chart speedAbsoluteChart = new Timeline(logics.speedAbsoluteOutput);
+	public Chart AggregateChart = new Timeline(speedAggregateOutput, powerAggregateOutput);
+	public Chart costChart = new Timeline(costs.costsOutput);
+	public Chart costSumChart = new Timeline(costOutput);
 
-	public Histogram<Edge> positionHistogram = new Histogram<>(logics.positionOutput);
+	public Chart positionHistogram = new Histogram<>(logics.positionOutput);
 
 }
