@@ -161,7 +161,7 @@ public class GraphPart<T extends Component> extends Part<T>
 							
 							if (!map.containsKey(port))
 							{
-								map.put(port, generateColor(0.07f));
+								map.put(port, generateColor(0));
 							}
 							
 							double width = 0.1;

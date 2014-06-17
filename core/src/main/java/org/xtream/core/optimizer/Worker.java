@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Constraint;
 
 public class Worker<T extends Component> implements Runnable
@@ -76,18 +76,18 @@ public class Worker<T extends Component> implements Runnable
 					
 					try
 					{
-						// Create Status
+						// Create state object
 						
 						State current = new State(root, timepoint, previous);
 						
-						// Calculate each port value
+						// Calculate caching expressions
 						
-						for (Port<?> port : root.getDescendantsByClass(Port.class))
+						for (CachingExpression<?> expression : root.getDescendantsByClass(CachingExpression.class))
 						{
-							port.get(current, timepoint);
+							expression.evaluate(current, timepoint);
 						}
 						
-						// Check Status
+						// Check state validity
 						
 						boolean valid = true;
 						
@@ -97,6 +97,8 @@ public class Worker<T extends Component> implements Runnable
 							
 							// TODO Count and visualize
 						}
+						
+						// Remember valid state
 						
 						if (valid)
 						{
