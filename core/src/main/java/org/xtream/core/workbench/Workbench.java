@@ -40,28 +40,27 @@ public class Workbench<T extends Component>
 {
 	
 	private Engine<T> engine;
-	private T root;
 	private Bus<T> bus;
 	private JSlider slider;
 	
-	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness)
+	public Workbench(T root, int duration, int samples, int classes, double randomness)
 	{
-		this(type, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
-	public Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Graph graph)
+	public Workbench(T root, int duration, int samples, int classes, double randomness, Graph graph)
 	{
-		this(type, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,2,1), new HistogramPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,2,1), new HistogramPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
-	private Workbench(Class<T> type, int duration, int samples, int classes, double randomness, Part<T>... parts)
+	private Workbench(T root, int duration, int samples, int classes, double randomness, Part<T>... parts)
 	{
 		try
 		{
 			// Engine
 			
-			engine = new Engine<>(type, Runtime.getRuntime().availableProcessors() - 1);
+			engine = new Engine<>(root, Runtime.getRuntime().availableProcessors() - 1);
 			
 			// Bus
 			
@@ -73,7 +72,6 @@ public class Workbench<T extends Component>
 			
 			// Root
 			
-			root = type.newInstance();
 			root.init();
 			for (Part<T> part : parts)
 			{
@@ -186,7 +184,7 @@ public class Workbench<T extends Component>
 			
 			CompositeMonitor<T> allMonitor = new CompositeMonitor<>();
 			
-			allMonitor.add(new EngineMonitor<T>(root, timeBar, memoryBar, slider, duration));
+			allMonitor.add(new EngineMonitor<T>(timeBar, memoryBar, slider, duration));
 			
 			for (Monitor<T> monitor : parts)
 			{

@@ -10,11 +10,11 @@ import org.xtream.core.utilities.monitors.CalibrationMonitor;
 public abstract class Calibrator<T extends Component>
 {
 	
-	private Class<T> type;
+	private T root;
 	
-	public Calibrator(Class<T> type)
+	public Calibrator(T root)
 	{
-		this.type = type;
+		this.root = root;
 	}
 	
 	public void run(int processors, int duration, int classes_start, int classes_end, int classes_steps, int samples_start, int samples_end, int samples_steps, double random_start, double random_end, int random_steps, int iterations)
@@ -60,7 +60,7 @@ public abstract class Calibrator<T extends Component>
 						{
 							CalibrationMonitor<T> monitor = new CalibrationMonitor<>();
 							
-							new Engine<>(type, processors).run(duration, samples, classes, random, monitor);
+							new Engine<>(root, processors).run(duration, samples, classes, random, monitor);
 							
 							System.out.print(iteration + " ");					
 							

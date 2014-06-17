@@ -7,6 +7,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AbstractModulesComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.VehicleComponent;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 
@@ -117,13 +118,13 @@ public class ModulesComponent extends AbstractModulesComponent
 	
 	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double sum = 0;
 			
 			for (int i = 0; i < modules.length; i++)
 			{
-				sum += powerOutputs[i].get(timepoint);
+				sum += powerOutputs[i].get(state, timepoint);
 			}
 			
 			return sum;
@@ -132,9 +133,9 @@ public class ModulesComponent extends AbstractModulesComponent
 	
 	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : powerAggregateOutput.get(timepoint - 1)) + powerOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : powerAggregateOutput.get(state, timepoint - 1)) + powerOutput.get(state, timepoint);
 		}
 	};
 	

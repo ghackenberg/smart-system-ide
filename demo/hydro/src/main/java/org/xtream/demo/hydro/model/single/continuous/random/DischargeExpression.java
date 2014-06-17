@@ -2,6 +2,7 @@ package org.xtream.demo.hydro.model.single.continuous.random;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class DischargeExpression extends Expression<Double>
 {
@@ -16,7 +17,7 @@ public class DischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(int timepoint)
+	public Double evaluate(State state, int timepoint)
 	{
 		return Math.random() * weirDischargeMax;
 	}

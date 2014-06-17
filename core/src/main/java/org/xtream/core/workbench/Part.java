@@ -27,6 +27,7 @@ public abstract class Part<T extends Component> implements Monitor<T>
 	private int height;
 	private Bus<T> bus;
 	private T root;
+	private State state;
 	
 	public Part(String title, int x, int y, int width, int height)
 	{
@@ -87,6 +88,15 @@ public abstract class Part<T extends Component> implements Monitor<T>
 		return root;
 	}
 	
+	public void setState(State state)
+	{
+		this.state = state;
+	}
+	public State getState()
+	{
+		return state;
+	}
+	
 	public void setBus(Bus<T> bus)
 	{
 		this.bus = bus;
@@ -122,7 +132,7 @@ public abstract class Part<T extends Component> implements Monitor<T>
 	@Override
 	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> clusters, State best)
 	{
-		
+		state = best;
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractLogicsComponent;
+import org.xtream.core.optimizer.State;
 
 public class LogicsComponent extends AbstractLogicsComponent
 {
@@ -43,21 +44,21 @@ public class LogicsComponent extends AbstractLogicsComponent
 	public Expression<Edge> positionExpression = new Expression<Edge>(positionOutput)	
 	{
 		@Override 
-		public Edge evaluate(int timepoint)
+		public Edge evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
-				return startPositionInput.get(timepoint);	
+				return startPositionInput.get(state, timepoint);	
 			}
 			else 
 			{
-				if (speedOutput.get(timepoint) > 0)
+				if (speedOutput.get(state, timepoint) > 0)
 				{
-					return positionTargetOutput.get(timepoint-1);
+					return positionTargetOutput.get(state, timepoint-1);
 				}
 				else 
 				{
-					return positionOutput.get(timepoint-1);
+					return positionOutput.get(state, timepoint-1);
 				}
 			}
 		}
@@ -67,22 +68,22 @@ public class LogicsComponent extends AbstractLogicsComponent
 	public Expression<Edge> positionTargetExpression = new Expression<Edge>(positionTargetOutput)	
 	{
 		@Override 
-		public Edge evaluate(int timepoint)
+		public Edge evaluate(State state, int timepoint)
 		{
-			if (positionTraversedLengthInput.get(timepoint) >= positionEdgeLengthInput.get(timepoint))
+			if (positionTraversedLengthInput.get(state, timepoint) >= positionEdgeLengthInput.get(state, timepoint))
 			{
 				List<Edge> edgeList = new LinkedList<Edge>();
 				
 				if (edgeList.isEmpty())
 				{
-					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
-					edgeList.add(destinationPositionInput.get(timepoint));
+					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
+					edgeList.add(destinationPositionInput.get(state, timepoint));
 					
 					return edgeList.get(0);
 				}
 				else 
 				{
-					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(timepoint).getName()));
+					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
 					
 					return edgeList.get(0);
 				}
@@ -90,7 +91,7 @@ public class LogicsComponent extends AbstractLogicsComponent
 			}
 			else 
 			{
-				return positionOutput.get(timepoint);
+				return positionOutput.get(state, timepoint);
 			}
 		}
 	};
@@ -99,11 +100,11 @@ public class LogicsComponent extends AbstractLogicsComponent
 	public Expression<Double> speedExpression = new Expression<Double>(speedOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{
-			if (drivingIndicatorInput.get(timepoint))
+			if (drivingIndicatorInput.get(state, timepoint))
 			{
-				if (!(positionTargetOutput.get(timepoint-1).equals(startPositionInput.get(timepoint))) && !(positionOutput.get(timepoint-1).equals(destinationPositionInput.get(timepoint))))
+				if (!(positionTargetOutput.get(state, timepoint-1).equals(startPositionInput.get(state, timepoint))) && !(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
 				{
 					return (Math.random()*3.33);
 				}
@@ -123,13 +124,13 @@ public class LogicsComponent extends AbstractLogicsComponent
 	public Expression<Double> speedAbsoluteExpression = new Expression<Double>(speedAbsoluteOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{
-			if (drivingIndicatorInput.get(timepoint))
+			if (drivingIndicatorInput.get(state, timepoint))
 			{
-				if (!(positionTargetOutput.get(timepoint-1).equals(startPositionInput.get(timepoint))) && !(positionOutput.get(timepoint-1).equals(destinationPositionInput.get(timepoint))))
+				if (!(positionTargetOutput.get(state, timepoint-1).equals(startPositionInput.get(state, timepoint))) && !(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
 				{
-					return (speedOutput.get(timepoint)*60);
+					return (speedOutput.get(state, timepoint)*60);
 				}
 				else 
 				{

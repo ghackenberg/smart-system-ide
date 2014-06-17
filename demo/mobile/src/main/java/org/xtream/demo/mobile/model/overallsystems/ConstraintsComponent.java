@@ -6,6 +6,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public class ConstraintsComponent extends AbstractConstraintsComponent
 {
@@ -52,7 +53,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{	
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{	
 			
 			for (int i = 0; i < positionInputs.length; i++)
@@ -60,14 +61,14 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 				// Vehicle 1 Position
 				Port<Edge> position = positionInputs[i];
 				
-				int maximumAllowedVehicles = (int) graph.getEdgeWeight(position.get(timepoint).getName());
+				int maximumAllowedVehicles = (int) graph.getEdgeWeight(position.get(state, timepoint).getName());
 				
 				for (int j = 0; j < positionInputs.length; j++)
 				{	
 					// Vehicle 2 Position
 					Port<Edge> position2 = positionInputs[j];
 					
-					if (!(position.equals(position2)) && position.get(timepoint).equals(position2.get(timepoint)))
+					if (!(position.equals(position2)) && position.get(state, timepoint).equals(position2.get(state, timepoint)))
 					{
 						
 						if (maximumAllowedVehicles <= 0)
@@ -75,7 +76,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 							return false;
 						}
 						
-						if (Math.abs(positionTraversedLengthInputs[i].get(timepoint)-(positionTraversedLengthInputs[j].get(timepoint))) < (vehicleLengthInputs[i].get(timepoint)+vehicleLengthInputs[j].get(timepoint))) 
+						if (Math.abs(positionTraversedLengthInputs[i].get(state, timepoint)-(positionTraversedLengthInputs[j].get(state, timepoint))) < (vehicleLengthInputs[i].get(state, timepoint) + vehicleLengthInputs[j].get(state, timepoint))) 
 						{				
 							maximumAllowedVehicles--;
 						}	

@@ -5,6 +5,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public class NetComponent extends EnergyComponent
 {
@@ -50,13 +51,13 @@ public class NetComponent extends EnergyComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double production = 0;
 			
 			for (Port<Double> terminal : balanceInputs)
 			{
-				double current = terminal.get(timepoint);
+				double current = terminal.get(state, timepoint);
 				
 				production += current > 0. ? current : 0.;
 			}
@@ -66,13 +67,13 @@ public class NetComponent extends EnergyComponent
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double consumption = 0;
 			
 			for (Port<Double> terminal : balanceInputs)
 			{
-				double current = terminal.get(timepoint);
+				double current = terminal.get(state, timepoint);
 				
 				consumption += current < 0. ? current : 0.;
 			}
@@ -82,9 +83,9 @@ public class NetComponent extends EnergyComponent
 	};
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{	
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return productionOutput.get(timepoint) >= -capacity && consumptionOutput.get(timepoint) <= capacity; 
+			return productionOutput.get(state, timepoint) >= -capacity && consumptionOutput.get(state, timepoint) <= capacity; 
 		}
 	};
 	

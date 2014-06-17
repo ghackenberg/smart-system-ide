@@ -10,9 +10,9 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.markers.Constraint;
 
-public class Worker implements Runnable
+public class Worker<T extends Component> implements Runnable
 {
-	private Component root;
+	private T root;
 	private int timepoint;
 	private int samples;
 	private double randomness;
@@ -23,7 +23,7 @@ public class Worker implements Runnable
 	private int validCount = 0;
 	private List<State> currentStates = new ArrayList<>();
 	
-	public Worker(Component root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
+	public Worker(T root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
@@ -74,19 +74,17 @@ public class Worker implements Runnable
 						previous = previousGroup.get(random);
 					}
 					
-					previous.restore(root);
-					
 					try
 					{
 						// Create Status
 						
-						State current = new State(root.getDescendantsByClass(Port.class).size(), timepoint, previous);
+						State current = new State(root, timepoint, previous);
 						
-						current.connect(root);
+						// Calculate each port value
 						
 						for (Port<?> port : root.getDescendantsByClass(Port.class))
 						{
-							port.get(timepoint);
+							port.get(current, timepoint);
 						}
 						
 						// Check Status
@@ -95,12 +93,7 @@ public class Worker implements Runnable
 						
 						for (Constraint constraint : root.getDescendantsByClass(Constraint.class))
 						{
-							valid = valid && constraint.getPort().get(timepoint);
-							
-							//if (!constraint.port.get(timepoint))
-							//{
-							//	System.out.println(constraint.qualifiedName + " violated!");
-							//}
+							valid = valid && constraint.getPort().get(current, timepoint);
 							
 							// TODO Count and visualize
 						}
@@ -115,8 +108,6 @@ public class Worker implements Runnable
 					catch (IllegalStateException e)
 					{
 						// No options in this state!
-						
-						//e.printStackTrace();
 						
 						// TODO Count and visualize
 					}

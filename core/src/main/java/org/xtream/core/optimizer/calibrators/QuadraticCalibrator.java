@@ -6,9 +6,9 @@ import org.xtream.core.optimizer.Calibrator;
 public class QuadraticCalibrator<T extends Component> extends Calibrator<T>
 {
 
-	public QuadraticCalibrator(Class<T> type)
+	public QuadraticCalibrator(T root)
 	{
-		super(type);
+		super(root);
 	}
 	
 	@Override

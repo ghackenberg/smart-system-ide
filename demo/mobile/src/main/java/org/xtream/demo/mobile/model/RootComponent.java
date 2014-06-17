@@ -9,6 +9,7 @@ import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
+import org.xtream.core.optimizer.State;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -26,7 +27,7 @@ public class RootComponent extends Component
 	public static void main(String[] args)
 	{
 		
-		new Workbench<>(RootComponent.class, DURATION, COVERAGE, CLASSES, RANDOMNESS, graph);
+		new Workbench<>(new RootComponent(), DURATION, COVERAGE, CLASSES, RANDOMNESS, graph);
 		
 	}
 	
@@ -55,15 +56,15 @@ public class RootComponent extends Component
 	
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : costOutput.get(timepoint - 1)) + overallSystem.costsOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : costOutput.get(state, timepoint - 1)) + overallSystem.costsOutput.get(state, timepoint);
 		}
 	};
 	
 	public Expression<Double> equivalenceExpression = new Expression<Double>(equivalenceOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double sum = 0;
 			
@@ -71,7 +72,7 @@ public class RootComponent extends Component
 			{
 				VehicleComponent vehicle = (VehicleComponent) iterator;
 				
-				sum += vehicle.physics.chargeStateRelativeOutput.get(timepoint);
+				sum += vehicle.physics.chargeStateRelativeOutput.get(state, timepoint);
 			}
 			
 			return sum;

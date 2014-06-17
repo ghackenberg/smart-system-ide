@@ -3,6 +3,7 @@ package org.xtream.demo.hydro.model.single.continuous.backward;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
+import org.xtream.core.optimizer.State;
 
 public class DischargeExpression extends Expression<Double>
 {
@@ -33,12 +34,12 @@ public class DischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(int timepoint)
+	public Double evaluate(State state, int timepoint)
 	{
 		if (timepoint > 0)
 		{
-			double minOption = (nextLevelMin - nextLevel.get(timepoint - 1)) * nextArea / 900 + nextDischarge.get(timepoint);
-			double maxOption = (nextLevelMax - nextLevel.get(timepoint - 1)) * nextArea / 900 + nextDischarge.get(timepoint);
+			double minOption = (nextLevelMin - nextLevel.get(state, timepoint - 1)) * nextArea / 900 + nextDischarge.get(state, timepoint);
+			double maxOption = (nextLevelMax - nextLevel.get(state, timepoint - 1)) * nextArea / 900 + nextDischarge.get(state, timepoint);
 			
 			minOption = Math.max(minOption, 0);
 			maxOption = Math.min(maxOption, dischargeMax);

@@ -10,6 +10,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.optimizer.State;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -85,14 +86,14 @@ public class ScenarioComponent extends Component
 	
 	public Expression<Double> inflowExpression = new Expression<Double>(inflowOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return inflows.get(timepoint);
 		}
 	};
 	public Expression<Double> priceExpression = new Expression<Double>(priceOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return prices.get(timepoint);
 		}

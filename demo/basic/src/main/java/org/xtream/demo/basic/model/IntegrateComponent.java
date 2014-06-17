@@ -7,6 +7,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
+import org.xtream.core.optimizer.State;
 
 public class IntegrateComponent extends Component
 {
@@ -41,9 +42,9 @@ public class IntegrateComponent extends Component
 
 	public Expression<Double> outputExpression = new Expression<Double>(output)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : output.get(timepoint - 1)) + input.get(timepoint);
+			return (timepoint == 0 ? 0 : output.get(state, timepoint - 1)) + input.get(state, timepoint);
 		}
 	};
 	

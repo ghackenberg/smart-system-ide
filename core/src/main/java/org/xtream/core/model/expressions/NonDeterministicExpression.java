@@ -2,10 +2,10 @@ package org.xtream.core.model.expressions;
 
 import java.util.Set;
 
-import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
-public abstract class NonDeterministicExpression<T> extends Expression<T>
+public abstract class NonDeterministicExpression<T> extends CachingExpression<T>
 {
 	
 	public NonDeterministicExpression(Port<T> port)
@@ -14,9 +14,9 @@ public abstract class NonDeterministicExpression<T> extends Expression<T>
 	}
 
 	@Override
-	public final T evaluate(int timepoint)
+	protected final T evaluateInternal(State state, int timepoint)
 	{
-		Set<T> set = evaluateSet(timepoint);
+		Set<T> set = evaluateSet(state, timepoint);
 		
 		int random = (int) Math.floor(Math.random() * set.size());
 		
@@ -31,6 +31,6 @@ public abstract class NonDeterministicExpression<T> extends Expression<T>
 		throw new IllegalStateException();
 	}
 	
-	protected abstract Set<T> evaluateSet(int timepoint);
+	protected abstract Set<T> evaluateSet(State state, int timepoint);
 	
 }

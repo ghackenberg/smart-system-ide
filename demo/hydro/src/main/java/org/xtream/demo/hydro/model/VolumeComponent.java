@@ -9,9 +9,11 @@ import org.xtream.core.model.Node;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Transform;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.nodes.shapes.Box;
 import org.xtream.core.model.transforms.Translation;
+import org.xtream.core.optimizer.State;
 
 public class VolumeComponent extends Component
 {
@@ -38,9 +40,10 @@ public class VolumeComponent extends Component
 	public Port<Double> inflowInput = new Port<Double>();
 	public Port<Double> outflowInput = new Port<Double>();
 	
-	public Port<Double> levelOutput = new Port<Double>();
 	public Port<Double> levelMinOutput = new Port<Double>();
 	public Port<Double> levelMaxOutput = new Port<Double>();
+	
+	public Port<Double> levelOutput = new Port<Double>();
 	public Port<Boolean> bandOutput = new Port<Boolean>();
 	
 	// Constraints
@@ -72,9 +75,9 @@ public class VolumeComponent extends Component
 	
 	// Expressions
 	
-	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
+	public Expression<Double> levelExpression = new CachingExpression<Double>(levelOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -82,29 +85,29 @@ public class VolumeComponent extends Component
 			}
 			else
 			{
-				return levelOutput.get(timepoint - 1) + inflowInput.get(timepoint) * 900 / area - outflowInput.get(timepoint) * 900 / area;
+				return levelOutput.get(state, timepoint - 1) + inflowInput.get(state, timepoint) * 900 / area - outflowInput.get(state, timepoint) * 900 / area;
 			}
 		}
 	};
 	public Expression<Double> levelMinExpression = new Expression<Double>(levelMinOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return levelMin;
 		}
 	};
 	public Expression<Double> levelMaxExpression = new Expression<Double>(levelMaxOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return levelMax;
 		}
 	};
 	public Expression<Boolean> bandExpression = new Expression<Boolean>(bandOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return levelOutput.get(timepoint) >= levelMin - 0.01 && levelOutput.get(timepoint) <= levelMax + 0.01;
+			return levelOutput.get(state, timepoint) >= levelMin - 0.01 && levelOutput.get(state, timepoint) <= levelMax + 0.01;
 		}
 	};
 

@@ -166,14 +166,14 @@ public class GraphPart<T extends Component> extends Part<T>
 							
 							double width = 0.1;
 							
-							Edge previous = (Edge) port.get(0);
+							Edge previous = (Edge) port.get(getState(), 0);
 							
 							@SuppressWarnings("unused")
 							int step = 0;
 							
 							for (int i = 0; i < timepoint; i++)
 							{	
-								Edge current = (Edge) port.get(i);
+								Edge current = (Edge) port.get(getState(), i);
 								
 								if (previous != current || ((i) == (timepoint-1)))
 								{	

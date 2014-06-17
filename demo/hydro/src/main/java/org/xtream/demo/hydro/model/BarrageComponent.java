@@ -5,6 +5,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.optimizer.State;
 
 public class BarrageComponent extends Component
 {
@@ -45,16 +46,16 @@ public class BarrageComponent extends Component
 	
 	public Expression<Double> dischargeExpression = new Expression<Double>(dischargeOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return turbineDischargeInput.get(timepoint) + weirDischargeInput.get(timepoint);
+			return turbineDischargeInput.get(state, timepoint) + weirDischargeInput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return turbineDischargeInput.get(timepoint) * ((headLevelOffset + headLevelInput.get(timepoint)) - (tailLevelOffset + tailLevelInput.get(timepoint))) * 0.25 * roh * gravity * efficiency;
+			return turbineDischargeInput.get(state, timepoint) * ((headLevelOffset + headLevelInput.get(state, timepoint)) - (tailLevelOffset + tailLevelInput.get(state, timepoint))) * 0.25 * roh * gravity * efficiency;
 		}
 	};
 

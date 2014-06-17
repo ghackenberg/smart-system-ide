@@ -3,6 +3,7 @@ package org.xtream.demo.mobile.model.vehicles;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractCostsComponent;
+import org.xtream.core.optimizer.State;
 
 public class CostsComponent extends AbstractCostsComponent
 {
@@ -33,16 +34,16 @@ public class CostsComponent extends AbstractCostsComponent
 	public Expression<Double> costsExpression = new Expression<Double>(costsOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{			
-			return ((timeCostsInput.get(timepoint)*timeWeight)+(powerCostsInput.get(timepoint)*powerWeight));	
+			return ((timeCostsInput.get(state, timepoint)*timeWeight)+(powerCostsInput.get(state, timepoint)*powerWeight));	
 		}
 	};
 	
 	public Expression<Double> timeWeightExpression = new Expression<Double>(timeWeightOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{			
 			return timeWeight;
 		}
@@ -51,7 +52,7 @@ public class CostsComponent extends AbstractCostsComponent
 	public Expression<Double> powerWeightExpression = new Expression<Double>(powerWeightOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{			
 			return powerWeight;
 		}

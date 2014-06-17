@@ -3,6 +3,7 @@ package org.xtream.demo.mobile.model.vehicles;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractQualitiesComponent;
+import org.xtream.core.optimizer.State;
 
 public class QualitiesComponent extends AbstractQualitiesComponent
 {
@@ -24,9 +25,9 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	public Expression<Double> timeCostsExpression = new Expression<Double>(timeCostsOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{
-			if (targetReachedInput.get(timepoint) || !(drivingIndicatorInput.get(timepoint)))
+			if (targetReachedInput.get(state, timepoint) || !(drivingIndicatorInput.get(state, timepoint)))
 			{
 				return 0.;
 			}
@@ -40,17 +41,17 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	public Expression<Double> powerCostsExpression = new Expression<Double>(powerCostsOutput)	
 	{
 		@Override 
-		public Double evaluate(int timepoint)
+		public Double evaluate(State state, int timepoint)
 		{
-			if (targetReachedInput.get(timepoint) || !(drivingIndicatorInput.get(timepoint)))
+			if (targetReachedInput.get(state, timepoint) || !(drivingIndicatorInput.get(state, timepoint)))
 			{
 				return 0.;
 			}
 			else 
 			{
-				if (powerInput.get(timepoint) > 0)
+				if (powerInput.get(state, timepoint) > 0)
 				{
-					return (powerInput.get(timepoint)/0.83);
+					return (powerInput.get(state, timepoint)/0.83);
 				}
 				else 
 				{

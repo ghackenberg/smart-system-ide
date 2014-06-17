@@ -8,18 +8,21 @@ import javax.swing.tree.TreeNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class ComponentTreeTableNode implements TreeTableNode
 {
 
 	public ComponentTreeTableNode parent;
 	public Component component;
+	public State state;
 	public int timepoint;
 	
-	public ComponentTreeTableNode(ComponentTreeTableNode parent, Component component, int timepoint)
+	public ComponentTreeTableNode(ComponentTreeTableNode parent, Component component, State state, int timepoint)
 	{
 		this.parent = parent;
 		this.component = component;
+		this.state = state;
 		this.timepoint = timepoint;
 	}
 
@@ -68,11 +71,11 @@ public class ComponentTreeTableNode implements TreeTableNode
 		
 		for (Port<?> port : component.getChildrenByClass(Port.class))
 		{
-			children.add(new PortTreeTableNode(this, port));
+			children.add(new PortTreeTableNode(this, port, state, timepoint));
 		}
 		for (Component childComponent : component.getChildrenByClass(Component.class))
 		{
-			children.add(new ComponentTreeTableNode(this, childComponent, timepoint));
+			children.add(new ComponentTreeTableNode(this, childComponent, state, timepoint));
 		}
 		
 		return children.elements();
@@ -83,11 +86,11 @@ public class ComponentTreeTableNode implements TreeTableNode
 	{
 		if (index < component.getChildrenByClass(Port.class).size())
 		{
-			return new PortTreeTableNode(this, component.getChildrenByClass(Port.class).get(index));
+			return new PortTreeTableNode(this, component.getChildrenByClass(Port.class).get(index), state, timepoint);
 		}
 		else
 		{
-			return new ComponentTreeTableNode(this, component.getChildrenByClass(Component.class).get(index - component.getChildrenByClass(Port.class).size()), timepoint);
+			return new ComponentTreeTableNode(this, component.getChildrenByClass(Component.class).get(index - component.getChildrenByClass(Port.class).size()), state, timepoint);
 		}
 	}
 

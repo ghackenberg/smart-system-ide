@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.xtream.core.data.Pair;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<T>
 {
@@ -32,7 +33,7 @@ public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<
 	}
 
 	@Override
-	protected Map<T, Double> evaluateDistribution(int timepoint)
+	protected Map<T, Double> evaluateDistribution(State state, int timepoint)
 	{
 		return map;
 	}

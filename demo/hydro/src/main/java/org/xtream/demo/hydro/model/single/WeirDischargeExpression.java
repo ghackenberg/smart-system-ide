@@ -3,6 +3,7 @@ package org.xtream.demo.hydro.model.single;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
+import org.xtream.core.optimizer.State;
 
 public class WeirDischargeExpression extends Expression<Double>
 {
@@ -27,15 +28,15 @@ public class WeirDischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(int timepoint)
+	public Double evaluate(State state, int timepoint)
 	{
-		if (price.get(timepoint) >= 0)
+		if (price.get(state, timepoint) >= 0)
 		{
-			return Math.max(discharge.get(timepoint) - turbineDischargeMax, 0);
+			return Math.max(discharge.get(state, timepoint) - turbineDischargeMax, 0);
 		}
 		else
 		{
-			return Math.min(discharge.get(timepoint), weirDischargeMax);
+			return Math.min(discharge.get(state, timepoint), weirDischargeMax);
 		}
 	}
 

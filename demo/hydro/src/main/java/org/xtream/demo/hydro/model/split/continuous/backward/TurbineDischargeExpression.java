@@ -3,6 +3,7 @@ package org.xtream.demo.hydro.model.split.continuous.backward;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
+import org.xtream.core.optimizer.State;
 
 public class TurbineDischargeExpression extends Expression<Double>
 {
@@ -36,15 +37,15 @@ public class TurbineDischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(int timepoint)
+	public Double evaluate(State state, int timepoint)
 	{
 		if (timepoint > 0)
 		{
-			double outflow = nextTurbineDischarge.get(timepoint) + nextWeirDischarge.get(timepoint);
+			double outflow = nextTurbineDischarge.get(state, timepoint) + nextWeirDischarge.get(state, timepoint);
 			double inflow = 0;
 			
-			double minOption = nextLevelMin + outflow * 900 / nextArea - nextLevel.get(timepoint - 1) - inflow * 900 / nextArea;
-			double maxOption = nextLevelMax + outflow * 900 / nextArea - nextLevel.get(timepoint - 1) - inflow * 900 / nextArea;
+			double minOption = nextLevelMin + outflow * 900 / nextArea - nextLevel.get(state, timepoint - 1) - inflow * 900 / nextArea;
+			double maxOption = nextLevelMax + outflow * 900 / nextArea - nextLevel.get(state, timepoint - 1) - inflow * 900 / nextArea;
 			
 			minOption = Math.max(minOption, 0.);
 			maxOption = Math.min(maxOption, turbineDischargeMax * 900 / nextArea);

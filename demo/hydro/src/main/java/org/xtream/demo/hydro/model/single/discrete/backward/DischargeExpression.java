@@ -6,6 +6,7 @@ import java.util.Set;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
+import org.xtream.core.optimizer.State;
 
 public class DischargeExpression extends NonDeterministicExpression<Double>
 {
@@ -36,17 +37,17 @@ public class DischargeExpression extends NonDeterministicExpression<Double>
 	}
 
 	@Override
-	protected Set<Double> evaluateSet(int timepoint)
+	protected Set<Double> evaluateSet(State state, int timepoint)
 	{
 		Set<Double> result = new HashSet<>();
 		
 		if (timepoint > 0)
 		{
-			double flow = - nextDischarge.get(timepoint) * 900 / nextArea;
+			double flow = - nextDischarge.get(state, timepoint) * 900 / nextArea;
 			
 			for (double option : dischargeOptions)
 			{
-				double level = nextLevel.get(timepoint - 1) + flow + option * 900 / nextArea;
+				double level = nextLevel.get(state, timepoint - 1) + flow + option * 900 / nextArea;
 				
 				if (level >= 0 && level <= nextLevelMax)
 				{

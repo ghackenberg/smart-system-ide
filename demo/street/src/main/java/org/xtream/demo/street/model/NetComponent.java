@@ -5,6 +5,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.optimizer.State;
 
 public class NetComponent extends Component
 {
@@ -24,9 +25,9 @@ public class NetComponent extends Component
 	
 	public Expression<Double> balanceExpr = new Expression<Double>(balance)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return load_00.get(timepoint) + load_01.get(timepoint);
+			return load_00.get(state, timepoint) + load_01.get(state, timepoint);
 		}
 	};
 

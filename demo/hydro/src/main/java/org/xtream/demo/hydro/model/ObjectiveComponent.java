@@ -5,10 +5,12 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.Preference;
 import org.xtream.core.model.markers.objectives.MaxObjective;
 import org.xtream.core.model.markers.preferences.MaxPreference;
+import org.xtream.core.optimizer.State;
 
 public class ObjectiveComponent extends Component
 {
@@ -34,11 +36,11 @@ public class ObjectiveComponent extends Component
 	
 	// Expressions
 	
-	public Expression<Double> rewardExpression = new Expression<Double>(rewardOutput)
+	public Expression<Double> rewardExpression = new CachingExpression<Double>(rewardOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : rewardOutput.get(timepoint - 1)) + productionInput.get(timepoint) * priceInput.get(timepoint);
+			return (timepoint == 0 ? 0 : rewardOutput.get(state, timepoint - 1)) + productionInput.get(state, timepoint) * priceInput.get(state, timepoint);
 		}
 	};
 }

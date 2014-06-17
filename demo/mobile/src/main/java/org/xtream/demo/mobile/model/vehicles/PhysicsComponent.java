@@ -8,6 +8,7 @@ import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ConstantExpression;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
 
 public class PhysicsComponent extends EnergyPhysicsComponent
@@ -77,9 +78,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	// TODO [Dominik] Utilize Setbuilder (selection) for non deterministic expressions
 	public Expression<Edge> positionOutgoingEdgesExpression = new Expression<Edge>(positionOutgoingEdgesOutput)
 	{
-		@Override public Edge evaluate(int timepoint)
+		@Override public Edge evaluate(State state, int timepoint)
 		{
-			Set<Edge> set = graph.getOutgoingEdges(positionInput.get(timepoint));
+			Set<Edge> set = graph.getOutgoingEdges(positionInput.get(state, timepoint));
 			int random = (int) Math.floor(Math.random() * set.size());
 			
 			for (Edge item : set)
@@ -97,7 +98,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionTraversedLengthExpression = new Expression<Double>(positionTraversedLengthOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -106,20 +107,20 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 			else 
 			{
 				// Stop
-				if (targetReachedOutput.get(timepoint) || (speedInput.get(timepoint) == 0))
+				if (targetReachedOutput.get(state, timepoint) || (speedInput.get(state, timepoint) == 0))
 				{
-					return positionTraversedLengthOutput.get(timepoint-1);
+					return positionTraversedLengthOutput.get(state, timepoint-1);
 				}
 				// Drive
 				else
 				{
-					if (positionTraversedLengthOutput.get(timepoint-1) >= positionEdgeLengthOutput.get(timepoint-1))
+					if (positionTraversedLengthOutput.get(state, timepoint-1) >= positionEdgeLengthOutput.get(state, timepoint-1))
 					{
-						return (speedInput.get(timepoint)+(positionTraversedLengthOutput.get(timepoint-1)-positionEdgeLengthOutput.get(timepoint-1)));
+						return (speedInput.get(state, timepoint)+(positionTraversedLengthOutput.get(state, timepoint-1)-positionEdgeLengthOutput.get(state, timepoint-1)));
 					}
 					else 
 					{
-						return (speedInput.get(timepoint)+positionTraversedLengthOutput.get(timepoint-1));
+						return (speedInput.get(state, timepoint)+positionTraversedLengthOutput.get(state, timepoint-1));
 					}
 				}
 			}
@@ -128,22 +129,22 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionXExpression = new Expression<Double>(positionXOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
-				return positionSourceNodeXOutput.get(timepoint);
+				return positionSourceNodeXOutput.get(state, timepoint);
 			}
 			else 
 			{
-				if (positionEdgeLengthOutput.get(timepoint) == 0.0)
+				if (positionEdgeLengthOutput.get(state, timepoint) == 0.0)
 				{	
-					return positionSourceNodeXOutput.get(timepoint);
+					return positionSourceNodeXOutput.get(state, timepoint);
 				}
 				else 
 				{
-					double term1 = ((positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint))*positionTargetNodeXOutput.get(timepoint));
-					double term2 = ((1.0-(positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint)))*positionSourceNodeXOutput.get(timepoint));
+					double term1 = ((positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint))*positionTargetNodeXOutput.get(state, timepoint));
+					double term2 = ((1.0-(positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint)))*positionSourceNodeXOutput.get(state, timepoint));
 				
 					return (term1+term2);
 				}
@@ -153,22 +154,22 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionYExpression = new Expression<Double>(positionYOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
-				return positionSourceNodeYOutput.get(timepoint);
+				return positionSourceNodeYOutput.get(state, timepoint);
 			}
 			else 
 			{			
-				if (positionEdgeLengthOutput.get(timepoint) == 0.0)
+				if (positionEdgeLengthOutput.get(state, timepoint) == 0.0)
 				{
-					return positionSourceNodeYOutput.get(timepoint);
+					return positionSourceNodeYOutput.get(state, timepoint);
 				}
 				else 
 				{
-					double term1 = ((positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint))*positionTargetNodeYOutput.get(timepoint));
-					double term2 = ((1.0-(positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint)))*positionSourceNodeYOutput.get(timepoint));
+					double term1 = ((positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint))*positionTargetNodeYOutput.get(state, timepoint));
+					double term2 = ((1.0-(positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint)))*positionSourceNodeYOutput.get(state, timepoint));
 				
 					return (term1+term2);
 				}
@@ -178,22 +179,22 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionZExpression = new Expression<Double>(positionZOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
-				return positionSourceNodeZOutput.get(timepoint);
+				return positionSourceNodeZOutput.get(state, timepoint);
 			}
 			else 
 			{
-				if (positionEdgeLengthOutput.get(timepoint) == 0.0)
+				if (positionEdgeLengthOutput.get(state, timepoint) == 0.0)
 				{
-					return positionSourceNodeZOutput.get(timepoint);
+					return positionSourceNodeZOutput.get(state, timepoint);
 				}
 				else 
 				{
-					double term1 = ((positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint))*positionTargetNodeZOutput.get(timepoint));
-					double term2 = ((1.0-(positionTraversedLengthOutput.get(timepoint)/positionEdgeLengthOutput.get(timepoint)))*positionSourceNodeZOutput.get(timepoint));
+					double term1 = ((positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint))*positionTargetNodeZOutput.get(state, timepoint));
+					double term2 = ((1.0-(positionTraversedLengthOutput.get(state, timepoint)/positionEdgeLengthOutput.get(state, timepoint)))*positionSourceNodeZOutput.get(state, timepoint));
 				
 					return (term1+term2);
 				}
@@ -203,99 +204,99 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionEdgeCapacityExpression = new Expression<Double>(positionEdgeCapacityOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return graph.getEdgeWeight(positionInput.get(timepoint).getName());
+			return graph.getEdgeWeight(positionInput.get(state, timepoint).getName());
 		}
 	};	
 	
 	public Expression<String> positionEdgeTypeExpression = new Expression<String>(positionEdgeTypeOutput)
 	{
-		@Override public String evaluate(int timepoint)
+		@Override public String evaluate(State state, int timepoint)
 		{
-			return positionInput.get(timepoint).getTag();
+			return positionInput.get(state, timepoint).getTag();
 		}
 	};
 	
 	public Expression<Double> positionAltitudeDifferenceExpression = new Expression<Double>(positionAltitudeDifferenceOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (positionTargetNodeZOutput.get(timepoint)-positionSourceNodeZOutput.get(timepoint));
+			return (positionTargetNodeZOutput.get(state, timepoint)-positionSourceNodeZOutput.get(state, timepoint));
 		}
 	};
 	
 	public Expression<Node> positionTargetNodeExpression = new Expression<Node>(positionTargetNodeOutput)
 	{
-		@Override public Node evaluate(int timepoint)
+		@Override public Node evaluate(State state, int timepoint)
 		{
-			return graph.getTargetNode(positionInput.get(timepoint).getName());
+			return graph.getTargetNode(positionInput.get(state, timepoint).getName());
 		}
 	};	
 	
 	public Expression<Node> positionSourceNodeExpression = new Expression<Node>(positionSourceNodeOutput)
 	{
-		@Override public Node evaluate(int timepoint)
+		@Override public Node evaluate(State state, int timepoint)
 		{
-			return graph.getSourceNode(positionInput.get(timepoint).getName());
+			return graph.getSourceNode(positionInput.get(state, timepoint).getName());
 		}
 	};
 	
 	public Expression<Double> positionTargetNodeXExpression = new Expression<Double>(positionTargetNodeXOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionTargetNodeOutput.get(timepoint).getXpos());
+			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getXpos());
 		}
 	};
 	
 	public Expression<Double> positionTargetNodeYExpression = new Expression<Double>(positionTargetNodeYOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionTargetNodeOutput.get(timepoint).getYpos());
+			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getYpos());
 		}
 	};
 	
 	public Expression<Double> positionTargetNodeZExpression = new Expression<Double>(positionTargetNodeZOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionTargetNodeOutput.get(timepoint).getWeight());
+			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getWeight());
 		}
 	};
 	
 	public Expression<Double> positionSourceNodeXExpression = new Expression<Double>(positionSourceNodeXOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionSourceNodeOutput.get(timepoint).getXpos());
+			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getXpos());
 		}
 	};
 	
 	public Expression<Double> positionSourceNodeYExpression = new Expression<Double>(positionSourceNodeYOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionSourceNodeOutput.get(timepoint).getYpos());
+			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getYpos());
 		}
 	};
 	
 	public Expression<Double> positionSourceNodeZExpression = new Expression<Double>(positionSourceNodeZOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return Double.parseDouble(positionSourceNodeOutput.get(timepoint).getWeight());
+			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getWeight());
 		}
 	};
 	
 	public Expression<Double> positionEdgeLengthExpression = new Expression<Double>(positionEdgeLengthOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			double differenceX = Math.pow((positionTargetNodeXOutput.get(timepoint)-positionSourceNodeXOutput.get(timepoint)), 2);
-			double differenceY = Math.pow((positionTargetNodeYOutput.get(timepoint)-positionSourceNodeYOutput.get(timepoint)), 2);
-			double differenceZ = Math.pow((positionTargetNodeZOutput.get(timepoint)-positionSourceNodeZOutput.get(timepoint)), 2);
+			double differenceX = Math.pow((positionTargetNodeXOutput.get(state, timepoint)-positionSourceNodeXOutput.get(state, timepoint)), 2);
+			double differenceY = Math.pow((positionTargetNodeYOutput.get(state, timepoint)-positionSourceNodeYOutput.get(state, timepoint)), 2);
+			double differenceZ = Math.pow((positionTargetNodeZOutput.get(state, timepoint)-positionSourceNodeZOutput.get(state, timepoint)), 2);
 			
 			return Math.sqrt(differenceX+differenceY+differenceZ);
 		}		
@@ -303,7 +304,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Boolean> drivingIndicatorExpression = new Expression<Boolean>(drivingIndicatorOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
 			return (timepoint == 0) ? false : true;		
 		}
@@ -311,15 +312,15 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Boolean> targetReachedExpression = new Expression<Boolean>(targetReachedOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return (positionInput.get(timepoint).equals(destinationPositionOutput.get(timepoint)));
+			return (positionInput.get(state, timepoint).equals(destinationPositionOutput.get(state, timepoint)));
 		}
 	};
 	
 	public Expression<Edge> startPositionExpression = new Expression<Edge>(startPositionOutput)
 	{
-		@Override public Edge evaluate(int timepoint)
+		@Override public Edge evaluate(State state, int timepoint)
 		{
 			return graph.getEdge(startPosition);
 		}
@@ -327,7 +328,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Edge> destinationPositionExpression = new Expression<Edge>(destinationPositionOutput)
 	{
-		@Override public Edge evaluate(int timepoint)
+		@Override public Edge evaluate(State state, int timepoint)
 		{
 			return graph.getEdge(destinationPosition);
 		}
@@ -340,16 +341,16 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{		
-			if (speedInput.get(timepoint) > 0)
+			if (speedInput.get(state, timepoint) > 0)
 			{
 				double milage = 0.2353;
 				
 				double slope;
-				if (Math.abs(positionAltitudeDifferenceOutput.get(timepoint)+positionAltitudeDifferenceOutput.get(timepoint)) < (Math.pow(speedInput.get(timepoint),2)))
+				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedInput.get(state, timepoint),2)))
 				{
-					slope = (Math.pow(speedInput.get(timepoint), 2))+positionAltitudeDifferenceOutput.get(timepoint)+positionAltitudeDifferenceOutput.get(timepoint); 
+					slope = (Math.pow(speedInput.get(state, timepoint), 2))+positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint); 
 				}
 				else {
 					slope = 0.;
@@ -366,7 +367,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> chargeStateExpression = new Expression<Double>(chargeStateOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -375,21 +376,21 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 			else
 			{
 				// Charge
-				if (targetReachedOutput.get(timepoint) || !(drivingIndicatorOutput.get(timepoint)))
+				if (targetReachedOutput.get(state, timepoint) || !(drivingIndicatorOutput.get(state, timepoint)))
 				{
-					if ((chargeStateOutput.get(timepoint-1)+chargeRateOutput.get(timepoint)) > maximumChargeStateOutput.get(timepoint))
+					if ((chargeStateOutput.get(state, timepoint-1)+chargeRateOutput.get(state, timepoint)) > maximumChargeStateOutput.get(state, timepoint))
 					{
-						return maximumChargeStateOutput.get(timepoint);
+						return maximumChargeStateOutput.get(state, timepoint);
 					}
 					else
 					{
-						return (chargeStateOutput.get(timepoint-1)+chargeRateOutput.get(timepoint));
+						return (chargeStateOutput.get(state, timepoint-1)+chargeRateOutput.get(state, timepoint));
 					}
 				}
 				// Discharge
 				else
 				{
-					return (chargeStateOutput.get(timepoint-1)-powerOutput.get(timepoint));
+					return (chargeStateOutput.get(state, timepoint-1)-powerOutput.get(state, timepoint));
 				}
 			}
 		}
@@ -397,9 +398,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> chargeStateRelativeExpression = new Expression<Double>(chargeStateRelativeOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (chargeStateOutput.get(timepoint)/maximumChargeStateOutput.get(timepoint));
+			return (chargeStateOutput.get(state, timepoint)/maximumChargeStateOutput.get(state, timepoint));
 		}
 	};
 	

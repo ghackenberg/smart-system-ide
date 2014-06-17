@@ -3,7 +3,9 @@ package org.xtream.demo.hydro.model;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Equivalence;
+import org.xtream.core.optimizer.State;
 
 public class EquivalenceComponent extends Component
 {
@@ -24,10 +26,10 @@ public class EquivalenceComponent extends Component
 	
 	// Expressions
 	
-	public Expression<Double> volumenAverageExpression = new Expression<Double>(volumenAverageOutput)
-	{		@Override public Double evaluate(int timepoint)
+	public Expression<Double> volumenAverageExpression = new CachingExpression<Double>(volumenAverageOutput)
+	{		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
-			return speicherseeLevelInput.get(timepoint) / Constants.SPEICHERSEE_LEVEL_MAX / 5 + volumen1LevelInput.get(timepoint) / Constants.VOLUMEN1_LEVEL_MAX / 5 + volumen2LevelInput.get(timepoint) / Constants.VOLUMEN2_LEVEL_MAX / 5 + volumen3LevelInput.get(timepoint) / Constants.VOLUMEN3_LEVEL_MAX / 5 + volumen4LevelInput.get(timepoint) / Constants.VOLUMEN4_LEVEL_MAX / 5;
+			return speicherseeLevelInput.get(state, timepoint) / Constants.SPEICHERSEE_LEVEL_MAX / 5 + volumen1LevelInput.get(state, timepoint) / Constants.VOLUMEN1_LEVEL_MAX / 5 + volumen2LevelInput.get(state, timepoint) / Constants.VOLUMEN2_LEVEL_MAX / 5 + volumen3LevelInput.get(state, timepoint) / Constants.VOLUMEN3_LEVEL_MAX / 5 + volumen4LevelInput.get(state, timepoint) / Constants.VOLUMEN4_LEVEL_MAX / 5;
 		}
 	};
 

@@ -6,9 +6,9 @@ import org.xtream.core.optimizer.Calibrator;
 public class LinearCalibrator<T extends Component> extends Calibrator<T>
 {
 
-	public LinearCalibrator(Class<T> type)
+	public LinearCalibrator(T root)
 	{
-		super(type);
+		super(root);
 	}
 	
 	@Override

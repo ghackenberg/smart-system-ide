@@ -8,6 +8,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
 import org.xtream.demo.mobile.model.vehicles.CostsComponent;
@@ -96,25 +97,25 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	
 	public Expression<Double> costExpression = new Expression<Double>(costOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : costOutput.get(timepoint - 1)) + costs.costsOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : costOutput.get(state, timepoint - 1)) + costs.costsOutput.get(state, timepoint);
 		}
 	};
 	
 	public Expression<Double> speedAggregateExpression = new Expression<Double>(speedAggregateOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : speedAggregateOutput.get(timepoint - 1)) + logics.speedOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : speedAggregateOutput.get(state, timepoint - 1)) + logics.speedOutput.get(state, timepoint);
 		}
 	};
 	
 	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return (timepoint == 0 ? 0 : powerAggregateOutput.get(timepoint - 1)) + physics.powerOutput.get(timepoint);
+			return (timepoint == 0 ? 0 : powerAggregateOutput.get(state, timepoint - 1)) + physics.powerOutput.get(state, timepoint);
 		}
 	};
 	
