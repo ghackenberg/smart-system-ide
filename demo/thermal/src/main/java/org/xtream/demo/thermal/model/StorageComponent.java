@@ -4,6 +4,7 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.optimizer.State;
@@ -61,9 +62,9 @@ public abstract class StorageComponent extends EnergyComponent
 			return commandInput.get(state, timepoint) < 0. ? -speed : 0.;
 		}
 	};
-	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
+	public Expression<Double> levelExpression = new CachingExpression<Double>(levelOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{

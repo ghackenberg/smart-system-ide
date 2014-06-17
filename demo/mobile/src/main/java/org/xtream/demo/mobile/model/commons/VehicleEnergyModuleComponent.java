@@ -23,7 +23,7 @@ public class VehicleEnergyModuleComponent<PhysicsComponent extends EnergyPhysics
 		this.graph = graph;
 	}
 	
-	Graph graph;
+	protected Graph graph;
 	
 	// Ports
 	

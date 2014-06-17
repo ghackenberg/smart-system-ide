@@ -6,6 +6,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
@@ -54,9 +55,9 @@ public class RootComponent extends Component
 
 	// Expressions
 	
-	public Expression<Double> costExpression = new Expression<Double>(costOutput)
+	public Expression<Double> costExpression = new CachingExpression<Double>(costOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : costOutput.get(state, timepoint - 1)) + overallSystem.costsOutput.get(state, timepoint);
 		}

@@ -5,8 +5,9 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.charts.Histogram;
+import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
@@ -95,25 +96,25 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 	public ChannelExpression<Double> chargeState2 = new ChannelExpression<>(constraints.chargeStateInput, physics.chargeStateOutput);
 	
 	
-	public Expression<Double> costExpression = new Expression<Double>(costOutput)
+	public Expression<Double> costExpression = new CachingExpression<Double>(costOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : costOutput.get(state, timepoint - 1)) + costs.costsOutput.get(state, timepoint);
 		}
 	};
 	
-	public Expression<Double> speedAggregateExpression = new Expression<Double>(speedAggregateOutput)
+	public Expression<Double> speedAggregateExpression = new CachingExpression<Double>(speedAggregateOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : speedAggregateOutput.get(state, timepoint - 1)) + logics.speedOutput.get(state, timepoint);
 		}
 	};
 	
-	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput)
+	public Expression<Double> powerAggregateExpression = new CachingExpression<Double>(powerAggregateOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : powerAggregateOutput.get(state, timepoint - 1)) + physics.powerOutput.get(state, timepoint);
 		}
