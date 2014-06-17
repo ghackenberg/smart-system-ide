@@ -44,11 +44,11 @@ public class MonitorPart<T extends Component> extends Part<T>
 	{
 		super("Engine monitor", x, y, width, height);
 		
-		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "States", states, PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Clusters", classes, PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Step", "Costs", objectives, PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Step", "Memory (in MB)", memory, PlotOrientation.VERTICAL, false, true, false);
-		JFreeChart timeChart = ChartFactory.createStackedAreaChart("Branch, norm, cluster, sort and stats time", "Step", "Time (in ms)", time, PlotOrientation.VERTICAL, false, true, false);
+		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "States", states, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Clusters", classes, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart objectivesChart = ChartFactory.createLineChart("Mininum, average and maximum objective", "Step", "Costs", objectives, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart memoryChart = ChartFactory.createLineChart("Maximum, total and free memory", "Step", "Memory (in MB)", memory, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart timeChart = ChartFactory.createStackedAreaChart("Branch, norm, cluster, sort and stats time", "Step", "Time (in ms)", time, PlotOrientation.VERTICAL, true, true, false);
 		
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		statesChart.getCategoryPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
