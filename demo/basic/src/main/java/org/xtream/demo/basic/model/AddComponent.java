@@ -3,6 +3,7 @@ package org.xtream.demo.basic.model;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class AddComponent extends Component
 {
@@ -39,9 +40,9 @@ public class AddComponent extends Component
 
 	public Expression<Double> outputExpression = new Expression<Double>(output)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return firstInput.get(timepoint) + secondInput.get(timepoint);
+			return firstInput.get(state, timepoint) + secondInput.get(state, timepoint);
 		}
 	};
 	

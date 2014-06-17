@@ -1,5 +1,7 @@
 package org.xtream.core.model;
 
+import org.xtream.core.optimizer.State;
+
 
 public abstract class Expression<T> extends Element
 {
@@ -19,6 +21,6 @@ public abstract class Expression<T> extends Element
 		return port;
 	}
 	
-	public abstract T evaluate(int timepoint);
+	public abstract T evaluate(State state, int timepoint);
 	
 }

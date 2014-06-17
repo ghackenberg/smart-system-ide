@@ -5,6 +5,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.optimizer.State;
 
 public class HouseholdComponent extends Component
 {
@@ -21,7 +22,7 @@ public class HouseholdComponent extends Component
 	
 	public Expression<Double> loadExpr = new Expression<Double>(load)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return 1.0;
 		}

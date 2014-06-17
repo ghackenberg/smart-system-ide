@@ -1,7 +1,7 @@
 package org.xtream.core.optimizer;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.CachingExpression;
 //import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.Preference;
@@ -12,6 +12,7 @@ import org.xtream.core.model.markers.preferences.MinPreference;
 
 public class State implements Comparable<State>
 {
+	
 	private Component root;
 	
 	private int timepoint;
@@ -20,35 +21,21 @@ public class State implements Comparable<State>
 	
 	private Object[] values;
 	
-	public State(int portCount, int fieldCount)
+	public State(Component root)
 	{
-		this(portCount, -1, null);
+		this(root, -1, null);
 	}
 	
-	public State(int portCount, int timepoint, State previous)
+	public State(Component root, int timepoint, State previous)
 	{
+		this.root = root;
 		this.timepoint = timepoint;
 		this.previous = previous;
 		
-		if (portCount > 0)
+		if (root.getDescendantsByClass(CachingExpression.class).size() > 0)
 		{
-			values = new Object[portCount];
+			values = new Object[root.getDescendantsByClass(CachingExpression.class).size()];
 		}
-	}
-	
-	public void connect(Component root)
-	{
-		this.root = root;
-		
-		for (Port<?> port : root.getDescendantsByClass(Port.class))
-		{
-			port.setState(this);
-		}
-	}
-	
-	public void restore(Component root)
-	{
-		connect(root);
 	}
 	
 	public int getTimepoint()
@@ -57,11 +44,11 @@ public class State implements Comparable<State>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T> T getValue(Port<T> port, int timepoint)
+	public <S> S getValue(CachingExpression<S> port, int timepoint)
 	{
 		if (this.timepoint == timepoint)
 		{
-			return (T) values[port.getNumber()];
+			return (S) values[port.getNumber()];
 		}
 		else
 		{
@@ -69,7 +56,7 @@ public class State implements Comparable<State>
 		}
 	}
 	
-	public <T> void setValue(Port<T> port, int timepoint, T value)
+	public <S> void setValue(CachingExpression<S> port, int timepoint, S value)
 	{
 		if (this.timepoint == timepoint)
 		{
@@ -104,7 +91,7 @@ public class State implements Comparable<State>
 			
 			for (Preference preference : root.getDescendantsByClass(MinPreference.class))
 			{
-				double temp = getValue(preference.getPort(), timepoint) - other.getValue(preference.getPort(), timepoint);
+				double temp = preference.getPort().get(this, timepoint) - preference.getPort().get(other, timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -122,7 +109,7 @@ public class State implements Comparable<State>
 			
 			for (Preference preference : root.getDescendantsByClass(MaxPreference.class))
 			{
-				double temp = getValue(preference.getPort(), timepoint) - other.getValue(preference.getPort(), timepoint);
+				double temp = preference.getPort().get(this, timepoint) - preference.getPort().get(other, timepoint);
 				
 				if (difference != 0 && Math.signum(difference) != Math.signum(temp))
 				{
@@ -151,11 +138,11 @@ public class State implements Comparable<State>
 		{
 			for (Objective objective : root.getDescendantsByClass(MinObjective.class))
 			{
-				return (int) Math.signum(getValue(objective.getPort(), timepoint) - other.getValue(objective.getPort(), timepoint));
+				return (int) Math.signum(objective.getPort().get(this, timepoint) - objective.getPort().get(other,timepoint));
 			}
 			for (Objective objective : root.getDescendantsByClass(MaxObjective.class))
 			{
-				return (int) Math.signum(getValue(objective.getPort(), timepoint) - other.getValue(objective.getPort(), timepoint)) * -1;
+				return (int) Math.signum(objective.getPort().get(this, timepoint) - objective.getPort().get(other, timepoint)) * -1;
 			}
 			
 			throw new IllegalStateException();

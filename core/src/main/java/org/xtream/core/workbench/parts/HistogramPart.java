@@ -106,13 +106,13 @@ public class HistogramPart<T extends Component> extends Part<T>
 				{
 					for (int i = 0; i < timepoint; i++)
 					{
-						if (!(map.containsKey(port.get(i).toString())))
+						if (!(map.containsKey(port.get(getState(), i).toString())))
 						{
-							map.put(port.get(i).toString(), 1);
+							map.put(port.get(getState(), i).toString(), 1);
 						}
 						else 
 						{
-							map.put(port.get(i).toString(), 1+map.get(port.get(i).toString()));
+							map.put(port.get(getState(), i).toString(), 1+map.get(port.get(getState(), i).toString()));
 						}
 					}
 					

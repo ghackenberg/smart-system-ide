@@ -6,6 +6,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public abstract class StorageComponent extends EnergyComponent
 {
@@ -48,21 +49,21 @@ public abstract class StorageComponent extends EnergyComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return commandInput.get(timepoint) > 0. ? speed : 0.;
+			return commandInput.get(state, timepoint) > 0. ? speed : 0.;
 		}
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return commandInput.get(timepoint) < 0. ? -speed : 0.;
+			return commandInput.get(state, timepoint) < 0. ? -speed : 0.;
 		}
 	};
 	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -70,17 +71,17 @@ public abstract class StorageComponent extends EnergyComponent
 			}
 			else
 			{
-				if (commandInput.get(timepoint) < 0.)
+				if (commandInput.get(state, timepoint) < 0.)
 				{
-					return levelOutput.get(timepoint - 1) * loss + speed * efficiency; 
+					return levelOutput.get(state, timepoint - 1) * loss + speed * efficiency; 
 				}
-				else if (commandInput.get(timepoint) == 0.)
+				else if (commandInput.get(state, timepoint) == 0.)
 				{
-					return levelOutput.get(timepoint - 1) * loss;
+					return levelOutput.get(state, timepoint - 1) * loss;
 				}
-				else if (commandInput.get(timepoint) > 0.)
+				else if (commandInput.get(state, timepoint) > 0.)
 				{
-					return levelOutput.get(timepoint - 1) * loss - speed;
+					return levelOutput.get(state, timepoint - 1) * loss - speed;
 				}
 				
 				throw new IllegalStateException();
@@ -89,14 +90,14 @@ public abstract class StorageComponent extends EnergyComponent
 	};
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return levelOutput.get(timepoint) >= minimumOutput.get(timepoint) && levelOutput.get(timepoint) <= maximumOutput.get(timepoint);
+			return levelOutput.get(state, timepoint) >= minimumOutput.get(state, timepoint) && levelOutput.get(state, timepoint) <= maximumOutput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> maximumExpression = new Expression<Double>(maximumOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			return capacity;
 		}

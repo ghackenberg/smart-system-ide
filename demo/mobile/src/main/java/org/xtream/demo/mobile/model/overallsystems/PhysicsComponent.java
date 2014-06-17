@@ -2,6 +2,7 @@ package org.xtream.demo.mobile.model.overallsystems;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
 
 public class PhysicsComponent extends EnergyPhysicsComponent
@@ -26,13 +27,13 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double production = 0;
 			
 			for (Port<Double> terminal : terminalInputs)
 			{
-				double current = terminal.get(timepoint);
+				double current = terminal.get(state, timepoint);
 				
 				production += current > 0. ? current : 0.;
 			}
@@ -42,13 +43,13 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double consumption = 0;
 			
 			for (Port<Double> terminal : terminalInputs)
 			{
-				double current = terminal.get(timepoint);
+				double current = terminal.get(state, timepoint);
 				
 				consumption += current < 0. ? current : 0.;
 			}

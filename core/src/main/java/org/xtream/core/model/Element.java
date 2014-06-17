@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.xtream.core.model.expressions.CachingExpression;
+import org.xtream.core.utilities.Filter;
+
 public abstract class Element
 {
 	
@@ -67,6 +70,36 @@ public abstract class Element
 		return descendants;
 	}
 	
+	public List<Element> getChildren(Filter filter)
+	{
+		List<Element> result = new ArrayList<>();
+		
+		for (Element child : children)
+		{
+			if (filter.accept(child))
+			{
+				result.add(child);
+			}
+		}
+		
+		return result;
+	}
+	
+	public List<Element> getDescendants(Filter filter)
+	{
+		List<Element> result = new ArrayList<>();
+		
+		for (Element child : descendants)
+		{
+			if (filter.accept(child))
+			{
+				result.add(child);
+			}
+		}
+		
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getChildrenByClass(Class<T> type)
 	{
@@ -103,9 +136,9 @@ public abstract class Element
 		
 		int i = 0;
 		
-		for (Port<?> port : getDescendantsByClass(Port.class))
+		for (CachingExpression<?> expression : getDescendantsByClass(CachingExpression.class))
 		{
-			port.setNumber(i++);
+			expression.setNumber(i++);
 		}
 	}
 	

@@ -138,7 +138,7 @@ public class ChartPart<T extends Component> extends Part<T>
 			{
 				for (int i = 0; i < timepoint; i++)
 				{
-					datasets.get(definition).addValue(port.get(i), port.getName(), "" + i);
+					datasets.get(definition).addValue(port.get(getState(), i), port.getName(), "" + i);
 				}
 			}
 		}

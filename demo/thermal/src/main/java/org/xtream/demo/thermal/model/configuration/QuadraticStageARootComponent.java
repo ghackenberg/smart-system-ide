@@ -9,7 +9,7 @@ public class QuadraticStageARootComponent extends QuadraticRootComponent
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(QuadraticStageARootComponent.class, DURATION, SAMPLES, CLASSES, RANDOMNESS);
+		new Workbench<>(new QuadraticStageARootComponent(), DURATION, SAMPLES, CLASSES, RANDOMNESS);
 	}
 
 	public QuadraticStageARootComponent()

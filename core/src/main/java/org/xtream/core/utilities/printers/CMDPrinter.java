@@ -2,13 +2,14 @@ package org.xtream.core.utilities.printers;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 import org.xtream.core.utilities.Printer;
 
 public class CMDPrinter<T extends Component> implements Printer<T>
 {
 
 	@Override
-	public void print(T component, int timepoint)
+	public void print(T component, State state, int timepoint)
 	{
 		for (int i = 0; i < timepoint; i++)
 		{
@@ -18,7 +19,7 @@ public class CMDPrinter<T extends Component> implements Printer<T>
 			
 			for (Port<?> port : component.getDescendantsByClass(Port.class))
 			{
-				System.out.println(port.getQualifiedName() + " = " + port.get(i));
+				System.out.println(port.getQualifiedName() + " = " + port.get(state, i));
 			}
 		}
 	}

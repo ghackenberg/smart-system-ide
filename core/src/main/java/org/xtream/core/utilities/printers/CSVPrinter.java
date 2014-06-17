@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 import org.xtream.core.utilities.Printer;
 
 public class CSVPrinter<T extends Component> implements Printer<T>
@@ -23,7 +24,7 @@ public class CSVPrinter<T extends Component> implements Printer<T>
 	}
 
 	@Override
-	public void print(T component, int timepoint)
+	public void print(T component, State state, int timepoint)
 	{
 		// Header
 		
@@ -44,7 +45,7 @@ public class CSVPrinter<T extends Component> implements Printer<T>
 			
 			for (int i = 0; i < timepoint; i++)
 			{
-				Object value = port.get(i);
+				Object value = port.get(state, i);
 				
 				if (value instanceof Double)
 				{
@@ -52,7 +53,7 @@ public class CSVPrinter<T extends Component> implements Printer<T>
 				}
 				else
 				{
-					out.print(";" + port.get(i));
+					out.print(";" + port.get(state, i));
 				}
 			}
 			

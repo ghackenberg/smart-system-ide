@@ -3,10 +3,10 @@ package org.xtream.core.model.expressions;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
-public abstract class ProbabilisticExpression<T> extends Expression<T>
+public abstract class ProbabilisticExpression<T> extends CachingExpression<T>
 {
 	
 	public ProbabilisticExpression(Port<T> port)
@@ -15,9 +15,9 @@ public abstract class ProbabilisticExpression<T> extends Expression<T>
 	}
 
 	@Override
-	public final T evaluate(int timepoint)
+	protected final T evaluateInternal(State state, int timepoint)
 	{
-		Map<T, Double> distribution = evaluateDistribution(timepoint);
+		Map<T, Double> distribution = evaluateDistribution(state, timepoint);
 		
 		double sum = 0;
 		
@@ -39,6 +39,6 @@ public abstract class ProbabilisticExpression<T> extends Expression<T>
 		throw new IllegalStateException();
 	}
 	
-	protected abstract Map<T, Double> evaluateDistribution(int timepoint);
+	protected abstract Map<T, Double> evaluateDistribution(State state, int timepoint);
 	
 }

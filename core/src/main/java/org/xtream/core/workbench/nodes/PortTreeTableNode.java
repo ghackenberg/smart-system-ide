@@ -7,17 +7,22 @@ import javax.swing.tree.TreeNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class PortTreeTableNode implements TreeTableNode
 {
 	
 	public ComponentTreeTableNode parent;
 	public Port<?> port;
+	public State state;
+	public int timepoint;
 	
-	public PortTreeTableNode(ComponentTreeTableNode parent, Port<?> port)
+	public PortTreeTableNode(ComponentTreeTableNode parent, Port<?> port, State state, int timepoint)
 	{
 		this.parent = parent;
 		this.port = port;
+		this.state = state;
+		this.timepoint = timepoint;
 	}
 
 	@Override
@@ -74,7 +79,7 @@ public class PortTreeTableNode implements TreeTableNode
 	@Override
 	public int getColumnCount()
 	{
-		return port.getState().getTimepoint() + 2;
+		return timepoint + 2;
 	}
 
 	@Override
@@ -98,7 +103,7 @@ public class PortTreeTableNode implements TreeTableNode
 		}
 		else
 		{
-			return port.get(column - 1);
+			return port.get(state, column - 1);
 		}
 	}
 

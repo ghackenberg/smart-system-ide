@@ -4,6 +4,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public class ConstraintsComponent extends AbstractConstraintsComponent
 {
@@ -26,9 +27,9 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return chargeStateInput.get(timepoint) >= minimumChargeStateInput.get(timepoint) && chargeStateInput.get(timepoint) <= maximumChargeStateInput.get(timepoint);
+			return chargeStateInput.get(state, timepoint) >= minimumChargeStateInput.get(state, timepoint) && chargeStateInput.get(state, timepoint) <= maximumChargeStateInput.get(state, timepoint);
 		}
 	};
 	

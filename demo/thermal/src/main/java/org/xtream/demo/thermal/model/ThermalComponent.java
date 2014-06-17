@@ -6,6 +6,7 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public abstract class ThermalComponent extends EnergyComponent
 {
@@ -44,7 +45,7 @@ public abstract class ThermalComponent extends EnergyComponent
 	
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -52,22 +53,22 @@ public abstract class ThermalComponent extends EnergyComponent
 			}
 			else
 			{
-				if (commandInput.get(timepoint))
+				if (commandInput.get(state, timepoint))
 				{
-					return temperatureOutput.get(timepoint - 1) - decrease;
+					return temperatureOutput.get(state, timepoint - 1) - decrease;
 				}
 				else
 				{
-					return temperatureOutput.get(timepoint - 1) + increase;
+					return temperatureOutput.get(state, timepoint - 1) + increase;
 				}
 			}
 		}
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			if (commandInput.get(timepoint))
+			if (commandInput.get(state, timepoint))
 			{
 				return -200.;
 			}
@@ -79,9 +80,9 @@ public abstract class ThermalComponent extends EnergyComponent
 	};
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return temperatureOutput.get(timepoint) >= minimumOutput.get(timepoint) && temperatureOutput.get(timepoint) < maximumOutput.get(timepoint);
+			return temperatureOutput.get(state, timepoint) >= minimumOutput.get(state, timepoint) && temperatureOutput.get(state, timepoint) < maximumOutput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);

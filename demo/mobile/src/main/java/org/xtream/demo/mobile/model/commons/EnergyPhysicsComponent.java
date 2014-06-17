@@ -3,6 +3,7 @@ package org.xtream.demo.mobile.model.commons;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractPhysicsComponent;
+import org.xtream.core.optimizer.State;
 
 public abstract class EnergyPhysicsComponent extends AbstractPhysicsComponent
 {
@@ -17,9 +18,9 @@ public abstract class EnergyPhysicsComponent extends AbstractPhysicsComponent
 	
 	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return productionOutput.get(timepoint) + consumptionOutput.get(timepoint);
+			return productionOutput.get(state, timepoint) + consumptionOutput.get(state, timepoint);
 		}
 	};
 

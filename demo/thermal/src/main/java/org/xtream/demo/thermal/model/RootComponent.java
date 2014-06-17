@@ -10,6 +10,7 @@ import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.thermal.model.stage.Stage;
 
 public abstract class RootComponent extends Component
@@ -102,13 +103,13 @@ public abstract class RootComponent extends Component
 	
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			double sum = 0.;
 			
 			for (ThermalComponent thermal : thermals)
 			{
-				sum += thermal.temperatureOutput.get(timepoint) / thermals.length;
+				sum += thermal.temperatureOutput.get(state, timepoint) / thermals.length;
 			}
 			
 			return sum;
@@ -116,9 +117,9 @@ public abstract class RootComponent extends Component
 	};
 	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return storage.levelOutput.get(timepoint);
+			return storage.levelOutput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> probabilityExpression = new ConstantNonDeterministicExpression<>(probabilityOutput, 0., .25, .5, .75, 1.);

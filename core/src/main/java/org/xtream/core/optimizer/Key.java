@@ -23,7 +23,7 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				double originalValue = state.getValue(root.getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint);
+				double originalValue = root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint);
 				double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
 				double discreteValue = Math.floor(normalizedValue);
 				

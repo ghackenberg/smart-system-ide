@@ -5,6 +5,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
+import org.xtream.core.optimizer.State;
 
 public abstract class SolarComponent extends EnergyComponent
 {
@@ -32,7 +33,7 @@ public abstract class SolarComponent extends EnergyComponent
 	
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
 			int modulo = timepoint % 96;
 			

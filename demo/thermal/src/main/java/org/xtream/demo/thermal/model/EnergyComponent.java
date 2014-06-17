@@ -5,6 +5,7 @@ import java.net.URL;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public abstract class EnergyComponent extends Component
 {
@@ -24,9 +25,9 @@ public abstract class EnergyComponent extends Component
 	
 	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput)
 	{
-		@Override public Double evaluate(int timepoint)
+		@Override public Double evaluate(State state, int timepoint)
 		{
-			return productionOutput.get(timepoint) + consumptionOutput.get(timepoint);
+			return productionOutput.get(state, timepoint) + consumptionOutput.get(state, timepoint);
 		}
 	};
 

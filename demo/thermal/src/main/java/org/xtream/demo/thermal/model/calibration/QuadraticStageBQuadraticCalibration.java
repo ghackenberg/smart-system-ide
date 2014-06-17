@@ -26,7 +26,7 @@ public class QuadraticStageBQuadraticCalibration
 	
 	public static void main(String[] args)
 	{
-		new QuadraticCalibrator<>(QuadraticStageBRootComponent.class).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
+		new QuadraticCalibrator<>(new QuadraticStageBRootComponent()).run(PROCESSORS, DURATION, CLUSTERS_START, CLUSTERS_END, CLUSTERS_STEPS, SAMPLES_START, SAMPLES_END, SAMPLES_STEPS, RANDOM_START, RANDOM_END, RANDOM_STEPS, ITERATIONS);
 	}
 
 }

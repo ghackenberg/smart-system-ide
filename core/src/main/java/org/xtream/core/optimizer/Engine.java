@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.Port;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
@@ -22,42 +21,25 @@ public class Engine<T extends Component>
 	
 	private int processors;
 	private List<Thread> threads;
-	private List<Worker> workers;
-	private List<T> roots;
+	private List<Worker<T>> workers;
+	private T root;
 	private int timepoint;
 	
-	public Engine(Class<T> type)
+	public Engine(T root)
 	{
-		this(type, Runtime.getRuntime().availableProcessors());
+		this(root, Runtime.getRuntime().availableProcessors());
 	}
 	
-	public Engine(Class<T> type, int processors)
+	public Engine(T root, int processors)
 	{
+		this.root = root;
 		this.processors = processors;
 		
 		threads = new ArrayList<>(processors);
 		workers = new ArrayList<>(processors);
-		roots = new ArrayList<>(processors);
-		
-		try
-		{
-			for (int i = 0; i < processors; i++)
-			{
-				roots.add(i, type.newInstance());
-				roots.get(i).init();
-			}
-		}
-		catch (InstantiationException e)
-		{
-			throw new IllegalStateException(e);
-		}
-		catch (IllegalAccessException e)
-		{
-			throw new IllegalStateException(e);
-		}
 	}
 	
-	public void run(int duration, int samples, int classes, double randomness, Monitor<T> monitor)
+	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor)
 	{
 		// Start monitor
 		
@@ -65,11 +47,9 @@ public class Engine<T extends Component>
 		
 		// Prepare initial state
 		
-		SortedMap<Key, List<State>> previousGroups = new TreeMap<Key, List<State>>();
+		SortedMap<Key, List<State>> previousGroups = new TreeMap<>();
 		
-		State best = new State(roots.get(0).getDescendantsByClass(Port.class).size(), 0);
-		
-		best.connect(roots.get(0));
+		State best = new State(root);
 		
 		List<State> initialGroup = new ArrayList<>();
 		
@@ -97,7 +77,7 @@ public class Engine<T extends Component>
 			
 			for (int proccessor = 0; proccessor < processors; proccessor++)
 			{
-				workers.add(proccessor, new Worker(roots.get(proccessor), timepoint, samples, randomness, previousGroups, queue));
+				workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, previousGroups, queue));
 				
 				threads.add(proccessor, new Thread(workers.get(proccessor)));
 				threads.get(proccessor).start();
@@ -132,10 +112,10 @@ public class Engine<T extends Component>
 			
 			statistics.norm = System.currentTimeMillis();
 			
-			double[] minEquivalences = new double[roots.get(0).getDescendantsByClass(Equivalence.class).size()];
-			double[] maxEquivalences = new double[roots.get(0).getDescendantsByClass(Equivalence.class).size()];
+			double[] minEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
+			double[] maxEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 			
-			for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
+			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
 				minEquivalences[i] = Double.MAX_VALUE;
 				maxEquivalences[i] = Double.MIN_VALUE;
@@ -143,14 +123,14 @@ public class Engine<T extends Component>
 			
 			for (State current : currentStates)
 			{
-				for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
+				for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 				{
-					minEquivalences[i] = Math.min(minEquivalences[i], current.getValue(roots.get(0).getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint));
-					maxEquivalences[i] = Math.max(maxEquivalences[i], current.getValue(roots.get(0).getDescendantsByClass(Equivalence.class).get(i).getPort(), timepoint));
+					minEquivalences[i] = Math.min(minEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
+					maxEquivalences[i] = Math.max(maxEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
 				}
 			}
 			
-			for (int i = 0; i < roots.get(0).getDescendantsByClass(Equivalence.class).size(); i++)
+			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
 				if (minEquivalences[i] == maxEquivalences[i])
 				{
@@ -167,13 +147,13 @@ public class Engine<T extends Component>
 			
 			statistics.cluster = System.currentTimeMillis();
 			
-			SortedMap<Key, List<State>> currentGroups = new TreeMap<Key, List<State>>();
+			SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
 			
 			for (State current : currentStates)
 			{
 				// Group Status
 				
-				Key currentKey = new Key(roots.get(0), current, minEquivalences, maxEquivalences, classes, timepoint);
+				Key currentKey = new Key(root, current, minEquivalences, maxEquivalences, classes, timepoint);
 				
 				List<State> currentGroup = currentGroups.get(currentKey);
 				
@@ -258,22 +238,22 @@ public class Engine<T extends Component>
 
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
-					for (Objective objective : roots.get(0).getDescendantsByClass(MinObjective.class))
+					for (Objective objective : root.getDescendantsByClass(MinObjective.class))
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double currentObjective = state.getValue(objective.getPort(), timepoint);
+							double currentObjective = objective.getPort().get(state, timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
 							statistics.avgObjective += currentObjective / statistics.dominantStates;
 							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}
-					for (Objective objective : roots.get(0).getDescendantsByClass(MaxObjective.class))
+					for (Objective objective : root.getDescendantsByClass(MaxObjective.class))
 					{
 						for (State state : previousGroup.getValue())
 						{
-							double currentObjective = state.getValue(objective.getPort(), timepoint);
+							double currentObjective = objective.getPort().get(state, timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
 							statistics.avgObjective += currentObjective / statistics.dominantStates;
@@ -290,23 +270,21 @@ public class Engine<T extends Component>
 				
 				for (Entry<Key, List<State>> entry : previousGroups.entrySet())
 				{
-					for (Objective objective : roots.get(0).getDescendantsByClass(MinObjective.class))
+					for (Objective objective : root.getDescendantsByClass(MinObjective.class))
 					{
-						if (best.getValue(objective.getPort(), timepoint) > entry.getValue().get(0).getValue(objective.getPort(), timepoint))
+						if (objective.getPort().get(best, timepoint) > objective.getPort().get(entry.getValue().get(0), timepoint))
 						{
 							best = entry.getValue().get(0);
 						}
 					}
-					for (Objective objective : roots.get(0).getDescendantsByClass(MaxObjective.class))
+					for (Objective objective : root.getDescendantsByClass(MaxObjective.class))
 					{
-						if (best.getValue(objective.getPort(), timepoint) < entry.getValue().get(0).getValue(objective.getPort(), timepoint))
+						if (objective.getPort().get(best, timepoint) > objective.getPort().get(entry.getValue().get(0), timepoint))
 						{
 							best = entry.getValue().get(0);
 						}
 					}
 				}
-				
-				best.restore(roots.get(0));
 				
 				// Print result
 				
@@ -318,11 +296,13 @@ public class Engine<T extends Component>
 			}
 		}
 		
-		best.restore(roots.get(0));
-		
 		// Stop monitor
 		
 		monitor.stop();
+		
+		// Return best state
+		
+		return best;
 	}
 
 }

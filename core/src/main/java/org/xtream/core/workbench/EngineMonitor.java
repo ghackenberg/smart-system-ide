@@ -16,15 +16,13 @@ import org.xtream.core.optimizer.Statistics;
 public class EngineMonitor<T extends Component> implements Monitor<T>
 {
 	
-	private T root;
 	private JProgressBar timeBar;
 	private JProgressBar memoryBar;
 	private JSlider slider;
 	private int duration;
 	
-	public EngineMonitor(T root, JProgressBar bar, JProgressBar memoryBar, JSlider slider, int duration)
+	public EngineMonitor(JProgressBar bar, JProgressBar memoryBar, JSlider slider, int duration)
 	{
-		this.root = root;
 		this.timeBar = bar;
 		this.memoryBar = memoryBar;
 		this.slider = slider;
@@ -43,7 +41,6 @@ public class EngineMonitor<T extends Component> implements Monitor<T>
 	{
 		double progress = (timepoint + 1.) / duration * 100;
 		
-		best.restore(root);
 		timeBar.setValue((int) progress);
 		memoryBar.setValue(getMemoryProgress());
 		slider.setMaximum(timepoint);

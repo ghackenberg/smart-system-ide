@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
+import org.xtream.core.optimizer.State;
 
 public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpression<T>
 {
@@ -31,7 +32,7 @@ public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpre
 	}
 
 	@Override
-	protected Set<T> evaluateSet(int timepoint)
+	protected Set<T> evaluateSet(State state, int timepoint)
 	{
 		return set;
 	}

@@ -9,6 +9,7 @@ import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Equivalence;
+import org.xtream.core.optimizer.State;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -16,7 +17,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(RootComponent.class, 96, 100, 10, 0);
+		new Workbench<>(new RootComponent(), 96, 100, 10, 0);
 	}
 	
 	////////////
@@ -69,9 +70,9 @@ public class RootComponent extends Component
 	
 	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximumOutput)
 	{
-		@Override public Boolean evaluate(int timepoint)
+		@Override public Boolean evaluate(State state, int timepoint)
 		{
-			return random1.output.get(timepoint) < 3.;
+			return random1.output.get(state, timepoint) < 3.;
 		}
 	};
 	

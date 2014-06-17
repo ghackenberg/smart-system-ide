@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
+import org.xtream.core.optimizer.State;
 import org.xtream.demo.thermal.model.StorageComponent;
 
 public class SmartStorageComponent extends StorageComponent
@@ -19,19 +20,19 @@ public class SmartStorageComponent extends StorageComponent
 	
 	public Expression<Double> commandExpression = new NonDeterministicExpression<Double>(commandInput)
 	{
-		@Override protected Set<Double> evaluateSet(int timepoint)
+		@Override protected Set<Double> evaluateSet(State state, int timepoint)
 		{
 			Set<Double> result = new HashSet<>();
 			
-			if (timepoint == 0 || levelOutput.get(timepoint - 1) * loss - speed >= minimumOutput.get(timepoint))
+			if (timepoint == 0 || levelOutput.get(state, timepoint - 1) * loss - speed >= minimumOutput.get(state, timepoint))
 			{
 				result.add(1.);
 			}
-			if (timepoint == 0 || levelOutput.get(timepoint - 1) * loss + speed * efficiency <= maximumOutput.get(timepoint))
+			if (timepoint == 0 || levelOutput.get(state, timepoint - 1) * loss + speed * efficiency <= maximumOutput.get(state, timepoint))
 			{
 				result.add(-1.);
 			}
-			if (timepoint == 0 || levelOutput.get(timepoint - 1) * loss >= minimumOutput.get(timepoint))
+			if (timepoint == 0 || levelOutput.get(state, timepoint - 1) * loss >= minimumOutput.get(state, timepoint))
 			{
 				result.add(0.);
 			}

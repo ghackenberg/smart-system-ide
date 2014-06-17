@@ -46,7 +46,7 @@ public class TablePart<T extends Component> extends Part<T>
 			
 			// Initialize table
 			
-			ComponentTreeTableNode node = new ComponentTreeTableNode(null, getRoot(), jump.timepoint);
+			ComponentTreeTableNode node = new ComponentTreeTableNode(null, getRoot(), getState(), jump.timepoint);
 			
 			DefaultTreeTableModel model = new DefaultTreeTableModel(node);
 			
