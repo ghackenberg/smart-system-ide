@@ -8,6 +8,7 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractLogicsComponent;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.optimizer.State;
 
 public class LogicsComponent extends AbstractLogicsComponent
@@ -41,10 +42,9 @@ public class LogicsComponent extends AbstractLogicsComponent
 	
 	// Expressions
 	
-	public Expression<Edge> positionExpression = new Expression<Edge>(positionOutput)	
+	public Expression<Edge> positionExpression = new CachingExpression<Edge>(positionOutput)	
 	{
-		@Override 
-		public Edge evaluate(State state, int timepoint)
+		@Override protected Edge evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -65,10 +65,9 @@ public class LogicsComponent extends AbstractLogicsComponent
 	};
 	
 
-	public Expression<Edge> positionTargetExpression = new Expression<Edge>(positionTargetOutput)	
+	public Expression<Edge> positionTargetExpression = new CachingExpression<Edge>(positionTargetOutput)	
 	{
-		@Override 
-		public Edge evaluate(State state, int timepoint)
+		@Override protected Edge evaluateInternal(State state, int timepoint)
 		{
 			if (positionTraversedLengthInput.get(state, timepoint) >= positionEdgeLengthInput.get(state, timepoint))
 			{
@@ -97,10 +96,9 @@ public class LogicsComponent extends AbstractLogicsComponent
 	};
 	
 	// Crossed distance per step
-	public Expression<Double> speedExpression = new Expression<Double>(speedOutput)	
+	public Expression<Double> speedExpression = new CachingExpression<Double>(speedOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (drivingIndicatorInput.get(state, timepoint))
 			{
@@ -121,10 +119,9 @@ public class LogicsComponent extends AbstractLogicsComponent
 	};
 	
 	// Measures speed in kilometers/h
-	public Expression<Double> speedAbsoluteExpression = new Expression<Double>(speedAbsoluteOutput)	
+	public Expression<Double> speedAbsoluteExpression = new CachingExpression<Double>(speedAbsoluteOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (drivingIndicatorInput.get(state, timepoint))
 			{

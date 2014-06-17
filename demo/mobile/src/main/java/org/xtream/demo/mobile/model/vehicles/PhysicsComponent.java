@@ -7,6 +7,7 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
@@ -76,9 +77,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	// Expressions
 	
 	// TODO [Dominik] Utilize Setbuilder (selection) for non deterministic expressions
-	public Expression<Edge> positionOutgoingEdgesExpression = new Expression<Edge>(positionOutgoingEdgesOutput)
+	public Expression<Edge> positionOutgoingEdgesExpression = new CachingExpression<Edge>(positionOutgoingEdgesOutput)
 	{
-		@Override public Edge evaluate(State state, int timepoint)
+		@Override protected Edge evaluateInternal(State state, int timepoint)
 		{
 			Set<Edge> set = graph.getOutgoingEdges(positionInput.get(state, timepoint));
 			int random = (int) Math.floor(Math.random() * set.size());
@@ -96,9 +97,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionTraversedLengthExpression = new Expression<Double>(positionTraversedLengthOutput)
+	public Expression<Double> positionTraversedLengthExpression = new CachingExpression<Double>(positionTraversedLengthOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -127,9 +128,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionXExpression = new Expression<Double>(positionXOutput)
+	public Expression<Double> positionXExpression = new CachingExpression<Double>(positionXOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -152,9 +153,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionYExpression = new Expression<Double>(positionYOutput)
+	public Expression<Double> positionYExpression = new CachingExpression<Double>(positionYOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -177,9 +178,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};	
 	
-	public Expression<Double> positionZExpression = new Expression<Double>(positionZOutput)
+	public Expression<Double> positionZExpression = new CachingExpression<Double>(positionZOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -339,9 +340,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 0.002);
 	
 	
-	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
+	public Expression<Double> powerExpression = new CachingExpression<Double>(powerOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{		
 			if (speedInput.get(state, timepoint) > 0)
 			{
@@ -365,9 +366,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> chargeStateExpression = new Expression<Double>(chargeStateOutput)
+	public Expression<Double> chargeStateExpression = new CachingExpression<Double>(chargeStateOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{

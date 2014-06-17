@@ -4,6 +4,7 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.optimizer.State;
@@ -43,9 +44,9 @@ public abstract class ThermalComponent extends EnergyComponent
 	
 	// Expressions
 	
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
+	public Expression<Double> temperatureExpression = new CachingExpression<Double>(temperatureOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluateInternal(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
