@@ -3,6 +3,8 @@ package org.xtream.core.optimizer;
 public class Statistics
 {
 	
+	// TODO make fields private and provide getters/setters
+	
 	public int generatedStates;
 	public int validStates;
 	public int dominantStates;
