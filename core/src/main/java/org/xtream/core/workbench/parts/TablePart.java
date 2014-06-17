@@ -28,7 +28,7 @@ public class TablePart<T extends Component> extends Part<T>
 	}
 	public TablePart(int x, int y, int width, int height)
 	{
-		super("Table printer", x, y, width, height);
+		super("Data table", x, y, width, height);
 		
 		table = new JXTreeTable();
 		

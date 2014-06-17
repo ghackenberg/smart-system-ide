@@ -42,7 +42,7 @@ public class MonitorPart<T extends Component> extends Part<T>
 	}
 	public MonitorPart(int x, int y, int width, int height)
 	{
-		super("Chart monitor", x, y, width, height);
+		super("Engine monitor", x, y, width, height);
 		
 		JFreeChart statesChart = ChartFactory.createLineChart("Number of generated, valid and dominant states", "Step", "States", states, PlotOrientation.VERTICAL, false, true, false);
 		JFreeChart classesChart = ChartFactory.createLineChart("Number of equivalence classes", "Step", "Clusters", classes, PlotOrientation.VERTICAL, false, true, false);

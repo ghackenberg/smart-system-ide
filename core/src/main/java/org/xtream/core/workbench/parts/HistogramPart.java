@@ -41,7 +41,7 @@ public class HistogramPart<T extends Component> extends Part<T>
 	}
 	public HistogramPart(int x, int y, int width, int height)
 	{
-		super("Histogram printer", x, y, width, height);
+		super("Histograms", x, y, width, height);
 		
 		panel = new JPanel();
 		
