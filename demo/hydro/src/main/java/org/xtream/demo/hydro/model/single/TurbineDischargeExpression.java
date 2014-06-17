@@ -2,11 +2,14 @@ package org.xtream.demo.hydro.model.single;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.Reference;
 
 public class TurbineDischargeExpression extends Expression<Double>
 {
 	
+	@Reference
 	protected Port<Double> dischrage;
+	@Reference
 	protected Port<Double> price;
 	
 	protected double turbineDischargeMax;

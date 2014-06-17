@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -77,8 +78,8 @@ public class ScenarioComponent extends Component
 	
 	// Charts
 	
-	public Timeline inflowChart = new Timeline(inflowOutput);
-	public Timeline priceChart = new Timeline(priceOutput);
+	public Chart inflowChart = new Timeline(inflowOutput);
+	public Chart priceChart = new Timeline(priceOutput);
 	
 	// Expressions
 	

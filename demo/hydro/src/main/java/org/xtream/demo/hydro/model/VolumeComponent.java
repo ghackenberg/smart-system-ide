@@ -1,10 +1,17 @@
 package org.xtream.demo.hydro.model;
 
+import java.awt.Color;
+
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Node;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.Transform;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.model.nodes.shapes.Box;
+import org.xtream.core.model.transforms.Translation;
 
 public class VolumeComponent extends Component
 {
@@ -42,10 +49,26 @@ public class VolumeComponent extends Component
 	
 	// Charts
 	
-	public Timeline levelChart = new Timeline(levelMinOutput, levelOutput, levelMaxOutput);
-	public Timeline flowChart = new Timeline(inflowInput, outflowInput);
+	public Chart levelChart = new Timeline(levelMinOutput, levelOutput, levelMaxOutput);
+	public Chart flowChart = new Timeline(inflowInput, outflowInput);
 	
-	public Timeline levelPreview = new Timeline(levelMinOutput, levelOutput, levelMaxOutput);
+	// Transforms
+	
+	public Transform translate = new Translation()
+	{
+		
+	};
+	
+	// Nodes
+	
+	public Node box = new Box()
+	{	
+		@Override
+		public Color getColor(int timepoint)
+		{
+			return null;
+		}
+	};
 	
 	// Expressions
 	

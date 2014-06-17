@@ -3,52 +3,75 @@ package org.xtream.core.utilities;
 import java.lang.reflect.Method;
 
 import org.xtream.core.model.Element;
+import org.xtream.core.utilities.filters.TrueFilter;
 
 public abstract class Visitor
 {
 	
-	public void visit(Element element)
+	private static final boolean REVERSE = false;
+	private static final String METHOD = "handle";
+	private static final Filter FILTER = new TrueFilter();
+	
+	public void traverse(Element element)
 	{
-		Class<?> type;
-		
-		type = element.getClass();
-		
-		while (Element.class.isAssignableFrom(type))
+		traverse(element, METHOD, REVERSE, FILTER);
+	}
+	
+	public void traverse(Element element, Filter filter)
+	{
+		traverse(element, METHOD, REVERSE, filter);
+	}
+	
+	public void traverse(Element element, boolean reverse)
+	{
+		traverse(element, METHOD, reverse, FILTER);
+	}
+	
+	public void traverse(Element element, String method)
+	{
+		traverse(element, method, REVERSE, FILTER);
+	}
+	
+	public void traverse(Element element, boolean reverse, Filter filter)
+	{
+		traverse(element, METHOD, reverse, filter);
+	}
+	
+	public void traverse(Element element, String method, Filter filter)
+	{
+		traverse(element, method, REVERSE, filter);
+	}
+	
+	public void traverse(Element element, String method, boolean reverse)
+	{
+		traverse(element, method, reverse, FILTER);
+	}
+	
+	public void traverse(Element element, String method, boolean reverse, Filter filter)
+	{
+		for (int index = (reverse ? element.getChildren().size() - 1 : 0); (reverse ? index >= 0 : index < element.getChildren().size()); index = (reverse ? index - 1 : index + 1))
 		{
-			try
+			Element child = element.getChildren().get(index);
+			
+			if (filter.accept(child))
 			{
-				Method method = getClass().getMethod("pre", type);
+				Class<?> typeIterator = child.getClass();
 				
-				method.invoke(this, element);
-				
-				break;
-			}
-			catch (Exception e)
-			{
-				type = type.getSuperclass();
-			}
-		}
-		
-		for (Element child : element.getChildren())
-		{
-			visit(child);
-		}
-		
-		type = element.getClass();
-		
-		while (Element.class.isAssignableFrom(type))
-		{
-			try
-			{
-				Method method = getClass().getMethod("post", type);
-				
-				method.invoke(this, element);
-				
-				break;
-			}
-			catch (Exception e)
-			{
-				type = type.getSuperclass();
+				while (Element.class.isAssignableFrom(typeIterator))
+				{
+					try
+					{
+						Method temp = getClass().getMethod(method, typeIterator);
+						
+						temp.invoke(this, child);
+						
+						break;
+					}
+					catch (Exception e)
+					{
+						typeIterator = typeIterator.getSuperclass();
+					}
+				}
 			}
 		}
 	}

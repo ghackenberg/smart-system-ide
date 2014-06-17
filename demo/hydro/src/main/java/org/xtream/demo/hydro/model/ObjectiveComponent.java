@@ -1,5 +1,6 @@
 package org.xtream.demo.hydro.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -29,7 +30,7 @@ public class ObjectiveComponent extends Component
 	
 	// Charts
 	
-	public Timeline rewardChart = new Timeline(rewardOutput);
+	public Chart rewardChart = new Timeline(rewardOutput);
 	
 	// Expressions
 	

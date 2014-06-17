@@ -21,6 +21,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
+import org.xtream.core.utilities.visitors.JoglVisitor;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.parts.AnimationPart;
 import org.xtream.core.workbench.parts.ArchitecturePart;
@@ -79,6 +80,8 @@ public class Workbench<T extends Component>
 			{
 				part.setRoot(root);
 			}
+			
+			new JoglVisitor().handle(root);
 			
 			// Controls
 			

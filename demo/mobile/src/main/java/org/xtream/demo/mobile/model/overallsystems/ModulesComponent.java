@@ -1,6 +1,7 @@
 package org.xtream.demo.mobile.model.overallsystems;
 
 import org.xtream.core.datatypes.Edge;
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
@@ -144,7 +145,7 @@ public class ModulesComponent extends AbstractModulesComponent
 	//public Chart timeCostCharts[];
 	//public Chart powerCostCharts[];
 	
-	public Timeline PowerChart = new Timeline(powerOutput);
-	public Timeline powerPlaceholderChart = new Timeline(powerOutput);
-	public Timeline powerAggregateChart = new Timeline(powerAggregateOutput);
+	public Chart PowerChart = new Timeline(powerOutput);
+	public Chart powerPlaceholderChart = new Timeline(powerOutput);
+	public Chart powerAggregateChart = new Timeline(powerAggregateOutput);
 }

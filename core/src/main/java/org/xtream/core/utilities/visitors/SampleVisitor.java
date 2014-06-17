@@ -6,7 +6,7 @@ import org.xtream.core.utilities.Visitor;
 public class SampleVisitor extends Visitor
 {
 	
-	public void pre(Component component)
+	public void handle(Component component)
 	{
 		System.out.println(component.getQualifiedName());
 	}

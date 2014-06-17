@@ -1,5 +1,6 @@
 package org.xtream.demo.street.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.charts.Timeline;
@@ -22,7 +23,7 @@ public class RootComponent extends Component
 
 	// Charts
 	
-	public Timeline costChart = new Timeline(net.balance); // TODO Cost output port
+	public Chart costChart = new Timeline(net.balance); // TODO Cost output port
 	
 	// Expressions
 	

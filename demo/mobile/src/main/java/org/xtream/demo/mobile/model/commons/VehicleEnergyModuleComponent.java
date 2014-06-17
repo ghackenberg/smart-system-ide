@@ -3,6 +3,7 @@ package org.xtream.demo.mobile.model.commons;
 import java.net.URL;
 
 import org.xtream.core.datatypes.Graph;
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
@@ -38,6 +39,6 @@ public class VehicleEnergyModuleComponent<PhysicsComponent extends EnergyPhysics
 	
 	// Charts
 	
-	public Timeline energyChart = new Timeline(productionOutput, consumptionOutput, balanceOutput);
+	public Chart energyChart = new Timeline(productionOutput, consumptionOutput, balanceOutput);
 	
 }

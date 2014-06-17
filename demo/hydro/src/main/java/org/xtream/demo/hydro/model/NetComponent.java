@@ -1,5 +1,6 @@
 package org.xtream.demo.hydro.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -20,9 +21,7 @@ public class NetComponent extends Component
 	
 	// Charts
 	
-	public Timeline productionChart = new Timeline(productionOutput, hauptkraftwerkProductionInput, wehr1ProductionInput, wehr2ProductionInput, wehr3ProductionInput, wehr4ProductionInput);
-	
-	public Timeline productionPreview = new Timeline(productionOutput);
+	public Chart productionChart = new Timeline(productionOutput, hauptkraftwerkProductionInput, wehr1ProductionInput, wehr2ProductionInput, wehr3ProductionInput, wehr4ProductionInput);
 	
 	// Expressions
 	

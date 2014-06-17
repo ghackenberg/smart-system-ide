@@ -1,5 +1,6 @@
 package org.xtream.demo.thermal.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
@@ -25,7 +26,7 @@ public abstract class SolarComponent extends EnergyComponent
 	
 	// Charts
 	
-	public Timeline energyChart = new Timeline(productionOutput);
+	public Chart energyChart = new Timeline(productionOutput);
 	
 	// Expressions
 	
