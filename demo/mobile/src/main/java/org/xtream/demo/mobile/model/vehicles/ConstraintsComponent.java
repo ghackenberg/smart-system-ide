@@ -27,7 +27,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return chargeStateInput.get(state, timepoint) >= minimumChargeStateInput.get(state, timepoint) && chargeStateInput.get(state, timepoint) <= maximumChargeStateInput.get(state, timepoint);
 		}

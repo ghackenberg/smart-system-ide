@@ -40,7 +40,7 @@ public class AddComponent extends Component
 
 	public Expression<Double> outputExpression = new Expression<Double>(output)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return firstInput.get(state, timepoint) + secondInput.get(state, timepoint);
 		}

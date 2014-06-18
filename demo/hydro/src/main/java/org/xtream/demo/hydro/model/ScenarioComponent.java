@@ -86,14 +86,14 @@ public class ScenarioComponent extends Component
 	
 	public Expression<Double> inflowExpression = new Expression<Double>(inflowOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return inflows.get(timepoint);
 		}
 	};
 	public Expression<Double> priceExpression = new Expression<Double>(priceOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return prices.get(timepoint);
 		}

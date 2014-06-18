@@ -17,7 +17,7 @@ public class WeirDischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(State state, int timepoint)
+	protected Double evaluate(State state, int timepoint)
 	{
 		return Math.random() * weirDischargeMax;
 	}

@@ -33,7 +33,7 @@ public abstract class SolarComponent extends EnergyComponent
 	
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			int modulo = timepoint % 96;
 			

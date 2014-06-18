@@ -24,8 +24,7 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	
 	public Expression<Double> timeCostsExpression = new Expression<Double>(timeCostsOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (targetReachedInput.get(state, timepoint) || !(drivingIndicatorInput.get(state, timepoint)))
 			{
@@ -40,8 +39,7 @@ public class QualitiesComponent extends AbstractQualitiesComponent
 	
 	public Expression<Double> powerCostsExpression = new Expression<Double>(powerCostsOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (targetReachedInput.get(state, timepoint) || !(drivingIndicatorInput.get(state, timepoint)))
 			{

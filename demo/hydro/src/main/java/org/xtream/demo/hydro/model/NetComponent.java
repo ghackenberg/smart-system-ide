@@ -28,7 +28,7 @@ public class NetComponent extends Component
 	
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return hauptkraftwerkProductionInput.get(state, timepoint) + wehr1ProductionInput.get(state, timepoint) + wehr2ProductionInput.get(state, timepoint) + wehr3ProductionInput.get(state, timepoint) + wehr4ProductionInput.get(state, timepoint);
 		}

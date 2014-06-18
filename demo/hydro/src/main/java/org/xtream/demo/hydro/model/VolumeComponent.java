@@ -9,7 +9,6 @@ import org.xtream.core.model.Node;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Transform;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.nodes.shapes.Box;
 import org.xtream.core.model.transforms.Translation;
@@ -75,9 +74,9 @@ public class VolumeComponent extends Component
 	
 	// Expressions
 	
-	public Expression<Double> levelExpression = new CachingExpression<Double>(levelOutput)
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -91,21 +90,21 @@ public class VolumeComponent extends Component
 	};
 	public Expression<Double> levelMinExpression = new Expression<Double>(levelMinOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return levelMin;
 		}
 	};
 	public Expression<Double> levelMaxExpression = new Expression<Double>(levelMaxOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return levelMax;
 		}
 	};
 	public Expression<Boolean> bandExpression = new Expression<Boolean>(bandOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return levelOutput.get(state, timepoint) >= levelMin - 0.01 && levelOutput.get(state, timepoint) <= levelMax + 0.01;
 		}

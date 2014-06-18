@@ -17,7 +17,7 @@ public class ConstantExpression<T> extends Expression<T>
 	}
 	
 	@Override
-	public T evaluate(State state, int timepoint)
+	protected T evaluate(State state, int timepoint)
 	{
 		return value;
 	}

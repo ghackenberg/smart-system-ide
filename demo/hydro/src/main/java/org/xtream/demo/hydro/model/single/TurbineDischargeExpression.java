@@ -28,7 +28,7 @@ public class TurbineDischargeExpression extends Expression<Double>
 	}
 
 	@Override
-	public Double evaluate(State state, int timepoint)
+	protected Double evaluate(State state, int timepoint)
 	{
 		if (price.get(state, timepoint) >= 0)
 		{

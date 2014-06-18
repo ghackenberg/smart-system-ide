@@ -46,14 +46,14 @@ public class BarrageComponent extends Component
 	
 	public Expression<Double> dischargeExpression = new Expression<Double>(dischargeOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return turbineDischargeInput.get(state, timepoint) + weirDischargeInput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return turbineDischargeInput.get(state, timepoint) * ((headLevelOffset + headLevelInput.get(state, timepoint)) - (tailLevelOffset + tailLevelInput.get(state, timepoint))) * 0.25 * roh * gravity * efficiency;
 		}

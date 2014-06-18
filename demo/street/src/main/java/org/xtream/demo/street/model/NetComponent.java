@@ -25,7 +25,7 @@ public class NetComponent extends Component
 	
 	public Expression<Double> balanceExpr = new Expression<Double>(balance)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return load_00.get(state, timepoint) + load_01.get(state, timepoint);
 		}

@@ -22,7 +22,7 @@ public class HouseholdComponent extends Component
 	
 	public Expression<Double> loadExpr = new Expression<Double>(load)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return 1.0;
 		}

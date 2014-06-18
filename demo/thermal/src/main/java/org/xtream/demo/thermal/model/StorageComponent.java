@@ -4,7 +4,6 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.optimizer.State;
@@ -50,21 +49,21 @@ public abstract class StorageComponent extends EnergyComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return commandInput.get(state, timepoint) > 0. ? speed : 0.;
 		}
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return commandInput.get(state, timepoint) < 0. ? -speed : 0.;
 		}
 	};
-	public Expression<Double> levelExpression = new CachingExpression<Double>(levelOutput)
+	public Expression<Double> levelExpression = new Expression<Double>(levelOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -91,14 +90,14 @@ public abstract class StorageComponent extends EnergyComponent
 	};
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return levelOutput.get(state, timepoint) >= minimumOutput.get(state, timepoint) && levelOutput.get(state, timepoint) <= maximumOutput.get(state, timepoint);
 		}
 	};
 	public Expression<Double> maximumExpression = new Expression<Double>(maximumOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return capacity;
 		}

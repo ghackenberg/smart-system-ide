@@ -17,7 +17,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 96, 100, 10, 0);
+		new Workbench<>(new RootComponent(), 96, 100, 10, 0, 0);
 	}
 	
 	////////////
@@ -70,7 +70,7 @@ public class RootComponent extends Component
 	
 	public Expression<Boolean> maximumExpression = new Expression<Boolean>(maximumOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return random1.output.get(state, timepoint) < 3.;
 		}

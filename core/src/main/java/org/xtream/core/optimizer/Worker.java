@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.expressions.CachingExpression;
+import org.xtream.core.model.Expression;
 import org.xtream.core.model.markers.Constraint;
 
 public class Worker<T extends Component> implements Runnable
@@ -82,9 +82,9 @@ public class Worker<T extends Component> implements Runnable
 						
 						// Calculate caching expressions
 						
-						for (CachingExpression<?> expression : root.getDescendantsByClass(CachingExpression.class))
+						for (Expression<?> expression : root.getCachingExpressions())
 						{
-							expression.evaluate(current, timepoint);
+							expression.get(current, timepoint);
 						}
 						
 						// Check state validity

@@ -27,7 +27,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double production = 0;
 			
@@ -43,7 +43,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double consumption = 0;
 			

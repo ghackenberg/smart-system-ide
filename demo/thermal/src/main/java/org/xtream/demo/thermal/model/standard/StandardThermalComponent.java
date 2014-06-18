@@ -11,7 +11,7 @@ public class StandardThermalComponent extends ThermalComponent
 	
 	public Expression<Boolean> commandExpression = new Expression<Boolean>(commandInput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
