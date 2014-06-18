@@ -1,7 +1,7 @@
 package org.xtream.core.optimizer;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.expressions.CachingExpression;
+import org.xtream.core.model.Expression;
 //import org.xtream.core.model.annotations.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.Preference;
@@ -32,9 +32,9 @@ public class State implements Comparable<State>
 		this.timepoint = timepoint;
 		this.previous = previous;
 		
-		if (root.getDescendantsByClass(CachingExpression.class).size() > 0)
+		if (root.getCachingExpressions().size() > 0)
 		{
-			values = new Object[root.getDescendantsByClass(CachingExpression.class).size()];
+			values = new Object[root.getCachingExpressions().size()];
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class State implements Comparable<State>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <S> S getValue(CachingExpression<S> port, int timepoint)
+	public <S> S getValue(Expression<S> port, int timepoint)
 	{
 		if (this.timepoint == timepoint)
 		{
@@ -56,7 +56,7 @@ public class State implements Comparable<State>
 		}
 	}
 	
-	public <S> void setValue(CachingExpression<S> port, int timepoint, S value)
+	public <S> void setValue(Expression<S> port, int timepoint, S value)
 	{
 		if (this.timepoint == timepoint)
 		{

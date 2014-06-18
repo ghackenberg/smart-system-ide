@@ -17,7 +17,7 @@ public class AverageAggregatorComponent extends AggregatorComponent
 	
 	public Expression<Double> valueExpression = new Expression<Double>(valueOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double sum = 0.;
 			

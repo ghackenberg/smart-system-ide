@@ -51,7 +51,7 @@ public class NetComponent extends EnergyComponent
 
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double production = 0;
 			
@@ -67,7 +67,7 @@ public class NetComponent extends EnergyComponent
 	};
 	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double consumption = 0;
 			
@@ -83,7 +83,7 @@ public class NetComponent extends EnergyComponent
 	};
 	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput)
 	{	
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return productionOutput.get(state, timepoint) >= -capacity && consumptionOutput.get(state, timepoint) <= capacity; 
 		}

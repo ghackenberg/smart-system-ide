@@ -6,7 +6,6 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AbstractModulesComponent;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.VehicleComponent;
@@ -119,7 +118,7 @@ public class ModulesComponent extends AbstractModulesComponent
 	
 	public Expression<Double> powerExpression = new Expression<Double>(powerOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double sum = 0;
 			
@@ -132,9 +131,9 @@ public class ModulesComponent extends AbstractModulesComponent
 		}
 	};
 	
-	public Expression<Double> powerAggregateExpression = new CachingExpression<Double>(powerAggregateOutput)
+	public Expression<Double> powerAggregateExpression = new Expression<Double>(powerAggregateOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : powerAggregateOutput.get(state, timepoint - 1)) + powerOutput.get(state, timepoint);
 		}

@@ -5,7 +5,6 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.optimizer.State;
 
@@ -34,7 +33,7 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	
 	// Parameters
 	
-	Graph graph;
+	protected Graph graph;
 	
 	// Inputs
 
@@ -52,9 +51,9 @@ public class ConstraintsComponent extends AbstractConstraintsComponent
 	
 	// Expressions
 	
-	public Expression<Boolean> validExpression = new CachingExpression<Boolean>(validOutput)
+	public Expression<Boolean> validExpression = new Expression<Boolean>(validOutput, true)
 	{	
-		@Override protected Boolean evaluateInternal(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{	
 			
 			for (int i = 0; i < positionInputs.length; i++)

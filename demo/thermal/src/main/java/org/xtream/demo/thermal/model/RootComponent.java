@@ -20,6 +20,7 @@ public abstract class RootComponent extends Component
 	public static int SAMPLES = 100;
 	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.0;
+	public static double CACHING = 0.0;
 	
 	public RootComponent(Stage stage)
 	{
@@ -103,7 +104,7 @@ public abstract class RootComponent extends Component
 	
 	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double sum = 0.;
 			
@@ -117,7 +118,7 @@ public abstract class RootComponent extends Component
 	};
 	public Expression<Double> levelExpression = new Expression<Double>(levelOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return storage.levelOutput.get(state, timepoint);
 		}

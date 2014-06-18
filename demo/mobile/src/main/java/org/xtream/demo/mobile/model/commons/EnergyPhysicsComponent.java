@@ -18,7 +18,7 @@ public abstract class EnergyPhysicsComponent extends AbstractPhysicsComponent
 	
 	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return productionOutput.get(state, timepoint) + consumptionOutput.get(state, timepoint);
 		}

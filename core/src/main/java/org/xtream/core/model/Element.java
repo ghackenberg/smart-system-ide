@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.utilities.Filter;
 
 public abstract class Element
@@ -30,6 +29,8 @@ public abstract class Element
 	private Map<Class<?>, List<?>> childrenByClass = new HashMap<>();
 	@Reference
 	private Map<Class<?>, List<?>> descendantsByClass = new HashMap<>();
+	@Reference
+	private List<Expression<?>> cachingExpressions = new ArrayList<>(); 
 	
 	public Element()
 	{
@@ -130,15 +131,27 @@ public abstract class Element
 		return result;
 	}
 	
-	public void init()
+	public List<Expression<?>> getCachingExpressions()
+	{
+		return cachingExpressions;
+	}
+	
+	public void init(double caching)
 	{
 		init(null, "root", "root");
 		
-		int i = 0;
+		int index = 0;
 		
-		for (CachingExpression<?> expression : getDescendantsByClass(CachingExpression.class))
+		for (Expression<?> expression : getDescendantsByClass(Expression.class))
 		{
-			expression.setNumber(i++);
+			expression.setCaching(expression.getCaching() || Math.random() < caching);
+			
+			if (expression.getCaching())
+			{
+				expression.setNumber(index++);
+				
+				cachingExpressions.add(expression);
+			}
 		}
 	}
 	

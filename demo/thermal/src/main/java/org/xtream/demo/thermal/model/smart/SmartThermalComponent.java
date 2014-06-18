@@ -1,7 +1,6 @@
 package org.xtream.demo.thermal.model.smart;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.optimizer.State;
 import org.xtream.demo.thermal.model.ThermalComponent;
 
@@ -10,9 +9,9 @@ public class SmartThermalComponent extends ThermalComponent
 	
 	// Expressions
 	
-	public Expression<Boolean> commandExpression = new CachingExpression<Boolean>(commandInput)
+	public Expression<Boolean> commandExpression = new Expression<Boolean>(commandInput, true)
 	{
-		@Override protected Boolean evaluateInternal(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			if (timepoint != 0 && temperatureOutput.get(state, timepoint - 1) + increase > maximumOutput.get(state, timepoint))
 			{

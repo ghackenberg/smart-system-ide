@@ -42,18 +42,18 @@ public class Workbench<T extends Component>
 	private Bus<T> bus;
 	private JSlider slider;
 	
-	public Workbench(T root, int duration, int samples, int classes, double randomness)
+	public Workbench(T root, int duration, int samples, int classes, double randomness, double caching)
 	{
-		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
-	public Workbench(T root, int duration, int samples, int classes, double randomness, Graph graph)
+	public Workbench(T root, int duration, int samples, int classes, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, classes, randomness, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
-	private Workbench(T root, int duration, int samples, int classes, double randomness, Part<T>... parts)
+	private Workbench(T root, int duration, int samples, int classes, double randomness, double caching, Part<T>... parts)
 	{
 		try
 		{
@@ -71,7 +71,7 @@ public class Workbench<T extends Component>
 			
 			// Root
 			
-			root.init();
+			root.init(caching);
 			for (Part<T> part : parts)
 			{
 				part.setRoot(root);

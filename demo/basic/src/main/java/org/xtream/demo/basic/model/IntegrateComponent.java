@@ -5,7 +5,6 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
 import org.xtream.core.optimizer.State;
@@ -41,9 +40,9 @@ public class IntegrateComponent extends Component
 	// EXPRESSIONS //
 	/////////////////
 
-	public Expression<Double> outputExpression = new CachingExpression<Double>(output)
+	public Expression<Double> outputExpression = new Expression<Double>(output, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return (timepoint == 0 ? 0 : output.get(state, timepoint - 1)) + input.get(state, timepoint);
 		}

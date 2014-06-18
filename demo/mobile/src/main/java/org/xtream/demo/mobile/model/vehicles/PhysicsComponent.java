@@ -7,7 +7,6 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.expressions.CachingExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
@@ -77,9 +76,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	// Expressions
 	
 	// TODO [Dominik] Utilize Setbuilder (selection) for non deterministic expressions
-	public Expression<Edge> positionOutgoingEdgesExpression = new CachingExpression<Edge>(positionOutgoingEdgesOutput)
+	public Expression<Edge> positionOutgoingEdgesExpression = new Expression<Edge>(positionOutgoingEdgesOutput, true)
 	{
-		@Override protected Edge evaluateInternal(State state, int timepoint)
+		@Override protected Edge evaluate(State state, int timepoint)
 		{
 			Set<Edge> set = graph.getOutgoingEdges(positionInput.get(state, timepoint));
 			int random = (int) Math.floor(Math.random() * set.size());
@@ -97,9 +96,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionTraversedLengthExpression = new CachingExpression<Double>(positionTraversedLengthOutput)
+	public Expression<Double> positionTraversedLengthExpression = new Expression<Double>(positionTraversedLengthOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -128,9 +127,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionXExpression = new CachingExpression<Double>(positionXOutput)
+	public Expression<Double> positionXExpression = new Expression<Double>(positionXOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -153,9 +152,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> positionYExpression = new CachingExpression<Double>(positionYOutput)
+	public Expression<Double> positionYExpression = new Expression<Double>(positionYOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -178,9 +177,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};	
 	
-	public Expression<Double> positionZExpression = new CachingExpression<Double>(positionZOutput)
+	public Expression<Double> positionZExpression = new Expression<Double>(positionZOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
@@ -205,7 +204,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionEdgeCapacityExpression = new Expression<Double>(positionEdgeCapacityOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return graph.getEdgeWeight(positionInput.get(state, timepoint).getName());
 		}
@@ -213,7 +212,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<String> positionEdgeTypeExpression = new Expression<String>(positionEdgeTypeOutput)
 	{
-		@Override public String evaluate(State state, int timepoint)
+		@Override protected String evaluate(State state, int timepoint)
 		{
 			return positionInput.get(state, timepoint).getTag();
 		}
@@ -221,7 +220,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionAltitudeDifferenceExpression = new Expression<Double>(positionAltitudeDifferenceOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return (positionTargetNodeZOutput.get(state, timepoint)-positionSourceNodeZOutput.get(state, timepoint));
 		}
@@ -229,7 +228,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Node> positionTargetNodeExpression = new Expression<Node>(positionTargetNodeOutput)
 	{
-		@Override public Node evaluate(State state, int timepoint)
+		@Override protected Node evaluate(State state, int timepoint)
 		{
 			return graph.getTargetNode(positionInput.get(state, timepoint).getName());
 		}
@@ -237,7 +236,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Node> positionSourceNodeExpression = new Expression<Node>(positionSourceNodeOutput)
 	{
-		@Override public Node evaluate(State state, int timepoint)
+		@Override protected Node evaluate(State state, int timepoint)
 		{
 			return graph.getSourceNode(positionInput.get(state, timepoint).getName());
 		}
@@ -245,7 +244,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionTargetNodeXExpression = new Expression<Double>(positionTargetNodeXOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getXpos());
 		}
@@ -253,7 +252,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionTargetNodeYExpression = new Expression<Double>(positionTargetNodeYOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getYpos());
 		}
@@ -261,7 +260,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionTargetNodeZExpression = new Expression<Double>(positionTargetNodeZOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionTargetNodeOutput.get(state, timepoint).getWeight());
 		}
@@ -269,7 +268,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionSourceNodeXExpression = new Expression<Double>(positionSourceNodeXOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getXpos());
 		}
@@ -277,7 +276,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionSourceNodeYExpression = new Expression<Double>(positionSourceNodeYOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getYpos());
 		}
@@ -285,7 +284,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionSourceNodeZExpression = new Expression<Double>(positionSourceNodeZOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return Double.parseDouble(positionSourceNodeOutput.get(state, timepoint).getWeight());
 		}
@@ -293,7 +292,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> positionEdgeLengthExpression = new Expression<Double>(positionEdgeLengthOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			double differenceX = Math.pow((positionTargetNodeXOutput.get(state, timepoint)-positionSourceNodeXOutput.get(state, timepoint)), 2);
 			double differenceY = Math.pow((positionTargetNodeYOutput.get(state, timepoint)-positionSourceNodeYOutput.get(state, timepoint)), 2);
@@ -305,7 +304,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Boolean> drivingIndicatorExpression = new Expression<Boolean>(drivingIndicatorOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return (timepoint == 0) ? false : true;		
 		}
@@ -313,7 +312,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Boolean> targetReachedExpression = new Expression<Boolean>(targetReachedOutput)
 	{
-		@Override public Boolean evaluate(State state, int timepoint)
+		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return (positionInput.get(state, timepoint).equals(destinationPositionOutput.get(state, timepoint)));
 		}
@@ -321,7 +320,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Edge> startPositionExpression = new Expression<Edge>(startPositionOutput)
 	{
-		@Override public Edge evaluate(State state, int timepoint)
+		@Override protected Edge evaluate(State state, int timepoint)
 		{
 			return graph.getEdge(startPosition);
 		}
@@ -329,7 +328,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Edge> destinationPositionExpression = new Expression<Edge>(destinationPositionOutput)
 	{
-		@Override public Edge evaluate(State state, int timepoint)
+		@Override protected Edge evaluate(State state, int timepoint)
 		{
 			return graph.getEdge(destinationPosition);
 		}
@@ -340,9 +339,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 0.002);
 	
 	
-	public Expression<Double> powerExpression = new CachingExpression<Double>(powerOutput)
+	public Expression<Double> powerExpression = new Expression<Double>(powerOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{		
 			if (speedInput.get(state, timepoint) > 0)
 			{
@@ -366,9 +365,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 		}
 	};
 	
-	public Expression<Double> chargeStateExpression = new CachingExpression<Double>(chargeStateOutput)
+	public Expression<Double> chargeStateExpression = new Expression<Double>(chargeStateOutput, true)
 	{
-		@Override protected Double evaluateInternal(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0)
 			{
@@ -399,7 +398,7 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	public Expression<Double> chargeStateRelativeExpression = new Expression<Double>(chargeStateRelativeOutput)
 	{
-		@Override public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{
 			return (chargeStateOutput.get(state, timepoint)/maximumChargeStateOutput.get(state, timepoint));
 		}

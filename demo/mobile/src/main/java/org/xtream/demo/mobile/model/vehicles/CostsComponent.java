@@ -33,8 +33,7 @@ public class CostsComponent extends AbstractCostsComponent
 	
 	public Expression<Double> costsExpression = new Expression<Double>(costsOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{			
 			return ((timeCostsInput.get(state, timepoint)*timeWeight)+(powerCostsInput.get(state, timepoint)*powerWeight));	
 		}
@@ -42,8 +41,7 @@ public class CostsComponent extends AbstractCostsComponent
 	
 	public Expression<Double> timeWeightExpression = new Expression<Double>(timeWeightOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{			
 			return timeWeight;
 		}
@@ -51,8 +49,7 @@ public class CostsComponent extends AbstractCostsComponent
 	
 	public Expression<Double> powerWeightExpression = new Expression<Double>(powerWeightOutput)	
 	{
-		@Override 
-		public Double evaluate(State state, int timepoint)
+		@Override protected Double evaluate(State state, int timepoint)
 		{			
 			return powerWeight;
 		}
