@@ -90,7 +90,7 @@ public class GraphPart<T extends Component> extends Part<T>
 			PrintStream dot = new PrintStream(new File("MobilityGraph.dot"));
 			
 			dot.append("digraph G {\n");
-			dot.append("\tnormalize = 17.5;\n");
+			dot.append("\tnormalize = 2.;\n");
 			dot.append("\toverlap = false;\n");
 			dot.append("\trankdir = LR;\n");
 			dot.append("\tfontname = \"Calibri\";\n");
@@ -209,8 +209,8 @@ public class GraphPart<T extends Component> extends Part<T>
 			
 			dot.close();
 		
-			Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
-			Runtime.getRuntime().exec("dot -Kneato -Gdpi=160 -Gratio=0.17 -Tsvg -oMobilityGraph.svg MobilityGraph.dot").waitFor();
+			Runtime.getRuntime().exec("dot -Kneato -Gdpi=190 -Gratio=1.0 -Tpng -oMobilityGraph.png MobilityGraph.dot").waitFor();
+			Runtime.getRuntime().exec("dot -Kneato -Gdpi=190 -Gratio=1.0 -Tsvg -oMobilityGraph.svg MobilityGraph.dot").waitFor();
 			
 			image.setImage(ImageIO.read(new File("MobilityGraph.png")));
 		}
