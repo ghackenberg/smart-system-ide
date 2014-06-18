@@ -26,7 +26,7 @@ public class WeirDischargeExpression extends Expression<Double>
 
 	public WeirDischargeExpression(Port<Double> weirDischarge, double weirDischargeMax, Port<Double> previousLevel, double previousArea, double previousLevelMax, Port<Double> previousTurbineDischarge, Port<Double> previousWeirDischarge, Port<Double> currentTurbineDischrage)
 	{
-		super(weirDischarge);
+		super(weirDischarge, true);
 		
 		this.weirDischargeMax = weirDischargeMax;
 

@@ -12,7 +12,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 96 * 7, 100, 100, 0, 0.5);
+		new Workbench<>(new RootComponent(), 96 * 7, 100, 100, 0, 0);
 	}
 	
 	// Components

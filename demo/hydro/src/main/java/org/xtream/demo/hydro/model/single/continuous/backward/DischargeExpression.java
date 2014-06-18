@@ -21,7 +21,7 @@ public class DischargeExpression extends Expression<Double>
 
 	public DischargeExpression(Port<Double> discharge, double dischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextDischarge)
 	{
-		super(discharge);
+		super(discharge, true);
 		
 		this.dischargeMax = dischargeMax;
 

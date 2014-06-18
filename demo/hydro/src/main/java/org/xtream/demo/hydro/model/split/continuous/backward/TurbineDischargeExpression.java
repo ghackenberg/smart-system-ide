@@ -23,7 +23,7 @@ public class TurbineDischargeExpression extends Expression<Double>
 
 	public TurbineDischargeExpression(Port<Double> turbineDischarge, double turbineDischargeMax, Port<Double> nextLevel, double nextArea, double nextLevelMax, Port<Double> nextTurbineDischarge, Port<Double> nextWeirDischarge)
 	{
-		super(turbineDischarge);
+		super(turbineDischarge, true);
 		
 		this.turbineDischargeMax = turbineDischargeMax;
 		
