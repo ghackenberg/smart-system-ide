@@ -22,10 +22,10 @@ import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.workbench.events.JumpEvent;
+import org.xtream.core.workbench.parts.AggregateGraphPart;
 import org.xtream.core.workbench.parts.AnimationPart;
 import org.xtream.core.workbench.parts.ArchitecturePart;
 import org.xtream.core.workbench.parts.ChartPart;
-import org.xtream.core.workbench.parts.GraphPart;
 import org.xtream.core.workbench.parts.MonitorPart;
 import org.xtream.core.workbench.parts.TreePart;
 
@@ -49,7 +49,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int classes, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new GraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AggregateGraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
