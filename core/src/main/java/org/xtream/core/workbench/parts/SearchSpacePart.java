@@ -119,7 +119,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 						gl2.glMatrixMode(GL2.GL_MODELVIEW);
 						{
 							gl2.glLoadIdentity();
-							glu.gluLookAt(-150f, 150f, 150f, 50f, 0f, 0f, 0f, 1f, 0f);
+							glu.gluLookAt(-125f, 25f, 150f, 25f, 0f, 0f, 0f, 1f, 0f);
 						}
 						
 						synchronized (mutex)
@@ -203,10 +203,10 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				State leader = entry.getValue().get(0);
-			
 				for (State state : entry.getValue())
 				{
+					State leader = state;
+					
 					while (state != null)
 					{
 						// States
