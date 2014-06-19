@@ -31,8 +31,8 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	private GLJPanel canvas;
 	private int timepoint;
 	private Statistics statistics;
-	private double minObjective;
-	private double maxObjective;
+	private double minObjective = Double.MAX_VALUE;
+	private double maxObjective = Double.MIN_VALUE;
 	private List<Set<State>> states;
 	private Map<State, Set<State>> followers;
 	private Map<State, State> leaders;
@@ -128,42 +128,43 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 							{
 								layoutFollowing(gl2, glut, states.get(0).iterator().next(), 0, 360, 0, -100, 0, 0);
 								
+								gl2.glLineWidth(1f);
+								gl2.glColor3d(0.5f, 0.5f, 0.5f);
+								
 								// Time axis
 								
-								gl2.glPushMatrix();
+								gl2.glBegin(GL2.GL_LINES);
 								{
-									gl2.glTranslatef(-100, 0, 0);
-									gl2.glRotated(90, 0, 1, 0);
-									gl2.glColor3d(0.5, 0.5, 0.5);
-									glut.glutSolidCylinder(0.5, 200, 100, 100);
+									gl2.glVertex3d(-100, 0, 0);
+									gl2.glVertex3d(100, 0, 0);
 								}
-								gl2.glPopMatrix();
+								gl2.glEnd();
 								
 								// Minimum objective
 								
-								gl2.glPushMatrix();
+								gl2.glBegin(GL2.GL_LINE_LOOP);
 								{
-									double radius = (statistics.minObjective - minObjective) / (maxObjective - minObjective) * 100;
+									double radius = (statistics.minObjective - minObjective) / (maxObjective - minObjective);
 									
-									gl2.glTranslatef(100, 0, 0);
-									gl2.glRotated(90, 0, 1, 0);
-									gl2.glColor3d(0.5, 0.5, 0.5);
-									glut.glutSolidTorus(0.5, radius, 100, 100);
+									for (double a = 0; a < 360; a+=5)
+									{
+										gl2.glVertex3d(100, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+									}
 								}
-								gl2.glPopMatrix();
+								gl2.glEnd();
 								
 								// Maximum objective
 								
-								gl2.glPushMatrix();
+								gl2.glBegin(GL2.GL_LINE_LOOP);
 								{
-									double radius = (statistics.maxObjective - minObjective) / (maxObjective - minObjective) * 100;
+									double radius = (statistics.maxObjective - minObjective) / (maxObjective - minObjective);
 									
-									gl2.glTranslatef(100, 0, 0);
-									gl2.glRotated(90, 0, 1, 0);
-									gl2.glColor3d(0.5, 0.5, 0.5);
-									glut.glutSolidTorus(0.5, radius, 100, 100);
+									for (double a = 0; a < 360; a+=5)
+									{
+										gl2.glVertex3d(100, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+									}
 								}
-								gl2.glPopMatrix();
+								gl2.glEnd();
 							}
 						}
 					}
@@ -198,49 +199,48 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				states.add(new HashSet<State>());
 			}
 			
-			minObjective = Double.MAX_VALUE;
-			maxObjective = Double.MIN_VALUE;
-			
 			// Initialize data structures
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				State state = entry.getValue().get(0);
-				State leader = state;
-				
-				while (state != null)
+				State leader = entry.getValue().get(0);
+			
+				for (State state : entry.getValue())
 				{
-					// States
-					
-					Set<State> set = states.get(state.getTimepoint() + 1);
-					
-					set.add(state);
-					
-					// Follower
-					
-					Set<State> next = followers.get(state.getPrevious());
-					
-					if (next == null)
+					while (state != null)
 					{
-						next = new HashSet<>();
+						// States
 						
-						followers.put(state.getPrevious(), next);
+						Set<State> set = states.get(state.getTimepoint() + 1);
+						
+						set.add(state);
+						
+						// Follower
+						
+						Set<State> next = followers.get(state.getPrevious());
+						
+						if (next == null)
+						{
+							next = new HashSet<>();
+							
+							followers.put(state.getPrevious(), next);
+						}
+						
+						next.add(state);
+						
+						// Leaders
+						
+						State current = leaders.get(state);
+						
+						if (current == null || leader.compareObjectiveTo(current) < 0)
+						{
+							leaders.put(state, leader);
+						}
+						
+						// Iterate
+						
+						state = state.getPrevious();
 					}
-					
-					next.add(state);
-					
-					// Leaders
-					
-					State current = leaders.get(state);
-					
-					if (current == null || leader.compareObjectiveTo(current) > 0)
-					{
-						leaders.put(state, leader);
-					}
-					
-					// Iterate
-					
-					state = state.getPrevious();
 				}
 			}
 			
@@ -287,7 +287,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				double radius = (objective - minObjective) / (maxObjective - minObjective);
 				double angle = minAngle + (maxAngle - minAngle) * weight / weightSum;
 				
-				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 10;
+				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 4;
 				
 				double x = 200 * next.getTimepoint() / timepoint - 100;
 				double y = Math.sin(actualAngle / 180 * Math.PI) * radius * 100;
@@ -311,31 +311,24 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 					}
 					else
 					{
-						gl2.glColor3d(0, 0, 1);
+						gl2.glColor3d(0, 1, 0);
 					}
 					
-					glut.glutSolidSphere(1, 10, 10);
+					glut.glutSolidCube(1);
 				}
 				gl2.glPopMatrix();
 				
 				// Draw connection
 				
-				double diffX = x - prevX;
-				double diffY = y - prevY;
-				double diffZ = z - prevZ;
-				double length = Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
+				gl2.glLineWidth(1f);
+				gl2.glColor3d(0.5f, 0.5f, 0.5f);
 				
-				gl2.glPushMatrix();
+				gl2.glBegin(GL2.GL_LINES);
 				{
-					gl2.glTranslated((x + prevX) / 2, (y + prevY) / 2, (z + prevZ) / 2);
-					gl2.glRotated(Math.atan2(diffY, length) / Math.PI * 180, 0, 0, 1);
-					gl2.glRotated(- Math.atan2(diffZ, length) / Math.PI * 180, 0, 1, 0);
-					gl2.glRotated(90, 0, 1, 0);
-					gl2.glTranslated(0, 0, -length/2);
-					gl2.glColor3d(0.5, 0.5, 0.5);
-					glut.glutSolidCylinder(0.5, length, 10, 10);
+					gl2.glVertex3d(prevX, prevY, prevZ);
+					gl2.glVertex3d(x, y, z);
 				}
-				gl2.glPopMatrix();
+				gl2.glEnd();
 				
 				// Draw following
 				
