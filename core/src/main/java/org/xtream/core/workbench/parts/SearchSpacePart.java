@@ -203,44 +203,43 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				for (State state : entry.getValue())
+				State state = entry.getValue().get(0);
+				
+				State leader = state;
+				
+				while (state != null)
 				{
-					State leader = state;
+					// States
 					
-					while (state != null)
+					Set<State> set = states.get(state.getTimepoint() + 1);
+					
+					set.add(state);
+					
+					// Follower
+					
+					Set<State> next = followers.get(state.getPrevious());
+					
+					if (next == null)
 					{
-						// States
+						next = new HashSet<>();
 						
-						Set<State> set = states.get(state.getTimepoint() + 1);
-						
-						set.add(state);
-						
-						// Follower
-						
-						Set<State> next = followers.get(state.getPrevious());
-						
-						if (next == null)
-						{
-							next = new HashSet<>();
-							
-							followers.put(state.getPrevious(), next);
-						}
-						
-						next.add(state);
-						
-						// Leaders
-						
-						State current = leaders.get(state);
-						
-						if (current == null || leader.compareObjectiveTo(current) < 0)
-						{
-							leaders.put(state, leader);
-						}
-						
-						// Iterate
-						
-						state = state.getPrevious();
+						followers.put(state.getPrevious(), next);
 					}
+					
+					next.add(state);
+					
+					// Leaders
+					
+					State current = leaders.get(state);
+					
+					if (current == null || leader.compareObjectiveTo(current) < 0)
+					{
+						leaders.put(state, leader);
+					}
+					
+					// Iterate
+					
+					state = state.getPrevious();
 				}
 			}
 			
