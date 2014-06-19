@@ -46,12 +46,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentArchitecturePart<T>(1,0,2,1), new ComponentChildrenTablePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new SystemScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new SystemScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentArchitecturePart<T>(1,0,2,1), new ComponentChildrenTablePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs

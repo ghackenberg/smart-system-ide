@@ -20,7 +20,7 @@ public class ElementTableModel extends AbstractTableModel
 	@Override
 	public int getColumnCount()
 	{
-		return 4;
+		return 3;
 	}
 
 	@Override
@@ -44,10 +44,6 @@ public class ElementTableModel extends AbstractTableModel
 		}
 		if (column == 2)
 		{
-			return child.getClass().getSimpleName();
-		}
-		if (column == 3)
-		{
 			return child.getDescription();
 		}
 		
@@ -59,17 +55,13 @@ public class ElementTableModel extends AbstractTableModel
 	{
 		if (column == 0)
 		{
-			return "Icon";
+			return "Type";
 		}
 		if (column == 1)
 		{
 			return "Name";
 		}
 		if (column == 2)
-		{
-			return "Class";
-		}
-		if (column == 3)
 		{
 			return "Description";
 		}
@@ -89,10 +81,6 @@ public class ElementTableModel extends AbstractTableModel
 			return String.class;
 		}
 		if (column == 2)
-		{
-			return String.class;
-		}
-		if (column == 3)
 		{
 			return String.class;
 		}
