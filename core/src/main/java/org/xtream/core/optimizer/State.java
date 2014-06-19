@@ -10,7 +10,7 @@ import org.xtream.core.model.markers.objectives.MinObjective;
 import org.xtream.core.model.markers.preferences.MaxPreference;
 import org.xtream.core.model.markers.preferences.MinPreference;
 
-public class State implements Comparable<State>
+public class State
 {
 	
 	private Component root;
@@ -73,7 +73,7 @@ public class State implements Comparable<State>
 		}
 	}
 	
-	public Integer compareDominanceTo(State other)
+	public Integer comparePreferencesTo(State other)
 	{
 		if (root.getDescendantsByClass(MinPreference.class).size() > 0 || root.getDescendantsByClass(MaxPreference.class).size() > 0)
 		{
@@ -135,9 +135,8 @@ public class State implements Comparable<State>
 			return null; // Not comparable
 		}
 	}
-
-	@Override
-	public int compareTo(State other)
+	
+	public int compareObjectiveTo(State other)
 	{
 		if (root.getDescendantsByClass(MinObjective.class).size() == 1 || root.getDescendantsByClass(MaxObjective.class).size() == 1)
 		{

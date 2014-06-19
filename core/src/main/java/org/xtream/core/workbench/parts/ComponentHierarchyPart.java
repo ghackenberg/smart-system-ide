@@ -13,20 +13,20 @@ import org.xtream.core.workbench.events.SelectionEvent;
 import org.xtream.core.workbench.models.nodes.ComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
-public class TreePart<T extends Component> extends Part<T>
+public class ComponentHierarchyPart<T extends Component> extends Part<T>
 {
 	
 	private JTree tree;
 	
-	public TreePart()
+	public ComponentHierarchyPart()
 	{
 		this(0, 0);
 	}
-	public TreePart(int x, int y)
+	public ComponentHierarchyPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public TreePart(int x, int y, int width, int height)
+	public ComponentHierarchyPart(int x, int y, int width, int height)
 	{
 		super("Component hierarchy", x, y, width, height);
 		

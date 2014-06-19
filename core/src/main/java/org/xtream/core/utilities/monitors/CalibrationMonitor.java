@@ -37,7 +37,7 @@ public class CalibrationMonitor<T extends Component> implements Monitor<T>
 		this.timepoint = timepoint;
 		this.generated_states += statistics.generatedStates;
 		this.valid_states += statistics.validStates;
-		this.dominant_states += statistics.dominantStates;
+		this.dominant_states += statistics.preferredStates;
 		this.clusters += equivalenceClasses.size();
 		this.min_objective = statistics.minObjective;
 		this.avg_objective = statistics.avgObjective;

@@ -19,20 +19,20 @@ import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.SelectionEvent;
 
-public class ArchitecturePart<T extends Component> extends Part<T>
+public class ComponentArchitecturePart<T extends Component> extends Part<T>
 {
 	
 	private ImagePanel image;
 	
-	public ArchitecturePart()
+	public ComponentArchitecturePart()
 	{
 		this(0, 0);
 	}
-	public ArchitecturePart(int x, int y)
+	public ComponentArchitecturePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public ArchitecturePart(int x, int y, int width, int height)
+	public ComponentArchitecturePart(int x, int y, int width, int height)
 	{
 		super("Component architecture", x, y, width, height);
 

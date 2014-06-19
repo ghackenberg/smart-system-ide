@@ -16,20 +16,20 @@ import org.xtream.core.workbench.events.JumpEvent;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class AnimationPart<T extends Component> extends Part<T>
+public class SystemScenePart<T extends Component> extends Part<T>
 {
 	
 	private GLJPanel canvas;
 
-	public AnimationPart()
+	public SystemScenePart()
 	{
 		this(0, 0);
 	}
-	public AnimationPart(int x, int y)
+	public SystemScenePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public AnimationPart(int x, int y, int width, int height)
+	public SystemScenePart(int x, int y, int width, int height)
 	{
 		super("System scene", x, y, width, height);
 		
@@ -115,30 +115,6 @@ public class AnimationPart<T extends Component> extends Part<T>
 							gl2.glColor3f(0f, 0f, 1f);
 							// Shape
 							glut.glutSolidCube(2);
-						}
-						gl2.glPopMatrix();
-						
-						// Sphere
-						gl2.glPushMatrix();
-						{
-							// Transform
-							gl2.glTranslated(-5 * Math.random(), 0, 5 * Math.random());
-							// Material
-							gl2.glColor3f(0f, 1f, 0f);
-							// Shape
-							glut.glutSolidSphere(01f, 100, 100);
-						}
-						gl2.glPopMatrix();
-						
-						// Cylinder
-						gl2.glPushMatrix();
-						{
-							// Transform
-							gl2.glTranslated(5 * Math.random(), 0, -5 * Math.random());
-							// Material
-							gl2.glColor3f(1f, 0f, 0f);
-							// Shape
-							glut.glutSolidCylinder(1f, 2f, 100, 100);
 						}
 						gl2.glPopMatrix();
 						

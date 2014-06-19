@@ -24,7 +24,7 @@ import org.xtream.core.optimizer.State;
 import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.workbench.Part;
 
-public class MonitorPart<T extends Component> extends Part<T>
+public class EngineMonitorPart<T extends Component> extends Part<T>
 {
 
 	private static int PADDING = 0;
@@ -44,15 +44,15 @@ public class MonitorPart<T extends Component> extends Part<T>
 	private CategoryTableXYDataset memory = new CategoryTableXYDataset();
 	private CategoryTableXYDataset time = new CategoryTableXYDataset();
 	
-	public MonitorPart()
+	public EngineMonitorPart()
 	{
 		this(0, 0);
 	}
-	public MonitorPart(int x, int y)
+	public EngineMonitorPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public MonitorPart(int x, int y, int width, int height)
+	public EngineMonitorPart(int x, int y, int width, int height)
 	{
 		super("Engine monitor", x, y, width, height);
 		
@@ -141,7 +141,7 @@ public class MonitorPart<T extends Component> extends Part<T>
 		
 		states.add(timepoint, statistics.generatedStates, "Generated");
 		states.add(timepoint, statistics.validStates, "Valid");
-		states.add(timepoint, statistics.dominantStates, "Preferred");
+		states.add(timepoint, statistics.preferredStates, "Preferred");
 		
 		classes.add(timepoint, equivalenceClasses.size(), "Count");
 		
