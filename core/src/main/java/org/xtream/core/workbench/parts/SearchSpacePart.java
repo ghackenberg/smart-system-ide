@@ -126,7 +126,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 						{
 							if (timepoint > 0)
 							{
-								layoutFollowing(gl2, glut, states.get(0).iterator().next(), 0, 360, 0, -100, 0, 0);
+								layoutFollowers(gl2, glut, states.get(0).iterator().next(), 0, 360, 0, -100, 0, 0);
 								
 								gl2.glLineWidth(1f);
 								gl2.glColor3d(0.5f, 0.5f, 0.5f);
@@ -255,7 +255,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				}
 			}
 			
-			countFollowing(states.get(0).iterator().next());
+			countFollowers(states.get(0).iterator().next());
 			
 			// Repaint canvas
 			
@@ -263,7 +263,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 		}
 	}
 	
-	private void layoutFollowing(GL2 gl2, GLUT glut, State state, double minAngle, double maxAngle, double prevAngle, double prevX, double prevY, double prevZ)
+	private void layoutFollowers(GL2 gl2, GLUT glut, State state, double minAngle, double maxAngle, double prevAngle, double prevX, double prevY, double prevZ)
 	{
 		if (followers.get(state) != null)
 		{
@@ -332,7 +332,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				
 				// Draw following
 				
-				layoutFollowing(gl2, glut, next, iterAngle, angle, actualAngle, x, y, z);
+				layoutFollowers(gl2, glut, next, iterAngle, angle, actualAngle, x, y, z);
 				
 				// Update iteration variables
 				
@@ -341,7 +341,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 		}
 	}
 	
-	private int countFollowing(State state)
+	private int countFollowers(State state)
 	{
 		if (followers.get(state) != null)
 		{
@@ -349,7 +349,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 			
 			for (State next : followers.get(state))
 			{
-				count += countFollowing(next);
+				count += countFollowers(next);
 			}
 			
 			counts.put(state, count);
