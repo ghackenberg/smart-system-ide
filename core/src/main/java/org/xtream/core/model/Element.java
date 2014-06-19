@@ -13,8 +13,12 @@ import org.xtream.core.utilities.Filter;
 
 public abstract class Element
 {
+
+	private static final String DESCRIPTION = "No description!";
+	private static final URL ICON = Element.class.getClassLoader().getResource("element.png");
 	
 	private URL icon;
+	private String description;
 	
 	private String name;
 	private String qualifiedName;
@@ -34,16 +38,30 @@ public abstract class Element
 	
 	public Element()
 	{
-		this(Element.class.getClassLoader().getResource("element.png"));
+		this(DESCRIPTION, ICON);
+	}
+	public Element(String description)
+	{
+		this(description, ICON);
 	}
 	public Element(URL icon)
 	{
+		this(DESCRIPTION, icon);
+	}
+	public Element(String description, URL icon)
+	{
+		this.description = description;
 		this.icon = icon;
 	}
 	
 	public URL getIcon()
 	{
 		return icon;
+	}
+	
+	public String getDescription()
+	{
+		return description;
 	}
 	
 	public String getName()
@@ -116,6 +134,20 @@ public abstract class Element
 		return result;
 	}
 	
+	public <T> T getChildByClass(Class<T> type)
+	{
+		List<T> children = getChildrenByClass(type);
+		
+		if (children.size() == 1)
+		{
+			return children.get(0);
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getDescendantsByClass(Class<T> type)
 	{
@@ -129,6 +161,20 @@ public abstract class Element
 		}
 		
 		return result;
+	}
+	
+	public <T> T getDescendantByClass(Class<T> type)
+	{
+		List<T> descendants = getDescendantsByClass(type);
+		
+		if (descendants.size() == 1)
+		{
+			return descendants.get(0);
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
 	}
 	
 	public List<Expression<?>> getCachingExpressions()
@@ -151,6 +197,17 @@ public abstract class Element
 				expression.setNumber(index++);
 				
 				cachingExpressions.add(expression);
+			}
+		}
+		
+		for (Marker<?> marker : getDescendantsByClass(Marker.class))
+		{
+			if (!marker.getPort().getExpression().getCaching())
+			{
+				marker.getPort().getExpression().setCaching(true);
+				marker.getPort().getExpression().setNumber(index++);
+				
+				cachingExpressions.add(marker.getPort().getExpression());
 			}
 		}
 	}

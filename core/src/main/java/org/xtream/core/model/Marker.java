@@ -8,6 +8,8 @@ public class Marker<T> extends Element
 	
 	public Marker(Port<T> port)
 	{
+		super(Marker.class.getClassLoader().getResource("marker.png"));
+		
 		this.port = port;
 	}
 	

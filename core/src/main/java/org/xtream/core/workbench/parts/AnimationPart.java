@@ -31,7 +31,7 @@ public class AnimationPart<T extends Component> extends Part<T>
 	}
 	public AnimationPart(int x, int y, int width, int height)
 	{
-		super("3D Scene", x, y, width, height);
+		super("System scene", x, y, width, height);
 		
 		try
 		{

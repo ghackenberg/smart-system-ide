@@ -43,6 +43,11 @@ public class State implements Comparable<State>
 		return timepoint;
 	}
 	
+	public State getPrevious()
+	{
+		return previous;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public <S> S getValue(Expression<S> port, int timepoint)
 	{

@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.xtream.core.workbench.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.models.nodes.ComponentTreeNode;
 
 public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 {

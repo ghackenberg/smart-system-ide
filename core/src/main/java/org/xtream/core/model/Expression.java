@@ -20,6 +20,8 @@ public abstract class Expression<T> extends Element
 	
 	public Expression(Port<T> port, boolean caching)
 	{
+		super(Expression.class.getClassLoader().getResource("expression.png"));
+		
 		this.port = port;
 		this.caching = caching;
 		

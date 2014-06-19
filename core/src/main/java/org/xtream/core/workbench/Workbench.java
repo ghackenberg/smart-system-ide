@@ -27,6 +27,7 @@ import org.xtream.core.workbench.parts.AnimationPart;
 import org.xtream.core.workbench.parts.ArchitecturePart;
 import org.xtream.core.workbench.parts.ChartPart;
 import org.xtream.core.workbench.parts.MonitorPart;
+import org.xtream.core.workbench.parts.TablePart;
 import org.xtream.core.workbench.parts.TreePart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
@@ -42,18 +43,18 @@ public class Workbench<T extends Component>
 	private Bus<T> bus;
 	private JSlider slider;
 	
-	public Workbench(T root, int duration, int samples, int classes, double randomness, double caching)
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
-		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AnimationPart<T>(3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new TreePart<T>(0,0,1,2), new TablePart<T>(1,0,2,1), new ArchitecturePart<T>(3,0,2,1), new AnimationPart<T>(1,1,2,1), new ChartPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
-	public Workbench(T root, int duration, int samples, int classes, double randomness, double caching, Graph graph)
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, classes, randomness, caching, new TreePart<T>(0,0,1,2), new ArchitecturePart<T>(1,0,2,1), new AggregateGraphPart<T>(graph,3,0,2,1), new ChartPart<T>(1,1,4,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new TreePart<T>(0,0,1,2), new TablePart<T>(1,0,2,1), new ArchitecturePart<T>(3,0,2,1), new AggregateGraphPart<T>(graph,1,1,2,1), new ChartPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
-	private Workbench(T root, int duration, int samples, int classes, double randomness, double caching, Part<T>... parts)
+	private Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Part<T>... parts)
 	{
 		try
 		{
@@ -81,13 +82,15 @@ public class Workbench<T extends Component>
 			
 			JTextField durationField = new JTextField("" + duration, 5);
 			JTextField samplesField = new JTextField("" + samples, 5);
-			JTextField classesField = new JTextField("" + classes, 5);
+			JTextField clustersField = new JTextField("" + clusters, 5);
 			JTextField randomnessField = new JTextField("" + randomness, 5);
+			JTextField cachingField = new JTextField("" + caching, 5);
 			
 			durationField.setEditable(false);
 			samplesField.setEditable(false);
-			classesField.setEditable(false);
+			clustersField.setEditable(false);
 			randomnessField.setEditable(false);
+			cachingField.setEditable(false);
 			
 			JButton startButton = new JButton("Start");
 			JButton stopButton = new JButton("Stop");
@@ -128,12 +131,14 @@ public class Workbench<T extends Component>
 			topbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 			topbar.add(new JLabel("Duration"));
 			topbar.add(durationField);
-			topbar.add(new JLabel("Classes"));
-			topbar.add(classesField);
+			topbar.add(new JLabel("Clusters"));
+			topbar.add(clustersField);
 			topbar.add(new JLabel("Samples"));
 			topbar.add(samplesField);
 			topbar.add(new JLabel("Randomness"));
 			topbar.add(randomnessField);
+			topbar.add(new JLabel("Caching"));
+			topbar.add(cachingField);
 			topbar.addSeparator();
 			topbar.add(startButton);
 			topbar.add(stopButton);
@@ -192,7 +197,7 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			engine.run(duration, samples, classes, randomness, allMonitor);
+			engine.run(duration, samples, clusters, randomness, allMonitor);
 		}
 		catch (Exception e)
 		{

@@ -10,7 +10,7 @@ import javax.swing.tree.TreeSelectionModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
-import org.xtream.core.workbench.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.models.nodes.ComponentTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class TreePart<T extends Component> extends Part<T>
@@ -28,7 +28,7 @@ public class TreePart<T extends Component> extends Part<T>
 	}
 	public TreePart(int x, int y, int width, int height)
 	{
-		super("Component tree", x, y, width, height);
+		super("Component hierarchy", x, y, width, height);
 		
 		tree = new JTree();
 		

@@ -34,7 +34,7 @@ public class ArchitecturePart<T extends Component> extends Part<T>
 	}
 	public ArchitecturePart(int x, int y, int width, int height)
 	{
-		super("Model architecture", x, y, width, height);
+		super("Component architecture", x, y, width, height);
 
 		image = new ImagePanel();
 		
@@ -48,17 +48,9 @@ public class ArchitecturePart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			for (Object object : selection.objects)
-			{
-				if (object instanceof Component)
-				{
-					Component root = (Component) object;
-					
-					show(root);
-					
-					break;
-				}
-			}
+			Component root = selection.getElementByClass(Component.class);
+			
+			show(root);
 		}
 	}
 	

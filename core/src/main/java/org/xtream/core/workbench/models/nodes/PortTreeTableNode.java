@@ -1,4 +1,4 @@
-package org.xtream.core.workbench.nodes;
+package org.xtream.core.workbench.models.nodes;
 
 import java.util.Enumeration;
 

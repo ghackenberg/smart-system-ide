@@ -16,7 +16,7 @@ public class RootComponent extends Component
 {
 	public static int DURATION = 50;
 	public static int COVERAGE = 50;
-	public static int CLASSES = 50;
+	public static int CLASSES = 25;
 	public static double RANDOMNESS = 0;
 	public static double CACHING = 0;
 

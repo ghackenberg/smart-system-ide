@@ -2,22 +2,19 @@ package org.xtream.core.workbench.parts;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.table.TableCellRenderer;
 
-import org.jdesktop.swingx.JXTreeTable;
-import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
 import org.xtream.core.model.Component;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
-import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.nodes.ComponentTreeTableNode;
+import org.xtream.core.workbench.events.SelectionEvent;
+import org.xtream.core.workbench.models.ElementTableModel;
 
 public class TablePart<T extends Component> extends Part<T>
 {
 	
-	private JXTreeTable table;
-	
+	private JTable table;
+
 	public TablePart()
 	{
 		this(0, 0);
@@ -28,43 +25,26 @@ public class TablePart<T extends Component> extends Part<T>
 	}
 	public TablePart(int x, int y, int width, int height)
 	{
-		super("Data table", x, y, width, height);
+		super("Component children", x, y, width, height);
 		
-		table = new JXTreeTable();
+		table = new JTable();
+		table.setFillsViewportHeight(true);
 		
-		JScrollPane scroll = new JScrollPane(table, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
-		getPanel().add(scroll);
+		getPanel().add(new JScrollPane(table));
 	}
-
+	
 	@Override
 	public void handle(Event<T> event)
 	{
-		if (event instanceof JumpEvent)
+		if (event instanceof SelectionEvent)
 		{
-			JumpEvent<T> jump = (JumpEvent<T>) event;
+			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			// Initialize table
+			Component current = selection.getElementByClass(Component.class);
 			
-			ComponentTreeTableNode node = new ComponentTreeTableNode(null, getRoot(), getState(), jump.timepoint);
+			table.setModel(new ElementTableModel(current));
 			
-			DefaultTreeTableModel model = new DefaultTreeTableModel(node);
-			
-			table.setTreeTableModel(model);
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			
-			table.getColumn(0).setPreferredWidth(200);
-			table.getColumn(0).setHeaderValue("Tree");
-			
-			for (int i = 0; i < jump.timepoint; i++)
-			{
-				table.getColumn(i + 1).setPreferredWidth(100);
-				table.getColumn(i + 1).setHeaderValue("" + i);
-			}
-			
-			table.expandAll();
-			
-			for (int column = 0; column < table.getColumnCount(); column++)
+			for (int column = 0; column < 3; column++)
 			{
 				int width = 0;
 				
@@ -75,7 +55,7 @@ public class TablePart<T extends Component> extends Part<T>
 					width = Math.max(table.prepareRenderer(renderer, row, column).getPreferredSize().width, width);
 				}
 				
-				table.getColumn(column).setPreferredWidth(width);
+				table.getColumnModel().getColumn(column).setPreferredWidth(width);
 			}
 		}
 	}
