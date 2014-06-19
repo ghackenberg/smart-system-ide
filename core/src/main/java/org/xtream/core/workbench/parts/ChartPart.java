@@ -12,6 +12,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
@@ -30,7 +31,8 @@ public class ChartPart<T extends Component> extends Part<T>
 	private static int STROKE = 3;
 	
 	private JPanel panel;
-	private Map<Chart, DefaultCategoryDataset> datasets = new HashMap<>();
+	private Map<Chart, DefaultCategoryDataset> categoryDatasets = new HashMap<>();
+	private Map<Chart, DefaultXYDataset> xyDatasets = new HashMap<>();
 	private Component component;
 	private int timepoint = 0;
 	
@@ -44,7 +46,7 @@ public class ChartPart<T extends Component> extends Part<T>
 	}
 	public ChartPart(int x, int y, int width, int height)
 	{
-		super("Charts", x, y, width, height);
+		super("Component charts", x, y, width, height);
 		
 		panel = new JPanel();
 		
@@ -58,7 +60,7 @@ public class ChartPart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			for (Object object : selection.objects)
+			for (Object object : selection.getElements())
 			{
 				if (object instanceof Component)
 				{
@@ -72,7 +74,7 @@ public class ChartPart<T extends Component> extends Part<T>
 		{
 			JumpEvent<T> jump = (JumpEvent<T>) event;
 			
-			update(jump.timepoint);
+			update(jump.getTimepoint());
 		}
 	}
 	
@@ -99,23 +101,25 @@ public class ChartPart<T extends Component> extends Part<T>
 			
 			for (Chart definition : component.getChildrenByClass(Chart.class))
 			{
-				DefaultCategoryDataset dataset = getDataset(definition);
-				
 				JFreeChart jfreechart;
 				
 				if (definition instanceof Timeline)
 				{
-					jfreechart = ChartFactory.createLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
+					DefaultXYDataset dataset = getXYDataset(definition);
+					
+					jfreechart = ChartFactory.createXYLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 					
 					Timeline timeline = (Timeline) definition;
 					
 					for (int i = 0; i < timeline.getPorts().length; i++)
 					{
-						jfreechart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+						jfreechart.getXYPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
 					}
 				}
 				else if (definition instanceof Histogram)
 				{
+					DefaultCategoryDataset dataset = getCategoryDataset(definition);
+					
 					jfreechart = ChartFactory.createBarChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
 					
 					Histogram<?> histogram = (Histogram<?>) definition;
@@ -161,10 +165,15 @@ public class ChartPart<T extends Component> extends Part<T>
 				
 				for (Port<Double> port : timeline.getPorts())
 				{
+					double[][] data = new double[2][timepoint];
+					
 					for (int i = 0; i < timepoint; i++)
 					{
-						datasets.get(timeline).addValue(port.get(getState(), i), port.getName(), "" + i);
+						data[0][i] = i;
+						data[1][i] = port.get(getState(), i);
 					}
+					
+					xyDatasets.get(chart).addSeries(port.getName(), data);
 				}
 			}
 			else if (chart instanceof Histogram)
@@ -189,7 +198,7 @@ public class ChartPart<T extends Component> extends Part<T>
 					
 					for (String i : map.keySet())
 					{
-						datasets.get(histogram).setValue(map.get(i), i, "value");
+						categoryDatasets.get(histogram).setValue(map.get(i), i, "value");
 					}
 				}
 			}
@@ -204,15 +213,29 @@ public class ChartPart<T extends Component> extends Part<T>
 		panel.updateUI();
 	}
 	
-	public DefaultCategoryDataset getDataset(Chart definition)
+	private DefaultCategoryDataset getCategoryDataset(Chart definition)
 	{
-		DefaultCategoryDataset dataset = datasets.get(definition);
+		DefaultCategoryDataset dataset = categoryDatasets.get(definition);
 		
 		if (dataset == null)
 		{
 			dataset = new DefaultCategoryDataset();
 			
-			datasets.put(definition, dataset);
+			categoryDatasets.put(definition, dataset);
+		}
+		
+		return dataset;
+	}
+	
+	private DefaultXYDataset getXYDataset(Chart definition)
+	{
+		DefaultXYDataset dataset = xyDatasets.get(definition);
+		
+		if (dataset == null)
+		{
+			dataset = new DefaultXYDataset();
+			
+			xyDatasets.put(definition, dataset);
 		}
 		
 		return dataset;

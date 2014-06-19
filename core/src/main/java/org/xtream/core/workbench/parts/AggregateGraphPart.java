@@ -61,25 +61,23 @@ public class AggregateGraphPart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			for (Object object : selection.objects)
+			if (root != selection.getElementByClass(Component.class))
 			{
-				if (object instanceof Component)
-				{
-					root = (Component) object;
-					
-					update();
-					
-					break;
-				}
+				root = selection.getElementByClass(Component.class);
+				
+				update();
 			}
 		}
 		else if (event instanceof JumpEvent)
 		{
 			JumpEvent<T> jump = (JumpEvent<T>) event;
 			
-			timepoint = jump.timepoint;
-			
-			update();
+			if (timepoint != jump.getTimepoint())
+			{
+				timepoint = jump.getTimepoint();
+				
+				update();
+			}
 		}
 	}
 	
