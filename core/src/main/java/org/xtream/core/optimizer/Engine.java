@@ -67,7 +67,7 @@ public class Engine<T extends Component>
 			
 			statistics.generatedStates = 0;
 			statistics.validStates = 0;
-			statistics.dominantStates = 0;
+			statistics.preferredStates = 0;
 			
 			// Start threads
 			
@@ -172,7 +172,7 @@ public class Engine<T extends Component>
 				{
 					State alternative = currentGroup.get(index);
 					
-					Integer difference = current.compareDominanceTo(alternative);
+					Integer difference = current.comparePreferencesTo(alternative);
 					
 					if (difference != null)
 					{
@@ -221,9 +221,9 @@ public class Engine<T extends Component>
 				
 				for (Entry<Key, List<State>> previousGroup : previousGroups.entrySet())
 				{
-					Collections.sort(previousGroup.getValue());
+					Collections.sort(previousGroup.getValue(), new Comparator());
 					
-					statistics.dominantStates += previousGroup.getValue().size();
+					statistics.preferredStates += previousGroup.getValue().size();
 				}
 				
 				statistics.sort = System.currentTimeMillis() - statistics.sort;
@@ -245,7 +245,7 @@ public class Engine<T extends Component>
 							double currentObjective = objective.getPort().get(state, timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
-							statistics.avgObjective += currentObjective / statistics.dominantStates;
+							statistics.avgObjective += currentObjective / statistics.preferredStates;
 							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}
@@ -256,7 +256,7 @@ public class Engine<T extends Component>
 							double currentObjective = objective.getPort().get(state, timepoint);
 							
 							statistics.minObjective = Math.min(statistics.minObjective, currentObjective);
-							statistics.avgObjective += currentObjective / statistics.dominantStates;
+							statistics.avgObjective += currentObjective / statistics.preferredStates;
 							statistics.maxObjective = Math.max(statistics.maxObjective, currentObjective);
 						}
 					}

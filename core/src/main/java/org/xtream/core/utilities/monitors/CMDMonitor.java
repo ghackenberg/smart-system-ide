@@ -22,7 +22,7 @@ public class CMDMonitor<T extends Component> implements Monitor<T>
 	@Override
 	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{	
-		System.out.println("Timepoint " + timepoint + " : " + statistics.generatedStates + " / " + statistics.validStates + " / " + statistics.dominantStates + " / " + equivalenceClasses.size() + " / " + Memory.usedMemory() + " MB");
+		System.out.println("Timepoint " + timepoint + " : " + statistics.generatedStates + " / " + statistics.validStates + " / " + statistics.preferredStates + " / " + equivalenceClasses.size() + " / " + Memory.usedMemory() + " MB");
 	}
 
 	@Override

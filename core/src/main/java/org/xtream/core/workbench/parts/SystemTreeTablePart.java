@@ -13,20 +13,20 @@ import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.models.nodes.ComponentTreeTableNode;
 
-public class TreeTablePart<T extends Component> extends Part<T>
+public class SystemTreeTablePart<T extends Component> extends Part<T>
 {
 	
 	private JXTreeTable table;
 	
-	public TreeTablePart()
+	public SystemTreeTablePart()
 	{
 		this(0, 0);
 	}
-	public TreeTablePart(int x, int y)
+	public SystemTreeTablePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public TreeTablePart(int x, int y, int width, int height)
+	public SystemTreeTablePart(int x, int y, int width, int height)
 	{
 		super("System data", x, y, width, height);
 		

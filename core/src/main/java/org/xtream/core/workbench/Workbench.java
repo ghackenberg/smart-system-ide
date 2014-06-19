@@ -22,13 +22,14 @@ import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.parts.AggregateGraphPart;
-import org.xtream.core.workbench.parts.AnimationPart;
-import org.xtream.core.workbench.parts.ArchitecturePart;
-import org.xtream.core.workbench.parts.ChartPart;
-import org.xtream.core.workbench.parts.MonitorPart;
-import org.xtream.core.workbench.parts.TablePart;
-import org.xtream.core.workbench.parts.TreePart;
+import org.xtream.core.workbench.parts.AggregateNavigationGraphPart;
+import org.xtream.core.workbench.parts.ComponentArchitecturePart;
+import org.xtream.core.workbench.parts.ComponentChartsPart;
+import org.xtream.core.workbench.parts.ComponentChildrenTablePart;
+import org.xtream.core.workbench.parts.ComponentHierarchyPart;
+import org.xtream.core.workbench.parts.EngineMonitorPart;
+import org.xtream.core.workbench.parts.SearchSpacePart;
+import org.xtream.core.workbench.parts.SystemScenePart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
@@ -45,12 +46,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new TreePart<T>(0,0,1,2), new TablePart<T>(1,0,2,1), new ArchitecturePart<T>(3,0,2,1), new AnimationPart<T>(1,1,2,1), new ChartPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentArchitecturePart<T>(1,0,2,1), new ComponentChildrenTablePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new SystemScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new TreePart<T>(0,0,1,2), new TablePart<T>(1,0,2,1), new ArchitecturePart<T>(3,0,2,1), new AggregateGraphPart<T>(graph,1,1,2,1), new ChartPart<T>(3,1,2,1), new MonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentArchitecturePart<T>(1,0,2,1), new ComponentChildrenTablePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs

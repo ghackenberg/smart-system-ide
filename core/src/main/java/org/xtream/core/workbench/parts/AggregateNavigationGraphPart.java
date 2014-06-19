@@ -21,7 +21,7 @@ import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.events.SelectionEvent;
 
-public class AggregateGraphPart<T extends Component> extends Part<T>
+public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 {
 	
 	private ImagePanel image;
@@ -35,15 +35,15 @@ public class AggregateGraphPart<T extends Component> extends Part<T>
 	private Component root = null;
 	private int timepoint = 0;
 	
-	public AggregateGraphPart(Graph graph)
+	public AggregateNavigationGraphPart(Graph graph)
 	{
 		this(graph, 0, 0);
 	}
-	public AggregateGraphPart(Graph graph, int x, int y)
+	public AggregateNavigationGraphPart(Graph graph, int x, int y)
 	{
 		this(graph, x, y, 1, 1);
 	}
-	public AggregateGraphPart(Graph graph, int x, int y, int width, int height)
+	public AggregateNavigationGraphPart(Graph graph, int x, int y, int width, int height)
 	{
 		super("Navigation graph", x, y, width, height);
 		

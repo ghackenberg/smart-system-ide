@@ -7,7 +7,7 @@ public class Statistics
 	
 	public int generatedStates;
 	public int validStates;
-	public int dominantStates;
+	public int preferredStates;
 	public double minObjective;
 	public double avgObjective;
 	public double maxObjective;

@@ -24,7 +24,7 @@ import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.events.SelectionEvent;
 
-public class ChartPart<T extends Component> extends Part<T>
+public class ComponentChartsPart<T extends Component> extends Part<T>
 {
 	
 	private static int PADDING = 0;
@@ -36,15 +36,15 @@ public class ChartPart<T extends Component> extends Part<T>
 	private Component component;
 	private int timepoint = 0;
 	
-	public ChartPart()
+	public ComponentChartsPart()
 	{
 		this(0, 0);
 	}
-	public ChartPart(int x, int y)
+	public ComponentChartsPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public ChartPart(int x, int y, int width, int height)
+	public ComponentChartsPart(int x, int y, int width, int height)
 	{
 		super("Component charts", x, y, width, height);
 		

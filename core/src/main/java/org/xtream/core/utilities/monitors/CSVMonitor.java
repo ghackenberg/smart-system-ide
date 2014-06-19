@@ -41,7 +41,7 @@ public class CSVMonitor<T extends Component> implements Monitor<T>
 	{
 		NumberFormat format = NumberFormat.getInstance();
 		
-		out.print(timepoint + ";" + statistics.generatedStates + ";" + statistics.validStates + ";" + statistics.dominantStates + ";" + equivalenceClasses.size() + ";");
+		out.print(timepoint + ";" + statistics.generatedStates + ";" + statistics.validStates + ";" + statistics.preferredStates + ";" + equivalenceClasses.size() + ";");
 		out.print(format.format(statistics.minObjective) + ";" + format.format(statistics.avgObjective) + ";" + format.format(statistics.maxObjective) + ";");
 		out.print(Memory.maxMemory() + ";" + Memory.totalMemory() + ";" + Memory.freeMemory() + ";");
 		out.print(statistics.branch + ";" + statistics.norm + ";" + statistics.cluster + ";" + statistics.sort + ";" + statistics.stats + ";");

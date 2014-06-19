@@ -10,20 +10,20 @@ import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
 import org.xtream.core.workbench.models.ElementTableModel;
 
-public class TablePart<T extends Component> extends Part<T>
+public class ComponentChildrenTablePart<T extends Component> extends Part<T>
 {
 	
 	private JTable table;
 
-	public TablePart()
+	public ComponentChildrenTablePart()
 	{
 		this(0, 0);
 	}
-	public TablePart(int x, int y)
+	public ComponentChildrenTablePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public TablePart(int x, int y, int width, int height)
+	public ComponentChildrenTablePart(int x, int y, int width, int height)
 	{
 		super("Component children", x, y, width, height);
 		
