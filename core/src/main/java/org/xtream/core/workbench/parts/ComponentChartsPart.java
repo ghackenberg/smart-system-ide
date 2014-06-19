@@ -173,7 +173,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 						data[1][i] = port.get(getState(), i);
 					}
 					
-					xyDatasets.get(chart).addSeries(port.getName(), data);
+					getXYDataset(chart).addSeries(port.getName(), data);
 				}
 			}
 			else if (chart instanceof Histogram)
@@ -198,7 +198,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 					
 					for (String i : map.keySet())
 					{
-						categoryDatasets.get(histogram).setValue(map.get(i), i, "value");
+						getCategoryDataset(histogram).setValue(map.get(i), i, "value");
 					}
 				}
 			}
