@@ -1,31 +1,31 @@
 package org.xtream.demo.street.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.optimizer.State;
 
-public class HouseholdComponent extends Component
+public class FridgeComponent extends Component
 {
 	
 	// Ports
 	
-	public Port<Double> load = new Port<Double>();
+	public Port<Double> loadOutput = new Port<>();
 	
-	// Charts
+	// Components
 	
-	public Chart loadChart = new Timeline(load);
+	public VolumeComponent hotVolume = new VolumeComponent();
+	public VolumeComponent coldVolume = new VolumeComponent(2, 8);
 	
 	// Expressions
 	
-	public Expression<Double> loadExpr = new Expression<Double>(load)
+	public Expression<Double> loadExpression = new Expression<Double>(loadOutput)
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
-			return 1.0;
+			return 0.0;
 		}
+		
 	};
 
 }

@@ -3,51 +3,53 @@ package org.xtream.demo.street.model;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.workbench.Workbench;
 
-public class RootComponent extends Component
+public class BuildingComponent extends Component
 {
-
-	public static void main(String[] args)
-	{
-		new Workbench<>(new RootComponent(1), 96, 50, 25, 0, 0);
-	}
 	
 	// Constructors
 	
 	@SuppressWarnings("unchecked")
-	public RootComponent(int size)
+	public BuildingComponent(int size)
 	{
 		net = new NetComponent(size);
 		
-		households = new BuildingComponent[size];
+		floors = new FloorComponent[size];
 		for (int i = 0; i < size; i++)
 		{
-			households[i] = new BuildingComponent(2);
+			floors[i] = new FloorComponent(1);
 		}
+		
+		balance = new ChannelExpression<>(loadOutput, net.balanceOutput);
 		
 		loads = new Expression[size];
 		for (int i = 0; i < size; i++)
 		{
-			loads[i] = new ChannelExpression<>(net.loadInputs[i], households[i].loadOutput);
+			loads[i] = new ChannelExpression<>(net.loadInputs[i], floors[i].loadOutput);
 		}
 		
 		balanceChart = new Timeline(net.balanceOutput);
 	}
 	
+	// Ports
+	
+	public Port<Double> loadOutput = new Port<Double>();
+	
 	// Components
-
+	
 	public NetComponent net;
-	public BuildingComponent[] households;
-
+	public FloorComponent[] floors;
+	
 	// Charts
 	
 	public Chart balanceChart;
 	
 	// Expressions
 	
+	public Expression<Double> balance;
 	public Expression<Double>[] loads;
-	
+
 }
