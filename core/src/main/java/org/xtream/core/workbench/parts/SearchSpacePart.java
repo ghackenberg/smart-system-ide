@@ -28,6 +28,8 @@ import com.jogamp.opengl.util.gl2.GLUT;
 public class SearchSpacePart<T extends Component> extends Part<T>
 {
 	
+	private static final double SCALE = 5;
+	
 	private GLJPanel canvas;
 	private int timepoint;
 	private Statistics statistics;
@@ -115,40 +117,81 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 						
 						gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 						
-						// Modelview
-						gl2.glMatrixMode(GL2.GL_MODELVIEW);
-						{
-							gl2.glLoadIdentity();
-							glu.gluLookAt(-125f, 25f, 150f, 25f, 0f, 0f, 0f, 1f, 0f);
-						}
-						
 						synchronized (mutex)
 						{
 							if (timepoint > 0)
 							{
-								layoutFollowers(gl2, glut, states.get(0).iterator().next(), 0, 360, 0, -100, 0, 0);
+								// Modelview
+								
+								gl2.glMatrixMode(GL2.GL_MODELVIEW);
+								{
+									gl2.glLoadIdentity();
+									glu.gluLookAt(timepoint * SCALE * 0.25, 50f, 150f, timepoint * SCALE * 0.75, 0f, 0f, 0f, 1f, 0f);
+								}
+								
+								// Tree layout
+								
+								layoutFollowers(gl2, glut, states.get(0).iterator().next(), 0, 360, 0, 0, 0, 0);
+								
+								// Line width
 								
 								gl2.glLineWidth(1f);
-								gl2.glColor3d(0.5f, 0.5f, 0.5f);
 								
 								// Time axis
 								
 								gl2.glBegin(GL2.GL_LINES);
 								{
-									gl2.glVertex3d(-100, 0, 0);
-									gl2.glVertex3d(100, 0, 0);
+									gl2.glColor3d(0.5, 0.5, 0.5);
+									
+									// Line
+									
+									gl2.glVertex3d(0, 0, 0);
+									gl2.glVertex3d((timepoint + 2) * SCALE, 0, 0);
+									
+									// Ticks
+									
+									for (int i = 0; i <= timepoint; i++)
+									{
+										gl2.glVertex3d(i * SCALE, -SCALE / 2, 0);
+										gl2.glVertex3d(i * SCALE, SCALE / 2, 0);
+									}
+									
+									// Arrow
+									
+									gl2.glVertex3d((timepoint + 2) * SCALE, 0, 0);
+									gl2.glVertex3d((timepoint + 1) * SCALE, SCALE, 0);
+									
+									gl2.glVertex3d((timepoint + 2) * SCALE, 0, 0);
+									gl2.glVertex3d((timepoint + 1) * SCALE, -SCALE, 0);
 								}
 								gl2.glEnd();
 								
 								// Minimum objective
-								
+
 								gl2.glBegin(GL2.GL_LINE_LOOP);
 								{
+									gl2.glColor3d(1, 0, 0);
+									
 									double radius = (statistics.minObjective - minObjective) / (maxObjective - minObjective);
 									
 									for (double a = 0; a < 360; a+=5)
 									{
-										gl2.glVertex3d(100, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+									}
+								}
+								gl2.glEnd();
+								
+								// Average objective
+
+								gl2.glBegin(GL2.GL_LINE_LOOP);
+								{
+									gl2.glColor3d(0, 0, 1);
+									
+									double radius = (statistics.avgObjective - minObjective) / (maxObjective - minObjective);
+									
+									for (double a = 0; a < 360; a+=5)
+									{
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
 									}
 								}
 								gl2.glEnd();
@@ -157,11 +200,13 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 								
 								gl2.glBegin(GL2.GL_LINE_LOOP);
 								{
+									gl2.glColor3d(0, 1, 0);
+									
 									double radius = (statistics.maxObjective - minObjective) / (maxObjective - minObjective);
 									
 									for (double a = 0; a < 360; a+=5)
 									{
-										gl2.glVertex3d(100, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
 									}
 								}
 								gl2.glEnd();
@@ -193,6 +238,11 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 			followers = new HashMap<>();
 			leaders = new HashMap<>();
 			counts = new HashMap<>();
+			
+			/*
+			minObjective = Double.MAX_VALUE;
+			maxObjective = Double.MIN_VALUE;
+			*/
 			
 			for (int step = 0; step <= timepoint + 1; step++)
 			{
@@ -288,7 +338,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				
 				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 4;
 				
-				double x = 200 * next.getTimepoint() / timepoint - 100;
+				double x = next.getTimepoint() * SCALE;
 				double y = Math.sin(actualAngle / 180 * Math.PI) * radius * 100;
 				double z = Math.cos(actualAngle / 180 * Math.PI) * radius * 100;
 				
@@ -310,10 +360,10 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 					}
 					else
 					{
-						gl2.glColor3d(0, 1, 0);
+						gl2.glColor3d(0, 0, 1);
 					}
 					
-					glut.glutSolidCube(1);
+					glut.glutSolidOctahedron();
 				}
 				gl2.glPopMatrix();
 				
