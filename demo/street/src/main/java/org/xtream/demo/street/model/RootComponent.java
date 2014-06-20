@@ -12,7 +12,7 @@ public class RootComponent extends Component
 
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(1), 96, 50, 25, 0, 0);
+		new Workbench<>(new RootComponent(2), 96, 50, 25, 0, 0);
 	}
 	
 	// Constructors
@@ -22,16 +22,16 @@ public class RootComponent extends Component
 	{
 		net = new NetComponent(size);
 		
-		households = new BuildingComponent[size];
+		buildings = new BuildingComponent[size];
 		for (int i = 0; i < size; i++)
 		{
-			households[i] = new BuildingComponent(2);
+			buildings[i] = new BuildingComponent(2);
 		}
 		
 		loads = new Expression[size];
 		for (int i = 0; i < size; i++)
 		{
-			loads[i] = new ChannelExpression<>(net.loadInputs[i], households[i].loadOutput);
+			loads[i] = new ChannelExpression<>(net.loadInputs[i], buildings[i].loadOutput);
 		}
 		
 		balanceChart = new Timeline(net.balanceOutput);
@@ -40,7 +40,7 @@ public class RootComponent extends Component
 	// Components
 
 	public NetComponent net;
-	public BuildingComponent[] households;
+	public BuildingComponent[] buildings;
 
 	// Charts
 	

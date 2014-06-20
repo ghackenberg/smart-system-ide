@@ -109,7 +109,7 @@ public class ComponentArchitecturePart<T extends Component> extends Part<T>
 			{
 				if (component.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\t\"" + component.getName() + "\" [label = \"" + component.getName() + " : " + component.getClass().getSimpleName() + "\", shape = rectangle, margin = " + (0.1 + component.getChildrenByClass(Component.class).size() / 10.) + " style = filled, fillcolor = gray85];\n");
+					dot.append("\t\t\"" + component.getName() + "\" [label = \"" + component.getName() + "\", shape = rectangle, margin = " + (0.1 + component.getChildrenByClass(Component.class).size() / 10.) + " style = filled, fillcolor = gray85];\n");
 				}
 			}
 			dot.append("\t}\n");

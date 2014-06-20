@@ -13,27 +13,42 @@ public class VolumeComponent extends Component
 	
 	// Constructors
 	
-	public VolumeComponent()
+	public VolumeComponent(int size, double initial)
 	{
-		this.minimum = Double.MIN_VALUE;
-		this.maximum = Double.MAX_VALUE;
-		
-		this.temperatureChart = new Timeline(temperatureOutput);
+		this(size, initial, Double.MIN_VALUE, Double.MAX_VALUE);
 	}
-	public VolumeComponent(double minimum, double maximum)
+	@SuppressWarnings("unchecked")
+	public VolumeComponent(int size, double initial, double minimum, double maximum)
 	{
+		this.initial = initial;
 		this.minimum = minimum;
 		this.maximum = maximum;
 		
-		this.temperatureChart = new Timeline(minimumOutput, temperatureOutput, maximumOutput);
+		heatInputs = new Port[size];
+		for (int i = 0; i < size; i++)
+		{
+			heatInputs[i] = new Port<>();
+		}
+
+		if (minimum == Double.MIN_VALUE && maximum == Double.MAX_VALUE)
+		{
+			this.temperatureChart = new Timeline(temperatureOutput);
+		}
+		else
+		{
+			this.temperatureChart = new Timeline(minimumOutput, temperatureOutput, maximumOutput);
+		}
 	}
 	
 	// Parameters
 	
+	protected double initial;
 	protected double minimum;
 	protected double maximum;
 	
 	// Ports
+	
+	public Port<Double>[] heatInputs;
 	
 	public Port<Double> temperatureOutput = new Port<>();
 	public Port<Double> minimumOutput = new Port<>();
@@ -54,8 +69,21 @@ public class VolumeComponent extends Component
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
-			// TODO Develop temperature formula.
-			return 0.0;
+			if (timepoint == 0)
+			{
+				return initial;
+			}
+			else
+			{
+				double temperature = temperatureExpression.get(state, timepoint - 1);
+				
+				for (Port<Double> heatInput : heatInputs)
+				{
+					temperature += heatInput.get(state, timepoint);
+				}
+				
+				return temperature;
+			}
 		}
 	};
 	public Expression<Double> minimumExpression = new Expression<Double>(minimumOutput)
