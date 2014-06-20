@@ -9,6 +9,8 @@ public class SampleVisitor extends Visitor
 	public void handle(Component component)
 	{
 		System.out.println(component.getQualifiedName());
+		
+		traverse(component);
 	}
 
 }
