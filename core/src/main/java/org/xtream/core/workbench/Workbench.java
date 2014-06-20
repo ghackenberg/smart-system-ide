@@ -28,8 +28,8 @@ import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenTablePart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
 import org.xtream.core.workbench.parts.EngineMonitorPart;
-import org.xtream.core.workbench.parts.SearchSpacePart;
-import org.xtream.core.workbench.parts.SystemScenePart;
+import org.xtream.core.workbench.parts.StateSpacePart;
+import org.xtream.core.workbench.parts.ModelScenePart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
@@ -46,12 +46,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new SystemScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new ModelScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new SearchSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs

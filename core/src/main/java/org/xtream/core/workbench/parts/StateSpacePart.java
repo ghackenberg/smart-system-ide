@@ -25,7 +25,7 @@ import org.xtream.core.workbench.Part;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class SearchSpacePart<T extends Component> extends Part<T>
+public class StateSpacePart<T extends Component> extends Part<T>
 {
 	
 	private static final double SCALE = 5;
@@ -41,17 +41,17 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	private Map<State, Integer> counts;
 	private Object mutex = new Object();
 
-	public SearchSpacePart()
+	public StateSpacePart()
 	{
 		this(0, 0);
 	}
-	public SearchSpacePart(int x, int y)
+	public StateSpacePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public SearchSpacePart(int x, int y, int width, int height)
+	public StateSpacePart(int x, int y, int width, int height)
 	{
-		super("Search space", x, y, width, height);
+		super("State space", x, y, width, height);
 		
 		try
 		{
@@ -74,7 +74,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 						gl2.glMatrixMode(GL2.GL_PROJECTION);
 						{
 							gl2.glLoadIdentity();
-							glu.gluPerspective(60f, (float)width/height, 1f, 1000f);
+							glu.gluPerspective(60f, (float)width/height, 1f, 10000f);
 						}
 					}
 					@Override
@@ -126,7 +126,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 								gl2.glMatrixMode(GL2.GL_MODELVIEW);
 								{
 									gl2.glLoadIdentity();
-									glu.gluLookAt(timepoint * SCALE * 0.25, 50f, 150f, timepoint * SCALE * 0.75, 0f, 0f, 0f, 1f, 0f);
+									glu.gluLookAt(timepoint * SCALE * 0.25, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, 0f, 0f, 0f, 1f, 0f);
 								}
 								
 								// Tree layout
@@ -176,7 +176,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 									
 									for (double a = 0; a < 360; a+=5)
 									{
-										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * timepoint, Math.cos(a / 180 * Math.PI) * radius * timepoint);
 									}
 								}
 								gl2.glEnd();
@@ -191,7 +191,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 									
 									for (double a = 0; a < 360; a+=5)
 									{
-										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * timepoint, Math.cos(a / 180 * Math.PI) * radius * timepoint);
 									}
 								}
 								gl2.glEnd();
@@ -206,7 +206,32 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 									
 									for (double a = 0; a < 360; a+=5)
 									{
-										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * 100, Math.cos(a / 180 * Math.PI) * radius * 100);
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * radius * timepoint, Math.cos(a / 180 * Math.PI) * radius * timepoint);
+									}
+								}
+								gl2.glEnd();
+								
+								// Cost axis
+
+								gl2.glBegin(GL2.GL_LINES);
+								{
+									gl2.glColor3d(0.5, 0.5, 0.5);
+									
+									gl2.glVertex3d(timepoint * SCALE, -timepoint, 0);
+									gl2.glVertex3d(timepoint * SCALE, timepoint, 0);
+									
+									gl2.glVertex3d(timepoint * SCALE, 0, -timepoint);
+									gl2.glVertex3d(timepoint * SCALE, 0, timepoint);
+								}
+								gl2.glEnd();
+								
+								gl2.glBegin(GL2.GL_LINE_LOOP);
+								{
+									gl2.glColor3d(0.5, 0.5, 0.5);
+									
+									for (double a = 0; a < 360; a+=5)
+									{
+										gl2.glVertex3d(timepoint * SCALE, Math.sin(a / 180 * Math.PI) * timepoint, Math.cos(a / 180 * Math.PI) * timepoint);
 									}
 								}
 								gl2.glEnd();
@@ -239,10 +264,8 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 			leaders = new HashMap<>();
 			counts = new HashMap<>();
 			
-			/*
 			minObjective = Double.MAX_VALUE;
 			maxObjective = Double.MIN_VALUE;
-			*/
 			
 			for (int step = 0; step <= timepoint + 1; step++)
 			{
@@ -253,10 +276,8 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				//State state = entry.getValue().get(0);
-				for (State state : entry.getValue())
-				{
-				
+				//for (State state : entry.getValue())
+				State state = entry.getValue().get(0);
 				State leader = state;
 				
 				while (state != null)
@@ -292,8 +313,6 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 					// Iterate
 					
 					state = state.getPrevious();
-				}
-				
 				}
 			}
 			
@@ -338,13 +357,13 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				
 				double objective = getRoot().getDescendantByClass(Objective.class).getPort().get(next, next.getTimepoint());
 				double radius = (objective - minObjective) / (maxObjective - minObjective);
-				double angle = minAngle + (maxAngle - minAngle) * weight / weightSum;
+				double angle = iterAngle + (maxAngle - minAngle) * weight / weightSum;
 				
-				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 1;
+				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 4;
 				
 				double x = next.getTimepoint() * SCALE;
-				double y = Math.sin(actualAngle / 180 * Math.PI) * radius * 100;
-				double z = Math.cos(actualAngle / 180 * Math.PI) * radius * 100;
+				double y = Math.sin(actualAngle / 180 * Math.PI) * radius * timepoint;
+				double z = Math.cos(actualAngle / 180 * Math.PI) * radius * timepoint;
 				
 				// Draw state
 				

@@ -56,12 +56,12 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 	{
 		super("Engine monitor", x, y, width, height);
 		
-		statesChart = ChartFactory.createXYLineChart("State statistics", null, "States", states, PlotOrientation.VERTICAL, true, true, false);
-		classesChart = ChartFactory.createXYLineChart("Cluster statistics", null, "Clusters", classes, PlotOrientation.VERTICAL, true, true, false);
-		objectivesChart = ChartFactory.createXYLineChart("Objective statistics", null, "Costs", objectives, PlotOrientation.VERTICAL, true, true, false);
-		tracesChart = ChartFactory.createXYLineChart("Trace statistics", null, "Costs", traces, PlotOrientation.VERTICAL, false, true, false);
-		memoryChart = ChartFactory.createXYLineChart("Memory statistics", null, "Memory (in MB)", memory, PlotOrientation.VERTICAL, true, true, false);
-		timeChart = ChartFactory.createStackedXYAreaChart("Time statistics", null, "Time (in ms)", time, PlotOrientation.VERTICAL, true, true, false);
+		statesChart = ChartFactory.createXYLineChart("States", null, "Count", states, PlotOrientation.VERTICAL, true, true, false);
+		classesChart = ChartFactory.createXYLineChart("Clusters", null, "Count", classes, PlotOrientation.VERTICAL, true, true, false);
+		objectivesChart = ChartFactory.createXYLineChart("Objectives", null, "Objective", objectives, PlotOrientation.VERTICAL, true, true, false);
+		tracesChart = ChartFactory.createXYLineChart("Traces", null, "Objective", traces, PlotOrientation.VERTICAL, false, true, false);
+		memoryChart = ChartFactory.createXYLineChart("Memory", null, "Megabyte", memory, PlotOrientation.VERTICAL, true, true, false);
+		timeChart = ChartFactory.createStackedXYAreaChart("Time", null, "Milliseconds", time, PlotOrientation.VERTICAL, true, true, false);
 		
 		statesChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		statesChart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));

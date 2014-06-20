@@ -16,22 +16,22 @@ import org.xtream.core.workbench.events.JumpEvent;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
-public class SystemScenePart<T extends Component> extends Part<T>
+public class ModelScenePart<T extends Component> extends Part<T>
 {
 	
 	private GLJPanel canvas;
 
-	public SystemScenePart()
+	public ModelScenePart()
 	{
 		this(0, 0);
 	}
-	public SystemScenePart(int x, int y)
+	public ModelScenePart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public SystemScenePart(int x, int y, int width, int height)
+	public ModelScenePart(int x, int y, int width, int height)
 	{
-		super("System scene", x, y, width, height);
+		super("Model scene", x, y, width, height);
 		
 		try
 		{
