@@ -253,7 +253,9 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				State state = entry.getValue().get(0);
+				//State state = entry.getValue().get(0);
+				for (State state : entry.getValue())
+				{
 				
 				State leader = state;
 				
@@ -290,6 +292,8 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 					// Iterate
 					
 					state = state.getPrevious();
+				}
+				
 				}
 			}
 			
@@ -336,7 +340,7 @@ public class SearchSpacePart<T extends Component> extends Part<T>
 				double radius = (objective - minObjective) / (maxObjective - minObjective);
 				double angle = minAngle + (maxAngle - minAngle) * weight / weightSum;
 				
-				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 4;
+				double actualAngle = prevAngle + ((angle + iterAngle) / 2 - prevAngle) / 1;
 				
 				double x = next.getTimepoint() * SCALE;
 				double y = Math.sin(actualAngle / 180 * Math.PI) * radius * 100;
