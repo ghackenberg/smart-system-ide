@@ -57,6 +57,7 @@ public abstract class RootComponent extends Component
 			probabilities[i] = new ChannelExpression<>(thermals[i].probabilityInput, probabilityOutput);
 		}
 		
+		balanceChart = new Timeline(net.productionOutput, net.consumptionOutput, net.balanceOutput);
 		temperatureChart = new Timeline(thermals[0].minimumOutput, temperatureOutput, thermals[0].maximumOutput);
 		levelChart = new Timeline(storage.minimumOutput, levelOutput, storage.maximumOutput);
 	}
@@ -97,6 +98,7 @@ public abstract class RootComponent extends Component
 	// Charts
 	
 	public Chart costChart = new Timeline(costOutput);
+	public Chart balanceChart;
 	public Chart temperatureChart;
 	public Chart levelChart;
 	
