@@ -20,7 +20,7 @@ public class BuildingComponent extends Component
 		floors = new FloorComponent[size];
 		for (int i = 0; i < size; i++)
 		{
-			floors[i] = new FloorComponent(1);
+			floors[i] = new FloorComponent(2);
 		}
 		
 		balance = new ChannelExpression<>(loadOutput, net.balanceOutput);

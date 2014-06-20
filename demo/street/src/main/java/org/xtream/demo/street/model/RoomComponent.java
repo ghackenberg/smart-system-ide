@@ -15,7 +15,7 @@ public class RoomComponent extends Component
 	// Components
 	
 	public NetComponent net = new NetComponent(1);
-	public VolumeComponent volume = new VolumeComponent();
+	public VolumeComponent volume = new VolumeComponent(1, 20);
 	public FridgeComponent fridge = new FridgeComponent();
 	
 	// Expressions
