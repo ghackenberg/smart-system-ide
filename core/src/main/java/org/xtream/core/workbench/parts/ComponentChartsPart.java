@@ -60,21 +60,17 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			for (Object object : selection.getElements())
-			{
-				if (object instanceof Component)
-				{
-					update((Component) object);
-					
-					break;
-				}
-			}
+			Component component = selection.getElementByClass(Component.class);
+			
+			update(component);
 		}
 		else if (event instanceof JumpEvent)
 		{
 			JumpEvent<T> jump = (JumpEvent<T>) event;
 			
-			update(jump.getTimepoint());
+			int timepoint = jump.getTimepoint();
+			
+			update(timepoint);
 		}
 	}
 	

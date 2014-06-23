@@ -264,9 +264,6 @@ public class StateSpacePart<T extends Component> extends Part<T>
 			leaders = new HashMap<>();
 			counts = new HashMap<>();
 			
-			minObjective = Double.MAX_VALUE;
-			maxObjective = Double.MIN_VALUE;
-			
 			for (int step = 0; step <= timepoint + 1; step++)
 			{
 				states.add(new HashSet<State>());
@@ -276,7 +273,6 @@ public class StateSpacePart<T extends Component> extends Part<T>
 	
 			for (Entry<Key, List<State>> entry : clusters.entrySet())
 			{
-				//for (State state : entry.getValue())
 				State state = entry.getValue().get(0);
 				State leader = state;
 				

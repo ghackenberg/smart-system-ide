@@ -17,6 +17,7 @@ public class ComponentHierarchyPart<T extends Component> extends Part<T>
 {
 	
 	private JTree tree;
+	private Component selected;
 	
 	public ComponentHierarchyPart()
 	{
@@ -52,7 +53,12 @@ public class ComponentHierarchyPart<T extends Component> extends Part<T>
 				{
 					ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
 					
-					trigger(new SelectionEvent<T>(self, node.component));
+					if (node.component != selected)
+					{
+						selected = node.component;
+						
+						trigger(new SelectionEvent<T>(self, selected));
+					}
 				}
 			}
 		);

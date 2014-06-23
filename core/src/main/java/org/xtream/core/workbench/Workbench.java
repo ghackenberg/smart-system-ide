@@ -43,6 +43,7 @@ public class Workbench<T extends Component>
 	private Engine<T> engine;
 	private Bus<T> bus;
 	private JSlider slider;
+	private int timepoint = -1;
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
@@ -118,7 +119,12 @@ public class Workbench<T extends Component>
 					@Override
 					public void stateChanged(ChangeEvent event)
 					{
-						bus.trigger(new JumpEvent<T>(null, slider.getValue()));
+						if (slider.getValue() != timepoint)
+						{
+							timepoint = slider.getValue();
+							
+							bus.trigger(new JumpEvent<T>(null, timepoint));
+						}
 					}
 				}
 			);
