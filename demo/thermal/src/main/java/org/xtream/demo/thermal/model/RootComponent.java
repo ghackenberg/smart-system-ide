@@ -16,7 +16,8 @@ import org.xtream.demo.thermal.model.stage.Stage;
 public abstract class RootComponent extends Component
 {
 	
-	public static int DURATION = 96;
+	public static int SIZE = 10;
+	public static int DURATION = 96 * 3;
 	public static int SAMPLES = 100;
 	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.0;
@@ -24,7 +25,7 @@ public abstract class RootComponent extends Component
 	
 	public RootComponent(Stage stage)
 	{
-		this(stage, 50);
+		this(stage, SIZE);
 	}
 	@SuppressWarnings("unchecked")
 	public RootComponent(Stage stage, int size)
