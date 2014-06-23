@@ -60,24 +60,18 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 		if (event instanceof SelectionEvent)
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
+		
+			root = selection.getElementByClass(Component.class);
 			
-			if (root != selection.getElementByClass(Component.class))
-			{
-				root = selection.getElementByClass(Component.class);
-				
-				update();
-			}
+			update();
 		}
 		else if (event instanceof JumpEvent)
 		{
 			JumpEvent<T> jump = (JumpEvent<T>) event;
 			
-			if (timepoint != jump.getTimepoint())
-			{
-				timepoint = jump.getTimepoint();
-				
-				update();
-			}
+			timepoint = jump.getTimepoint();
+			
+			update();
 		}
 	}
 	
