@@ -14,9 +14,10 @@ import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
 {
+	public static int SIZE = 10;
 	public static int DURATION = 50;
-	public static int COVERAGE = 50;
-	public static int CLASSES = 25;
+	public static int SAMPLES = 50;
+	public static int CLUSTERS = 50;
 	public static double RANDOMNESS = 0;
 	public static double CACHING = 0;
 
@@ -28,7 +29,7 @@ public class RootComponent extends Component
 	public static void main(String[] args)
 	{
 		
-		new Workbench<>(new RootComponent(), DURATION, COVERAGE, CLASSES, RANDOMNESS, CACHING, graph);
+		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING, graph);
 		
 	}
 	
@@ -39,7 +40,7 @@ public class RootComponent extends Component
 	
 	// Components
 	
-	public OverallSystemComponent overallSystem = new OverallSystemComponent(120, graph);
+	public OverallSystemComponent overallSystem = new OverallSystemComponent(SIZE, graph);
 	
 	// Objectives
 	
