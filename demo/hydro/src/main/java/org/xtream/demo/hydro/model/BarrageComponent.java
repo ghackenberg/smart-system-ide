@@ -12,17 +12,18 @@ public class BarrageComponent extends Component
 	
 	// Constructors
 	
-	public BarrageComponent(double headLevelOffset, double tailLevelOffset)
+	public BarrageComponent(double headLevelOffset, double tailLevelOffset, double efficiency)
 	{
 		this.headLevelOffset = headLevelOffset;
 		this.tailLevelOffset = tailLevelOffset;
+		this.efficiency = efficiency;
 	}
 	
 	// Parameters
 	
 	protected double roh = 1;
 	protected double gravity = 9.81;
-	protected double efficiency = 0.9;
+	protected double efficiency;
 	protected double headLevelOffset;
 	protected double tailLevelOffset;
 	

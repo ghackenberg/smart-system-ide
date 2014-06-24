@@ -5,6 +5,8 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
+import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.optimizer.State;
 
 public class RiverComponent extends Component
 {
@@ -37,6 +39,8 @@ public class RiverComponent extends Component
 	public Port<Double> wehr3ProductionOutput = new Port<>();
 	public Port<Double> wehr4ProductionOutput = new Port<>();
 	
+	public Port<Boolean> levelConstraintOutput = new Port<>();
+	
 	// Components
 	
 	public VolumeComponent speichersee = new VolumeComponent(0, 0, Constants.SPEICHERSEE_LEVEL_MAX, Constants.SPEICHERSEE_AREA);
@@ -45,11 +49,15 @@ public class RiverComponent extends Component
 	public VolumeComponent volumen3 = new VolumeComponent(0, 0, Constants.VOLUMEN3_LEVEL_MAX, Constants.VOLUMEN3_AREA);
 	public VolumeComponent volumen4 = new VolumeComponent(0, 0, Constants.VOLUMEN4_LEVEL_MAX, Constants.VOLUMEN4_AREA);
 	
-	public BarrageComponent hauptkraftwerk = new BarrageComponent(315, 275.4);
-	public BarrageComponent wehr1 = new BarrageComponent(275.4, 271.7);
-	public BarrageComponent wehr2 = new BarrageComponent(271.7, 269.2);
-	public BarrageComponent wehr3 = new BarrageComponent(269.2, 267.6);
-	public BarrageComponent wehr4 = new BarrageComponent(267.6, 263);
+	public BarrageComponent hauptkraftwerk = new BarrageComponent(315, 275.4, 0.9);
+	public BarrageComponent wehr1 = new BarrageComponent(275.4, 271.7, 0.42);
+	public BarrageComponent wehr2 = new BarrageComponent(271.7, 269.2, 0.42);
+	public BarrageComponent wehr3 = new BarrageComponent(269.2, 267.6, 0.42);
+	public BarrageComponent wehr4 = new BarrageComponent(267.6, 263, 0.42);
+	
+	// Constraints
+	
+	public Constraint levelConstraint = new Constraint(levelConstraintOutput);
 	
 	// Expressions
 	
@@ -101,4 +109,19 @@ public class RiverComponent extends Component
 	public Expression<Double> wehr3Production = new ChannelExpression<>(wehr3ProductionOutput, wehr3.productionOutput);
 	public Expression<Double> wehr4Production = new ChannelExpression<>(wehr4ProductionOutput, wehr4.productionOutput);
 
+	public Expression<Boolean> levelConstraintExpression = new Expression<Boolean>(levelConstraintOutput)
+	{
+		@Override protected Boolean evaluate(State state, int timepoint)
+		{
+			boolean valid = true;
+			
+			valid = valid && 315 + speichersee.levelOutput.get(state, timepoint) > 275.4 + volumen1.levelOutput.get(state, timepoint);
+			valid = valid && 275.4 + volumen1.levelOutput.get(state, timepoint) > 271.7 + volumen2.levelOutput.get(state, timepoint);
+			valid = valid && 271.7 + volumen2.levelOutput.get(state, timepoint) > 269.2 + volumen3.levelOutput.get(state, timepoint);
+			valid = valid && 269.2 + volumen3.levelOutput.get(state, timepoint) > 267.6 + volumen4.levelOutput.get(state, timepoint);
+			
+			return valid;
+		}
+	};
+	
 }

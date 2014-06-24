@@ -20,14 +20,14 @@ public class RootComponent extends Component
 	// Constants
 	
 	public static int DURATION = 96 * 7;
-	public static int SAMPLES = 200;
-	public static int CLUSTERS = 100;
+	public static int SAMPLES = 100;
+	public static int CLUSTERS = 50;
 	public static double RANDOM = 0;
 	public static double CACHING = 0;
 	
 	// Components
 	
-	public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.backward.ControlComponent();
+	public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.forward.ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
 	public EquivalenceComponent equivalence = new EquivalenceComponent();
@@ -37,12 +37,12 @@ public class RootComponent extends Component
 	public Chart inflowChart = new Timeline(context.scenarioInflowOutput);
 	public Chart priceChart = new Timeline(context.scenarioPriceOutput);
 	public Chart productionChart = new Timeline(context.netProductionOutput);
-	public Chart rewardChart = new Timeline(objective.rewardOutput);
+	public Chart objectiveChart = new Timeline(objective.rewardOutput, objective.costOutput, objective.objectiveOutput);
 	
 	// Expressions
 	
 	public Expression<Double> scenarioInflow = new ChannelExpression<>(control.scenarioInflowInput, context.scenarioInflowOutput);
-	public Expression<Double> scenarioPrice= new ChannelExpression<>(control.scenarioPriceInput, context.scenarioPriceOutput);
+	public Expression<Double> scenarioPrice = new ChannelExpression<>(control.scenarioPriceInput, context.scenarioPriceOutput);
 	
 	public Expression<Double> speicherseeLevelToControl = new ChannelExpression<>(control.speicherseeLevelInput, context.speicherseeLevelOutput);
 	public Expression<Double> volumen1LevelToControl = new ChannelExpression<>(control.volumen1LevelInput, context.volumen1LevelOutput);
@@ -56,18 +56,29 @@ public class RootComponent extends Component
 	public Expression<Double> volumen3LevelToEquivalence = new ChannelExpression<>(equivalence.volumen3LevelInput, context.volumen3LevelOutput);
 	public Expression<Double> volumen4LevelToEquivalence = new ChannelExpression<>(equivalence.volumen4LevelInput, context.volumen4LevelOutput);
 	
-	public Expression<Double> hauptkraftwerkTurbineDischarge = new ChannelExpression<>(context.hauptkraftwerkTurbineDischargeInput, control.hauptkraftwerkTurbineDischargeOutput);
-	public Expression<Double> wehr1TurbineDischarge = new ChannelExpression<>(context.wehr1TurbineDischargeInput, control.wehr1TurbineDischargeOutput);
-	public Expression<Double> wehr2TurbineDischarge = new ChannelExpression<>(context.wehr2TurbineDischargeInput, control.wehr2TurbineDischargeOutput);
-	public Expression<Double> wehr3TurbineDischarge = new ChannelExpression<>(context.wehr3TurbineDischargeInput, control.wehr3TurbineDischargeOutput);
-	public Expression<Double> wehr4TurbineDischarge = new ChannelExpression<>(context.wehr4TurbineDischargeInput, control.wehr4TurbineDischargeOutput);
+	public Expression<Double> hauptkraftwerkTurbineDischargeToContext = new ChannelExpression<>(context.hauptkraftwerkTurbineDischargeInput, control.hauptkraftwerkTurbineDischargeOutput);
+	public Expression<Double> wehr1TurbineDischargeToContext = new ChannelExpression<>(context.wehr1TurbineDischargeInput, control.wehr1TurbineDischargeOutput);
+	public Expression<Double> wehr2TurbineDischargeToContext = new ChannelExpression<>(context.wehr2TurbineDischargeInput, control.wehr2TurbineDischargeOutput);
+	public Expression<Double> wehr3TurbineDischargeToContext = new ChannelExpression<>(context.wehr3TurbineDischargeInput, control.wehr3TurbineDischargeOutput);
+	public Expression<Double> wehr4TurbineDischargeToContext = new ChannelExpression<>(context.wehr4TurbineDischargeInput, control.wehr4TurbineDischargeOutput);
 	
-	public Expression<Double> hauptkraftwerkWeirDischarge = new ChannelExpression<>(context.hauptkraftwerkWeirDischargeInput, control.hauptkraftwerkWeirDischargeOutput);
-	public Expression<Double> wehr1WeirDischarge = new ChannelExpression<>(context.wehr1WeirDischargeInput, control.wehr1WeirDischargeOutput);
-	public Expression<Double> wehr2WeirDischarge = new ChannelExpression<>(context.wehr2WeirDischargeInput, control.wehr2WeirDischargeOutput);
-	public Expression<Double> wehr3WeirDischarge = new ChannelExpression<>(context.wehr3WeirDischargeInput, control.wehr3WeirDischargeOutput);
-	public Expression<Double> wehr4WeirDischarge = new ChannelExpression<>(context.wehr4WeirDischargeInput, control.wehr4WeirDischargeOutput);
+	public Expression<Double> hauptkraftwerkWeirDischargeToContext = new ChannelExpression<>(context.hauptkraftwerkWeirDischargeInput, control.hauptkraftwerkWeirDischargeOutput);
+	public Expression<Double> wehr1WeirDischargeToContext = new ChannelExpression<>(context.wehr1WeirDischargeInput, control.wehr1WeirDischargeOutput);
+	public Expression<Double> wehr2WeirDischargeToContext = new ChannelExpression<>(context.wehr2WeirDischargeInput, control.wehr2WeirDischargeOutput);
+	public Expression<Double> wehr3WeirDischargeToContext = new ChannelExpression<>(context.wehr3WeirDischargeInput, control.wehr3WeirDischargeOutput);
+	public Expression<Double> wehr4WeirDischargeToContext = new ChannelExpression<>(context.wehr4WeirDischargeInput, control.wehr4WeirDischargeOutput);
 	
+	public Expression<Double> hauptkraftwerkTurbineDischargeToObjective = new ChannelExpression<>(objective.hauptkraftwerkTurbineDischargeInput, context.hauptkraftwerkTurbineDischargeOutput);
+	public Expression<Double> wehr1TurbineDischargeToObjective = new ChannelExpression<>(objective.wehr1TurbineDischargeInput, context.wehr1TurbineDischargeOutput);
+	public Expression<Double> wehr2TurbineDischargeToObjective = new ChannelExpression<>(objective.wehr2TurbineDischargeInput, context.wehr2TurbineDischargeOutput);
+	public Expression<Double> wehr3TurbineDischargeToObjective = new ChannelExpression<>(objective.wehr3TurbineDischargeInput, context.wehr3TurbineDischargeOutput);
+	public Expression<Double> wehr4TurbineDischargeToObjective = new ChannelExpression<>(objective.wehr4TurbineDischargeInput, context.wehr4TurbineDischargeOutput);
+	
+	public Expression<Double> hauptkraftwerkWeirDischargeToObjective = new ChannelExpression<>(objective.hauptkraftwerkWeirDischargeInput, context.hauptkraftwerkWeirDischargeOutput);
+	public Expression<Double> wehr1WeirDischargeToObjective = new ChannelExpression<>(objective.wehr1WeirDischargeInput, context.wehr1WeirDischargeOutput);
+	public Expression<Double> wehr2WeirDischargeToObjective = new ChannelExpression<>(objective.wehr2WeirDischargeInput, context.wehr2WeirDischargeOutput);
+	public Expression<Double> wehr3WeirDischargeToObjective = new ChannelExpression<>(objective.wehr3WeirDischargeInput, context.wehr3WeirDischargeOutput);
+	public Expression<Double> wehr4WeirDischargeToObjective = new ChannelExpression<>(objective.wehr4WeirDischargeInput, context.wehr4WeirDischargeOutput);
 	
 	public Expression<Double> price = new ChannelExpression<>(objective.priceInput, context.scenarioPriceOutput);
 	public Expression<Double> production = new ChannelExpression<>(objective.productionInput, context.netProductionOutput);

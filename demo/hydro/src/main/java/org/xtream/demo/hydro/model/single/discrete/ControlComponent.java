@@ -28,13 +28,13 @@ public class ControlComponent extends org.xtream.demo.hydro.model.single.Control
 	
 	// Parameters
 	
-	public int TURBINE_STEPS = 5;
-	public int WEIR_STEPS = 3;
+	public static int TURBINE_STEPS = 5;
+	public static int WEIR_STEPS = 10;
 	
-	public Set<Double> hauptkraftwerkDischargeOptions = construct(Constants.HAUPTKRAFTWERK_TURBINE_DISCHARGE_MAX, Constants.HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
-	public Set<Double> wehr1DischargeOptions = construct(Constants.WEHR1_TURBINE_DISCHARGE_MAX, Constants.WEHR1_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
-	public Set<Double> wehr2DischargeOptions = construct(Constants.WEHR2_TURBINE_DISCHARGE_MAX, Constants.WEHR2_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
-	public Set<Double> wehr3DischargeOptions = construct(Constants.WEHR3_TURBINE_DISCHARGE_MAX, Constants.WEHR3_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
-	public Set<Double> wehr4DischargeOptions = construct(Constants.WEHR4_TURBINE_DISCHARGE_MAX, Constants.WEHR4_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
+	public static Set<Double> hauptkraftwerkDischargeOptions = construct(Constants.HAUPTKRAFTWERK_TURBINE_DISCHARGE_MAX, Constants.HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
+	public static Set<Double> wehr1DischargeOptions = construct(Constants.WEHR1_TURBINE_DISCHARGE_MAX, Constants.WEHR1_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
+	public static Set<Double> wehr2DischargeOptions = construct(Constants.WEHR2_TURBINE_DISCHARGE_MAX, Constants.WEHR2_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
+	public static Set<Double> wehr3DischargeOptions = construct(Constants.WEHR3_TURBINE_DISCHARGE_MAX, Constants.WEHR3_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
+	public static Set<Double> wehr4DischargeOptions = construct(Constants.WEHR4_TURBINE_DISCHARGE_MAX, Constants.WEHR4_WEIR_DISCHARGE_MAX, TURBINE_STEPS, WEIR_STEPS);
 	
 }

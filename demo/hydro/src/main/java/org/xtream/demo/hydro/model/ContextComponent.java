@@ -4,6 +4,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.optimizer.State;
 
 public class ContextComponent extends Component
 {
@@ -25,6 +26,18 @@ public class ContextComponent extends Component
 	public Port<Double> wehr3WeirDischargeInput = new Port<>();
 	public Port<Double> wehr4WeirDischargeInput = new Port<>();
 	
+	public Port<Double> hauptkraftwerkTurbineDischargeOutput = new Port<>();
+	public Port<Double> wehr1TurbineDischargeOutput = new Port<>();
+	public Port<Double> wehr2TurbineDischargeOutput = new Port<>();
+	public Port<Double> wehr3TurbineDischargeOutput = new Port<>();
+	public Port<Double> wehr4TurbineDischargeOutput = new Port<>();
+	
+	public Port<Double> hauptkraftwerkWeirDischargeOutput = new Port<>();
+	public Port<Double> wehr1WeirDischargeOutput = new Port<>();
+	public Port<Double> wehr2WeirDischargeOutput = new Port<>();
+	public Port<Double> wehr3WeirDischargeOutput = new Port<>();
+	public Port<Double> wehr4WeirDischargeOutput = new Port<>();
+	
 	public Port<Double> speicherseeLevelOutput = new Port<>();
 	public Port<Double> volumen1LevelOutput = new Port<>();
 	public Port<Double> volumen2LevelOutput = new Port<>();
@@ -35,7 +48,7 @@ public class ContextComponent extends Component
 	
 	// Components
 	
-	public ScenarioComponent scenario = new ScenarioComponent(ScenarioComponent.INFLOW_1, ScenarioComponent.PRICE_1);
+	public ScenarioComponent scenario = new ScenarioComponent(ScenarioComponent.INFLOW_2, ScenarioComponent.PRICE_2);
 	public RiverComponent river = new RiverComponent();
 	public NetComponent net = new NetComponent();
 	
@@ -70,5 +83,79 @@ public class ContextComponent extends Component
 	public Expression<Double> volumen4Level = new ChannelExpression<>(volumen4LevelOutput, river.volumen4LevelOutput);
 	
 	public Expression<Double> netProduction = new ChannelExpression<>(netProductionOutput, net.productionOutput);
+	
+	// Expressions
+	
+	public Expression<Double> hauptkraftwerkTurbineDischargeExpr = new Expression<Double>(hauptkraftwerkTurbineDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return hauptkraftwerkTurbineDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr1TurbineDischargeExpr = new Expression<Double>(wehr1TurbineDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr1TurbineDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr2TurbineDischargeExpr = new Expression<Double>(wehr2TurbineDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr2TurbineDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr3TurbineDischargeExpr = new Expression<Double>(wehr3TurbineDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr3TurbineDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr4TurbineDischargeExpr = new Expression<Double>(wehr4TurbineDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr4TurbineDischargeInput.get(state, timepoint);
+		}
+	};
+
+	public Expression<Double> hauptkraftwerkWeirDischargeExpr = new Expression<Double>(hauptkraftwerkWeirDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return hauptkraftwerkWeirDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr1WeirDischargeExpr = new Expression<Double>(wehr1WeirDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr1WeirDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr2WeirDischargeExpr = new Expression<Double>(wehr2WeirDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr2WeirDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr3WeirDischargeExpr = new Expression<Double>(wehr3WeirDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr3WeirDischargeInput.get(state, timepoint);
+		}
+	};
+	public Expression<Double> wehr4WeirDischargeExpr = new Expression<Double>(wehr4WeirDischargeOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return wehr4WeirDischargeInput.get(state, timepoint);
+		}
+	};
 
 }
