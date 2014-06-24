@@ -10,10 +10,20 @@ import org.xtream.core.workbench.Workbench;
 public class RootComponent extends Component
 {
 	
+	// Main
+	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 96 * 7, 100, 100, 0, 0);
+		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, RANDOM, CACHING);
 	}
+	
+	// Constants
+	
+	public static int DURATION = 96 * 7;
+	public static int SAMPLES = 200;
+	public static int CLUSTERS = 100;
+	public static double RANDOM = 0;
+	public static double CACHING = 0;
 	
 	// Components
 	
@@ -26,7 +36,7 @@ public class RootComponent extends Component
 
 	public Chart inflowChart = new Timeline(context.scenarioInflowOutput);
 	public Chart priceChart = new Timeline(context.scenarioPriceOutput);
-	public Chart productionChart = new Timeline(context.netProductionOutput, context.scenarioPriceOutput);
+	public Chart productionChart = new Timeline(context.netProductionOutput);
 	public Chart rewardChart = new Timeline(objective.rewardOutput);
 	
 	// Expressions

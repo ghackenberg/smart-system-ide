@@ -9,7 +9,7 @@ public class TurbineDischargeExpression extends Expression<Double>
 {
 	
 	@Reference
-	protected Port<Double> dischrage;
+	protected Port<Double> discharge;
 	@Reference
 	protected Port<Double> price;
 	
@@ -20,7 +20,7 @@ public class TurbineDischargeExpression extends Expression<Double>
 	{
 		super(port);
 		
-		this.dischrage = discharge;
+		this.discharge = discharge;
 		this.price = price;
 		
 		this.turbineDischargeMax = turbineDischargeMax;
@@ -32,11 +32,11 @@ public class TurbineDischargeExpression extends Expression<Double>
 	{
 		if (price.get(state, timepoint) >= 0)
 		{
-			return Math.min(dischrage.get(state, timepoint), turbineDischargeMax);
+			return Math.min(discharge.get(state, timepoint), turbineDischargeMax);
 		}
 		else
 		{
-			return Math.max(dischrage.get(state, timepoint) - weirDischargeMax, 0);
+			return Math.max(discharge.get(state, timepoint) - weirDischargeMax, 0);
 		}
 	}
 
