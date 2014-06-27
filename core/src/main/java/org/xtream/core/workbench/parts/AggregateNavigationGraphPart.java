@@ -28,7 +28,6 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 	
 	private Graph graph;
 	private Set<Float> colorValues;
-	//private Map<Port<?>,Float> map = new HashMap<Port<?>,Float>();
     private HashMap<Edge, HashMap<Integer, Set<Edge>>> edgeMap = new HashMap<Edge, HashMap<Integer, Set<Edge>>>();
     private Set<Edge> printedEdges = new HashSet<Edge>();
     
@@ -124,32 +123,26 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
                 {
                     int r, g, b;
                     r = g = b = (int) (127+(Double.parseDouble(v.getWeight())/nodeMaxWeight)*128);
-                    //String color = "#" + Integer.toHexString(r) + Integer.toHexString(g) + Integer.toHexString(b);
                     String color = String.format("#%02x%02x%02x", r, g, b);
 
                     if (v.getName().contains("Origin"))
                     {
-                        dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = triangle, pendwidth = 0.1, color = black, fillcolor=\"" + color +"\"];\n");
+                        dot.append("\t\"" + v.getName() + "\" [label = \"\", width=.3, height=.2, shape = triangle, pendwidth = 0.1, color = black, fillcolor=\"" + color +"\"];\n");
                     }
                     else if (v.getName().contains("Destination"))
                     {
-                        dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = invtriangle, pendwidth = 0.1, color = black, style=filled, fillcolor=\"" + "black" +"\"];\n");
+                        dot.append("\t\"" + v.getName() + "\" [label = \"\", width=.3, height=.2, shape = invtriangle, pendwidth = 0.1, color = black, style=filled, fillcolor=\"" + "black" +"\"];\n");
                     }
                     else
                     {
-                        //dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = point, pendwidth = 0.25, color = black, fillcolor=\"" + color +"\"];\n");
                         dot.append("\t\"" + v.getName() + "\" [label = \"\", shape = point, pendwidth = 0.25, color = black, fillcolor=\"" + color +"\"];\n");
                     }
 
-                    //dot.append("\t\"" + v.getName() + "\" [shape = ellipse, color=\"" + color +"\", pos=\""+ v.getXpos() + "," + v.getYpos() + "" + "\"];\n");
                 }
 
                 dot.append("}\n");
 
                 dot.append("subgraph Vehicle {\n");
-
-                // TODO [Dominik] Bug: not rendering when sequence is not yet complete
-
 
                 for (Component component : root.getChildrenByClass(Component.class)) 
                 {
