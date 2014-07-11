@@ -17,18 +17,6 @@ import au.com.bytecode.opencsv.CSVReader;
 public class ScenarioComponent extends Component
 {
 	
-	// Constants
-
-	public static String INFLOW_1 = "csv/Inflow_week_2_2011.csv";
-	public static String INFLOW_2 = "csv/Inflow_week_6_2011.csv";
-	public static String INFLOW_3 = "csv/Inflow_week_14_2011.csv";
-	public static String INFLOW_4 = "csv/Inflow_week_24_2011.csv";
-	
-	public static String PRICE_1 = "csv/Price_week_2_2011.csv";
-	public static String PRICE_2 = "csv/Price_week_6_2011.csv";
-	public static String PRICE_3 = "csv/Price_week_14_2011.csv";
-	public static String PRICE_4 = "csv/Price_week_24_2011.csv";
-	
 	// Constructors
 	
 	public ScenarioComponent(String inflowFile, String priceFile)
@@ -80,7 +68,6 @@ public class ScenarioComponent extends Component
 	// Charts
 	
 	public Chart inflowChart = new Timeline(inflowOutput);
-	public Chart priceChart = new Timeline(priceOutput);
 	
 	// Expressions
 	
@@ -97,6 +84,7 @@ public class ScenarioComponent extends Component
 		{
 			return prices.get(timepoint);
 		}
+
 	};
 
 }

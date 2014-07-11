@@ -11,8 +11,7 @@ public class ContextComponent extends Component
 	
 	// Ports
 	
-	public Port<Double> scenarioInflowOutput = new Port<>();
-	public Port<Double> scenarioPriceOutput = new Port<>();
+	public Port<Double> inflowInput = new Port<>();
 	
 	public Port<Double> hauptkraftwerkTurbineDischargeInput = new Port<>();
 	public Port<Double> wehr1TurbineDischargeInput = new Port<>();
@@ -48,15 +47,12 @@ public class ContextComponent extends Component
 	
 	// Components
 	
-	public ScenarioComponent scenario = new ScenarioComponent(ScenarioComponent.INFLOW_2, ScenarioComponent.PRICE_2);
 	public RiverComponent river = new RiverComponent();
 	public NetComponent net = new NetComponent();
 	
 	// Channels
 	
-	public Expression<Double> scenarioInflowToEnvironment = new ChannelExpression<>(scenarioInflowOutput, scenario.inflowOutput);
-	public Expression<Double> scenarioInflowToRiver = new ChannelExpression<>(river.scenarioInflowInput, scenario.inflowOutput);
-	public Expression<Double> scenarioPrice= new ChannelExpression<>(scenarioPriceOutput, scenario.priceOutput);
+	public Expression<Double> scenarioInflow = new ChannelExpression<>(river.scenarioInflowInput, inflowInput);
 	
 	public Expression<Double> hauptkraftwerkTurbineDischarge = new ChannelExpression<>(river.hauptkraftwerkTurbineDischargeInput, hauptkraftwerkTurbineDischargeInput);
 	public Expression<Double> wehr1TurbineDischarge = new ChannelExpression<>(river.wehr1TurbineDischargeInput, wehr1TurbineDischargeInput);

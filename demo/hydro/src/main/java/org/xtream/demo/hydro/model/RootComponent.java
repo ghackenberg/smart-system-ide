@@ -19,6 +19,21 @@ public class RootComponent extends Component
 	
 	// Constants
 	
+	public static String WEEK_1 = "csv/All_extended_week_2_2011.csv";
+	public static String WEEK_2 = "csv/All_extended_week_6_2011.csv";
+	public static String WEEK_3 = "csv/All_extended_week_14_2011.csv";
+	public static String WEEK_4 = "csv/All_extended_week_24_2011.csv";
+
+	public static String INFLOW_1 = "csv/Inflow_week_2_2011.csv";
+	public static String INFLOW_2 = "csv/Inflow_week_6_2011.csv";
+	public static String INFLOW_3 = "csv/Inflow_week_14_2011.csv";
+	public static String INFLOW_4 = "csv/Inflow_week_24_2011.csv";
+	
+	public static String PRICE_1 = "csv/Price_week_2_2011.csv";
+	public static String PRICE_2 = "csv/Price_week_6_2011.csv";
+	public static String PRICE_3 = "csv/Price_week_14_2011.csv";
+	public static String PRICE_4 = "csv/Price_week_24_2011.csv";
+	
 	public static int DURATION = 96 * 7;
 	public static int SAMPLES = 100;
 	public static int CLUSTERS = 50;
@@ -26,23 +41,38 @@ public class RootComponent extends Component
 	public static double CACHING = 0;
 	
 	// Components
-	
-	public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.forward.ControlComponent();
+
+	public ScenarioComponent scenario = new ScenarioComponent(INFLOW_1, PRICE_1);
+	//public ControlComponent control = new org.xtream.demo.hydro.model.actual.ControlComponent(WEEK_1);
+	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.backward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.forward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.random.ControlComponent();
+	public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.backward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.forward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.random.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.continuous.backward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.continuous.forward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.continuous.random.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.discrete.backward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.discrete.forward.ControlComponent();
+	//public ControlComponent control = new org.xtream.demo.hydro.model.split.discrete.random.ControlComponent();
 	public ContextComponent context = new ContextComponent();
 	public ObjectiveComponent objective = new ObjectiveComponent();
 	public EquivalenceComponent equivalence = new EquivalenceComponent();
 	
 	// Charts
 
-	public Chart inflowChart = new Timeline(context.scenarioInflowOutput);
-	public Chart priceChart = new Timeline(context.scenarioPriceOutput);
+	public Chart inflowChart = new Timeline(scenario.inflowOutput);
+	public Chart priceChart = new Timeline(scenario.priceOutput);
 	public Chart productionChart = new Timeline(context.netProductionOutput);
 	public Chart objectiveChart = new Timeline(objective.rewardOutput, objective.costOutput, objective.objectiveOutput);
 	
 	// Expressions
+ 
+	public Expression<Double> inflowToContext = new ChannelExpression<>(context.inflowInput, scenario.inflowOutput);
 	
-	public Expression<Double> scenarioInflow = new ChannelExpression<>(control.scenarioInflowInput, context.scenarioInflowOutput);
-	public Expression<Double> scenarioPrice = new ChannelExpression<>(control.scenarioPriceInput, context.scenarioPriceOutput);
+	public Expression<Double> inflowToControl = new ChannelExpression<>(control.inflowInput, scenario.inflowOutput);
+	public Expression<Double> priceToControl = new ChannelExpression<>(control.priceInput, scenario.priceOutput);
 	
 	public Expression<Double> speicherseeLevelToControl = new ChannelExpression<>(control.speicherseeLevelInput, context.speicherseeLevelOutput);
 	public Expression<Double> volumen1LevelToControl = new ChannelExpression<>(control.volumen1LevelInput, context.volumen1LevelOutput);
@@ -80,7 +110,7 @@ public class RootComponent extends Component
 	public Expression<Double> wehr3WeirDischargeToObjective = new ChannelExpression<>(objective.wehr3WeirDischargeInput, context.wehr3WeirDischargeOutput);
 	public Expression<Double> wehr4WeirDischargeToObjective = new ChannelExpression<>(objective.wehr4WeirDischargeInput, context.wehr4WeirDischargeOutput);
 	
-	public Expression<Double> price = new ChannelExpression<>(objective.priceInput, context.scenarioPriceOutput);
-	public Expression<Double> production = new ChannelExpression<>(objective.productionInput, context.netProductionOutput);
+	public Expression<Double> productionToObjective = new ChannelExpression<>(objective.productionInput, context.netProductionOutput);
+	public Expression<Double> priceToObjective = new ChannelExpression<>(objective.priceInput, scenario.priceOutput);
 
 }

@@ -12,13 +12,13 @@ import org.xtream.core.optimizer.State;
 public class ObjectiveComponent extends Component
 {
 	
-	// Parameters
+	// Constants
 	
-	protected static double TURBINE_COST = 500;
+	protected static double TURBINE_COST = 100;
 	protected static double WEIR_COST = 500;
 	
 	// Ports
-	
+
 	public Port<Double> priceInput = new Port<>();
 	public Port<Double> productionInput = new Port<>();
 	
