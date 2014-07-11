@@ -95,6 +95,11 @@ public class Worker<T extends Component> implements Runnable
 						{
 							valid = valid && constraint.getPort().get(current, timepoint);
 							
+							if (!constraint.getPort().get(current, timepoint))
+							{
+								System.out.println("Constraint violated: " + constraint.getQualifiedName());
+							}
+							
 							// TODO Count and visualize
 						}
 						
