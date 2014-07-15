@@ -1,7 +1,7 @@
 package org.xtream.demo.thermal.model.objective;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 import org.xtream.demo.thermal.model.RootComponent;
 import org.xtream.demo.thermal.model.stage.Stage;
 

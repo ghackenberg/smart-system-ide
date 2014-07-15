@@ -2,7 +2,7 @@ package org.xtream.demo.mobile.model.overallsystems;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
 
 public class PhysicsComponent extends EnergyPhysicsComponent

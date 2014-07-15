@@ -4,13 +4,13 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MinObjective;
-import org.xtream.core.optimizer.State;
 import org.xtream.demo.thermal.model.stage.Stage;
 
 public abstract class RootComponent extends Component

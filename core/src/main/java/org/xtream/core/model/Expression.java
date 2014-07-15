@@ -1,6 +1,5 @@
 package org.xtream.core.model;
 
-import org.xtream.core.optimizer.State;
 
 
 public abstract class Expression<T> extends Element
@@ -20,7 +19,7 @@ public abstract class Expression<T> extends Element
 	
 	public Expression(Port<T> port, boolean caching)
 	{
-		super(Expression.class.getClassLoader().getResource("expression.png"));
+		super(Expression.class.getClassLoader().getResource("elements/expression.png"));
 		
 		this.port = port;
 		this.caching = caching;

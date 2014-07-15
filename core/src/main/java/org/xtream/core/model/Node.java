@@ -5,7 +5,7 @@ public abstract class Node extends Element
 	
 	public Node()
 	{
-		super(Node.class.getClassLoader().getResource("node.png"));
+		super(Node.class.getClassLoader().getResource("elements/node.png"));
 	}
 
 }

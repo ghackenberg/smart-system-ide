@@ -5,19 +5,19 @@ import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
 import org.jdesktop.swingx.treetable.TreeTableNode;
-import org.xtream.core.model.Component;
+import org.xtream.core.model.Container;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class PortTreeTableNode implements TreeTableNode
 {
 	
-	public ComponentTreeTableNode parent;
+	public ContainerTreeTableNode parent;
 	public Port<?> port;
 	public State state;
 	public int timepoint;
 	
-	public PortTreeTableNode(ComponentTreeTableNode parent, Port<?> port, State state, int timepoint)
+	public PortTreeTableNode(ContainerTreeTableNode parent, Port<?> port, State state, int timepoint)
 	{
 		this.parent = parent;
 		this.port = port;
@@ -40,15 +40,15 @@ public class PortTreeTableNode implements TreeTableNode
 	@Override
 	public int getIndex(TreeNode node)
 	{
-		if (node instanceof ComponentTreeTableNode)
+		if (node instanceof ContainerTreeTableNode)
 		{
-			ComponentTreeTableNode componentNode = (ComponentTreeTableNode) node;
+			ContainerTreeTableNode containerNode = (ContainerTreeTableNode) node;
 			
-			Component component = componentNode.component;
+			Container container = containerNode.container;
 			
-			for (int index = 0; index < component.getChildrenByClass(Port.class).size(); index++)
+			for (int index = 0; index < container.getChildrenByClass(Port.class).size(); index++)
 			{
-				if (port == component.getChildrenByClass(Port.class).get(index))
+				if (port == container.getChildrenByClass(Port.class).get(index))
 				{
 					return index;
 				}

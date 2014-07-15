@@ -2,8 +2,8 @@ package org.xtream.demo.mobile.model.commons;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.components.AbstractPhysicsComponent;
-import org.xtream.core.optimizer.State;
 
 public abstract class EnergyPhysicsComponent extends AbstractPhysicsComponent
 {

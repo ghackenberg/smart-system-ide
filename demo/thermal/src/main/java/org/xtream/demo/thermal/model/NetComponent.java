@@ -1,11 +1,9 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.State;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.optimizer.State;
 
 public class NetComponent extends EnergyComponent
 {
@@ -13,7 +11,7 @@ public class NetComponent extends EnergyComponent
 	@SuppressWarnings("unchecked")
 	public NetComponent(int size)
 	{
-		super(NetComponent.class.getClassLoader().getResource("net.png"));
+		super(NetComponent.class.getClassLoader().getResource("elements/net.png"));
 		
 		this.capacity = Double.MAX_VALUE;
 		
@@ -42,10 +40,6 @@ public class NetComponent extends EnergyComponent
 	// Constraints
 	
 	public Constraint validConstraint = new Constraint(validOutput);
-	
-	// Charts
-	
-	public Chart energyChart = new Timeline(productionOutput, consumptionOutput, balanceOutput);
 	
 	// Expressions
 

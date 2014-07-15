@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.xtream.core.workbench.models.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.models.nodes.ContainerTreeNode;
 
 public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 {
@@ -24,15 +24,15 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 	{
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row,hasFocus);
 		
-		ComponentTreeNode node = (ComponentTreeNode) value;
+		ContainerTreeNode node = (ContainerTreeNode) value;
 		
-		if (node.component.getIcon() != null)
+		if (node.container.getIcon() != null)
 		{	
-			ImageIcon icon = icons.get(node.component.getIcon());
+			ImageIcon icon = icons.get(node.container.getIcon());
 			
 			if (icon == null)
 			{
-				ImageIcon image = new ImageIcon(node.component.getIcon());
+				ImageIcon image = new ImageIcon(node.container.getIcon());
 				
 				if (image.getIconWidth() == 16 && image.getIconHeight() == 16)
 				{
@@ -43,7 +43,7 @@ public class ComponentTreeCellRenderer extends DefaultTreeCellRenderer
 					icon = new ImageIcon(image.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH));
 				}
 				
-				icons.put(node.component.getIcon(), icon);
+				icons.put(node.container.getIcon(), icon);
 			}
 			
 			setIcon(icon);

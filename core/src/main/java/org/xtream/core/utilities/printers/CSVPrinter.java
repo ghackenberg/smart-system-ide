@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 import org.xtream.core.utilities.Printer;
 
 public class CSVPrinter<T extends Component> implements Printer<T>

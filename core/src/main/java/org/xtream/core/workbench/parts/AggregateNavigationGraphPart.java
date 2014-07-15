@@ -14,6 +14,7 @@ import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
 import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Container;
 import org.xtream.core.model.Port;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
@@ -31,7 +32,7 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
     private HashMap<Edge, HashMap<Integer, Set<Edge>>> edgeMap = new HashMap<Edge, HashMap<Integer, Set<Edge>>>();
     private Set<Edge> printedEdges = new HashSet<Edge>();
     
-	private Component root = null;
+	private Container root = null;
 	private int timepoint = 0;
 	
 	public AggregateNavigationGraphPart(Graph graph)
@@ -44,7 +45,7 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 	}
 	public AggregateNavigationGraphPart(Graph graph, int x, int y, int width, int height)
 	{
-		super("Navigation graph", x, y, width, height);
+		super("Navigation graph", AggregateNavigationGraphPart.class.getClassLoader().getResource("parts/navigation_graph.png"), x, y, width, height);
 		
 		this.graph = graph;
 		
@@ -60,7 +61,7 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 		
-			root = selection.getElementByClass(Component.class);
+			root = selection.getElementByClass(Container.class);
 			
 			update();
 		}

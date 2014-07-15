@@ -1,5 +1,7 @@
 package org.xtream.core.optimizer;
 
+import org.xtream.core.model.State;
+
 public class Comparator implements java.util.Comparator<State>
 {
 

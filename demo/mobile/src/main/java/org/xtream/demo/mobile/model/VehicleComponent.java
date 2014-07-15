@@ -5,10 +5,10 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 import org.xtream.demo.mobile.model.vehicles.ConstraintsComponent;
 import org.xtream.demo.mobile.model.vehicles.CostsComponent;
@@ -22,7 +22,7 @@ public class VehicleComponent extends VehicleEnergyModuleComponent<PhysicsCompon
 
 	public VehicleComponent(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight)
 	{
-		super(VehicleComponent.class.getClassLoader().getResource("vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(graph), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
+		super(VehicleComponent.class.getClassLoader().getResource("elements/vehicle.png"), new PhysicsComponent(graph, startPosition, destinationPosition), new LogicsComponent(graph), new ConstraintsComponent(), new QualitiesComponent(), new CostsComponent(timeWeight, powerWeight), new ModulesComponent(), graph);
 		
 		// Previews
 		

@@ -4,10 +4,10 @@ import org.xtream.core.datatypes.Edge;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AbstractModulesComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.optimizer.State;
 import org.xtream.demo.mobile.model.VehicleComponent;
 import org.xtream.demo.mobile.model.commons.VehicleEnergyModuleComponent;
 

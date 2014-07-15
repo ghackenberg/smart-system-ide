@@ -8,7 +8,7 @@ public class Marker<T> extends Element
 	
 	public Marker(Port<T> port)
 	{
-		super(Marker.class.getClassLoader().getResource("marker.png"));
+		super(Marker.class.getClassLoader().getResource("elements/marker.png"));
 		
 		this.port = port;
 	}
