@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.State;
 
 public interface Monitor<T extends Component>
 {

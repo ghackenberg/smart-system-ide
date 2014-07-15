@@ -3,17 +3,17 @@ package org.xtream.demo.thermal.model;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.optimizer.State;
 
 public abstract class StorageComponent extends EnergyComponent
 {
 
 	public StorageComponent(double speed, double capacity)
 	{
-		super(StorageComponent.class.getClassLoader().getResource("buffer.png"));
+		super(StorageComponent.class.getClassLoader().getResource("elements/storage.png"));
 		
 		this.speed = speed;
 		this.capacity = capacity;
@@ -43,7 +43,7 @@ public abstract class StorageComponent extends EnergyComponent
 	
 	// Charts
 	
-	public Chart energyChart = new Timeline(minimumOutput, levelOutput, maximumOutput);
+	public Chart levelChart = new Timeline(minimumOutput, levelOutput, maximumOutput);
 	
 	// Expressions
 

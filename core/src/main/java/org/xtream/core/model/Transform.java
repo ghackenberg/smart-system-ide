@@ -5,7 +5,7 @@ public abstract class Transform extends Element
 	
 	public Transform()
 	{
-		super(Transform.class.getClassLoader().getResource("transform.png"));
+		super(Transform.class.getClassLoader().getResource("elements/transform.png"));
 	}
 
 }

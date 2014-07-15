@@ -8,16 +8,17 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Container;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
-import org.xtream.core.workbench.models.nodes.ComponentTreeNode;
+import org.xtream.core.workbench.models.nodes.ContainerTreeNode;
 import org.xtream.core.workbench.renderers.ComponentTreeCellRenderer;
 
 public class ComponentHierarchyPart<T extends Component> extends Part<T>
 {
 	
 	private JTree tree;
-	private Component selected;
+	private Container selected;
 	
 	public ComponentHierarchyPart()
 	{
@@ -29,7 +30,7 @@ public class ComponentHierarchyPart<T extends Component> extends Part<T>
 	}
 	public ComponentHierarchyPart(int x, int y, int width, int height)
 	{
-		super("Component hierarchy", x, y, width, height);
+		super("Component hierarchy", ComponentHierarchyPart.class.getClassLoader().getResource("parts/component_hierarchy.png"), x, y, width, height);
 		
 		tree = new JTree();
 		
@@ -44,18 +45,18 @@ public class ComponentHierarchyPart<T extends Component> extends Part<T>
 		// Tree pane
 		final Part<T> self = this;
 		
-		tree.setModel(new DefaultTreeModel(new ComponentTreeNode(null, root)));
+		tree.setModel(new DefaultTreeModel(new ContainerTreeNode(null, root)));
 		tree.setCellRenderer(new ComponentTreeCellRenderer());
 		tree.addTreeSelectionListener(new TreeSelectionListener()
 			{
 				@Override
 				public void valueChanged(TreeSelectionEvent event)
 				{
-					ComponentTreeNode node = (ComponentTreeNode) tree.getLastSelectedPathComponent();
+					ContainerTreeNode node = (ContainerTreeNode) tree.getLastSelectedPathComponent();
 					
-					if (node.component != selected)
+					if (node.container != selected)
 					{
-						selected = node.component;
+						selected = node.container;
 						
 						trigger(new SelectionEvent<T>(self, selected));
 					}

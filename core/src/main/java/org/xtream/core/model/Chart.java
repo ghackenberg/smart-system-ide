@@ -5,7 +5,7 @@ public abstract class Chart extends Element
 	
 	public Chart()
 	{
-		super(Chart.class.getClassLoader().getResource("chart.png"));
+		super(Chart.class.getClassLoader().getResource("elements/chart.png"));
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public abstract class NonDeterministicExpression<T> extends Expression<T>
 {

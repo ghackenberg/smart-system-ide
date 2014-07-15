@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
@@ -25,11 +24,11 @@ import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.parts.AggregateNavigationGraphPart;
 import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
-import org.xtream.core.workbench.parts.ComponentChildrenTablePart;
+import org.xtream.core.workbench.parts.ComponentChildrenPart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
 import org.xtream.core.workbench.parts.EngineMonitorPart;
-import org.xtream.core.workbench.parts.StateSpacePart;
 import org.xtream.core.workbench.parts.ModelScenePart;
+import org.xtream.core.workbench.parts.StateSpacePart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
@@ -40,6 +39,8 @@ import bibliothek.gui.dock.station.split.SplitDockGrid;
 public class Workbench<T extends Component>
 {
 	
+	private static String TITLE = "XTREAM - Dynamic Optimization Framework";
+	
 	private Engine<T> engine;
 	private Bus<T> bus;
 	private JSlider slider;
@@ -47,12 +48,12 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new ModelScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenPart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new ModelScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenTablePart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenPart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
 	@SafeVarargs
@@ -94,12 +95,6 @@ public class Workbench<T extends Component>
 			randomnessField.setEditable(false);
 			cachingField.setEditable(false);
 			
-			JButton startButton = new JButton("Start");
-			JButton stopButton = new JButton("Stop");
-			
-			startButton.setEnabled(false);
-			stopButton.setEnabled(false);
-			
 			JProgressBar timeBar = new JProgressBar();
 			JProgressBar memoryBar = new JProgressBar();
 			
@@ -123,13 +118,11 @@ public class Workbench<T extends Component>
 						{
 							timepoint = slider.getValue();
 							
-							bus.trigger(new JumpEvent<T>(null, timepoint));
+							bus.broadcast(new JumpEvent<T>(null, timepoint));
 						}
 					}
 				}
 			);
-			
-			JButton play = new JButton("Play");
 			
 			// Toolbar
 			
@@ -147,9 +140,6 @@ public class Workbench<T extends Component>
 			topbar.add(new JLabel("Caching"));
 			topbar.add(cachingField);
 			topbar.addSeparator();
-			topbar.add(startButton);
-			topbar.add(stopButton);
-			topbar.addSeparator();
 			topbar.add(new JLabel("Time"));
 			topbar.add(timeBar);
 			topbar.add(new JLabel("Memory"));
@@ -159,7 +149,6 @@ public class Workbench<T extends Component>
 			bottombar.setFloatable(false);
 			bottombar.setLayout(new BorderLayout());
 			bottombar.add(slider, BorderLayout.CENTER);
-			bottombar.add(play, BorderLayout.LINE_START);
 			
 			// Dock
 			
@@ -180,7 +169,7 @@ public class Workbench<T extends Component>
 			
 			ImageIcon icon = new ImageIcon(Workbench.class.getClassLoader().getResource("xtream.png"));
 			
-			JFrame frame = new ApplicationFrame("Xtream - Discrete-Time Dynamic Optimization Framework");
+			JFrame frame = new ApplicationFrame(TITLE);
 			frame.setLayout(new BorderLayout());
 			frame.add(topbar, BorderLayout.PAGE_START);
 			frame.add(station.getComponent(), BorderLayout.CENTER);

@@ -16,6 +16,7 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Container;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.charts.Timeline;
@@ -31,9 +32,8 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	private static int STROKE = 3;
 	
 	private JPanel panel;
-	private Map<Chart, DefaultCategoryDataset> categoryDatasets = new HashMap<>();
-	private Map<Chart, DefaultXYDataset> xyDatasets = new HashMap<>();
-	private Component component;
+	private Map<Chart, JFreeChart> charts = new HashMap<>();
+	private Container container;
 	private int timepoint = 0;
 	
 	public ComponentChartsPart()
@@ -46,7 +46,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	}
 	public ComponentChartsPart(int x, int y, int width, int height)
 	{
-		super("Component charts", x, y, width, height);
+		super("Component charts", ComponentChartsPart.class.getClassLoader().getResource("parts/component_charts.png"), x, y, width, height);
 		
 		panel = new JPanel();
 		
@@ -60,9 +60,9 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			Component component = selection.getElementByClass(Component.class);
+			Container container = selection.getElementByClass(Container.class);
 			
-			update(component);
+			update(container);
 		}
 		else if (event instanceof JumpEvent)
 		{
@@ -74,9 +74,9 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		}
 	}
 	
-	public void update(Component component)
+	public void update(Container container)
 	{
-		this.component = component;
+		this.container = container;
 		
 		// Remove old charts
 		
@@ -84,57 +84,24 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 
 		// Charts
 		
-		if (component.getChildrenByClass(Timeline.class).size() > 0)
+		if (container.getChildrenByClass(Timeline.class).size() > 0)
 		{	
 			// Calculate grid layout
 			
-			int cols = (int) Math.ceil(Math.sqrt(component.getChildrenByClass(Timeline.class).size()));
-			int rows = (int) Math.ceil(Math.sqrt(component.getChildrenByClass(Timeline.class).size()));
+			int cols = (int) Math.ceil(Math.sqrt(container.getChildrenByClass(Timeline.class).size()));
+			int rows = (int) Math.ceil(Math.sqrt(container.getChildrenByClass(Timeline.class).size()));
 			
 			panel.setLayout(new GridLayout(cols, rows));
 			
 			// Show charts
 			
-			for (Chart definition : component.getChildrenByClass(Chart.class))
+			for (Chart definition : container.getChildrenByClass(Chart.class))
 			{
-				JFreeChart jfreechart;
-				
-				if (definition instanceof Timeline)
-				{
-					DefaultXYDataset dataset = getXYDataset(definition);
-					
-					jfreechart = ChartFactory.createXYLineChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
-					
-					Timeline timeline = (Timeline) definition;
-					
-					for (int i = 0; i < timeline.getPorts().length; i++)
-					{
-						jfreechart.getXYPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
-					}
-				}
-				else if (definition instanceof Histogram)
-				{
-					DefaultCategoryDataset dataset = getCategoryDataset(definition);
-					
-					jfreechart = ChartFactory.createBarChart(definition.getName(), null, null, dataset, PlotOrientation.VERTICAL, true, true, false);
-					
-					Histogram<?> histogram = (Histogram<?>) definition;
-					
-					for (int i = 0; i < histogram.getPorts().length; i++)
-					{
-						jfreechart.getCategoryPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
-					}
-				}
-				else
-				{
-					throw new IllegalStateException();
-				}
-				
-				jfreechart.setAntiAlias(true);
-				jfreechart.setTextAntiAlias(true);
-				jfreechart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+				JFreeChart jfreechart = getChart(definition);
 				
 				panel.add(new ChartPanel(jfreechart));
+				
+				charts.put(definition, jfreechart);
 			}
 			
 			// Update datasets
@@ -151,13 +118,13 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	{
 		this.timepoint = timepoint;
 		
-		for (Chart chart : component.getChildrenByClass(Chart.class))
+		for (Chart definition : container.getChildrenByClass(Chart.class))
 		{
-			//datasets.get(definition).clear();
-			
-			if (chart instanceof Timeline)
+			if (definition instanceof Timeline)
 			{
-				Timeline timeline = (Timeline) chart;
+				DefaultXYDataset dataset = new DefaultXYDataset();
+				
+				Timeline timeline = (Timeline) definition;
 				
 				for (Port<Double> port : timeline.getPorts())
 				{
@@ -169,12 +136,16 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 						data[1][i] = port.get(getState(), i);
 					}
 					
-					getXYDataset(chart).addSeries(port.getName(), data);
+					dataset.addSeries(port.getName(), data);
 				}
+				
+				getChart(definition).getXYPlot().setDataset(dataset);
 			}
-			else if (chart instanceof Histogram)
+			else if (definition instanceof Histogram)
 			{
-				Histogram<?> histogram = (Histogram<?>) chart;
+				DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+				
+				Histogram<?> histogram = (Histogram<?>) definition;
 				
 				for (Port<?> port : histogram.getPorts())
 				{
@@ -194,9 +165,11 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 					
 					for (String i : map.keySet())
 					{
-						getCategoryDataset(histogram).setValue(map.get(i), i, "value");
+						dataset.setValue(map.get(i), i, "value");
 					}
 				}
+				
+				getChart(definition).getCategoryPlot().setDataset(dataset);
 			}
 			else
 			{
@@ -209,32 +182,40 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		panel.updateUI();
 	}
 	
-	private DefaultCategoryDataset getCategoryDataset(Chart definition)
+	private JFreeChart getChart(Chart definition)
 	{
-		DefaultCategoryDataset dataset = categoryDatasets.get(definition);
+		JFreeChart jfreechart = charts.get(definition);
 		
-		if (dataset == null)
+		if (jfreechart == null)
 		{
-			dataset = new DefaultCategoryDataset();
+			if (definition instanceof Timeline)
+			{
+				jfreechart = ChartFactory.createXYLineChart(definition.getName(), null, null, new DefaultXYDataset(), PlotOrientation.VERTICAL, true, true, false);
+				
+				Timeline timeline = (Timeline) definition;
+				
+				for (int series = 0; series < timeline.getPorts().length; series++)
+				{
+					jfreechart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
+				}
+			}
+			else if (definition instanceof Histogram)
+			{
+				jfreechart = ChartFactory.createBarChart(definition.getName(), null, null, new DefaultCategoryDataset(), PlotOrientation.VERTICAL, true, true, false);
+			}
+			else
+			{
+				throw new IllegalStateException();
+			}
 			
-			categoryDatasets.put(definition, dataset);
-		}
-		
-		return dataset;
-	}
-	
-	private DefaultXYDataset getXYDataset(Chart definition)
-	{
-		DefaultXYDataset dataset = xyDatasets.get(definition);
-		
-		if (dataset == null)
-		{
-			dataset = new DefaultXYDataset();
+			jfreechart.setAntiAlias(true);
+			jfreechart.setTextAntiAlias(true);
+			jfreechart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 			
-			xyDatasets.put(definition, dataset);
+			charts.put(definition, jfreechart);
 		}
-		
-		return dataset;
+			
+		return jfreechart;
 	}
 
 }

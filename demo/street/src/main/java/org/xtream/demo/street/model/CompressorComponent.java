@@ -3,7 +3,7 @@ package org.xtream.demo.street.model;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class CompressorComponent extends Component
 {

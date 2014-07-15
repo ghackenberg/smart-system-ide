@@ -4,8 +4,8 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.optimizer.State;
 
 public class NetComponent extends Component
 {

@@ -31,7 +31,7 @@ public class ModelScenePart<T extends Component> extends Part<T>
 	}
 	public ModelScenePart(int x, int y, int width, int height)
 	{
-		super("Model scene", x, y, width, height);
+		super("Model scene", ModelScenePart.class.getClassLoader().getResource("parts/model_scene.png"), x, y, width, height);
 		
 		try
 		{

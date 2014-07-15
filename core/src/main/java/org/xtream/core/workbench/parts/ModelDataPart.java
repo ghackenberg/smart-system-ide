@@ -11,7 +11,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.models.nodes.ComponentTreeTableNode;
+import org.xtream.core.workbench.models.nodes.ContainerTreeTableNode;
 
 public class ModelDataPart<T extends Component> extends Part<T>
 {
@@ -46,7 +46,7 @@ public class ModelDataPart<T extends Component> extends Part<T>
 			
 			// Initialize table
 			
-			ComponentTreeTableNode node = new ComponentTreeTableNode(null, getRoot(), getState(), jump.getTimepoint());
+			ContainerTreeTableNode node = new ContainerTreeTableNode(null, getRoot(), getState(), jump.getTimepoint());
 			
 			DefaultTreeTableModel model = new DefaultTreeTableModel(node);
 			

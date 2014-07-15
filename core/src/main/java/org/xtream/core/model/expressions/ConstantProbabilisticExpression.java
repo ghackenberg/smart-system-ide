@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.xtream.core.data.Pair;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class ConstantProbabilisticExpression<T> extends ProbabilisticExpression<T>
 {

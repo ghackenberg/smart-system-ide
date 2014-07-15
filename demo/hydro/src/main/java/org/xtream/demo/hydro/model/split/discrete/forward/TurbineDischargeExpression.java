@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
+import org.xtream.core.model.State;
 import org.xtream.core.model.expressions.NonDeterministicExpression;
-import org.xtream.core.optimizer.State;
 
 public class TurbineDischargeExpression extends NonDeterministicExpression<Double>
 {

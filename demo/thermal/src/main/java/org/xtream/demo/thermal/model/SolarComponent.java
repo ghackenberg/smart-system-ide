@@ -1,18 +1,16 @@
 package org.xtream.demo.thermal.model;
 
-import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.State;
 import org.xtream.core.model.expressions.ConstantExpression;
-import org.xtream.core.optimizer.State;
 
 public abstract class SolarComponent extends EnergyComponent
 {
 	
 	public SolarComponent(double scale)
 	{
-		super(SolarComponent.class.getClassLoader().getResource("producer.png"));
+		super(SolarComponent.class.getClassLoader().getResource("elements/solar.png"));
 		
 		this.scale = scale;
 	}
@@ -24,10 +22,6 @@ public abstract class SolarComponent extends EnergyComponent
 	// Inputs
 	
 	public Port<Double> efficiencyInput = new Port<>();
-	
-	// Charts
-	
-	public Chart energyChart = new Timeline(productionOutput);
 	
 	// Expressions
 	

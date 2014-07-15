@@ -2,7 +2,7 @@ package org.xtream.demo.hydro.model.split.continuous.random;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class WeirDischargeExpression extends Expression<Double>
 {

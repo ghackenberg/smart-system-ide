@@ -3,7 +3,7 @@ package org.xtream.demo.hydro.model.split.continuous.backward;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.Reference;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class WeirDischargeExpression extends Expression<Double>
 {

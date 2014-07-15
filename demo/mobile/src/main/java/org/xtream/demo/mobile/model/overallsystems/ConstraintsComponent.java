@@ -4,9 +4,9 @@ import org.xtream.core.datatypes.Edge;
 import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.components.AbstractConstraintsComponent;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.optimizer.State;
 
 public class ConstraintsComponent extends AbstractConstraintsComponent
 {

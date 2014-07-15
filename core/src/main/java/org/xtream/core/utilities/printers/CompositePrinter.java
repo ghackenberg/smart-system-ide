@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 import org.xtream.core.utilities.Printer;
 
 public class CompositePrinter<T extends Component> implements Printer<T>

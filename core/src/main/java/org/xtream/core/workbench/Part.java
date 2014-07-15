@@ -10,9 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.State;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
-import org.xtream.core.optimizer.State;
 import org.xtream.core.optimizer.Statistics;
 
 
@@ -31,7 +31,7 @@ public abstract class Part<T extends Component> implements Monitor<T>
 	
 	public Part(String title, int x, int y, int width, int height)
 	{
-		this(title, Part.class.getClassLoader().getResource("part.png"), x, y, width, height);
+		this(title, Part.class.getClassLoader().getResource("parts/default.png"), x, y, width, height);
 	}
 	public Part(String title, URL icon, int x, int y, int width, int height)
 	{

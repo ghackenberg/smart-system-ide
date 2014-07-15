@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import javax.imageio.ImageIO;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.Container;
 import org.xtream.core.model.Element;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -34,7 +35,7 @@ public class ComponentArchitecturePart<T extends Component> extends Part<T>
 	}
 	public ComponentArchitecturePart(int x, int y, int width, int height)
 	{
-		super("Component architecture", x, y, width, height);
+		super("Component architecture", ComponentArchitecturePart.class.getClassLoader().getResource("parts/component_architecture.png"), x, y, width, height);
 
 		image = new ImagePanel();
 		
@@ -48,13 +49,13 @@ public class ComponentArchitecturePart<T extends Component> extends Part<T>
 		{
 			SelectionEvent<T> selection = (SelectionEvent<T>) event;
 			
-			Component root = selection.getElementByClass(Component.class);
+			Container root = selection.getElementByClass(Container.class);
 			
 			show(root);
 		}
 	}
 	
-	public void show(Component root)
+	public void show(Container root)
 	{
 		try
 		{
@@ -87,29 +88,29 @@ public class ComponentArchitecturePart<T extends Component> extends Part<T>
 			dot.append("\tfontsize = 13;\n");
 			dot.append("\tnode [fontname = \"Calibri\", fontsize = 11];\n");
 			dot.append("\tedge [fontname = \"Calibri\", fontsize = 9];\n");
-			for (Component component : root.getChildrenByClass(Component.class))
+			for (Container container : root.getChildrenByClass(Container.class))
 			{
-				if (component.getChildrenByClass(Port.class).size() > 0)
+				if (container.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\"" + component.getName() + "_inputs\" [label = \"\", shape = point, color = white];\n");
+					dot.append("\t\"" + container.getName() + "_inputs\" [label = \"\", shape = point, color = white];\n");
 				}
 			}
-			for (Component component : root.getChildrenByClass(Component.class))
+			for (Container container : root.getChildrenByClass(Container.class))
 			{
-				if (component.getChildrenByClass(Port.class).size() > 0)
+				if (container.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\"" + component.getName() + "_outputs\" [label = \"\", shape = point, color = white];\n");
+					dot.append("\t\"" + container.getName() + "_outputs\" [label = \"\", shape = point, color = white];\n");
 				}
 			}
 			dot.append("\tsubgraph \"cluster_" + root.getName() + "\" {\n");
 			dot.append("\t\tlabel = \"" + root.getName() + " : " + root.getClass().getSimpleName() + "\";\n");
 			dot.append("\t\tstyle = filled;\n");
 			dot.append("\t\tfillcolor = gray95;\n");
-			for (Component component : root.getChildrenByClass(Component.class))
+			for (Container container : root.getChildrenByClass(Container.class))
 			{
-				if (component.getChildrenByClass(Port.class).size() > 0)
+				if (container.getChildrenByClass(Port.class).size() > 0)
 				{
-					dot.append("\t\t\"" + component.getName() + "\" [label = \"" + component.getName() + "\", shape = rectangle, margin = " + (0.1 + component.getChildrenByClass(Component.class).size() / 10.) + " style = filled, fillcolor = gray85];\n");
+					dot.append("\t\t\"" + container.getName() + "\" [label = \"" + container.getName() + "\", shape = rectangle, margin = " + (0.1 + container.getChildrenByClass(Component.class).size() / 10.) + " style = filled, fillcolor = gray85];\n");
 				}
 			}
 			dot.append("\t}\n");

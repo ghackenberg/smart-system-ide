@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.xtream.core.model.Expression;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 import au.com.bytecode.opencsv.CSVReader;
 

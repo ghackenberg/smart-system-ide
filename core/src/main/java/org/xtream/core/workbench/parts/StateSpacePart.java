@@ -17,9 +17,9 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.State;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.optimizer.Key;
-import org.xtream.core.optimizer.State;
 import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.workbench.Part;
 
@@ -51,7 +51,7 @@ public class StateSpacePart<T extends Component> extends Part<T>
 	}
 	public StateSpacePart(int x, int y, int width, int height)
 	{
-		super("State space", x, y, width, height);
+		super("State space", StateSpacePart.class.getClassLoader().getResource("parts/state_space.png"), x, y, width, height);
 		
 		try
 		{

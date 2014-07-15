@@ -2,7 +2,7 @@ package org.xtream.demo.hydro.model.single.continuous.random;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class DischargeExpression extends Expression<Double>
 {

@@ -3,17 +3,17 @@ package org.xtream.demo.thermal.model;
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.optimizer.State;
 
 public abstract class ThermalComponent extends EnergyComponent
 {
 
 	public ThermalComponent()
 	{
-		super(ThermalComponent.class.getClassLoader().getResource("consumer.png"));
+		super(ThermalComponent.class.getClassLoader().getResource("elements/thermal.png"));
 	}
 	
 	// Parameters

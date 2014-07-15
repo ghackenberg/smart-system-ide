@@ -1,6 +1,5 @@
 package org.xtream.core.model;
 
-import org.xtream.core.optimizer.State;
 
 
 public class Port<T> extends Element
@@ -11,7 +10,7 @@ public class Port<T> extends Element
 	
 	public Port()
 	{
-		super(Port.class.getClassLoader().getResource("port.png"));
+		super(Port.class.getClassLoader().getResource("elements/port.png"));
 	}
 	
 	public T get(State state, int timepoint)

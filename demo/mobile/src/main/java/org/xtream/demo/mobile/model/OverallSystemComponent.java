@@ -53,7 +53,7 @@ public class OverallSystemComponent extends EnergyModuleComponent<PhysicsCompone
 	@SuppressWarnings("unchecked")
 	public OverallSystemComponent(Graph graph, VehicleEnergyModuleComponent<?, ?, ?, ?, ?, ?>... vehicleEnergyModuleComponent)
 	{
-		super(OverallSystemComponent.class.getClassLoader().getResource("overallsystem.png"), new PhysicsComponent(vehicleEnergyModuleComponent.length), new LogicsComponent(), new ConstraintsComponent(vehicleEnergyModuleComponent.length, graph), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(vehicleEnergyModuleComponent));
+		super(OverallSystemComponent.class.getClassLoader().getResource("elements/overall_system.png"), new PhysicsComponent(vehicleEnergyModuleComponent.length), new LogicsComponent(), new ConstraintsComponent(vehicleEnergyModuleComponent.length, graph), new QualitiesComponent(), new CostsComponent(), new ModulesComponent(vehicleEnergyModuleComponent));
 		
 		// Balance channels	
 		balances = new ChannelExpression[vehicleEnergyModuleComponent.length];

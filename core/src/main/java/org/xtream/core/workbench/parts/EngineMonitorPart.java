@@ -17,10 +17,10 @@ import org.jfree.data.xy.CategoryTableXYDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.Component;
+import org.xtream.core.model.State;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
-import org.xtream.core.optimizer.State;
 import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.workbench.Part;
 
@@ -54,7 +54,7 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 	}
 	public EngineMonitorPart(int x, int y, int width, int height)
 	{
-		super("Engine monitor", x, y, width, height);
+		super("Engine monitor", EngineMonitorPart.class.getClassLoader().getResource("parts/engine_monitor.png"), x, y, width, height);
 		
 		statesChart = ChartFactory.createXYLineChart("States", null, "Count", states, PlotOrientation.VERTICAL, true, true, false);
 		classesChart = ChartFactory.createXYLineChart("Clusters", null, "Count", classes, PlotOrientation.VERTICAL, true, true, false);
@@ -181,6 +181,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 			{
 				tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.BLUE);
 			}
+			
+			tracesChart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
 			
 			series++;
 		}

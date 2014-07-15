@@ -10,7 +10,7 @@ public class Bus<T extends Component>
 	
 	public List<Part<T>> components = new ArrayList<>();
 	
-	public void trigger(Event<T> event)
+	public void broadcast(Event<T> event)
 	{
 		for (Part<T> part : components)
 		{

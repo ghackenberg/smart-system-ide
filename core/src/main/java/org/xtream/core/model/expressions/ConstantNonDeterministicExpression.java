@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.xtream.core.model.Port;
-import org.xtream.core.optimizer.State;
+import org.xtream.core.model.State;
 
 public class ConstantNonDeterministicExpression<T> extends NonDeterministicExpression<T>
 {

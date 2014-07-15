@@ -14,7 +14,7 @@ import org.xtream.core.utilities.Filter;
 public abstract class Element
 {
 
-	private static final String DESCRIPTION = "No description!";
+	private static final String DESCRIPTION = "No description provided yet!";
 	private static final URL ICON = Element.class.getClassLoader().getResource("element.png");
 	
 	private URL icon;
