@@ -16,6 +16,7 @@ import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
 import org.xtream.core.model.markers.objectives.MinObjective;
+import org.xtream.core.optimizer.strategies.Grid;
 
 public class Engine<T extends Component>
 {
@@ -40,7 +41,11 @@ public class Engine<T extends Component>
 		workers = new ArrayList<>(processors);
 	}
 	
-	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor)
+	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor) {
+		return run(duration, samples, classes, randomness, monitor, new Grid());
+	}
+	
+	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor, Strategy strategy)
 	{
 		// Start monitor
 		
@@ -144,69 +149,11 @@ public class Engine<T extends Component>
 			
 			// Sort groups
 			
-			// TODO Factorize cluster strategy. Provide uniform and k-mean clustering.
+			// Factorize cluster strategy
 			
 			statistics.cluster = System.currentTimeMillis();
 			
-			SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
-			
-			for (State current : currentStates)
-			{
-				// Group Status
-				
-				Key currentKey = new Key(root, current, minEquivalences, maxEquivalences, classes, timepoint);
-				
-				List<State> currentGroup = currentGroups.get(currentKey);
-				
-				if (currentGroup == null)
-				{
-					currentGroup = new LinkedList<State>();
-					
-					currentGroups.put(currentKey, currentGroup);
-				}
-				
-				// Check Status
-				
-				boolean dominant = true;
-				
-				for (int index = 0; index < currentGroup.size(); index++)
-				{
-					State alternative = currentGroup.get(index);
-					
-					Integer difference = current.comparePreferencesTo(alternative);
-					
-					if (difference != null)
-					{
-						if (difference < 0)
-						{
-							dominant = false;
-							
-							break; // do not keep
-						}
-						else if (difference == 0)
-						{
-							dominant = false;
-							
-							break; // do not keep
-						}
-						else if (difference > 0)
-						{
-							currentGroup.remove(index--);
-							
-							continue;
-						}
-						
-						assert false;
-					}
-				}
-				
-				// Save Status
-				
-				if (dominant)
-				{
-					currentGroup.add(current);
-				}
-			}
+			SortedMap<Key, List<State>> currentGroups = strategy.execute(currentStates, maxEquivalences, maxEquivalences, classes, timepoint, root);
 			
 			statistics.cluster = System.currentTimeMillis() - statistics.cluster;
 			

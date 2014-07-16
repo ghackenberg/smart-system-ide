@@ -14,6 +14,16 @@ public class Key implements Comparable<Key>
 		equivalences = new double[0];
 	}
 	
+	public Key(Component root)
+	{
+		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
+		
+		for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
+		{
+			equivalences[i] = Math.random();
+		}
+	}
+	
 	public Key(Component root, State state, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint)
 	{
 		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
@@ -48,6 +58,47 @@ public class Key implements Comparable<Key>
 		}
 		
 		return 0;
+	}
+	
+	public double calculateDistance(Key other)
+	{
+		double distance = 0;
+		
+		for (int i = 0; i < equivalences.length; i++)
+		{
+			double diff = equivalences[i] - other.equivalences[i];
+			
+			distance += diff * diff; 
+		}
+		
+		return Math.sqrt(distance);
+	}
+	
+	public double calculateDistanceDouble(Double other)
+	{
+		double distance = 0;
+		
+		for (int i = 0; i < equivalences.length; i++)
+		{
+			double diff = equivalences[i] - other;
+			
+			distance += diff * diff; 
+		}
+		
+		return Math.sqrt(distance);
+	}
+	
+	public double getCentroid()
+	{
+		double centroid = 0;
+		
+		for (int i = 0; i < equivalences.length; i++)
+		{
+			centroid += equivalences[i];
+		}
+		
+		return (centroid/equivalences.length);
+
 	}
 	
 }
