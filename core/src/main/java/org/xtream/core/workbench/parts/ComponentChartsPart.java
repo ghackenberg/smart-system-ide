@@ -136,7 +136,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 						data[1][i] = port.get(getState(), i);
 					}
 					
-					dataset.addSeries(port.getName(), data);
+					dataset.addSeries(port.getQualifiedName(), data);
 				}
 				
 				getChart(definition).getXYPlot().setDataset(dataset);
