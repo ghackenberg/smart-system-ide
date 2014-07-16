@@ -3,7 +3,7 @@ package org.xtream.core.utilities.viewers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.utilities.Viewer;
 
 public class CompositeViewer<T extends Component> implements Viewer<T>

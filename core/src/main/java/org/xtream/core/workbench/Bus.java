@@ -3,7 +3,7 @@ package org.xtream.core.workbench;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 
 public class Bus<T extends Component>
 {

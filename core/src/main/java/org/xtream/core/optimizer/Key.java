@@ -1,7 +1,7 @@
 package org.xtream.core.optimizer;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Equivalence;
 
 public class Key implements Comparable<Key>

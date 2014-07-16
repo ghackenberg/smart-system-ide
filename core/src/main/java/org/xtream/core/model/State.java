@@ -1,6 +1,7 @@
 package org.xtream.core.model;
 
 //import org.xtream.core.model.annotations.Equivalence;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.Preference;
 import org.xtream.core.model.markers.objectives.MaxObjective;

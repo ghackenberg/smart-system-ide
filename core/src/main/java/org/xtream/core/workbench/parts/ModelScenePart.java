@@ -8,7 +8,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.utilities.visitors.JoglVisitor;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;

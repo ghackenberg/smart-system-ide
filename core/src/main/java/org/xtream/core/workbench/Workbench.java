@@ -16,7 +16,7 @@ import javax.swing.event.ChangeListener;
 
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.datatypes.Graph;
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;

@@ -1,7 +1,7 @@
 package org.xtream.core.model.components;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 
 public abstract class AbstractModulesComponent extends Component

@@ -1,10 +1,10 @@
 package org.xtream.demo.basic.model;
 
 import org.xtream.core.data.Pair;
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
