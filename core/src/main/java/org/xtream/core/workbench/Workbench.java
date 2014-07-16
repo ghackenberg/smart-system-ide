@@ -3,6 +3,7 @@ package org.xtream.core.workbench;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.io.PrintStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -16,10 +17,13 @@ import javax.swing.event.ChangeListener;
 
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.datatypes.Graph;
+import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
+import org.xtream.core.utilities.printers.CSVPrinter;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.parts.AggregateNavigationGraphPart;
 import org.xtream.core.workbench.parts.ComponentArchitecturePart;
@@ -184,6 +188,7 @@ public class Workbench<T extends Component>
 			
 			CompositeMonitor<T> allMonitor = new CompositeMonitor<>();
 			
+			allMonitor.add(new CSVMonitor<T>(new PrintStream("Monitor.csv")));
 			allMonitor.add(new EngineMonitor<T>(timeBar, memoryBar, slider, duration));
 			
 			for (Monitor<T> monitor : parts)
@@ -193,7 +198,13 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			engine.run(duration, samples, clusters, randomness, allMonitor);
+			State best = engine.run(duration, samples, clusters, randomness, allMonitor);
+			
+			// print
+			
+			CSVPrinter<T> printer = new CSVPrinter<>(new PrintStream("Printer.csv"));
+			
+			printer.print(root, best, best.getTimepoint());
 		}
 		catch (Exception e)
 		{

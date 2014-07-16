@@ -12,8 +12,8 @@ public class RootComponent extends Component
 	
 	public static final int SIZE = 10;
 	public static final int DURATION = 100;
-	public static final int SAMPLES = 1000;
-	public static final int CLUSTERS = 1;
+	public static final int SAMPLES = 50;
+	public static final int CLUSTERS = 100;
 	public static final double RANDOMNESS = 0;
 	public static final double CACHING = 0;
 	
@@ -50,6 +50,8 @@ public class RootComponent extends Component
 		
 		objective = new ObjectiveComponent(size);
 		
+		equivalence = new EquivalenceComponent(size);
+		
 		decisions = new ChannelExpression[size];
 		
 		for (int i = 0; i < size; i++)
@@ -71,6 +73,13 @@ public class RootComponent extends Component
 			statesToObjective[i] = new ChannelExpression<>(objective.stateInputs[i], contexts[i].stateOutput);
 		}
 		
+		statesToEquivalence = new ChannelExpression[size];
+		
+		for (int i = 0; i < size; i++)
+		{
+			statesToEquivalence[i] = new ChannelExpression<>(equivalence.stateInputs[i], contexts[i].stateOutput);
+		}
+		
 		Port<Double>[] states = new Port[size];
 		
 		for (int i = 0; i < size; i++)
@@ -89,12 +98,14 @@ public class RootComponent extends Component
 	public ControlComponent[] controls;
 	public ConstraintComponent[] constraints;
 	public ObjectiveComponent objective;
+	public EquivalenceComponent equivalence;
 	
 	// Channels
 	
 	public ChannelExpression<Boolean>[] decisions;
 	public ChannelExpression<Double>[] statesToConstraints;
 	public ChannelExpression<Double>[] statesToObjective;
+	public ChannelExpression<Double>[] statesToEquivalence;
 	
 	// Charts
 
