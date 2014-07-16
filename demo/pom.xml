@@ -14,6 +14,7 @@
 	<modules>
 		<module>basic</module>
 		<module>hydro</module>
+		<module>learning</module>
 		<module>mobile</module>
 		<module>street</module>
 		<module>thermal</module>
