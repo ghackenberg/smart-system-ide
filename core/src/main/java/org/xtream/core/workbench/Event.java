@@ -1,6 +1,6 @@
 package org.xtream.core.workbench;
 
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 
 public class Event<T extends Component>
 {

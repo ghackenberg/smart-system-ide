@@ -1,6 +1,6 @@
 package org.xtream.core.optimizer.calibrators;
 
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Calibrator;
 
 public class QuadraticCalibrator<T extends Component> extends Calibrator<T>

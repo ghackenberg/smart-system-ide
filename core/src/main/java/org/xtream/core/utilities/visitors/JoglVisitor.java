@@ -1,7 +1,7 @@
 package org.xtream.core.utilities.visitors;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Transform;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.nodes.Background;
 import org.xtream.core.model.nodes.Camera;
 import org.xtream.core.model.nodes.Group;

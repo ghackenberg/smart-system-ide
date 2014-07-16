@@ -9,8 +9,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Statistics;

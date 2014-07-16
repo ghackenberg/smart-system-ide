@@ -7,7 +7,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultTreeTableModel;
-import org.xtream.core.model.Component;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;

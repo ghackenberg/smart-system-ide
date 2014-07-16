@@ -6,11 +6,11 @@ import java.io.IOException;
 import java.util.Vector;
 
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.containers.Component;
 
 import au.com.bytecode.opencsv.CSVReader;
 

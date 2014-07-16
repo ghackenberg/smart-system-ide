@@ -3,13 +3,13 @@ package org.xtream.demo.hydro.model;
 import java.awt.Color;
 
 import org.xtream.core.model.Chart;
-import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Node;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.Transform;
 import org.xtream.core.model.charts.Timeline;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.nodes.shapes.Box;
 import org.xtream.core.model.transforms.Translation;
