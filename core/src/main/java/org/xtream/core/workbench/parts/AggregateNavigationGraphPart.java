@@ -145,7 +145,7 @@ public class AggregateNavigationGraphPart<T extends Component> extends Part<T>
 
                 dot.append("subgraph Vehicle {\n");
 
-                for (Component component : root.getChildrenByClass(Component.class)) 
+                for (Container component : root.getChildrenByClass(Container.class)) 
                 {
                     Set<String> set = new HashSet<String>();
 
