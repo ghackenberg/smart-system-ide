@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.model.vehicles;
+package org.xtream.demo.mobile.model.vehicle;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,9 +8,9 @@ import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
-import org.xtream.core.model.components.AbstractLogicsComponent;
+import org.xtream.core.model.containers.Component;
 
-public class LogicsComponent extends AbstractLogicsComponent
+public class LogicsComponent extends Component
 {
 	
 	public LogicsComponent(Graph graph) 
@@ -20,7 +20,7 @@ public class LogicsComponent extends AbstractLogicsComponent
 	
 	// Parameters
 	
-	private Graph graph;
+	public Graph graph;
 	
 	// Inputs
 	

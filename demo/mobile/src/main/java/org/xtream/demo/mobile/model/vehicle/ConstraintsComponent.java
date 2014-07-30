@@ -1,12 +1,12 @@
-package org.xtream.demo.mobile.model.vehicles;
+package org.xtream.demo.mobile.model.vehicle;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
-import org.xtream.core.model.components.AbstractConstraintsComponent;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
 
-public class ConstraintsComponent extends AbstractConstraintsComponent
+public class ConstraintsComponent extends Component
 {
 	
 	// Inputs
