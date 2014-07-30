@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.model.vehicles;
+package org.xtream.demo.mobile.model.vehicle;
 
 import java.util.Set;
 
@@ -8,13 +8,13 @@ import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ConstantExpression;
-import org.xtream.demo.mobile.model.commons.EnergyPhysicsComponent;
 
-public class PhysicsComponent extends EnergyPhysicsComponent
+public class ContextComponent extends Component
 {
 		
-	public PhysicsComponent(Graph graph, String startPosition, String destinationPosition) 
+	public ContextComponent(Graph graph, String startPosition, String destinationPosition) 
 	{
 		this.graph = graph;
 		this.startPosition = startPosition;
@@ -23,9 +23,9 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	
 	// Parameters
 	
-	private Graph graph;
-	private String startPosition;
-	private String destinationPosition;
+	public Graph graph;
+	public String startPosition;
+	public String destinationPosition;
 	
 	// Inputs
 	
@@ -72,7 +72,11 @@ public class PhysicsComponent extends EnergyPhysicsComponent
 	public Port<Double> vehicleWidthOutput = new Port<>();
 	
 	public Port<Double> chargeRateOutput = new Port<>();
-	
+
+    public Port<Double> productionOutput = new Port<>();
+    public Port<Double> consumptionOutput = new Port<>();
+    public Port<Double> balanceOutput = new Port<>();
+
 	// Expressions
 	
 	// TODO [Dominik] Utilize Setbuilder (selection) for non deterministic expressions
