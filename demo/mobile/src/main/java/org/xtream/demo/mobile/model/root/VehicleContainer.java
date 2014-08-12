@@ -28,10 +28,10 @@ public class VehicleContainer extends GenericModuleContainer
     // Previews
     public Chart modulePreview;
 
-	public VehicleContainer(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight, Double chargeState, Double chargeRate, Double vMax, Double mileage, Double vehicleLength, Double vehicleWidth)
+	public VehicleContainer(Graph graph, String startPosition, String destinationPosition, Double timeResolution, Double timeWeight, Double powerWeight, Double chargeState, Double chargeRate, Double vMax, Double mileage, Double vehicleLength, Double vehicleWidth)
 	{
-        this.context = new ContextComponent(graph, startPosition, destinationPosition, chargeState, chargeRate, mileage, vehicleLength, vehicleWidth);
-        this.logics = new LogicsComponent(graph, vMax);
+        this.context = new ContextComponent(graph, startPosition, destinationPosition, timeResolution, chargeState, chargeRate, mileage, vehicleLength, vehicleWidth);
+        this.logics = new LogicsComponent(graph, timeResolution, vMax);
         this.constraints = new ConstraintsComponent();
         this.objectives = new ObjectiveComponent(graph, timeWeight, powerWeight);
 
@@ -48,13 +48,12 @@ public class VehicleContainer extends GenericModuleContainer
         balance = new ChannelExpression<>(balanceOutput, context.balanceOutput);
         startPosition2 = new ChannelExpression<>(logics.startPositionInput, context.startPositionOutput);
         destinationPosition2 = new ChannelExpression<>(logics.destinationPositionInput, context.destinationPositionOutput);
-        positionOutgoingEdges = new ChannelExpression<>(logics.positionOutgoingEdgesInput, context.positionOutgoingEdgesOutput);
         positionTraversedLength2 = new ChannelExpression<>(logics.positionTraversedLengthInput, context.positionTraversedLengthOutput);
         positionEdgeLength = new ChannelExpression<>(logics.positionEdgeLengthInput, context.positionEdgeLengthOutput);
         drivingIndicator2 = new ChannelExpression<>(logics.drivingIndicatorInput, context.drivingIndicatorOutput);
         position2 = new ChannelExpression<>(context.positionInput, logics.positionOutput);
-        positionList = new ChannelExpression<>(context.positionListInput, logics.positionListOutput);
-        speedInternal = new ChannelExpression<>(context.speedInput, logics.speedOutput);
+        positionList = new ChannelExpression<>(context.positionListInput, logics.positionEdgeListOutput);
+        speedInternal = new ChannelExpression<>(context.speedAbsoluteInput, logics.speedAbsoluteOutput);
         power2 = new ChannelExpression<>(objectives.powerInput, context.powerOutput);
         targetReached = new ChannelExpression<>(objectives.targetReachedInput, context.targetReachedOutput);
         drivingIndicator = new ChannelExpression<>(objectives.drivingIndicatorInput, context.drivingIndicatorOutput);
@@ -121,7 +120,6 @@ public class VehicleContainer extends GenericModuleContainer
 	
 	public ChannelExpression<Edge> startPosition2;
 	public ChannelExpression<Edge> destinationPosition2;
-	public ChannelExpression<Edge> positionOutgoingEdges;
 	public ChannelExpression<Double> positionTraversedLength2;
 	public ChannelExpression<Double> positionEdgeLength;
 	public ChannelExpression<Boolean> drivingIndicator2;

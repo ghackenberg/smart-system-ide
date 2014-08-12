@@ -30,4 +30,8 @@ public class Position {
 	{
 		return positionOnEdge;
 	}
+	
+	public String toString() {
+		return ("(" + positionOnGraph + "/" + positionOnEdge + ")");
+	}
 }

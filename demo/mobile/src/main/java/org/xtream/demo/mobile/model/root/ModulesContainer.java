@@ -16,20 +16,34 @@ public class ModulesContainer extends Container
 		VehicleContainer[] modules = new VehicleContainer[size];
 		
 		// Vehicles
+		/* Parameters VehicleContainer
+		 * Graph graph (specifies Graph), 
+		 * String startPosition (specifies start position on Graph), 
+		 * String destinationPosition (specifies destination position on Graph), 
+		 * Double timeResolution (specifies time resolution in min), 
+		 * Double timeWeight,
+		 * Double powerWeight, 
+		 * Double chargeState (specifies charge state capacity in kWh, 
+		 * Double chargeRate (specifies charging rate in kWh), 
+		 * Double vMax (specifies maximum velocity in km/h), 
+		 * Double mileage (specifies mileage in kWh), 
+		 * Double vehicleLength (specifies vehicle length in km), 
+		 * Double vehicleWidth (specifies vehicle length in km)
+		 */
 		
 		for (int i = 0; i < size; i++) 
 		{
 			if (i < size / 3.0)
 			{
-				modules[i] = new VehicleContainer(graph, "OriginA", "DestinationA", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);		
+				modules[i] = new VehicleContainer(graph, "OriginA", "DestinationA", 60., 1., 1., 85., 5.67, 200., 0.2353, 0.003, 0.002);		
 			}
 			else if(i >= size / 3.0 && i < size * 2.0 / 3.0)
 			{
-				modules[i] = new VehicleContainer(graph, "OriginB", "DestinationB", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);			
+				modules[i] = new VehicleContainer(graph, "OriginB", "DestinationB", 60., 1., 1., 85., 5.67, 200., 0.2353, 0.003, 0.002);			
 			}
 			else
 			{
-				modules[i] = new VehicleContainer(graph, "OriginC", "DestinationC", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);			
+				modules[i] = new VehicleContainer(graph, "OriginC", "DestinationC", 60., 1., 1., 85., 5.67, 200., 0.2353, 0.003, 0.002);			
 			}
 		}
 		

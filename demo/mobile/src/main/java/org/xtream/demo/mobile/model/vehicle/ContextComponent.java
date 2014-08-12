@@ -1,7 +1,6 @@
 package org.xtream.demo.mobile.model.vehicle;
 
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -15,11 +14,12 @@ import org.xtream.demo.mobile.datatypes.Node;
 public class ContextComponent extends Component
 {
 		
-	public ContextComponent(Graph graph, String startPosition, String destinationPosition, Double chargeState, Double chargeRate, Double mileage, Double vehicleLength, Double vehicleWidth) 
+	public ContextComponent(Graph graph, String startPosition, String destinationPosition, Double timeResolution, Double chargeState, Double chargeRate, Double mileage, Double vehicleLength, Double vehicleWidth) 
 	{
 		this.graph = graph;
 		this.startPosition = startPosition;
 		this.destinationPosition = destinationPosition;
+		this.timeResolution = timeResolution;
 		this.chargeState = chargeState;
 		this.chargeRate = chargeRate;
 		this.mileage = mileage;
@@ -32,6 +32,7 @@ public class ContextComponent extends Component
 	public Graph graph;
 	public String startPosition;
 	public String destinationPosition;
+	public Double timeResolution;
 	public Double chargeState;
 	public Double chargeRate;
 	public Double mileage;
@@ -42,13 +43,12 @@ public class ContextComponent extends Component
 	
 	public Port<Edge> positionInput = new Port<>();
 	public Port<LinkedList<Edge>> positionListInput = new Port<>();
-	public Port<Double> speedInput = new Port<>();
+	public Port<Double> speedAbsoluteInput = new Port<>();
 	
 	// Outputs External/Internal
 	
 	public Port<Edge> startPositionOutput = new Port<>();
 	public Port<Edge> destinationPositionOutput = new Port<>();
-	public Port<Edge> positionOutgoingEdgesOutput = new Port<>();
 	public Port<Double> positionTraversedLengthOutput = new Port<>();
 	public Port<Double> positionEdgeLengthOutput= new Port<>();
 	
@@ -91,27 +91,6 @@ public class ContextComponent extends Component
 
 	// Expressions
 	
-	// TODO [Dominik] Utilize Setbuilder (selection) for non deterministic expressions
-	public Expression<Edge> positionOutgoingEdgesExpression = new Expression<Edge>(positionOutgoingEdgesOutput, true)
-	{
-		@Override protected Edge evaluate(State state, int timepoint)
-		{
-			Set<Edge> set = graph.getOutgoingEdges(positionInput.get(state, timepoint));
-			int random = (int) Math.floor(Math.random() * set.size());
-			
-			for (Edge item : set)
-			{
-				if (--random < 0)
-				{
-					return item;
-				}
-			}
-			
-			throw new IllegalStateException();
-			
-		}
-	};
-	
 	public Expression<Double> positionTraversedLengthExpression = new Expression<Double>(positionTraversedLengthOutput, true)
 	{
 		@Override protected Double evaluate(State state, int timepoint)
@@ -123,7 +102,7 @@ public class ContextComponent extends Component
 			else 
 			{
 				// Stop
-				if (targetReachedOutput.get(state, timepoint) || (speedInput.get(state, timepoint) == 0))
+				if (targetReachedOutput.get(state, timepoint) || (speedAbsoluteInput.get(state, timepoint) == 0))
 				{
 					return positionTraversedLengthOutput.get(state, timepoint-1);
 				}
@@ -131,7 +110,7 @@ public class ContextComponent extends Component
 				else
 				{	
 					LinkedList<Edge> traversedEdges = positionListInput.get(state, timepoint);
-					double sum = speedInput.get(state,timepoint);
+					double sum = speedAbsoluteInput.get(state,timepoint);
 					
 					// Add already traversed length of edge in timepoint-1
 					sum += positionTraversedLengthOutput.get(state, timepoint-1);
@@ -383,13 +362,13 @@ public class ContextComponent extends Component
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{		
-			if (speedInput.get(state, timepoint) > 0)
+			if (speedAbsoluteInput.get(state, timepoint) > 0)
 			{
 				
 				double slope;
-				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedInput.get(state, timepoint),2)))
+				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedAbsoluteInput.get(state, timepoint),2)))
 				{
-					slope = (Math.pow(speedInput.get(state, timepoint), 2))+positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint); 
+					slope = (Math.pow(speedAbsoluteInput.get(state, timepoint), 2))+positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint); 
 				}
 				else {
 					slope = 0.;
