@@ -1,7 +1,7 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
-import org.xtream.core.datatypes.Edge;
-import org.xtream.core.datatypes.Graph;
+import java.util.LinkedList;
+
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -9,6 +9,8 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Histogram;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.demo.mobile.datatypes.Edge;
+import org.xtream.demo.mobile.datatypes.Graph;
 import org.xtream.demo.mobile.model.vehicle.ConstraintsComponent;
 import org.xtream.demo.mobile.model.vehicle.ContextComponent;
 import org.xtream.demo.mobile.model.vehicle.ObjectiveComponent;
@@ -26,10 +28,10 @@ public class VehicleContainer extends GenericModuleContainer
     // Previews
     public Chart modulePreview;
 
-	public VehicleContainer(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight)
+	public VehicleContainer(Graph graph, String startPosition, String destinationPosition, Double timeWeight, Double powerWeight, Double chargeState, Double chargeRate, Double vMax, Double mileage, Double vehicleLength, Double vehicleWidth)
 	{
-        this.context = new ContextComponent(graph, startPosition, destinationPosition);
-        this.logics = new LogicsComponent(graph);
+        this.context = new ContextComponent(graph, startPosition, destinationPosition, chargeState, chargeRate, mileage, vehicleLength, vehicleWidth);
+        this.logics = new LogicsComponent(graph, vMax);
         this.constraints = new ConstraintsComponent();
         this.objectives = new ObjectiveComponent(graph, timeWeight, powerWeight);
 
@@ -37,12 +39,13 @@ public class VehicleContainer extends GenericModuleContainer
         speed = new ChannelExpression<>(speedOutput, logics.speedOutput);
         positionTraversedLength = new ChannelExpression<>(positionTraversedLengthOutput, context.positionTraversedLengthOutput);
         position = new ChannelExpression<>(positionOutput, logics.positionOutput);
-        vehicleLength = new ChannelExpression<>(vehicleLengthOutput, context.vehicleLengthOutput);
+        vehicleLength2 = new ChannelExpression<>(vehicleLengthOutput, context.vehicleLengthOutput);
         timeCosts = new ChannelExpression<>(timeCostOutput, objectives.timeCostsOutput);
         powerCosts = new ChannelExpression<>(powerCostOutput, objectives.powerCostsOutput);
         this.startPosition = new ChannelExpression<>(startPositionOutput, context.startPositionOutput);
         this.destinationPosition = new ChannelExpression<>(destinationPositionOutput, context.destinationPositionOutput);
         power = new ChannelExpression<>(powerOutput, context.powerOutput);
+        balance = new ChannelExpression<>(balanceOutput, context.balanceOutput);
         startPosition2 = new ChannelExpression<>(logics.startPositionInput, context.startPositionOutput);
         destinationPosition2 = new ChannelExpression<>(logics.destinationPositionInput, context.destinationPositionOutput);
         positionOutgoingEdges = new ChannelExpression<>(logics.positionOutgoingEdgesInput, context.positionOutgoingEdgesOutput);
@@ -50,9 +53,8 @@ public class VehicleContainer extends GenericModuleContainer
         positionEdgeLength = new ChannelExpression<>(logics.positionEdgeLengthInput, context.positionEdgeLengthOutput);
         drivingIndicator2 = new ChannelExpression<>(logics.drivingIndicatorInput, context.drivingIndicatorOutput);
         position2 = new ChannelExpression<>(context.positionInput, logics.positionOutput);
+        positionList = new ChannelExpression<>(context.positionListInput, logics.positionListOutput);
         speedInternal = new ChannelExpression<>(context.speedInput, logics.speedOutput);
-        timeCosts2 = new ChannelExpression<>(objectives.timeCostsInput, objectives.timeCostsOutput);
-        powerCosts2 = new ChannelExpression<>(objectives.powerCostsInput, objectives.powerCostsOutput);
         power2 = new ChannelExpression<>(objectives.powerInput, context.powerOutput);
         targetReached = new ChannelExpression<>(objectives.targetReachedInput, context.targetReachedOutput);
         drivingIndicator = new ChannelExpression<>(objectives.drivingIndicatorInput, context.drivingIndicatorOutput);
@@ -96,13 +98,13 @@ public class VehicleContainer extends GenericModuleContainer
 	
 	// Channels
 	
-	// Channels logics -> net
+	// Channels logics -> vehicle
 	
     public ChannelExpression<Double> chargeStateRelative;
 	public ChannelExpression<Double> speed;
 	public ChannelExpression<Double> positionTraversedLength;
 	public ChannelExpression<Edge> position;
-	public ChannelExpression<Double> vehicleLength;
+	public ChannelExpression<Double> vehicleLength2;
 	
 	public ChannelExpression<Double> timeCosts;
 	public ChannelExpression<Double> powerCosts;
@@ -110,11 +112,12 @@ public class VehicleContainer extends GenericModuleContainer
 	public ChannelExpression<Edge> startPosition;
 	public ChannelExpression<Edge> destinationPosition;
 	
-	// Channels physics -> net
+	// Channels context -> vehicle
 	
 	public ChannelExpression<Double> power;
+	public ChannelExpression<Double> balance;
 	
-	// Channels physics -> logics
+	// Channels context -> logics
 	
 	public ChannelExpression<Edge> startPosition2;
 	public ChannelExpression<Edge> destinationPosition2;
@@ -123,23 +126,19 @@ public class VehicleContainer extends GenericModuleContainer
 	public ChannelExpression<Double> positionEdgeLength;
 	public ChannelExpression<Boolean> drivingIndicator2;
 	
-	// Channels logics -> physics
+	// Channels logics -> context
 	
 	public ChannelExpression<Edge> position2;
+	public ChannelExpression<LinkedList<Edge>> positionList;
 	public ChannelExpression<Double> speedInternal;
 	
-	// Channels qualities -> costs
-	
-	public ChannelExpression<Double> timeCosts2;
-	public ChannelExpression<Double> powerCosts2;
-	
-	// Channels: physics -> qualities
+	// Channels: context -> objective
 	
 	public ChannelExpression<Double> power2;
 	public ChannelExpression<Boolean> targetReached;
 	public ChannelExpression<Boolean> drivingIndicator;
 
-	// Channels physics -> constraints
+	// Channels context -> constraints
 	
 	public ChannelExpression<Double> maximumChargeState;
 	public ChannelExpression<Double> minimumChargeState;

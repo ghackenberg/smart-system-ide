@@ -1,7 +1,7 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Container;
+import org.xtream.demo.mobile.datatypes.Graph;
 
 public class ModulesContainer extends Container
 {
@@ -21,15 +21,15 @@ public class ModulesContainer extends Container
 		{
 			if (i < size / 3.0)
 			{
-				modules[i] = new VehicleContainer(graph, "OriginA", "DestinationA", 1., 1.);		
+				modules[i] = new VehicleContainer(graph, "OriginA", "DestinationA", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);		
 			}
 			else if(i >= size / 3.0 && i < size * 2.0 / 3.0)
 			{
-				modules[i] = new VehicleContainer(graph, "OriginB", "DestinationB", 1., 1.);		
+				modules[i] = new VehicleContainer(graph, "OriginB", "DestinationB", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);			
 			}
 			else
 			{
-				modules[i] = new VehicleContainer(graph, "OriginC", "DestinationC", 1., 1.);		
+				modules[i] = new VehicleContainer(graph, "OriginC", "DestinationC", 1., 1., 85., 5.67, 3.33, 0.2353, 0.003, 0.002);			
 			}
 		}
 		

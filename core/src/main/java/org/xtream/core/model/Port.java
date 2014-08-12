@@ -15,7 +15,14 @@ public class Port<T> extends Element
 	
 	public T get(State state, int timepoint)
 	{
-		return expression.get(state, timepoint);
+		if (expression != null) 
+		{
+			return expression.get(state, timepoint);
+		}
+		else 
+		{
+			throw new IllegalStateException(this.getQualifiedName());
+		}
 	}
 	
 	public void setExpression(Expression<T> expression)

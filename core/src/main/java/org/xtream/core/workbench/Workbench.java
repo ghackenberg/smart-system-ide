@@ -16,7 +16,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.jfree.ui.ApplicationFrame;
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Engine;
@@ -25,7 +24,6 @@ import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.utilities.printers.CSVPrinter;
 import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.parts.AggregateNavigationGraphPart;
 import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenPart;
@@ -55,13 +53,8 @@ public class Workbench<T extends Component>
 		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenPart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new ModelScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
 	}
 	
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Graph graph)
-	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenPart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new AggregateNavigationGraphPart<T>(graph,1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
-	}
-	
 	@SafeVarargs
-	private Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Part<T>... parts)
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Part<T>... parts)
 	{
 		try
 		{

@@ -1,21 +1,22 @@
-package org.xtream.core.datatypes;
+package org.xtream.demo.mobile.datatypes;
 
-public class Edge 
+public class Node
 {
 	
 	private String name;
-	private String source;
-	private String target;
-	private String weight;
-	private String tag;
 	private Graph graph;
 	
-	public Edge(String name, String source, String target, String weight, String tag)
+	private String weight;
+	private String xpos;
+	private String ypos;
+	private String tag;
+	
+	public Node(String name, String weight, String xpos, String ypos, String tag)
 	{
 		this.name = name;
-		this.source = source;
-		this.target = target;
 		this.weight = weight;
+		this.xpos = xpos;
+		this.ypos = ypos;
 		this.tag = tag;
 	}
 	
@@ -29,26 +30,25 @@ public class Edge
 		return name;
 	}
 	
-	public String getSource()
-	{
-		return source;
-	}
-	
-	public String getTarget()
-	{
-		return target;
-	}
-	
 	public String getWeight()
 	{
 		return weight;
+	}
+	
+	public String getXpos()
+	{
+		return xpos;
+	}
+	
+	public String getYpos ()
+	{
+		return ypos;
 	}
 	
 	public String getTag()
 	{
 		return tag;
 	}
-	
 	
 	public void setGraph(Graph graph)
 	{

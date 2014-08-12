@@ -1,10 +1,10 @@
 package org.xtream.demo.mobile.model.vehicle;
 
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.demo.mobile.datatypes.Graph;
 
 public class ObjectiveComponent extends Component
 {
@@ -23,8 +23,6 @@ public class ObjectiveComponent extends Component
 	
 	// Inputs
 
-	public Port<Double> timeCostsInput = new Port<>();
-	public Port<Double> powerCostsInput = new Port<>();
 	public Port<Double> powerInput = new Port<>();
 	public Port<Boolean> targetReachedInput = new Port<>();
 	public Port<Boolean> drivingIndicatorInput = new Port<>();

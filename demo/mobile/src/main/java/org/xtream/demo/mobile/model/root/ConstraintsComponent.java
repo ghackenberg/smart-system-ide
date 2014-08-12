@@ -1,13 +1,13 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
-import org.xtream.core.datatypes.Edge;
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.demo.mobile.datatypes.Edge;
+import org.xtream.demo.mobile.datatypes.Graph;
 
 public class ConstraintsComponent extends Component
 {
@@ -35,9 +35,9 @@ public class ConstraintsComponent extends Component
 		for (int i = 0; i < modules.modules.length; i++)
 		{
 			VehicleContainer vehicleModule = (VehicleContainer) modules.modules[i];
-			positionTraversedLength[i] = new ChannelExpression<>(positionTraversedLengthInputs[i], vehicleModule.positionTraversedLengthOutput);
-			position[i] = new ChannelExpression<>(positionInputs[i], vehicleModule.positionOutput);
-			vehicleLength[i] = new ChannelExpression<>(vehicleLengthInputs[i], vehicleModule.vehicleLengthOutput);
+			positionTraversedLength[i] = new ChannelExpression<>(positionTraversedLengthInputs[i], vehicleModule.context.positionTraversedLengthOutput);
+			position[i] = new ChannelExpression<>(positionInputs[i], vehicleModule.logics.positionOutput);
+			vehicleLength[i] = new ChannelExpression<>(vehicleLengthInputs[i], vehicleModule.context.vehicleLengthOutput);
 		}
 	}
 	
@@ -50,9 +50,6 @@ public class ConstraintsComponent extends Component
 	public Port<Double>[] positionTraversedLengthInputs;
 	public Port<Double>[] vehicleLengthInputs;
 	public Port<Edge>[] positionInputs;
-	
-	public Port<Double> productionInput = new Port<>();
-	public Port<Double> consumptionInput = new Port<>();
 	
 	// Outputs
 	
