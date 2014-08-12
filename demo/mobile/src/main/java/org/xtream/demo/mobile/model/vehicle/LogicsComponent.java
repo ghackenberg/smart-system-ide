@@ -13,22 +13,23 @@ import org.xtream.demo.mobile.datatypes.Graph;
 public class LogicsComponent extends Component
 {
 	
-	public LogicsComponent(Graph graph, Double vMax) 
+	public LogicsComponent(Graph graph, Double timeResolution, Double vMax) 
 	{
 		this.graph = graph;
+		this.timeResolution = timeResolution;
 		this.vMax = vMax;
 	}
 	
 	// Parameters
 	
 	public Graph graph;
+	public Double timeResolution;
 	public Double vMax;
 	
 	// Inputs
 	
 	public Port<Edge> startPositionInput = new Port<>();
 	public Port<Edge> destinationPositionInput = new Port<>();
-	public Port<Edge> positionOutgoingEdgesInput = new Port<>();
 	public Port<Double> positionTraversedLengthInput = new Port<>();
 	public Port<Double> positionEdgeLengthInput = new Port<>();
 	public Port<Boolean> drivingIndicatorInput = new Port<>();
@@ -36,8 +37,8 @@ public class LogicsComponent extends Component
 	// Outputs
 	
 	public Port<Edge> positionOutput = new Port<>();
-	public Port<LinkedList<Edge>> positionListOutput = new Port<>();
-	public Port<Edge> positionTargetOutput = new Port<>();
+	public Port<LinkedList<Edge>> positionEdgeListOutput = new Port<>();
+	public Port<List<Edge>> pathOutput = new Port<>();
 	public Port<Double> speedOutput = new Port<>();
 	public Port<Double> speedAbsoluteOutput = new Port<>();
 	
@@ -54,54 +55,73 @@ public class LogicsComponent extends Component
 			}
 			else 
 			{
-				return positionListOutput.get(state, timepoint).getLast();
+				return positionEdgeListOutput.get(state, timepoint).getLast();
 			}
 		}
 	};
 	
-	public Expression<LinkedList<Edge>> positionListExpression = new Expression<LinkedList<Edge>>(positionListOutput, true)	
+	public Expression<LinkedList<Edge>> positionEdgeListExpression = new Expression<LinkedList<Edge>>(positionEdgeListOutput, true)	
 	{
 		@Override protected LinkedList<Edge> evaluate(State state, int timepoint)
 		{
 			if (timepoint == 0) 
 			{
+				LinkedList<Edge> pathEdges = new LinkedList<Edge>();
+				pathEdges.add(startPositionInput.get(state, timepoint));
+				return pathEdges;
+			}
+			else 
+			{
+				// Initialize with initial speed and subtract edge lengths
+				double sum = (speedOutput.get(state, timepoint)/timeResolution);
+				
+				// Add already traversed length of edge in timepoint-1
+				sum += positionTraversedLengthInput.get(state, timepoint-1);
+				
+				List<Edge> pathEdges = pathOutput.get(state, timepoint);
+				
+				// Create list of reached edges
 				LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
-				traversedEdges.add(startPositionInput.get(state, timepoint));
-				return traversedEdges;
+				
+				// Select every reachable edge and get weight
+				for (int i = 0; i < pathEdges.size(); i++) 
+				{
+					Edge e = pathEdges.get(i);
+					traversedEdges.add(e);
+								
+					if ((sum - Double.parseDouble(e.getWeight())) >= 0) 
+					{
+						sum -= Double.parseDouble(e.getWeight());
+					}
+					else 
+					{
+						// Traverse last edge partially and return result
+						return traversedEdges;
+					}
+				}
+			}
+			LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
+			traversedEdges.add(positionOutput.get(state, timepoint-1));
+			return traversedEdges;	
+		}
+	};
+	
+	public Expression<List<Edge>> pathExpression = new Expression<List<Edge>>(pathOutput, true)	
+	{
+		@Override protected List<Edge> evaluate(State state, int timepoint)
+		{
+			if (timepoint == 0) 
+			{
+				List<Edge> pathEdges = new LinkedList<Edge>();
+				pathEdges.add(startPositionInput.get(state, timepoint));
+				return pathEdges;
 			}
 			else 
 			{
 				if (speedOutput.get(state, timepoint) > 0)
 				{
 					// Generate new random sequence of reachable edges
-					List<Edge> edgeList = new LinkedList<Edge>();
-					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint-1).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
-					
-					// Initialize with initial speed and substract edge lengths
-					double sum = speedOutput.get(state,timepoint);
-					
-					// Add already traversed length of edge in timepoint-1
-					sum += positionTraversedLengthInput.get(state, timepoint-1);
-					
-					// Create list of reached edges
-					LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
-					
-					// Select every reachable edge and get weight
-					for (int i = 0; i < edgeList.size(); i++) 
-					{
-						Edge e = edgeList.get(i);
-						traversedEdges.add(e);
-									
-						if ((sum - Double.parseDouble(e.getWeight())) >= 0) 
-						{
-							sum -= Double.parseDouble(e.getWeight());
-						}
-						else {
-							// Traverse last edge partially and return result
-							return traversedEdges;
-						}
-					}
-					
+					return graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint-1).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));	
 				}
 				else 
 				{
@@ -110,44 +130,10 @@ public class LogicsComponent extends Component
 					return traversedEdges;
 				}
 			}
-			LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
-			traversedEdges.add(positionOutput.get(state, timepoint-1));
-			return traversedEdges;
 		}
 	};
 	
-
-	public Expression<Edge> positionTargetExpression = new Expression<Edge>(positionTargetOutput, true)	
-	{
-		@Override protected Edge evaluate(State state, int timepoint)
-		{
-			if (positionTraversedLengthInput.get(state, timepoint) >= positionEdgeLengthInput.get(state, timepoint))
-			{
-				List<Edge> edgeList = new LinkedList<Edge>();
-				
-				if (edgeList.isEmpty())
-				{
-					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
-					edgeList.add(destinationPositionInput.get(state, timepoint));
-					
-					return edgeList.get(0);
-				}
-				else 
-				{
-					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
-					
-					return edgeList.get(0);
-				}
-			
-			}
-			else 
-			{
-				return positionOutput.get(state, timepoint);
-			}
-		}
-	};
-	
-	// Crossed distance per step
+	// Choose speed in km/h
 	public Expression<Double> speedExpression = new Expression<Double>(speedOutput, true)	
 	{
 		@Override protected Double evaluate(State state, int timepoint)
@@ -156,7 +142,7 @@ public class LogicsComponent extends Component
 			{
 				if (!(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
 				{
-					return (Math.random()*vMax);
+					return (vMax*Math.random());
 				}
 				else 
 				{
@@ -170,16 +156,16 @@ public class LogicsComponent extends Component
 		}
 	};
 	
-	// Measures speed in kilometers/h
+	// Measures speed through crossed distance
 	public Expression<Double> speedAbsoluteExpression = new Expression<Double>(speedAbsoluteOutput, true)	
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
 			if (drivingIndicatorInput.get(state, timepoint))
 			{
-				if (!(positionTargetOutput.get(state, timepoint-1).equals(startPositionInput.get(state, timepoint))) && !(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
+				if (!(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
 				{
-					return (speedOutput.get(state, timepoint)*60);
+					return (speedOutput.get(state, timepoint)/timeResolution);
 				}
 				else 
 				{
