@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -16,11 +16,11 @@ public class EquivalenceComponent extends Component
 		chargeStateRelativeInputs = new Port[modulesLength];
 		chargeStateRelative = new ChannelExpression[modulesLength];
 		
-		for (int i = 0; i < modules.modules.length; i++)
+		for (int i = 0; i < modulesLength; i++)
 		{
 			chargeStateRelativeInputs[i] = new Port<>();
 			VehicleContainer vehicleModule = (VehicleContainer) modules.modules[i];
-			chargeStateRelative[i] = new ChannelExpression<>(chargeStateRelativeInputs[i], vehicleModule.chargeStateRelativeOutput);
+			chargeStateRelative[i] = new ChannelExpression<>(chargeStateRelativeInputs[i], vehicleModule.context.chargeStateRelativeOutput);
 		}
 	}
 	
@@ -50,9 +50,11 @@ public class EquivalenceComponent extends Component
 			
 			for (int i = 0; i < chargeStateRelativeInputs.length; i++)
 			{
+				System.out.println(chargeStateRelativeInputs[i].get(state, timepoint));
 				sum += chargeStateRelativeInputs[i].get(state, timepoint);
 			}
 			
+			System.out.println(sum);
 			return sum;
 		}
 	};

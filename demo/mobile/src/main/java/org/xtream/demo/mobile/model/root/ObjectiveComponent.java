@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
@@ -22,7 +22,7 @@ public class ObjectiveComponent extends Component
 		{
 			costInputs[i] = new Port<>();
 			VehicleContainer vehicleModule = (VehicleContainer) modules.modules[i];
-			cost[i] = new ChannelExpression<>(costInputs[i], vehicleModule.costOutput);
+			cost[i] = new ChannelExpression<>(costInputs[i], vehicleModule.objectives.costsOutput);
 		}
 	}
 	

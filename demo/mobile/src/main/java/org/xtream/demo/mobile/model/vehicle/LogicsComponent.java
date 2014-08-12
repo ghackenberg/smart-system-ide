@@ -3,24 +3,26 @@ package org.xtream.demo.mobile.model.vehicle;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.xtream.core.datatypes.Edge;
-import org.xtream.core.datatypes.Graph;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.demo.mobile.datatypes.Edge;
+import org.xtream.demo.mobile.datatypes.Graph;
 
 public class LogicsComponent extends Component
 {
 	
-	public LogicsComponent(Graph graph) 
+	public LogicsComponent(Graph graph, Double vMax) 
 	{
 		this.graph = graph;
+		this.vMax = vMax;
 	}
 	
 	// Parameters
 	
 	public Graph graph;
+	public Double vMax;
 	
 	// Inputs
 	
@@ -34,6 +36,7 @@ public class LogicsComponent extends Component
 	// Outputs
 	
 	public Port<Edge> positionOutput = new Port<>();
+	public Port<LinkedList<Edge>> positionListOutput = new Port<>();
 	public Port<Edge> positionTargetOutput = new Port<>();
 	public Port<Double> speedOutput = new Port<>();
 	public Port<Double> speedAbsoluteOutput = new Port<>();
@@ -51,15 +54,65 @@ public class LogicsComponent extends Component
 			}
 			else 
 			{
+				return positionListOutput.get(state, timepoint).getLast();
+			}
+		}
+	};
+	
+	public Expression<LinkedList<Edge>> positionListExpression = new Expression<LinkedList<Edge>>(positionListOutput, true)	
+	{
+		@Override protected LinkedList<Edge> evaluate(State state, int timepoint)
+		{
+			if (timepoint == 0) 
+			{
+				LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
+				traversedEdges.add(startPositionInput.get(state, timepoint));
+				return traversedEdges;
+			}
+			else 
+			{
 				if (speedOutput.get(state, timepoint) > 0)
 				{
-					return positionTargetOutput.get(state, timepoint-1);
+					// Generate new random sequence of reachable edges
+					List<Edge> edgeList = new LinkedList<Edge>();
+					edgeList = graph.generatePath(graph.getTargetNode(positionOutput.get(state, timepoint-1).getName()), graph.getTargetNode(destinationPositionInput.get(state, timepoint).getName()));
+					
+					// Initialize with initial speed and substract edge lengths
+					double sum = speedOutput.get(state,timepoint);
+					
+					// Add already traversed length of edge in timepoint-1
+					sum += positionTraversedLengthInput.get(state, timepoint-1);
+					
+					// Create list of reached edges
+					LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
+					
+					// Select every reachable edge and get weight
+					for (int i = 0; i < edgeList.size(); i++) 
+					{
+						Edge e = edgeList.get(i);
+						traversedEdges.add(e);
+									
+						if ((sum - Double.parseDouble(e.getWeight())) >= 0) 
+						{
+							sum -= Double.parseDouble(e.getWeight());
+						}
+						else {
+							// Traverse last edge partially and return result
+							return traversedEdges;
+						}
+					}
+					
 				}
 				else 
 				{
-					return positionOutput.get(state, timepoint-1);
+					LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
+					traversedEdges.add(positionOutput.get(state, timepoint-1));
+					return traversedEdges;
 				}
 			}
+			LinkedList<Edge> traversedEdges = new LinkedList<Edge>();
+			traversedEdges.add(positionOutput.get(state, timepoint-1));
+			return traversedEdges;
 		}
 	};
 	
@@ -101,9 +154,9 @@ public class LogicsComponent extends Component
 		{
 			if (drivingIndicatorInput.get(state, timepoint))
 			{
-				if (!(positionTargetOutput.get(state, timepoint-1).equals(startPositionInput.get(state, timepoint))) && !(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
+				if (!(positionOutput.get(state, timepoint-1).equals(destinationPositionInput.get(state, timepoint))))
 				{
-					return (Math.random()*3.33);
+					return (Math.random()*vMax);
 				}
 				else 
 				{

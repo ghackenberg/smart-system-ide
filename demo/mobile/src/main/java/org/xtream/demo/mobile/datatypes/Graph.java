@@ -1,4 +1,4 @@
-package org.xtream.core.datatypes;
+package org.xtream.demo.mobile.datatypes;
 
 import java.awt.Color;
 import java.io.File;
@@ -23,13 +23,12 @@ import org.jgrapht.alg.KShortestPaths;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-import org.xtream.core.datatypes.helpers.Dom;
+import org.xtream.demo.mobile.datatypes.helpers.Dom;
 
 
 public class Graph
 {
 	private WeightedGraph<Node, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-	//private AbstractBaseGraph<Node, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 	private Map<String, Edge> edgeMap = new HashMap<String, Edge>();
 	private Map<String, DefaultWeightedEdge> graphEdgeMap = new HashMap<String, DefaultWeightedEdge>();
 	private Map<DefaultWeightedEdge, Edge> interEdgeMap = new HashMap<DefaultWeightedEdge, Edge>();
@@ -487,7 +486,7 @@ public class Graph
 	public List<Edge> generatePath(Node source, Node target) {
 	
 		List<Edge> edgeList = new LinkedList<Edge>();
-		int alternatives = 2;
+		int alternatives = 3;
 		
 		if (source.equals(target)) 
 		{

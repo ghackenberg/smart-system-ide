@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.model;
+package org.xtream.demo.mobile.model.root;
 
 import org.xtream.core.model.Container;
 

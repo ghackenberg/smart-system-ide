@@ -1,24 +1,30 @@
 package org.xtream.demo.mobile.model.vehicle;
 
+import java.util.LinkedList;
 import java.util.Set;
 
-import org.xtream.core.datatypes.Edge;
-import org.xtream.core.datatypes.Graph;
-import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ConstantExpression;
+import org.xtream.demo.mobile.datatypes.Edge;
+import org.xtream.demo.mobile.datatypes.Graph;
+import org.xtream.demo.mobile.datatypes.Node;
 
 public class ContextComponent extends Component
 {
 		
-	public ContextComponent(Graph graph, String startPosition, String destinationPosition) 
+	public ContextComponent(Graph graph, String startPosition, String destinationPosition, Double chargeState, Double chargeRate, Double mileage, Double vehicleLength, Double vehicleWidth) 
 	{
 		this.graph = graph;
 		this.startPosition = startPosition;
 		this.destinationPosition = destinationPosition;
+		this.chargeState = chargeState;
+		this.chargeRate = chargeRate;
+		this.mileage = mileage;
+		this.vehicleLength = vehicleLength;
+		this.vehicleWidth = vehicleWidth;
 	}
 	
 	// Parameters
@@ -26,10 +32,16 @@ public class ContextComponent extends Component
 	public Graph graph;
 	public String startPosition;
 	public String destinationPosition;
+	public Double chargeState;
+	public Double chargeRate;
+	public Double mileage;
+	public Double vehicleLength;
+	public Double vehicleWidth;
 	
 	// Inputs
 	
 	public Port<Edge> positionInput = new Port<>();
+	public Port<LinkedList<Edge>> positionListInput = new Port<>();
 	public Port<Double> speedInput = new Port<>();
 	
 	// Outputs External/Internal
@@ -40,7 +52,7 @@ public class ContextComponent extends Component
 	public Port<Double> positionTraversedLengthOutput = new Port<>();
 	public Port<Double> positionEdgeLengthOutput= new Port<>();
 	
-	public Port<Double> powerOutput= new Port<>();
+	public Port<Double> powerOutput = new Port<>();
 	
 	public Port<Double> chargeStateOutput = new Port<>();
 	public Port<Double> chargeStateRelativeOutput = new Port<>();
@@ -117,17 +129,30 @@ public class ContextComponent extends Component
 				}
 				// Drive
 				else
-				{
-					if (positionTraversedLengthOutput.get(state, timepoint-1) >= positionEdgeLengthOutput.get(state, timepoint-1))
-					{
-						return (speedInput.get(state, timepoint)+(positionTraversedLengthOutput.get(state, timepoint-1)-positionEdgeLengthOutput.get(state, timepoint-1)));
+				{	
+					LinkedList<Edge> traversedEdges = positionListInput.get(state, timepoint);
+					double sum = speedInput.get(state,timepoint);
+					
+					// Add already traversed length of edge in timepoint-1
+					sum += positionTraversedLengthOutput.get(state, timepoint-1);
+					
+					// Iterate over all edges in path and add them
+					for (int i = 0; i < traversedEdges.size(); i++) {
+						Edge e = traversedEdges.get(i);
+									
+						if ((sum - Double.parseDouble(e.getWeight())) >= 0) 
+						{
+							sum -= Double.parseDouble(e.getWeight());
+						}
+						else {
+							// Traverse last edge partially, return result
+							return sum;
+						}
 					}
-					else 
-					{
-						return (speedInput.get(state, timepoint)+positionTraversedLengthOutput.get(state, timepoint-1));
-					}
+					
 				}
 			}
+			return positionTraversedLengthOutput.get(state, timepoint-1);
 		}
 	};
 	
@@ -338,10 +363,21 @@ public class ContextComponent extends Component
 		}
 	};
 	
-	public Expression<Double> vehicleLengthExpression = new ConstantExpression<Double>(vehicleLengthOutput, 0.003);
+	public Expression<Double> vehicleLengthExpression = new Expression<Double>(vehicleLengthOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return vehicleLength;
+		}
+	};
 	
-	public Expression<Double> vehicleWidthExpression = new ConstantExpression<Double>(vehicleWidthOutput, 0.002);
-	
+	public Expression<Double> vehicleWidthExpression = new Expression<Double>(vehicleWidthOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return vehicleWidth;
+		}
+	};
 	
 	public Expression<Double> powerExpression = new Expression<Double>(powerOutput, true)
 	{
@@ -349,7 +385,6 @@ public class ContextComponent extends Component
 		{		
 			if (speedInput.get(state, timepoint) > 0)
 			{
-				double milage = 0.2353;
 				
 				double slope;
 				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedInput.get(state, timepoint),2)))
@@ -360,7 +395,7 @@ public class ContextComponent extends Component
 					slope = 0.;
 				}
 				
-				return (milage*(slope*0.3));
+				return (mileage*10*(slope*0.3));
 			}
 			else
 			{
@@ -375,7 +410,7 @@ public class ContextComponent extends Component
 		{
 			if (timepoint == 0)
 			{
-				return 85.00;
+				return 84.0;
 			}
 			else
 			{
@@ -408,11 +443,26 @@ public class ContextComponent extends Component
 		}
 	};
 	
-	public Expression<Double> chargeRateExpression = new ConstantExpression<Double>(chargeRateOutput, 5.67);	
+	public Expression<Double> chargeRateExpression = new Expression<Double>(chargeRateOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return chargeRate;
+		}
+	};
+
+	public Expression<Double> maximumChargeStateExpression = new Expression<Double>(maximumChargeStateOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return chargeState;
+		}
+	};
+	
 	public Expression<Double> minimumChargeStateExpression = new ConstantExpression<Double>(minimumChargeStateOutput, 0.);
-	public Expression<Double> maximumChargeStateExpression = new ConstantExpression<Double>(maximumChargeStateOutput, 85.0);
 	
 	public Expression<Double> consumptionExpression = new ConstantExpression<Double>(consumptionOutput, 0.);
 	public Expression<Double> productionExpression = new ConstantExpression<Double>(productionOutput, 0.);
+	public Expression<Double> balanceExpression = new ConstantExpression<Double>(balanceOutput, 0.);
 
 }

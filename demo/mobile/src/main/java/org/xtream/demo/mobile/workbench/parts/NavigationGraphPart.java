@@ -1,4 +1,4 @@
-package org.xtream.core.workbench.parts;
+package org.xtream.demo.mobile.workbench.parts;
 
 import java.awt.Color;
 import java.io.File;
@@ -10,9 +10,6 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 
-import org.xtream.core.datatypes.Edge;
-import org.xtream.core.datatypes.Graph;
-import org.xtream.core.datatypes.Node;
 import org.xtream.core.model.Container;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.containers.Component;
@@ -21,6 +18,9 @@ import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.controls.ImagePanel;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.events.SelectionEvent;
+import org.xtream.demo.mobile.datatypes.Edge;
+import org.xtream.demo.mobile.datatypes.Graph;
+import org.xtream.demo.mobile.datatypes.Node;
 
 public class NavigationGraphPart<T extends Component> extends Part<T>
 {
