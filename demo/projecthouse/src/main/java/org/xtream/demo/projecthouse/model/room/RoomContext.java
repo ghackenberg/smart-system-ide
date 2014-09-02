@@ -8,17 +8,20 @@ import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
 import org.xtream.demo.projecthouse.model.Irradiance;
 import org.xtream.demo.projecthouse.model.RootComponent;
-import org.xtream.demo.projecthouse.model.room.lights.LightsModule;
 import org.xtream.demo.projecthouse.model.room.window.WindowModule;
 
 public class RoomContext extends Component {	
 	public Port<Irradiance> irradianceInput = new Port<>();
 	public Port<OnOffDecision> heatingInput = new Port<>();
 	public Port<OnOffDecision> lightsInput = new Port<>();
+	public Port<Double> possibilityInput = new Port<>();
+	public Port<Double> temperatureInput = new Port<>();
+	@SuppressWarnings("rawtypes")
 	public Port[] blindsInputs;
 	
 	public Port<Double> temperatureOutput = new Port<>();
 	public Port<Double> brightnessOutput = new Port<>();
+	public Port<Double>	comfortOutput = new Port<>();
 	
 	public Port<Boolean> temperatureValidOutput = new Port<>();
 	public Port<Boolean> brightnessValidOutput = new Port<>();
@@ -31,7 +34,6 @@ public class RoomContext extends Component {
 	private Double upperTemperatureLimit;
 	private WindowModule[] windows;
 	
-	@SuppressWarnings("unchecked")
 	public RoomContext(double volume, double lowerTemperatureLimit, double upperTemperatureLimit, WindowModule...windows) {
 		super();
 		this.volume = volume;
@@ -45,12 +47,16 @@ public class RoomContext extends Component {
 		}
 	}
 	
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput) {
+	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			// TODO [Andreas]
-			return null;
+			if(timepoint == 0) {
+				return RootComponent.START_TEMPERATURE;
+			}
+			double temperature = temperatureOutput.get(state, timepoint - 1);
+			//TODO [Andreas] Implement effects of heating
+			return temperature;
 		}
 	};
 	
@@ -66,8 +72,9 @@ public class RoomContext extends Component {
 	public Expression<Double> brightnessExpression = new Expression<Double>(brightnessOutput) {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			// TODO [Andreas]
-			return null;
+			double brightness = RootComponent.BRIGHTNESS_LIMIT;
+			//TODO [Andreas] Implement effects of lights and sunlight
+			return brightness;
 		}
 	};
 	
@@ -76,6 +83,14 @@ public class RoomContext extends Component {
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
 			return brightnessOutput.get(state, timepoint) > RootComponent.BRIGHTNESS_LIMIT;
+		}
+	};
+	
+	public Expression<Double> comfortExpression = new Expression<Double>(comfortOutput) {
+		
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			return Math.pow(temperatureOutput.get(state, timepoint) - temperatureInput.get(state, timepoint), 2);
 		}
 	};
 

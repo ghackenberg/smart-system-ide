@@ -64,7 +64,7 @@ public class BatteryContext extends Component {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			Double soc = socOutput.get(state, timepoint - 1);
+			Double soc = timepoint == 0 ? 0 : socOutput.get(state, timepoint - 1);
 			
 			if(chargingInput.get(state, timepoint) == ChargingDecision.DISCHARGE) {
 				return getDisChargeSpeed(soc);
@@ -80,7 +80,7 @@ public class BatteryContext extends Component {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			Double soc = socOutput.get(state, timepoint - 1);
+			Double soc = timepoint == 0 ? 0 : socOutput.get(state, timepoint - 1);
 			
 			if(chargingInput.get(state, timepoint) == ChargingDecision.CHARGE) {
 				return getChargeSpeed(soc);

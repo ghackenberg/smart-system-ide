@@ -9,11 +9,13 @@ import org.xtream.demo.projecthouse.model.room.RoomModule;
 
 public class ThermalStorageContext extends Module {
 	
+	@SuppressWarnings("rawtypes")
 	public Port[] roomHeatingInputs;
 	
 	public ThermalStorageContext(RoomModule...rooms) {
 		roomHeatingInputs = new Port[rooms.length];
 		for(int i=0; i<rooms.length; i++) {
+			roomHeatingInputs[i] = new Port<OnOffDecision>();
 			roomHeatingInputs[i] = rooms[i].heatingController.onOffOutput;
 		}
 	}
@@ -28,7 +30,6 @@ public class ThermalStorageContext extends Module {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			// TODO [Andreas] Implement behaviour when data is here
 			return null;
 		}
 	};

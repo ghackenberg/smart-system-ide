@@ -19,7 +19,7 @@ public class LoadsComponent extends Component implements Consumer {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas]
-			return null;
+			return 0.;
 		}
 	};
 
