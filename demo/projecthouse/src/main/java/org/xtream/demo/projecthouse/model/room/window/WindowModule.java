@@ -4,14 +4,22 @@ import org.xtream.core.model.containers.Module;
 
 public class WindowModule extends Module{
 	
-	public double area;
-	public double orientation;
+	private double area;
+	private double orientation;
 	public BlindsController blindsController = new BlindsController();
 	
-	public WindowModule(double area, double orientation) {
+	public WindowModule(WindowSpecification windowSpec) {
 		super();
-		this.area = area;
-		this.orientation = orientation;
+		area = windowSpec.area;
+		orientation = windowSpec.orientation;
+	}
+
+	public double getArea() {
+		return area;
+	}
+
+	public double getOrientation() {
+		return orientation;
 	}
 
 }

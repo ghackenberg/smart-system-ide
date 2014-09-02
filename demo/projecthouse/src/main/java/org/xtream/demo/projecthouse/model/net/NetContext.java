@@ -4,6 +4,7 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.demo.projecthouse.model.RootComponent;
 
 public class NetContext extends Component {
 	
@@ -12,6 +13,8 @@ public class NetContext extends Component {
 	
 	public Port<Double> consumptionOutput = new Port<>();
 	public Port<Double> productionOutput = new Port<>();
+	public Port<Double> costOutput = new Port<>();
+	public Port<Double> balanceOutput = new Port<>();
 	
 	//Expressions
 	public Expression<Double> productionExpression = new Expression<Double>(productionOutput) {
@@ -29,6 +32,23 @@ public class NetContext extends Component {
 		protected Double evaluate(State state, int timepoint) {
 			double consumption = -powerInput.get(state, timepoint);
 			return consumption > 0 ? consumption : 0;
+		}
+	};
+	
+	public Expression<Double> costExpression = new Expression<Double>(costOutput) {
+
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			return powerInput.get(state, timepoint)*RootComponent.ELECTRICITY_RATE;
+		}
+	};
+	
+	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput) {
+		
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			// TODO [Andreas] Value from csv
+			return 0.;
 		}
 	};
 

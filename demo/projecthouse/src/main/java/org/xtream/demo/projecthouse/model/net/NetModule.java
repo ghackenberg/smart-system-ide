@@ -6,7 +6,7 @@ import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.model.Consumer;
 import org.xtream.demo.projecthouse.model.Producer;
 
-public class NetModule extends Module implements Consumer, Producer {
+public class NetModule extends Module implements Consumer, Producer{
 	
 	public NetContext context = new NetContext();
 	public NetController controller = new NetController();
