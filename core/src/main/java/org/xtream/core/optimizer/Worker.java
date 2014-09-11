@@ -1,6 +1,7 @@
 package org.xtream.core.optimizer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -23,6 +24,8 @@ public class Worker<T extends Component> implements Runnable
 	private int generatedCount = 0;
 	private int validCount = 0;
 	private List<State> currentStates = new ArrayList<>();
+	private Map<Constraint, Integer> constraintViolations = new HashMap<>();
+	private int zeroOptionCount = 0;
 	
 	public Worker(T root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
@@ -38,15 +41,21 @@ public class Worker<T extends Component> implements Runnable
 	{
 		return generatedCount;
 	}
-	
 	public int getValidCount()
 	{
 		return validCount;
 	}
-	
 	public List<State> getCurrentStates()
 	{
 		return currentStates;
+	}
+	public Map<Constraint, Integer> getConstraintViolations()
+	{
+		return constraintViolations;
+	}
+	public int getZeroOptionCount()
+	{
+		return zeroOptionCount;
 	}
 	
 	@Override
@@ -98,8 +107,11 @@ public class Worker<T extends Component> implements Runnable
 							
 							if (!constraint.getPort().get(current, timepoint))
 							{
-								// TODO Count and visualize
-								//System.out.println("Constraint violated: " + constraint.getQualifiedName());
+								if (!constraintViolations.containsKey(constraint))
+								{
+									constraintViolations.put(constraint, 0);
+								}
+								constraintViolations.put(constraint, constraintViolations.get(constraint) + 1);
 							}
 						}
 						
@@ -114,9 +126,11 @@ public class Worker<T extends Component> implements Runnable
 					}
 					catch (IllegalStateException e)
 					{
-						// No options in this state!
+						// TODO Count per expression that fails!
 						
-						// TODO Count and visualize
+						e.printStackTrace();
+						
+						zeroOptionCount++;
 					}
 				}
 			}

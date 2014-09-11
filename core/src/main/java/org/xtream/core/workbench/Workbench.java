@@ -20,6 +20,8 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.optimizer.strategies.KMeansStrategy;
+import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.utilities.printers.CSVPrinter;
@@ -28,9 +30,16 @@ import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenPart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
-import org.xtream.core.workbench.parts.EngineMonitorPart;
 import org.xtream.core.workbench.parts.ModelScenePart;
 import org.xtream.core.workbench.parts.StateSpacePart;
+import org.xtream.core.workbench.parts.charts.ClusterChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.MemoryChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.ObjectiveChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.OptionChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.StateChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.TimeChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.TraceChartMonitorPart;
+import org.xtream.core.workbench.parts.charts.ViolationChartMonitorPart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
 import bibliothek.gui.DockController;
@@ -48,13 +57,13 @@ public class Workbench<T extends Component>
 	private JSlider slider;
 	private int timepoint = -1;
 	
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching)
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds)
 	{
-		this(root, duration, samples, clusters, randomness, caching, new ComponentHierarchyPart<T>(0,0,1,1), new ComponentChildrenPart<T>(0,1,1,1), new ComponentArchitecturePart<T>(1,0,2,1), new StateSpacePart<T>(3,0,2,1), new ModelScenePart<T>(1,1,2,1), new ComponentChartsPart<T>(3,1,2,1), new EngineMonitorPart<T>(5,0,1,2));
+		this(root, duration, samples, clusters, randomness, caching, rounds, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new StateSpacePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, Part<T>... parts)
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, Part<T>... parts)
 	{
 		try
 		{
@@ -85,12 +94,14 @@ public class Workbench<T extends Component>
 			JTextField clustersField = new JTextField("" + clusters, 5);
 			JTextField randomnessField = new JTextField("" + randomness, 5);
 			JTextField cachingField = new JTextField("" + caching, 5);
+			JTextField roundsField = new JTextField("" + rounds, 5);
 			
 			durationField.setEditable(false);
 			samplesField.setEditable(false);
 			clustersField.setEditable(false);
 			randomnessField.setEditable(false);
 			cachingField.setEditable(false);
+			roundsField.setEditable(false);
 			
 			JProgressBar timeBar = new JProgressBar();
 			JProgressBar memoryBar = new JProgressBar();
@@ -136,6 +147,8 @@ public class Workbench<T extends Component>
 			topbar.add(randomnessField);
 			topbar.add(new JLabel("Caching"));
 			topbar.add(cachingField);
+			topbar.add(new JLabel("Rounds"));
+			topbar.add(roundsField);
 			topbar.addSeparator();
 			topbar.add(new JLabel("Time"));
 			topbar.add(timeBar);
@@ -181,6 +194,7 @@ public class Workbench<T extends Component>
 			
 			CompositeMonitor<T> allMonitor = new CompositeMonitor<>();
 			
+			allMonitor.add(new CMDMonitor<T>());
 			allMonitor.add(new CSVMonitor<T>(new PrintStream("Monitor.csv")));
 			allMonitor.add(new EngineMonitor<T>(timeBar, memoryBar, slider, duration));
 			
@@ -191,7 +205,7 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			State best = engine.run(duration, samples, clusters, randomness, allMonitor);
+			State best = engine.run(duration, samples, clusters, randomness, allMonitor, new KMeansStrategy(rounds));
 			
 			// print
 			

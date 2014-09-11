@@ -16,6 +16,7 @@ public class Histogram<T> extends Chart
 		this.ports = ports;
 	}
 	
+	@Reference
 	public Port<T>[] getPorts()
 	{
 		return ports;

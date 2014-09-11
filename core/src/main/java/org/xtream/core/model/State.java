@@ -42,6 +42,7 @@ public class State
 		return timepoint;
 	}
 	
+	@Reference
 	public State getPrevious()
 	{
 		return previous;
@@ -50,25 +51,53 @@ public class State
 	@SuppressWarnings("unchecked")
 	public <S> S getValue(Expression<S> port, int timepoint)
 	{
-		if (this.timepoint == timepoint)
+		if (timepoint >= 0)
 		{
-			return (S) values[port.getNumber()];
+			if (timepoint <= this.timepoint)
+			{
+				if (this.timepoint == timepoint)
+				{
+					return (S) values[port.getNumber()];
+				}
+				else
+				{
+					return previous.getValue(port, timepoint);
+				}	
+			}
+			else
+			{
+				throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be in the future (" + timepoint + ")!");
+			}
 		}
 		else
 		{
-			return previous.getValue(port, timepoint);
+			throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be negative (" + timepoint + ")!");
 		}
 	}
 	
 	public <S> void setValue(Expression<S> port, int timepoint, S value)
 	{
-		if (this.timepoint == timepoint)
+		if (timepoint >= 0)
 		{
-			values[port.getNumber()] = value;
+			if (timepoint <= this.timepoint)
+			{
+				if (this.timepoint == timepoint)
+				{
+					values[port.getNumber()] = value;
+				}
+				else
+				{
+					previous.setValue(port, timepoint, value);
+				}
+			}
+			else
+			{
+				throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be in the future (" + timepoint + ")!");
+			}
 		}
 		else
 		{
-			previous.setValue(port, timepoint, value);
+			throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be negative (" + timepoint + ")!");
 		}
 	}
 	

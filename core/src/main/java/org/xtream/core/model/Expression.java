@@ -27,6 +27,7 @@ public abstract class Expression<T> extends Element
 		port.setExpression(this);
 	}
 	
+	@Reference
 	public Port<T> getPort()
 	{
 		return port;
@@ -52,22 +53,29 @@ public abstract class Expression<T> extends Element
 	
 	public final T get(State state, int timepoint)
 	{
-		if (caching)
+		if (timepoint >= 0)
 		{
-			T value = state.getValue(this, timepoint);
-			
-			if (value == null)
+			if (caching)
 			{
-				value = evaluate(state, timepoint);
+				T value = state.getValue(this, timepoint);
 				
-				state.setValue(this, timepoint, value);
+				if (value == null)
+				{
+					value = evaluate(state, timepoint);
+					
+					state.setValue(this, timepoint, value);
+				}
+				
+				return value;
 			}
-			
-			return value;
+			else
+			{
+				return evaluate(state, timepoint);
+			}
 		}
 		else
 		{
-			return evaluate(state, timepoint);
+			throw new IllegalStateException(this.getQualifiedName() + ": Timepoint must not be negative (" + timepoint + ")!");
 		}
 	}
 	

@@ -2,6 +2,7 @@ package org.xtream.core.optimizer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -12,11 +13,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
 import org.xtream.core.model.markers.objectives.MinObjective;
-import org.xtream.core.optimizer.strategies.Grid;
+import org.xtream.core.optimizer.strategies.GridStrategy;
 
 public class Engine<T extends Component>
 {
@@ -41,8 +43,9 @@ public class Engine<T extends Component>
 		workers = new ArrayList<>(processors);
 	}
 	
-	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor) {
-		return run(duration, samples, classes, randomness, monitor, new Grid());
+	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor)
+	{
+		return run(duration, samples, classes, randomness, monitor, new GridStrategy());
 	}
 	
 	public State run(int duration, int samples, int classes, double randomness, Monitor<T> monitor, Strategy strategy)
@@ -92,6 +95,8 @@ public class Engine<T extends Component>
 			// All states
 			
 			List<State> currentStates = new LinkedList<>();
+			statistics.violations = new HashMap<>();
+			statistics.zeroOptionCount = 0;
 			
 			// Join threads
 			
@@ -105,6 +110,16 @@ public class Engine<T extends Component>
 					statistics.validStates += workers.get(processor).getValidCount();
 					
 					currentStates.addAll(workers.get(processor).getCurrentStates());
+					
+					for (Entry<Constraint, Integer> entry : workers.get(processor).getConstraintViolations().entrySet())
+					{
+						if (!statistics.violations.containsKey(entry.getKey()))
+						{
+							statistics.violations.put(entry.getKey(), 0);
+						}
+						statistics.violations.put(entry.getKey(), statistics.violations.get(entry.getKey()) + entry.getValue());
+					}
+					statistics.zeroOptionCount += workers.get(processor).getZeroOptionCount();
 				}
 				catch (InterruptedException e)
 				{
@@ -145,6 +160,14 @@ public class Engine<T extends Component>
 				}
 			}
 			
+			// Print result of boundary calculation
+			/*
+			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
+			{
+				System.out.println(root.getDescendantsByClass(Equivalence.class).get(i).getQualifiedName() + ": " + minEquivalences[i] + " - " + maxEquivalences[i]);
+			}
+			*/
+			
 			statistics.norm = System.currentTimeMillis() - statistics.norm;
 			
 			// Sort groups
@@ -153,7 +176,7 @@ public class Engine<T extends Component>
 			
 			statistics.cluster = System.currentTimeMillis();
 			
-			SortedMap<Key, List<State>> currentGroups = strategy.execute(currentStates, maxEquivalences, maxEquivalences, classes, timepoint, root);
+			SortedMap<Key, List<State>> currentGroups = strategy.execute(currentStates, minEquivalences, maxEquivalences, classes, timepoint, root);
 			
 			statistics.cluster = System.currentTimeMillis() - statistics.cluster;
 			
@@ -240,6 +263,8 @@ public class Engine<T extends Component>
 			}
 			else
 			{
+				monitor.handle(timepoint, statistics, previousGroups, null);
+				
 				break; // Stop optimization
 			}
 		}

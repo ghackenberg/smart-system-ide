@@ -74,6 +74,7 @@ public abstract class Element
 		return qualifiedName;
 	}
 	
+	@Reference
 	public Element getParent()
 	{
 		return parent;
@@ -173,7 +174,7 @@ public abstract class Element
 		}
 		else
 		{
-			throw new IllegalStateException();
+			throw new IllegalStateException(this.qualifiedName + ": Only one descendant expected (" + type.getName() + ", " + descendants.size() + ")!");
 		}
 	}
 	
@@ -236,33 +237,78 @@ public abstract class Element
 							{
 								if (objects[i] != null)
 								{
-									load(field, objects[i], field.getName() + "[" + i + "]", qualifiedName + "." + field.getName() + "[" + i + "]");
+									load(objects[i], field.getName() + "[" + i + "]", qualifiedName + "." + field.getName() + "[" + i + "]");
 								}
 							}
 						}
 						else
 						{
-							load(field, object, field.getName(), qualifiedName + "." + field.getName());
+							load(object, field.getName(), qualifiedName + "." + field.getName());
 						}
 					}
 				}
 			}
-			catch (IllegalArgumentException e)
+			catch (IllegalArgumentException | IllegalAccessException e)
 			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
+				System.out.println(qualifiedName + "." + field.getName() + ": " + e.getClass().getName());
 			}
 		}
+		/*
+		for (Method method : this.getClass().getMethods())
+		{
+			try
+			{
+				if (method.getAnnotation(Reference.class) == null && method.getParameterCount() == 0 && !method.getName().equals("wait") && !method.getName().equals("notify") && !method.getName().equals("notifyAll"))
+				{
+					Object object = method.invoke(this);
+					
+					if (object != null)
+					{
+						if (method.getReturnType().isArray())
+						{
+							Object[] objects = (Object[]) object;
+							
+							for (int i = 0; i < objects.length; i++)
+							{
+								if (objects[i] != null)
+								{
+									load(objects[i], method.getName() + "[" + i + "]", qualifiedName + "." + method.getName() + "[" + i + "]");
+								}
+							}
+						}
+						else
+						{
+							load(object, method.getName(), qualifiedName + "." + method.getName());
+						}
+					}
+				}
+			}
+			catch (InvocationTargetException | IllegalAccessException | IllegalArgumentException e)
+			{
+				System.out.println(qualifiedName + "." + method.getName() + ": " + e.getClass().getName());
+			}
+		}
+		*/
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void load(Field field, Object object, String name, String qualifiedName)
+	private void load(Object object, String name, String qualifiedName)
 	{
 		if (object instanceof Element)
 		{
+			// Check for cycles
+			
+			Element iterator = this;
+			
+			while (iterator != null)
+			{
+				if (iterator == object)
+				{
+					throw new IllegalStateException(qualifiedName + " vs. " + iterator.getQualifiedName());
+				}
+				iterator = iterator.getParent();
+			}
+			
 			// Init
 			
 			Element element = (Element) object;

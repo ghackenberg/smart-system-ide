@@ -15,13 +15,20 @@ public class Port<T> extends Element
 	
 	public T get(State state, int timepoint)
 	{
-		if (expression != null) 
+		if (timepoint >= 0)
 		{
-			return expression.get(state, timepoint);
+			if (expression != null) 
+			{
+				return expression.get(state, timepoint);
+			}
+			else 
+			{
+				throw new IllegalStateException(this.getQualifiedName() + ": Expression required!");
+			}
 		}
-		else 
+		else
 		{
-			throw new IllegalStateException(this.getQualifiedName());
+			throw new IllegalStateException(this.getQualifiedName() + ": Timepoint must be positive (" + timepoint + ")!");
 		}
 	}
 	
@@ -29,6 +36,7 @@ public class Port<T> extends Element
 	{
 		this.expression = expression;
 	}
+	@Reference
 	public Expression<T> getExpression()
 	{
 		return expression;
