@@ -6,12 +6,12 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
-import org.xtream.demo.projecthouse.model.Irradiance;
+import org.xtream.demo.projecthouse.model.Irradiation;
 import org.xtream.demo.projecthouse.model.RootComponent;
 import org.xtream.demo.projecthouse.model.room.window.WindowModule;
 
 public class RoomContext extends Component {
-	public Port<Irradiance> irradianceInput = new Port<>();
+	public Port<Irradiation> irradianceInput = new Port<>();
 	public Port<OnOffDecision> heatingInput = new Port<>();
 	public Port<OnOffDecision> lightsInput = new Port<>();
 	public Port<Double> port = new Port<>();

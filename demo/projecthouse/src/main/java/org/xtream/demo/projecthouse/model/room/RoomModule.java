@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
-import org.xtream.demo.projecthouse.model.Irradiance;
+import org.xtream.demo.projecthouse.model.Irradiation;
 import org.xtream.demo.projecthouse.model.TemperatureController;
 import org.xtream.demo.projecthouse.model.room.lights.LightsModule;
 import org.xtream.demo.projecthouse.model.room.window.BlindsController;
@@ -29,7 +29,7 @@ public class RoomModule extends Module {
 	public ChannelExpression[] blindsChannels;
 	public ChannelExpression<OnOffDecision> heatingChannel;
 	public ChannelExpression<OnOffDecision> lightsChannel;
-	public ChannelExpression<Irradiance> sunChannel;
+	public ChannelExpression<Irradiation> sunChannel;
 	public ChannelExpression<Double> temperatureChannel;
 	public ChannelExpression<Double> peopleChannel;
 	
@@ -54,7 +54,7 @@ public class RoomModule extends Module {
 		roomContext = new RoomContext(volume, lowerTemperatureLimit, upperTemperatureLimit, windows);		
 		heatingChannel = new ChannelExpression<>(roomContext.heatingInput, heatingController.onOffOutput);
 		lightsChannel = new ChannelExpression<>(roomContext.lightsInput, lights.controller.onOffOutput);
-		sunChannel = new ChannelExpression<>(roomContext.irradianceInput, sun.irradianceOutput);
+		sunChannel = new ChannelExpression<>(roomContext.irradianceInput, sun.irradiationOutput);
 		temperatureChannel = new ChannelExpression<>(roomContext.temperatureInput, temperatureController.temperatureOutput);
 		peopleChannel = new ChannelExpression<>(roomContext.possibilityInput, peopleController.possibilityOutput);
 		
