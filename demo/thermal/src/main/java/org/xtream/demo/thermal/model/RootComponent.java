@@ -22,6 +22,7 @@ public abstract class RootComponent extends Component
 	public static int CLASSES = 50;
 	public static double RANDOMNESS = 0.0;
 	public static double CACHING = 0.0;
+	public static int ROUNDS = 50;
 	
 	public RootComponent(Stage stage)
 	{

@@ -32,7 +32,7 @@ public class RootContainer extends Component
 	public static int CLUSTERS = 50;
 	public static double RANDOMNESS = 0;
 	public static double CACHING = 0;
-
+	public static int ROUNDS= 50;
 	
 	// vehicle specific parameters
 	
@@ -41,7 +41,7 @@ public class RootContainer extends Component
 	
 	public static <T> void main(String[] args)
 	{
-		new Workbench<>(new RootContainer(), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING, new ComponentHierarchyPart<>(0,0,1,1), new ComponentChildrenPart<>(0,1,1,1), new ComponentArchitecturePart<>(1,0,2,1), new StateSpacePart<>(3,0,2,1), new AggregateNavigationGraphPart<>(graph,1,1,2,1), new ComponentChartsPart<>(3,1,2,1), new EngineMonitorPart<>(5,0,1,2));
+		new Workbench<>(new RootContainer(), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING, ROUNDS, new ComponentHierarchyPart<>(0,0,1,1), new ComponentChildrenPart<>(0,1,1,1), new ComponentArchitecturePart<>(1,0,2,1), new StateSpacePart<>(3,0,2,1), new AggregateNavigationGraphPart<>(graph,1,1,2,1), new ComponentChartsPart<>(3,1,2,1), new EngineMonitorPart<>(5,0,1,2));
 	}
 	
 	public RootContainer() {

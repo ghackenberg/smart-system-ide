@@ -16,6 +16,7 @@ public class Timeline extends Chart
 		this.ports = ports;
 	}
 	
+	@Reference
 	public Port<Double>[] getPorts()
 	{
 		return ports;

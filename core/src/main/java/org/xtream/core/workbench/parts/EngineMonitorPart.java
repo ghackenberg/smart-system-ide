@@ -18,6 +18,7 @@ import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.ui.RectangleInsets;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
@@ -36,6 +37,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 	private JFreeChart tracesChart;
 	private JFreeChart memoryChart;
 	private JFreeChart timeChart;
+	private JFreeChart violationsChart;
+	private JFreeChart optionsChart;
 	
 	private CategoryTableXYDataset states = new CategoryTableXYDataset();
 	private CategoryTableXYDataset classes = new CategoryTableXYDataset();
@@ -43,6 +46,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 	private DefaultXYDataset traces = new DefaultXYDataset(); 
 	private CategoryTableXYDataset memory = new CategoryTableXYDataset();
 	private CategoryTableXYDataset time = new CategoryTableXYDataset();
+	private CategoryTableXYDataset violations = new CategoryTableXYDataset();
+	private CategoryTableXYDataset options = new CategoryTableXYDataset();
 	
 	public EngineMonitorPart()
 	{
@@ -62,6 +67,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		tracesChart = ChartFactory.createXYLineChart("Traces", null, "Objective", traces, PlotOrientation.VERTICAL, false, true, false);
 		memoryChart = ChartFactory.createXYLineChart("Memory", null, "Megabyte", memory, PlotOrientation.VERTICAL, true, true, false);
 		timeChart = ChartFactory.createStackedXYAreaChart("Time", null, "Milliseconds", time, PlotOrientation.VERTICAL, true, true, false);
+		violationsChart = ChartFactory.createXYLineChart("Constraint Violations", null, "Count", violations, PlotOrientation.VERTICAL, true, true, false);
+		optionsChart = ChartFactory.createXYLineChart("Zero Options", null, "Count", options, PlotOrientation.VERTICAL, false, true, false);
 		
 		statesChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		statesChart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
@@ -77,12 +84,16 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		memoryChart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
 		memoryChart.getXYPlot().getRenderer().setSeriesStroke(2, new BasicStroke(STROKE));
 		
+		optionsChart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
+		
 		statesChart.setAntiAlias(true);
 		classesChart.setAntiAlias(true);
 		objectivesChart.setAntiAlias(true);
 		tracesChart.setAntiAlias(true);
 		memoryChart.setAntiAlias(true);
 		timeChart.setAntiAlias(true);
+		violationsChart.setAntiAlias(true);
+		optionsChart.setAntiAlias(true);
 		
 		statesChart.setTextAntiAlias(true);
 		classesChart.setTextAntiAlias(true);
@@ -90,6 +101,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		tracesChart.setTextAntiAlias(true);
 		memoryChart.setTextAntiAlias(true);
 		timeChart.setTextAntiAlias(true);
+		violationsChart.setTextAntiAlias(true);
+		optionsChart.setTextAntiAlias(true);
 		
 		statesChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 		classesChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
@@ -97,6 +110,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		tracesChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 		memoryChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 		timeChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+		violationsChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
+		optionsChart.setPadding(new RectangleInsets(PADDING, PADDING, PADDING, PADDING));
 		
 		ChartPanel statesPanel = new ChartPanel(statesChart);
 		ChartPanel classesPanel = new ChartPanel(classesChart);
@@ -104,8 +119,10 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		ChartPanel tracesPanel = new ChartPanel(tracesChart);
 		ChartPanel memoryPanel = new ChartPanel(memoryChart);
 		ChartPanel timePanel = new ChartPanel(timeChart);
+		ChartPanel violationsPanel = new ChartPanel(violationsChart);
+		ChartPanel optionsPanel = new ChartPanel(optionsChart);
 		
-		GridLayout layout = new GridLayout(6, 1);
+		GridLayout layout = new GridLayout(8, 1);
 		
 		JPanel panel = new JPanel(layout);
 		panel.add(statesPanel);
@@ -114,6 +131,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		panel.add(tracesPanel);
 		panel.add(memoryPanel);
 		panel.add(timePanel);
+		panel.add(violationsPanel);
+		panel.add(optionsPanel);
 		
 		getPanel().add(panel);
 	}
@@ -132,6 +151,8 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		
 		memory.clear();
 		time.clear();
+		violations.clear();
+		options.clear();
 	}
 
 	@Override
@@ -151,40 +172,43 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		
 		// Draw lines
 		
-		traces = new DefaultXYDataset();
-		
-		int series = 0;
-		
-		for (Entry<Key, List<State>> cluster : equivalenceClasses.entrySet())
+		if (best != null)
 		{
-			State state = cluster.getValue().get(0);
-					
-			double[][] data = new double[2][timepoint + 1];
+			traces = new DefaultXYDataset();
 			
-			for (int step = 0; step <= timepoint; step++)
+			int series = 0;
+			
+			for (Entry<Key, List<State>> cluster : equivalenceClasses.entrySet())
 			{
-				data[0][step] = step;
-				data[1][step] = getRoot().getDescendantByClass(Objective.class).getPort().get(state, step);
+				State state = cluster.getValue().get(0);
+						
+				double[][] data = new double[2][timepoint + 1];
+				
+				for (int step = 0; step <= timepoint; step++)
+				{
+					data[0][step] = step;
+					data[1][step] = getRoot().getDescendantByClass(Objective.class).getPort().get(state, step);
+				}
+				
+				traces.addSeries(series, data);
+				
+				if (Math.abs(data[1][timepoint] - statistics.maxObjective) < Math.abs(data[1][timepoint] - statistics.avgObjective))
+				{
+					tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.GREEN);
+				}
+				else if (Math.abs(data[1][timepoint] - statistics.minObjective) < Math.abs(data[1][timepoint] - statistics.avgObjective))
+				{
+					tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.RED);
+				}
+				else
+				{
+					tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.BLUE);
+				}
+				
+				tracesChart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
+				
+				series++;
 			}
-			
-			traces.addSeries(series, data);
-			
-			if (Math.abs(data[1][timepoint] - statistics.maxObjective) < Math.abs(data[1][timepoint] - statistics.avgObjective))
-			{
-				tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.GREEN);
-			}
-			else if (Math.abs(data[1][timepoint] - statistics.minObjective) < Math.abs(data[1][timepoint] - statistics.avgObjective))
-			{
-				tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.RED);
-			}
-			else
-			{
-				tracesChart.getXYPlot().getRenderer().setSeriesPaint(series, Color.BLUE);
-			}
-			
-			tracesChart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
-			
-			series++;
 		}
 		
 		tracesChart.getXYPlot().setDataset(traces);
@@ -198,6 +222,17 @@ public class EngineMonitorPart<T extends Component> extends Part<T>
 		time.add(timepoint, statistics.cluster, "Cluster");
 		time.add(timepoint, statistics.sort, "Sort");
 		time.add(timepoint, statistics.stats, "Stats");
+		
+		for (Entry<Constraint, Integer> entry : statistics.violations.entrySet())
+		{
+			violations.add(timepoint, entry.getValue(), entry.getKey().getQualifiedName());
+		}
+		for (int i = 0; i < violations.getSeriesCount(); i++)
+		{
+			violationsChart.getXYPlot().getRenderer().setSeriesStroke(i, new BasicStroke(STROKE));
+		}
+		
+		options.add(timepoint, statistics.zeroOptionCount, "Zero Options");
 	}
 
 }

@@ -14,7 +14,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, RANDOM, CACHING);
+		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, RANDOM, CACHING, ROUNDS);
 	}
 	
 	// Constants
@@ -35,10 +35,11 @@ public class RootComponent extends Component
 	public static String PRICE_4 = "csv/Price_week_24_2011.csv";
 	
 	public static int DURATION = 96 * 7;
-	public static int SAMPLES = 100;
+	public static int SAMPLES = 200;
 	public static int CLUSTERS = 50;
 	public static double RANDOM = 0;
 	public static double CACHING = 0;
+	public static int ROUNDS = 1000;
 	
 	// Components
 

@@ -10,20 +10,24 @@ import org.xtream.core.model.State;
 import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Strategy;
 
-public class Grid implements Strategy
+public class GridStrategy implements Strategy
 {
-	private SortedMap<Key, List<State>> currentGroups;
-
+	
 	@Override
-	public SortedMap<Key, List<State>> execute(List<State> currentStates, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint, Component root) {
-		
-		currentGroups = new TreeMap<>();
+	public SortedMap<Key, List<State>> execute(List<State> currentStates, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint, Component root)
+	{
+		SortedMap<Key, List<State>> currentGroups = new TreeMap<>();
 		
 		for (State current : currentStates)
 		{
 			// Group Status
 			
 			Key currentKey = new Key(root, current, minEquivalences, maxEquivalences, classes, timepoint);
+			
+			// Print result of key calculation
+			/*
+			System.out.println(currentKey);
+			*/
 			
 			List<State> currentGroup = currentGroups.get(currentKey);
 			

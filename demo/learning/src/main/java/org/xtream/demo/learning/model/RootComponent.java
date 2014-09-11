@@ -16,10 +16,11 @@ public class RootComponent extends Component
 	public static final int CLUSTERS = 100;
 	public static final double RANDOMNESS = 0;
 	public static final double CACHING = 0;
+	public static final int ROUNDS = 50;
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(SIZE), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING);
+		new Workbench<>(new RootComponent(SIZE), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING, ROUNDS);
 	}
 	
 	// Constructors

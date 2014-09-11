@@ -7,20 +7,33 @@ import org.xtream.core.model.markers.Equivalence;
 public class Key implements Comparable<Key>
 {
 	
-	private double[] equivalences;
+	public double[] equivalences;
 	
 	public Key()
 	{
 		equivalences = new double[0];
 	}
 	
-	public Key(Component root)
+	public Key(Component root, double[] minEquivalences, double[] maxEquivalences)
 	{
 		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 		
 		for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 		{
-			equivalences[i] = Math.random();
+			equivalences[i] = Math.random() * (maxEquivalences[i] - minEquivalences[i]) + minEquivalences[i];
+		}
+	}
+	
+	public Key(Component root, State state, int timepoint)
+	{
+		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
+		
+		if (timepoint >= 0)
+		{
+			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
+			{
+				equivalences[i] = root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint);
+			}
 		}
 	}
 	
@@ -74,31 +87,19 @@ public class Key implements Comparable<Key>
 		return Math.sqrt(distance);
 	}
 	
-	public double calculateDistanceDouble(Double other)
+	@Override
+	public String toString()
 	{
-		double distance = 0;
+		String result = "key(";
 		
 		for (int i = 0; i < equivalences.length; i++)
 		{
-			double diff = equivalences[i] - other;
-			
-			distance += diff * diff; 
+			result += (i > 0 ? "," : "") + equivalences[i];
 		}
 		
-		return Math.sqrt(distance);
-	}
-	
-	public double getCentroid()
-	{
-		double centroid = 0;
+		result += ")";
 		
-		for (int i = 0; i < equivalences.length; i++)
-		{
-			centroid += equivalences[i];
-		}
-		
-		return (centroid/equivalences.length);
-
+		return result;
 	}
 	
 }

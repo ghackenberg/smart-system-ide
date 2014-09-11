@@ -13,6 +13,7 @@ public class Marker<T> extends Element
 		this.port = port;
 	}
 	
+	@Reference
 	public Port<T> getPort()
 	{
 		return port;

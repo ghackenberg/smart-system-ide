@@ -18,6 +18,7 @@ public class ChannelExpression<T> extends Expression<T>
 		this.source = source;
 	}
 	
+	@Reference
 	public Port<T> getSource()
 	{
 		return source;

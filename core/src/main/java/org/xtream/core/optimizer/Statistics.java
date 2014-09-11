@@ -1,5 +1,9 @@
 package org.xtream.core.optimizer;
 
+import java.util.Map;
+
+import org.xtream.core.model.markers.Constraint;
+
 public class Statistics
 {
 	
@@ -16,5 +20,7 @@ public class Statistics
 	public long cluster;
 	public long sort;
 	public long stats;
+	public Map<Constraint, Integer> violations;
+	public int zeroOptionCount;
 
 }
