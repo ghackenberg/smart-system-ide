@@ -8,10 +8,15 @@ import org.xtream.demo.projecthouse.model.Producer;
 
 public class NetModule extends Module implements Consumer, Producer{
 	
-	public NetContext context = new NetContext();
+	public NetContext context;
 	public NetController controller = new NetController();
 	
-	public ChannelExpression<Double> powerExpression = new ChannelExpression<>(context.powerInput, controller.powerOutput);
+	public ChannelExpression<Double> powerExpression;
+	
+	public NetModule(String filename) {
+		context = new NetContext(filename);
+		powerExpression = new ChannelExpression<>(context.powerInput, controller.powerOutput);
+	}
 
 	@Override
 	public Port<Double> production() {

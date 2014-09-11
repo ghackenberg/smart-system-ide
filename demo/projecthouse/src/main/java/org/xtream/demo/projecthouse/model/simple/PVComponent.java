@@ -13,7 +13,7 @@ public class PVComponent extends Component implements Producer {
 	public Port<Double> productionOutput = new Port<>();
 	
 	//Expressions
-	public Expression<Double> productionExpression = new Expression<Double>(productionOutput) {
+	public Expression<Double> productionExpression = new Expression<Double>(productionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
