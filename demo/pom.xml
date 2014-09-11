@@ -18,6 +18,7 @@
 		<module>mobile</module>
 		<module>street</module>
 		<module>thermal</module>
+		<module>projecthouse</module>
 	</modules>
 	
 	<dependencies>
