@@ -1,6 +1,7 @@
 package org.xtream.demo.projecthouse.model;
 
 import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.demo.projecthouse.model.battery.BatteryModule;
 import org.xtream.demo.projecthouse.model.net.NetModule;
@@ -91,6 +92,8 @@ public class RootComponent extends Component {
 	//PV
 	public PVComponent pv = new PVComponent();
 	
+	public ChannelExpression<Irradiance> irradiance = new ChannelExpression<>(pv.irradianceInput, sun.irradianceOutput);
+	
 	//Breaker Box
 	private Consumer[] consumers = new Consumer[]{
 			livingRoomLights,
@@ -114,5 +117,5 @@ public class RootComponent extends Component {
 	public BreakerBoxComponent breakerBox = new BreakerBoxComponent(producers, consumers);
 	
 	//Objective
-	ObjectiveComponent objective = new ObjectiveComponent(thermalStorage.pelletHeater, net, livingRoom, bedRoom, bathRoom1, bathRoom2, waterCloset);
+	public ObjectiveComponent objective = new ObjectiveComponent(thermalStorage.pelletHeater, net, livingRoom, bedRoom, bathRoom1, bathRoom2, waterCloset);
 }
