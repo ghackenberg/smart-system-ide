@@ -4,13 +4,13 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
-import org.xtream.demo.projecthouse.model.Irradiance;
+import org.xtream.demo.projecthouse.model.Irradiation;
 import org.xtream.demo.projecthouse.model.Producer;
 
 public class PVComponent extends Component implements Producer {
 	
 	//Ports
-	public Port<Irradiance> irradianceInput = new Port<>();
+	public Port<Irradiation> irradianceInput = new Port<>();
 	public Port<Double> productionOutput = new Port<>();
 	
 	//Expressions

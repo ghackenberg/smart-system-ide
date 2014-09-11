@@ -92,7 +92,7 @@ public class RootComponent extends Component {
 	//PV
 	public PVComponent pv = new PVComponent();
 	
-	public ChannelExpression<Irradiance> irradiance = new ChannelExpression<>(pv.irradianceInput, sun.irradianceOutput);
+	public ChannelExpression<Irradiation> irradiance = new ChannelExpression<>(pv.irradianceInput, sun.irradiationOutput);
 	
 	//Breaker Box
 	private Consumer[] consumers = new Consumer[]{
