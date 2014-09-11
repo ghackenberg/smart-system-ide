@@ -10,7 +10,7 @@ public class HeatPumpContext extends Component {
 	public Port<Integer> levelInput = new Port<>();
 	public Port<Double> consumptionOutput = new Port<>();
 	
-	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput) {
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {

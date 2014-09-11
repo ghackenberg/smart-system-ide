@@ -1,8 +1,10 @@
 package org.xtream.demo.projecthouse.model;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.objectives.MinObjective;
@@ -18,6 +20,7 @@ public class ObjectiveComponent extends Component {
 	public Port<Double> netAutonomyInput = new Port<>();
 	public Port<Double> netBalanceInput = new Port<>();
 	public Port<Double> pelletHeaterInput = new Port<>();
+	public Port<Double> constancyInput = new Port<>();
 	
 	public Port<Double> objectiveOutput = new Port<>();
 	
@@ -29,6 +32,9 @@ public class ObjectiveComponent extends Component {
 	public ChannelExpression<Double> netAutonomyChannel;
 	public ChannelExpression<Double> netBalanceChannel;
 	public ChannelExpression<Double> pelletHeaterChannel;
+	public ChannelExpression<Double> constancyChannel;
+	
+	public Chart objectiveChart = new Timeline(objectiveOutput, netCostInput, netAutonomyInput, pelletHeaterInput);
 	
 	@SuppressWarnings("unchecked")
 	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetModule net, RoomModule...rooms) {
@@ -42,14 +48,15 @@ public class ObjectiveComponent extends Component {
 		netAutonomyChannel = new ChannelExpression<>(netAutonomyInput, net.controller.powerOutput);
 		netBalanceChannel = new ChannelExpression<>(netBalanceInput, net.context.balanceOutput);
 		pelletHeaterChannel = new ChannelExpression<>(pelletHeaterInput, pelletHeater.context.costOutput);
+		constancyChannel = new ChannelExpression<>(constancyInput, net.context.constancyOutput);
 	}
 	
-	public Expression<Double> objectExpression = new Expression<Double>(objectiveOutput) {
+	public Expression<Double> objectiveExpression = new Expression<Double>(objectiveOutput) {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas] insert objective function
-			return 0.;
+			return netCostChannel.get(state, timepoint);
 		}
 	};
 

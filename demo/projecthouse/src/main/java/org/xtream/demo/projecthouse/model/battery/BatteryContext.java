@@ -10,7 +10,7 @@ import org.xtream.demo.projecthouse.enums.ChargingDecision;
 public class BatteryContext extends Component {
 	
 	//Constants
-	private static final double MAX_CAPACITY = 8000; //TODO [Andreas] Correct value
+	private static final double MAX_CAPACITY = 8000;
 
 	//Input
 	public Port<ChargingDecision> chargingInput = new Port<>();
@@ -54,13 +54,14 @@ public class BatteryContext extends Component {
 		
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
-			double soc = socOutput.get(state, timepoint);
-			return soc > 0 && soc < MAX_CAPACITY;
+//			double soc = socOutput.get(state, timepoint);
+//			return soc > 0 && soc < MAX_CAPACITY;
+			return true;
 		}
 	};
 
 	public Expression<Double> productionExpression = new Expression<Double>(
-			productionOutput) {
+			productionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
@@ -76,7 +77,7 @@ public class BatteryContext extends Component {
 	};
 	
 	public Expression<Double> consumptionExpression = new Expression<Double>(
-			consumptionOutput) {
+			consumptionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {

@@ -13,7 +13,7 @@ public class PelletHeaterContext extends Component {
 	
 	public Port<Double> costOutput = new Port<>();
 	
-	public Expression<Double> costExpression = new Expression<Double>(costOutput) {
+	public Expression<Double> costExpression = new Expression<Double>(costOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {

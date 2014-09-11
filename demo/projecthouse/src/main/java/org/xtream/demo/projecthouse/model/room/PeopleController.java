@@ -1,21 +1,34 @@
 package org.xtream.demo.projecthouse.model.room;
 
+import java.io.File;
+import java.net.URISyntaxException;
+
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
+import org.xtream.demo.projecthouse.model.CSVFileWithOneKey;
 
 public class PeopleController extends Component {
+	private CSVFileWithOneKey csvData;
 	
-	Port<Double> possibilityOutput = new Port<>();
+	public Port<Double> possibilityOutput = new Port<>();
 	
-	Expression<Double> possibilityExpression = new Expression<Double>(possibilityOutput) {
+	public PeopleController(String filename) {
+		super();
+		try {
+			File file = new File(getClass().getResource(filename).toURI());
+			csvData = new CSVFileWithOneKey(file, 1);
+		} catch (URISyntaxException e) {
+			throw new RuntimeException("Problems creating file for " + filename);
+		}
+	}
 
+	public Expression<Double> possibilityExpression = new Expression<Double>(possibilityOutput) {
+		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			// TODO [Andreas]
-			return 1.;
+			return csvData.get(timepoint, 1);
 		}
 	};
-
 }

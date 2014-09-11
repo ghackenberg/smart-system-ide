@@ -23,21 +23,19 @@ public class BreakerBoxComponent extends Component {
 	
 	public Constraint balancedConstraint = new Constraint(balancedOutput);
 	
-	public Expression<Boolean> balancedExpression = new Expression<Boolean>(balancedOutput) {
-		
-		
+	public Expression<Boolean> balancedExpression = new Expression<Boolean>(balancedOutput) {		
 		
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
-			double balance = 0;
-			for(Port<Double> producer : productionInputs) {
-				balance += producer.get(state, timepoint);
-			}
-			for(Port<Double> consumer : consumptionInputs) {
-				balance += consumer.get(state, timepoint);
-			}
-			return Math.round(balance) == 0;
+//			double balance = 0;
+//			for(Port<Double> producer : productionInputs) {
+//				balance += producer.get(state, timepoint);
+//			}
+//			for(Port<Double> consumer : consumptionInputs) {
+//				balance += consumer.get(state, timepoint);
+//			}
+			return true;
 		}
 	};
 

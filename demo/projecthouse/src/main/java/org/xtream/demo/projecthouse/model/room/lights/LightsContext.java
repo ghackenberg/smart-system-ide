@@ -19,7 +19,7 @@ public class LightsContext extends Component {
 		this.consumption = consumption;
 	}
 	
-	Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput) {
+	Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {

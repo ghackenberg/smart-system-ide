@@ -11,6 +11,7 @@ public class ThermalStorageContext extends Module {
 	
 	@SuppressWarnings("rawtypes")
 	public Port[] roomHeatingInputs;
+	public Port<Double> outerTemperatureInput = new Port<>();
 	
 	public ThermalStorageContext(RoomModule...rooms) {
 		roomHeatingInputs = new Port[rooms.length];
@@ -26,11 +27,17 @@ public class ThermalStorageContext extends Module {
 	
 	public Port<Double> temperatureOutput = new Port<>();
 	
-	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput) {
+	public Expression<Double> temperatureExpression = new Expression<Double>(temperatureOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return null;
+			if(timepoint == 0) {
+				return 50.;
+			}
+			double oldTemperature = temperatureOutput.get(state, timepoint - 1);
+			double outerTemperature = outerTemperatureInput.get(state, timepoint);
+			//TODO [Andreas]
+			return oldTemperature;
 		}
 	};
 	
