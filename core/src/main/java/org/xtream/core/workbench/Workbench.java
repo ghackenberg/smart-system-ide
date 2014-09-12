@@ -20,7 +20,7 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
-import org.xtream.core.optimizer.strategies.KMeansStrategy;
+import org.xtream.core.optimizer.strategies.RandomStrategy;
 import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
@@ -205,7 +205,9 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			State best = engine.run(duration, samples, clusters, randomness, allMonitor, new KMeansStrategy(rounds));
+			//State best = engine.run(duration, samples, clusters, randomness, allMonitor, new KMeansStrategy(rounds));
+			//State best = engine.run(duration, samples, clusters, randomness, allMonitor, new GridStrategy());
+			State best = engine.run(duration, samples, clusters, randomness, allMonitor, new RandomStrategy());
 			
 			// print
 			
