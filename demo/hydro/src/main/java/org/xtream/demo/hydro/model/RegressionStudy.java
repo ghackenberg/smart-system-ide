@@ -15,13 +15,13 @@ public class RegressionStudy
 	public static final int STAUSTUFE = 0;
 	
 	public static final int INFLOW_PAST = 10;
-	public static final int INFLOW_ORDER = 20;
+	public static final int INFLOW_ORDER = 5;
 	
-	public static final int LEVEL_PAST = 3;
+	public static final int LEVEL_PAST = 1;
 	public static final int LEVEL_ORDER = 1;
 	
 	public static final int OUTFLOW_PAST = 10;
-	public static final int OUTFLOW_ORDER = 20;
+	public static final int OUTFLOW_ORDER = 5;
 	
 	public static final int MAXIMUM_PAST = Math.max(LEVEL_PAST + 1, Math.max(INFLOW_PAST, OUTFLOW_PAST));
 
