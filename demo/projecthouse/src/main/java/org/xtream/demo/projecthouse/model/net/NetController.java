@@ -13,7 +13,7 @@ public class NetController extends Component {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return Math.random()*1000-500;
+			return Math.random()*10000-5000;
 		}
 		
 	};

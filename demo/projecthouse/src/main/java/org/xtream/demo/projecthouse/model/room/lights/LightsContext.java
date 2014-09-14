@@ -10,16 +10,16 @@ public class LightsContext extends Component {
 	
 	private double consumption;
 	
-	Port<OnOffDecision> onOffInput = new Port<>();
+	public Port<OnOffDecision> onOffInput = new Port<>();
 	
-	Port<Double> consumptionOutput = new Port<>();
+	public Port<Double> consumptionOutput = new Port<>();
 	
 	public LightsContext(double consumption) {
 		super();
 		this.consumption = consumption;
 	}
 	
-	Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput, true) {
+	public Expression<Double> consumptionExpression = new Expression<Double>(consumptionOutput, true) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {

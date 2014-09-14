@@ -17,7 +17,7 @@ import org.xtream.demo.projecthouse.model.thermalstorage.ThermalStorageModule;
 public class RootComponent extends Component {
 
 	public static final double START_TEMPERATURE = 20.;
-	public static final double BRIGHTNESS_LIMIT = 0.;
+	public static final double BRIGHTNESS_LIMIT = 100.;
 	public static final double ELECTRICITY_RATE = .24;
 	public static final double PELLET_PRICE = 1.;
 	private static final String LIVINGROOM_PEOPLE_CSV = "livingRoomPeople.csv";
@@ -92,7 +92,7 @@ public class RootComponent extends Component {
 	//PV
 	public PVComponent pv = new PVComponent();
 	
-	public ChannelExpression<Irradiation> irradiance = new ChannelExpression<>(pv.irradianceInput, sun.irradiationOutput);
+	public ChannelExpression<Irradiation> irradiance = new ChannelExpression<>(pv.irradiationInput, sun.irradiationOutput);
 	
 	//Breaker Box
 	private Consumer[] consumers = new Consumer[]{
@@ -103,19 +103,19 @@ public class RootComponent extends Component {
 			wcLights,
 			thermalStorage.electricHeatingElement,
 			thermalStorage.heatPump,
-			net,
 			loads,
 			battery
 	};
 	
 	private Producer[] producers = new Producer[] {
-			net,
 			battery,
 			pv
 	};
 	
 	public BreakerBoxComponent breakerBox = new BreakerBoxComponent(producers, consumers);
 	
+	public ChannelExpression<Double> houseNetChannel = new ChannelExpression<>(net.context.houseInput, breakerBox.balanceOutput);
+	
 	//Objective
-	public ObjectiveComponent objective = new ObjectiveComponent(thermalStorage.pelletHeater, net, livingRoom, bedRoom, bathRoom1, bathRoom2, waterCloset);
+	public ObjectiveComponent objective = new ObjectiveComponent(thermalStorage.pelletHeater, net, breakerBox, livingRoom, bedRoom, bathRoom1, bathRoom2, waterCloset);
 }

@@ -1,6 +1,8 @@
 package org.xtream.demo.projecthouse.model.room.lights;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
@@ -13,10 +15,13 @@ public class LightsModule extends Module implements Consumer{
 	
 	public ChannelExpression<OnOffDecision> onOffChannel;
 	
+	public Chart consumption;
+	
 	public LightsModule(double consumption) {
 		super();
 		context = new LightsContext(consumption);
 		onOffChannel = new ChannelExpression<>(context.onOffInput, controller.onOffOutput);
+		this.consumption = new Timeline(consumption());
 	}
 
 	@Override

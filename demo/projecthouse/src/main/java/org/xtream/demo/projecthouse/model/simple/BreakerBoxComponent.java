@@ -1,13 +1,15 @@
 package org.xtream.demo.projecthouse.model.simple;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
-import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.projecthouse.model.Consumer;
 import org.xtream.demo.projecthouse.model.Producer;
+import org.xtream.demo.projecthouse.model.RootComponent;
 
 public class BreakerBoxComponent extends Component {
 	
@@ -19,23 +21,35 @@ public class BreakerBoxComponent extends Component {
 	@SuppressWarnings("rawtypes")
 	public ChannelExpression[] channels;
 	
-	public Port<Boolean> balancedOutput = new Port<Boolean>();
+	public Port<Double> balanceOutput = new Port<>();
+	public Port<Double> accCostOutput = new Port<>();
 	
-	public Constraint balancedConstraint = new Constraint(balancedOutput);
+	public Chart cost = new Timeline(accCostOutput);
 	
-	public Expression<Boolean> balancedExpression = new Expression<Boolean>(balancedOutput) {		
+	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput) {		
 		
 		@SuppressWarnings("unchecked")
 		@Override
-		protected Boolean evaluate(State state, int timepoint) {
-//			double balance = 0;
-//			for(Port<Double> producer : productionInputs) {
-//				balance += producer.get(state, timepoint);
-//			}
-//			for(Port<Double> consumer : consumptionInputs) {
-//				balance += consumer.get(state, timepoint);
-//			}
-			return true;
+		protected Double evaluate(State state, int timepoint) {
+			double balance = 0;
+			for(Port<Double> producer : productionInputs) {
+				balance += producer.get(state, timepoint);
+			}
+			for(Port<Double> consumer : consumptionInputs) {
+				balance -= consumer.get(state, timepoint);
+			}
+			return balance;
+		}
+	};
+	
+	public Expression<Double> accCostExpression = new Expression<Double>(accCostOutput) {
+
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			if(timepoint == 0) {
+				return 0.;
+			}
+			return accCostOutput.get(state, timepoint - 1) - balanceOutput.get(state, timepoint)*RootComponent.ELECTRICITY_RATE;
 		}
 	};
 

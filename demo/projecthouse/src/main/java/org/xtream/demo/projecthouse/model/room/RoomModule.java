@@ -3,6 +3,8 @@ package org.xtream.demo.projecthouse.model.room;
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.xtream.core.model.Chart;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
@@ -32,6 +34,10 @@ public class RoomModule extends Module {
 	public ChannelExpression<Irradiation> sunChannel;
 	public ChannelExpression<Double> temperatureChannel;
 	public ChannelExpression<Double> peopleChannel;
+	
+	public Chart people;
+	public Chart temperature;
+	public Chart brightness;
 	
 	@SuppressWarnings("unchecked")
 	public RoomModule(double volume, double lowerTemperatureLimit, double upperTemperatureLimit, String temperatureFile, SunComponent sun, LightsModule lights, String peopleFile, WindowSpecification...windowSpecs) {
@@ -63,6 +69,10 @@ public class RoomModule extends Module {
 		for(int i=0; i<nrOfWindows; i++) {
 			blindsChannels[i] = new ChannelExpression<Double>(roomContext.blindsInputs[i], windows[i].blindsController.blindsOutput);
 		}
+		
+		people = new Timeline(peopleController.possibilityOutput);
+		temperature = new Timeline(roomContext.temperatureOutput);
+		brightness = new Timeline(roomContext.brightnessOutput);
 		
 	}
 

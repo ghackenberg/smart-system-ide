@@ -2,9 +2,11 @@ package org.xtream.demo.projecthouse.model;
 
 import java.io.File;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 
 public class TemperatureController extends Component {
@@ -12,6 +14,8 @@ public class TemperatureController extends Component {
 	private CSVFileWithOneKey csvData;
 	
 	public Port<Double> temperatureOutput = new Port<>();
+	
+	public Chart temperature = new Timeline(temperatureOutput);
 	
 	public TemperatureController(File file) {
 		super();

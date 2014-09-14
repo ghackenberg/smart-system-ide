@@ -10,7 +10,7 @@ import org.xtream.core.model.containers.Component;
 import org.xtream.demo.projecthouse.model.CSVFileWithOneKey;
 
 public class PeopleController extends Component {
-	private CSVFileWithOneKey csvData;
+	public CSVFileWithOneKey csvData;
 	
 	public Port<Double> possibilityOutput = new Port<>();
 	

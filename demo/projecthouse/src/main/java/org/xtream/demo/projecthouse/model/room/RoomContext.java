@@ -70,10 +70,9 @@ public class RoomContext extends Component {
 
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
-//			double temperature = temperatureOutput.get(state, timepoint);
-//			return temperature < upperTemperatureLimit
-//					&& temperature > lowerTemperatureLimit;
-			return true;
+			double temperature = temperatureOutput.get(state, timepoint);
+			return temperature < upperTemperatureLimit
+					&& temperature > lowerTemperatureLimit;
 		}
 	};
 
@@ -81,8 +80,16 @@ public class RoomContext extends Component {
 			brightnessOutput, true) {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			double brightness = RootComponent.BRIGHTNESS_LIMIT;
+			double brightness = 0.;
 			// TODO [Andreas] Implement effects of lights and sunlight
+			if(lightsInput.get(state, timepoint) == OnOffDecision.ON) {
+				return RootComponent.BRIGHTNESS_LIMIT;
+			}
+			for(int i = 0; i<blindsInputs.length; i++) {
+				if(Math.abs(windows[i].getOrientation() - irradianceInput.get(state, timepoint).orientation) < 75) {
+					brightness += ((Port<Double>)blindsInputs[i]).get(state, timepoint)*RootComponent.BRIGHTNESS_LIMIT*3;
+				}
+			}
 			return brightness;
 		}
 	};
@@ -92,9 +99,8 @@ public class RoomContext extends Component {
 
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
-//			//TODO [Andreas] Only needed when people in the room
-//			return brightnessOutput.get(state, timepoint) >= RootComponent.BRIGHTNESS_LIMIT;
-			return true;
+			//TODO [Andreas] Only needed when people in the room
+			return brightnessOutput.get(state, timepoint) >= RootComponent.BRIGHTNESS_LIMIT*possibilityInput.get(state, timepoint);
 		}
 	};
 
