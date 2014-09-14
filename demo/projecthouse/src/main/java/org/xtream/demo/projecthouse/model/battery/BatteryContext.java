@@ -20,13 +20,13 @@ public class BatteryContext extends Component {
 	public Port<Boolean> socInBoundsOutput = new Port<>();
 	public Port<Double> consumptionOutput = new Port<>();
 	public Port<Double> productionOutput = new Port<>();
+	public Port<Double> balanceOutput = new Port<>();
 
 	//Constraints
 	public Constraint socInBoundsConstraint = new Constraint(socInBoundsOutput);
 	
 	//Expressions
-	public Expression<Double> socExpression = new Expression<Double>(socOutput,
-			true) {
+	public Expression<Double> socExpression = new Expression<Double>(socOutput) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
@@ -54,9 +54,8 @@ public class BatteryContext extends Component {
 		
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
-//			double soc = socOutput.get(state, timepoint);
-//			return soc > 0 && soc < MAX_CAPACITY;
-			return true;
+			double soc = socOutput.get(state, timepoint);
+			return soc > 0 && soc < MAX_CAPACITY;
 		}
 	};
 
@@ -91,22 +90,30 @@ public class BatteryContext extends Component {
 		}
 
 	};
+	
+	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput) {
+		
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			return productionOutput.get(state, timepoint) - consumptionOutput.get(state, timepoint);
+		}
+	};
 
 	
 	//Local Methods
 	protected double getLossRate(Double soc) {
 		// TODO [Andreas] Get value from file with battery data
-		return 0;
+		return .95;
 	}
 
 	protected double getDisChargeSpeed(Double soc) {
 		// TODO [Andreas] Get value from file with battery data
-		return 0;
+		return 2000.;
 	}
 
 	protected double getChargeSpeed(Double soc) {
 		// TODO [Andreas] Get value from file with battery data
-		return 0;
+		return 2000.;
 	}
 
 }

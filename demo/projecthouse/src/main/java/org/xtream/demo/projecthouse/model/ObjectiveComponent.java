@@ -10,6 +10,7 @@ import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.objectives.MinObjective;
 import org.xtream.demo.projecthouse.model.net.NetModule;
 import org.xtream.demo.projecthouse.model.room.RoomModule;
+import org.xtream.demo.projecthouse.model.simple.BreakerBoxComponent;
 import org.xtream.demo.projecthouse.model.thermalstorage.pelletheater.PelletHeaterModule;
 
 public class ObjectiveComponent extends Component {
@@ -37,15 +38,15 @@ public class ObjectiveComponent extends Component {
 	public Chart objectiveChart = new Timeline(objectiveOutput, netCostInput, netAutonomyInput, pelletHeaterInput);
 	
 	@SuppressWarnings("unchecked")
-	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetModule net, RoomModule...rooms) {
+	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetModule net, BreakerBoxComponent breakerBox, RoomModule...rooms) {
 		roomInputs = new Port[rooms.length];
 		channels = new ChannelExpression[rooms.length];
 		for(int i = 0; i < rooms.length; i++) {
 			roomInputs[i] = new Port<Double>();
 			channels[i] = new ChannelExpression<>(roomInputs[i], rooms[i].roomContext.comfortOutput);
 		}
-		netCostChannel = new ChannelExpression<>(netCostInput, net.context.costOutput);
-		netAutonomyChannel = new ChannelExpression<>(netAutonomyInput, net.controller.powerOutput);
+		netCostChannel = new ChannelExpression<>(netCostInput, breakerBox.accCostOutput);
+		netAutonomyChannel = new ChannelExpression<>(netAutonomyInput, breakerBox.balanceOutput);
 		netBalanceChannel = new ChannelExpression<>(netBalanceInput, net.context.balanceOutput);
 		pelletHeaterChannel = new ChannelExpression<>(pelletHeaterInput, pelletHeater.context.costOutput);
 		constancyChannel = new ChannelExpression<>(constancyInput, net.context.constancyOutput);
@@ -56,7 +57,7 @@ public class ObjectiveComponent extends Component {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas] insert objective function
-			return netCostChannel.get(state, timepoint);
+			return netCostInput.get(state, timepoint);
 		}
 	};
 

@@ -3,9 +3,11 @@ package org.xtream.demo.projecthouse.model.simple;
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.demo.projecthouse.model.CSVFileWithOneKey;
 import org.xtream.demo.projecthouse.model.Consumer;
@@ -15,6 +17,8 @@ public class LoadsComponent extends Component implements Consumer {
 	private CSVFileWithOneKey csvData;
 	
 	public Port<Double> consumptionOutput = new Port<>();
+	
+	public Chart consumption = new Timeline(consumptionOutput);
 	
 	public LoadsComponent(String filename) {
 		super();
