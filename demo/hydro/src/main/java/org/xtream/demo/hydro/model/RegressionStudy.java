@@ -1,5 +1,6 @@
 package org.xtream.demo.hydro.model;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,22 +14,47 @@ import au.com.bytecode.opencsv.CSVReader;
 public class RegressionStudy
 {
 	
+	// Time parameters
+	
 	public static final int DAY = 4 * 24;
 	public static final int WEEK = DAY * 7;
 	public static final int MONTH = WEEK * 4;
 	
-	public static final int STAUSTUFE = 0;
+	public static final int WEEK_MIN = 1;
+	public static final int WEEK_MAX = 46;
+	public static final int WEEK_STEP = 1;
 	
-	public static final int INFLOW_PAST = 10;
-	public static final int INFLOW_ORDER = 5;
+	// Level parameters
 	
-	public static final int LEVEL_PAST = 1;
-	public static final int LEVEL_ORDER = 1;
+	public static final int LEVEL_PAST_MIN = 4;
+	public static final int LEVEL_PAST_MAX = 6;
+	public static final int LEVEL_PAST_STEP = 1;
 	
-	public static final int OUTFLOW_PAST = 10;
-	public static final int OUTFLOW_ORDER = 5;
+	public static final int LEVEL_ORDER_MIN = 1;
+	public static final int LEVEL_ORDER_MAX = 1;
+	public static final int LEVEL_ORDER_STEP = 1;
 	
-	public static final int MAXIMUM_PAST = Math.max(LEVEL_PAST + 1, Math.max(INFLOW_PAST, OUTFLOW_PAST));
+	// Inflow parameters
+	
+	public static final int INFLOW_PAST_MIN = 8;
+	public static final int INFLOW_PAST_MAX = 10;
+	public static final int INFLOW_PAST_STEP = 1;
+	
+	public static final int INFLOW_ORDER_MIN = 3;
+	public static final int INFLOW_ORDER_MAX = 5;
+	public static final int INFLOW_ORDER_STEP = 1;
+	
+	// Outflow parameters
+	
+	public static final int OUTFLOW_PAST_MIN = 4;
+	public static final int OUTFLOW_PAST_MAX = 6;
+	public static final int OUTFLOW_PAST_STEP = 1;
+	
+	public static final int OUTFLOW_ORDER_MIN = 4;
+	public static final int OUTFLOW_ORDER_MAX = 6;
+	public static final int OUTFLOW_ORDER_STEP = 1;
+	
+	// Main
 
 	public static void main(String[] args)
 	{
@@ -37,28 +63,128 @@ public class RegressionStudy
 			double[][] data_2011 = parseData("csv/Regression_2011.csv");
 			double[][] data_2012 = parseData("csv/Regression_2012.csv");
 			
-			double[] beta = trainModel(data_2012);
+			File configuration_file = new File("csv/Comparison/Configuration.csv");
 			
-			FileWriter overview = new FileWriter("csv/Comparison/Overview.csv");
+			configuration_file.getParentFile().mkdirs();
 			
-			overview.write("Week;Year 2011 (Average);Year 2011 (Quadratic);Year 2011 (Maximum);Year 2012 (Average);Year 2012 (Quadratic);Year 2012 (Maximum)\n");
+			FileWriter configuration_writer = new FileWriter(configuration_file);
 			
-			for (int i = 1; i < 35; i++)
+			configuration_writer.write("Staustufe;Level past;Level order;Inflow past;Inflow order;Outflow past;Outflow order\n");
+			
+			for (int staustufe = 0; staustufe < 5; staustufe++)
 			{
-				double[] error_2011 = testModel(beta, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/2012_vs_2011/Week_" + i + ".csv");
-				double[] error_2012 = testModel(beta, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/2012_vs_2012/Week_" + i + ".csv");
+				File overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Overview.csv");
 				
-				overview.write(i + 1 + ";");
-				overview.write(String.valueOf(error_2011[0]).replace('.',',') + ";");
-				overview.write(String.valueOf(error_2011[1]).replace('.',',') + ";");
-				overview.write(String.valueOf(error_2011[2]).replace('.',',') + ";");
-				overview.write(String.valueOf(error_2012[0]).replace('.',',') + ";");
-				overview.write(String.valueOf(error_2012[1]).replace('.',',') + ";");
-				overview.write(String.valueOf(error_2012[2]).replace('.',',') + ";");
-				overview.write("\n");
+				overview_file.getParentFile().mkdirs();
+				
+				FileWriter overview_writer = new FileWriter(overview_file);
+				
+				overview_writer.write("Configuration;Average;Maximum\n");
+				
+				double level_past_best = LEVEL_PAST_MIN;
+				double level_order_best = LEVEL_ORDER_MIN;
+				double inflow_past_best = INFLOW_PAST_MIN;
+				double inflow_order_best = INFLOW_ORDER_MIN;
+				double outflow_past_best = OUTFLOW_PAST_MIN;
+				double outflow_order_best = OUTFLOW_ORDER_MIN;
+				
+				//double error_average_best = Double.MAX_VALUE;
+				double error_maximum_best = Double.MAX_VALUE;
+				
+				for (int level_past = LEVEL_PAST_MIN; level_past <= LEVEL_PAST_MAX; level_past += LEVEL_PAST_STEP)
+				{
+					for (int level_order = LEVEL_ORDER_MIN; level_order <= LEVEL_ORDER_MAX; level_order += LEVEL_ORDER_STEP)
+					{
+						for (int inflow_past = INFLOW_PAST_MIN; inflow_past <= INFLOW_PAST_MAX; inflow_past += INFLOW_PAST_STEP)
+						{
+							for (int inflow_order = INFLOW_ORDER_MIN; inflow_order <= INFLOW_ORDER_MAX; inflow_order += INFLOW_ORDER_STEP)
+							{
+								for (int outflow_past = OUTFLOW_PAST_MIN; outflow_past <= OUTFLOW_PAST_MAX; outflow_past += OUTFLOW_PAST_STEP)
+								{
+									for (int outflow_order = OUTFLOW_ORDER_MIN; outflow_order <= OUTFLOW_ORDER_MAX; outflow_order += OUTFLOW_ORDER_STEP)
+									{
+										overview_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + "," + outflow_past + "x" + outflow_order + ";");
+										
+										double[] beta = trainModel(data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+										
+										File configuration_overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
+										
+										configuration_overview_file.getParentFile().mkdirs();
+										
+										FileWriter configuration_overview_writer = new FileWriter(configuration_overview_file);
+										
+										configuration_overview_writer.write("Week;Year 2011 (Average);Year 2011 (Quadratic);Year 2011 (Maximum);Year 2012 (Average);Year 2012 (Quadratic);Year 2012 (Maximum)\n");
+										
+										double error_average = 0;
+										double error_maximum = 0;
+										
+										int count = 0;
+										
+										for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
+										{
+											double[] error_2011 = testModel(beta, data_2011, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
+											double[] error_2012 = testModel(beta, data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv");
+											
+											configuration_overview_writer.write("Week" + (i + 1) + ";");
+											configuration_overview_writer.write(String.valueOf(error_2011[0]).replace('.',',') + ";");
+											configuration_overview_writer.write(String.valueOf(error_2011[1]).replace('.',',') + ";");
+											configuration_overview_writer.write(String.valueOf(error_2011[2]).replace('.',',') + ";");
+											configuration_overview_writer.write(String.valueOf(error_2012[0]).replace('.',',') + ";");
+											configuration_overview_writer.write(String.valueOf(error_2012[1]).replace('.',',') + ";");
+											configuration_overview_writer.write(String.valueOf(error_2012[2]).replace('.',',') + ";");
+											configuration_overview_writer.write("\n");
+											
+											error_average += error_2011[0] + error_2012[0];
+											error_maximum = Math.max(error_maximum, Math.max(error_2011[2], error_2012[2]));
+											
+											count++;
+										}
+										
+										error_average /= (count * 2);
+										
+										configuration_overview_writer.close();
+										
+										if (error_average != Double.NaN && error_maximum != Double.NaN)
+										{
+											overview_writer.write(String.valueOf(error_average).replace('.',',') + ";");
+											overview_writer.write(String.valueOf(error_maximum).replace('.',',') + ";");
+											overview_writer.write("\n");
+											
+											if (error_maximum < error_maximum_best)
+											{
+												error_maximum_best = error_maximum;
+												//error_average_best = error_average;
+												
+												level_past_best = level_past;
+												level_order_best = level_order;
+												inflow_past_best = inflow_past;
+												inflow_order_best = inflow_order;
+												outflow_past_best = outflow_past;
+												outflow_order_best = outflow_order;
+											}
+										}
+										
+										System.out.println("\nbest = " + level_past_best + "x" + level_order_best + "-" + inflow_past_best + "x" + inflow_order_best + "-" + outflow_past_best + "x" + outflow_order_best + "\n");
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				overview_writer.close();
+				
+				configuration_writer.write(staustufe + ";");
+				configuration_writer.write(level_past_best + ";");
+				configuration_writer.write(level_order_best + ";");
+				configuration_writer.write(inflow_past_best + ";");
+				configuration_writer.write(inflow_order_best + ";");
+				configuration_writer.write(outflow_past_best + ";");
+				configuration_writer.write(outflow_order_best + "\n");
+				configuration_writer.flush();
 			}
 			
-			overview.close();
+			configuration_writer.close();
 		}
 		catch (Exception e)
 		{
@@ -126,36 +252,38 @@ public class RegressionStudy
 		return lines_double.toArray(new double[lines_double.size()][15]);
 	}
 	
-	private static double[] trainModel(double[][] data)
+	private static double[] trainModel(double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
-		System.out.println("trainModel(data)");
+		System.out.println("trainModel(data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ")");
 		
-		double[] y = new double[data.length - MAXIMUM_PAST];
-		double[][] x = new double[data.length - MAXIMUM_PAST][LEVEL_PAST * LEVEL_ORDER + INFLOW_PAST * INFLOW_ORDER + OUTFLOW_PAST * OUTFLOW_ORDER];
+		int maximum_past = Math.max(level_past + 1, Math.max(inflow_past, outflow_past));
 		
-		for (int i = MAXIMUM_PAST; i < data.length; i++)
+		double[] y = new double[data.length - maximum_past];
+		double[][] x = new double[data.length - maximum_past][level_past * level_order + inflow_past * inflow_order + outflow_past * outflow_order];
+		
+		for (int i = maximum_past; i < data.length; i++)
 		{
-			y[i - MAXIMUM_PAST] = data[i][STAUSTUFE * 3 + 1];
+			y[i - maximum_past] = data[i][staustufe * 3 + 1];
 			
-			for (int j = 0; j < LEVEL_PAST; j++)
+			for (int j = 0; j < level_past; j++)
 			{
-				for (int k = 0; k < LEVEL_ORDER; k++)
+				for (int k = 0; k < level_order; k++)
 				{
-					x[i - MAXIMUM_PAST][j * LEVEL_ORDER + k] = Math.pow(data[i - 1 - j][STAUSTUFE * 3 + 1], k + 1);
+					x[i - maximum_past][j * level_order + k] = Math.pow(data[i - 1 - j][staustufe * 3 + 1], k + 1);
 				}
 			}
-			for (int j = 0; j < INFLOW_PAST; j++)
+			for (int j = 0; j < inflow_past; j++)
 			{
-				for (int k = 0; k < INFLOW_ORDER; k++)
+				for (int k = 0; k < inflow_order; k++)
 				{
-					x[i - MAXIMUM_PAST][LEVEL_PAST * LEVEL_ORDER + j * INFLOW_ORDER + k] = Math.pow(data[i - j][STAUSTUFE * 3 + 0], k + 1);
+					x[i - maximum_past][level_past * level_order + j * inflow_order + k] = Math.pow(data[i - j][staustufe * 3 + 0], k + 1);
 				}
 			}
-			for (int j = 0; j < OUTFLOW_PAST; j++)
+			for (int j = 0; j < outflow_past; j++)
 			{
-				for (int k = 0; k < OUTFLOW_ORDER; k++)
+				for (int k = 0; k < outflow_order; k++)
 				{
-					x[i - MAXIMUM_PAST][LEVEL_PAST * LEVEL_ORDER + INFLOW_PAST * INFLOW_ORDER + j * OUTFLOW_ORDER + k] = Math.pow(data[i - j][STAUSTUFE * 3 + 2], k + 1);
+					x[i - maximum_past][level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] = Math.pow(data[i - j][staustufe * 3 + 2], k + 1);
 				}
 			}
 		}
@@ -201,56 +329,62 @@ public class RegressionStudy
 		return beta;
 	}
 	
-	private static double[] testModel(double[] beta, double[][] data, int start, int length, String file) throws IOException
+	private static double[] testModel(double[] beta, double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, int start, int length, String result_path) throws IOException
 	{
-		System.out.println("testModel(beta, data, \"" + file + "\")");
-	
-		FileWriter result = new FileWriter(file);
+		System.out.println("testModel(beta, data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ", " + start + ", " + length + ", \"" + result_path + "\")");
 		
-		result.write("Measured;Estimated;Quotient\n");
+		int maximum_past = Math.max(level_past + 1, Math.max(inflow_past, outflow_past));
+		
+		File result_file = new File(result_path);
+		
+		result_file.getParentFile().mkdirs();
+	
+		FileWriter result_writer = new FileWriter(result_file);
+		
+		result_writer.write("Measured;Estimated;Quotient\n");
 		
 		int count = 0;
 		double error_quadratic = 0;
 		double error_max = 0;
 		double error_average = 0;
-		double[] y_estimated = new double[length + MAXIMUM_PAST];
+		double[] y_estimated = new double[length + maximum_past];
 		
 		// Initialize estimated levels
 		
-		for (int i = 0; i < length + MAXIMUM_PAST; i++)
+		for (int i = 0; i < length + maximum_past; i++)
 		{
-			y_estimated[i] = data[start - MAXIMUM_PAST + i][STAUSTUFE * 3 + 1];
+			y_estimated[i] = data[start - maximum_past + i][staustufe * 3 + 1];
 		}
 		
 		// Calculate estimated levels
 		
-		for (int i = MAXIMUM_PAST; i < MAXIMUM_PAST + length; i++)
+		for (int i = maximum_past; i < maximum_past + length; i++)
 		{	
-			double y_measured = data[start - MAXIMUM_PAST + i][STAUSTUFE * 3 + 1];
+			double y_measured = data[start - maximum_past + i][staustufe * 3 + 1];
 			
 			// Estimate level
 			
 			y_estimated[i] = beta[0];
 
-			for (int j = 0; j < LEVEL_PAST; j++)
+			for (int j = 0; j < level_past; j++)
 			{
-				for (int k = 0; k < LEVEL_ORDER; k++)
+				for (int k = 0; k < level_order; k++)
 				{
-					y_estimated[i] += beta[1 + j * LEVEL_ORDER + k] * Math.pow(y_estimated[i - 1 - j], k + 1);
+					y_estimated[i] += beta[1 + j * level_order + k] * Math.pow(y_estimated[i - 1 - j], k + 1);
 				}
 			}
-			for (int j = 0; j < INFLOW_PAST; j++)
+			for (int j = 0; j < inflow_past; j++)
 			{
-				for (int k = 0; k < INFLOW_ORDER; k++)
+				for (int k = 0; k < inflow_order; k++)
 				{
-					y_estimated[i] += beta[1 + LEVEL_PAST * LEVEL_ORDER + j * INFLOW_ORDER + k] * Math.pow(data[start - MAXIMUM_PAST + i - j][STAUSTUFE * 3 + 0], k + 1);
+					y_estimated[i] += beta[1 + level_past * level_order + j * inflow_order + k] * Math.pow(data[start - maximum_past + i - j][staustufe * 3 + 0], k + 1);
 				}
 			}
-			for (int j = 0; j < OUTFLOW_PAST; j++)
+			for (int j = 0; j < outflow_past; j++)
 			{
-				for (int k = 0; k < OUTFLOW_ORDER; k++)
+				for (int k = 0; k < outflow_order; k++)
 				{
-					y_estimated[i] += beta[1 + LEVEL_PAST * LEVEL_ORDER + INFLOW_PAST * INFLOW_ORDER + j * OUTFLOW_ORDER + k] * Math.pow(data[start - MAXIMUM_PAST + i - j][STAUSTUFE * 3 + 2], k + 1);
+					y_estimated[i] += beta[1 + level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] * Math.pow(data[start - maximum_past + i - j][staustufe * 3 + 2], k + 1);
 				}
 			}
 			
@@ -261,7 +395,7 @@ public class RegressionStudy
 				break;
 			}
 			
-			result.write(String.valueOf(y_measured).replace('.',',') + ";" + String.valueOf(y_estimated[i]).replace('.',',') + ";" + String.valueOf(y_estimated[i] / y_measured).replace('.',',') + "\n");
+			result_writer.write(String.valueOf(y_measured).replace('.',',') + ";" + String.valueOf(y_estimated[i]).replace('.',',') + ";" + String.valueOf(y_estimated[i] / y_measured).replace('.',',') + "\n");
 			
 			count++;
 
@@ -275,7 +409,7 @@ public class RegressionStudy
 		
 		//System.out.println("Quadratic error: " + error);
 		
-		result.close();
+		result_writer.close();
 		
 		return new double[] {error_average, error_quadratic, error_max};
 	}
