@@ -35,6 +35,11 @@
 			<name>imagej public</name>
 			<url>http://maven.imagej.net/content/repositories/public/</url>
 		</repository>
+		<repository>
+			<id>neuroph-public</id>
+			<name>neuroph public</name>
+			<url>http://neuroph.sourceforge.net/maven2/</url>
+		</repository>
 	</repositories>
 	
 </project>
