@@ -72,7 +72,7 @@ public class RegressionStudy
 			
 			FileWriter configuration_writer = new FileWriter(configuration_file);
 			
-			configuration_writer.write("Staustufe;Level past;Level order;Inflow past;Inflow order;Outflow past;Outflow order\n");
+			configuration_writer.write("Staustufe;Level past;Level order;Inflow past;Inflow order;Outflow past;Outflow order;Error average;Error maximum\n");
 			
 			for (int staustufe = 0; staustufe < 5; staustufe++)
 			{
@@ -91,7 +91,7 @@ public class RegressionStudy
 				double outflow_past_best = OUTFLOW_PAST_MIN;
 				double outflow_order_best = OUTFLOW_ORDER_MIN;
 				
-				//double error_average_best = Double.MAX_VALUE;
+				double error_average_best = Double.MAX_VALUE;
 				double error_maximum_best = Double.MAX_VALUE;
 				
 				for (int level_past = LEVEL_PAST_MIN; level_past <= LEVEL_PAST_MAX; level_past += LEVEL_PAST_STEP)
@@ -136,7 +136,7 @@ public class RegressionStudy
 											double[] error_regression_2011 = testRegressionModel(beta, data_2011, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
 											double[] error_regression_2012 = testRegressionModel(beta, data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
 											
-											configuration_overview_writer.write("Week" + (i + 1) + ";");
+											configuration_overview_writer.write("Week " + (i + 1) + ";");
 											configuration_overview_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");
 											configuration_overview_writer.write(String.valueOf(error_regression_2011[1]).replace('.',',') + ";");
 											configuration_overview_writer.write(String.valueOf(error_regression_2011[2]).replace('.',',') + ";");
@@ -164,7 +164,7 @@ public class RegressionStudy
 											if (error_maximum < error_maximum_best)
 											{
 												error_maximum_best = error_maximum;
-												//error_average_best = error_average;
+												error_average_best = error_average;
 												
 												level_past_best = level_past;
 												level_order_best = level_order;
@@ -192,6 +192,8 @@ public class RegressionStudy
 				configuration_writer.write(inflow_order_best + ";");
 				configuration_writer.write(outflow_past_best + ";");
 				configuration_writer.write(outflow_order_best + "\n");
+				configuration_writer.write(error_average_best + "\n");
+				configuration_writer.write(error_maximum_best + "\n");
 				configuration_writer.flush();
 			}
 			
