@@ -30,7 +30,7 @@ public class RegressionStudy
 	// Level parameters
 	
 	public static final int LEVEL_PAST_MIN = 1;
-	public static final int LEVEL_PAST_MAX = 10;
+	public static final int LEVEL_PAST_MAX = 1;
 	public static final int LEVEL_PAST_STEP = 1;
 	
 	public static final int LEVEL_ORDER_MIN = 1;
@@ -44,17 +44,17 @@ public class RegressionStudy
 	public static final int INFLOW_PAST_STEP = 1;
 	
 	public static final int INFLOW_ORDER_MIN = 1;
-	public static final int INFLOW_ORDER_MAX = 5;
+	public static final int INFLOW_ORDER_MAX = 10;
 	public static final int INFLOW_ORDER_STEP = 1;
 	
 	// Outflow parameters
 	
 	public static final int OUTFLOW_PAST_MIN = 1;
-	public static final int OUTFLOW_PAST_MAX = 10;
+	public static final int OUTFLOW_PAST_MAX = 1;
 	public static final int OUTFLOW_PAST_STEP = 1;
 	
 	public static final int OUTFLOW_ORDER_MIN = 1;
-	public static final int OUTFLOW_ORDER_MAX = 5;
+	public static final int OUTFLOW_ORDER_MAX = 1;
 	public static final int OUTFLOW_ORDER_STEP = 1;
 	
 	// Main
@@ -100,13 +100,13 @@ public class RegressionStudy
 					{
 						for (int outflow_past = OUTFLOW_PAST_MIN; outflow_past <= OUTFLOW_PAST_MAX; outflow_past += OUTFLOW_PAST_STEP)
 						{
-							NeuralNetwork<?> network = trainNeuralModel(data_2012, staustufe, level_past, inflow_past, outflow_past);
-
-							for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
-							{
-								/*double[] error_neural_2011 = */testNeuralNetwork(network, data_2011, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
-								/*double[] error_neural_2012 = */testNeuralNetwork(network, data_2012, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
-							}
+//							NeuralNetwork<?> network = trainNeuralModel(data_2012, staustufe, level_past, inflow_past, outflow_past);
+//
+//							for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
+//							{
+//								/*double[] error_neural_2011 = */testNeuralNetwork(network, data_2011, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
+//								/*double[] error_neural_2012 = */testNeuralNetwork(network, data_2012, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
+//							}
 							
 							for (int level_order = LEVEL_ORDER_MIN; level_order <= LEVEL_ORDER_MAX; level_order += LEVEL_ORDER_STEP)
 							{
@@ -203,7 +203,7 @@ public class RegressionStudy
 		}
 	}
 	
-	private static double[][] parseData(String file) throws IOException
+	public static double[][] parseData(String file) throws IOException
 	{
 		System.out.println("parseData(\"" + file + "\")");
 		
@@ -263,7 +263,7 @@ public class RegressionStudy
 		return lines_double.toArray(new double[lines_double.size()][15]);
 	}
 	
-	private static double[] trainRegressionModel(double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
+	public static double[] trainRegressionModel(double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
 		System.out.println("trainRegressionModel(data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ")");
 		
@@ -340,7 +340,7 @@ public class RegressionStudy
 		return beta;
 	}
 	
-	private static double[] testRegressionModel(double[] beta, double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, int start, int length, String result_path) throws IOException
+	public static double[] testRegressionModel(double[] beta, double[][] data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, int start, int length, String result_path) throws IOException
 	{
 		System.out.println("testRegressionModel(beta, data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ", " + start + ", " + length + ", \"" + result_path + "\")");
 		
@@ -425,7 +425,7 @@ public class RegressionStudy
 		return new double[] {error_average, error_quadratic, error_max};
 	}
 	
-	private static NeuralNetwork<?> trainNeuralModel(double[][] data, int staustufe, int level_past, int inflow_past, int outflow_past)
+	public static NeuralNetwork<?> trainNeuralModel(double[][] data, int staustufe, int level_past, int inflow_past, int outflow_past)
 	{
 		System.out.println("trainNeuralModel(data, " + staustufe + ", " + level_past + ", " + inflow_past + ", " + outflow_past + ")");
 		
@@ -461,7 +461,7 @@ public class RegressionStudy
 		return network;
 	}
 	
-	private static double[] testNeuralNetwork(NeuralNetwork<?> network, double[][] data, int staustufe, int level_past, int inflow_past, int outflow_past, int start, int length, String result_path) throws IOException
+	public static double[] testNeuralNetwork(NeuralNetwork<?> network, double[][] data, int staustufe, int level_past, int inflow_past, int outflow_past, int start, int length, String result_path) throws IOException
 	{
 		System.out.println("testNeuralModel(network, data, " + staustufe + ", " + level_past + ", " + inflow_past + ", " + outflow_past + ", " + start + ", " + length + ", \"" + result_path + "\")");
 		
