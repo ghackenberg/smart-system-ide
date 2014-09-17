@@ -26,7 +26,7 @@ public class Parser
 			
 			boolean valid = true;
 			
-			for (int j = 2; j < 16; j+=3)
+			for (int j = 1 + Constants.LEVEL_INDEX; j < 1 + Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS; j += Constants.STAUSTUFE_MEASUREMENTS)
 			{
 				double level = Double.parseDouble(lines_string.get(i)[j].replace(',', '.'));
 				
@@ -38,11 +38,18 @@ public class Parser
 			if (valid)
 			{
 				timepoints.add(lines_string.get(i)[0]);
-				measurements.add(new double[15]);
+				measurements.add(new double[Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS]);
 				
-				for (int j = 1; j < 16; j++)
+				for (int j = 1; j < 1 + Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS; j++)
 				{
-					measurements.get(i - 1)[j - 1] = Double.parseDouble(lines_string.get(i)[j].replace(',', '.'));
+					try
+					{
+						measurements.get(i - 1)[j - 1] = Double.parseDouble(lines_string.get(i)[j].replace(',', '.'));
+					}
+					catch (NumberFormatException e)
+					{
+						// ignore
+					}
 				}
 			}
 			else

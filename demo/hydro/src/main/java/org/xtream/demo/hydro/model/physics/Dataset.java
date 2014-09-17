@@ -16,7 +16,7 @@ public class Dataset
 		}
 		
 		this.timepoints = timepoints.toArray(new String[timepoints.size()]);
-		this.measurements = measurements.toArray(new double[measurements.size()][15]);
+		this.measurements = measurements.toArray(new double[measurements.size()][Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS]);
 	}
 	
 	public String[] getTimepoints()
@@ -34,15 +34,23 @@ public class Dataset
 	}
 	public double getInflow(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * 3];
+		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.INFLOW_INDEX];
 	}
 	public double getLevel(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * 3 + 1];
+		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.LEVEL_INDEX];
 	}
-	public double getOutflow(int staustufe, int timepoint)
+	public double getOutflowTotal(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * 3 + 2];
+		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.OUTFLOW_TOTAL_INDEX];
+	}
+	public double getOutflowTurbine(int staustufe, int timepoint)
+	{
+		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.OUTFLOW_TURBINE_INDEX];
+	}
+	public double getProduction(int staustufe, int timepoint)
+	{
+		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.PRODUCTION_INDEX];
 	}
 	
 	public int getLength()

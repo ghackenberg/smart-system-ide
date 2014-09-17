@@ -64,7 +64,7 @@ public class Tester
 			{
 				for (int k = 0; k < outflow_order; k++)
 				{
-					y_estimated[i] += beta[1 + level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] * Math.pow(data.getOutflow(staustufe, start - maximum_past + i - j), k + 1);
+					y_estimated[i] += beta[1 + level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] * Math.pow(data.getOutflowTotal(staustufe, start - maximum_past + i - j), k + 1);
 				}
 			}
 			

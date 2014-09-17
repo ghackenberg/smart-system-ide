@@ -105,7 +105,7 @@ public class Optimizer
 									{	
 										overview_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + "," + outflow_past + "x" + outflow_order + ";");
 										
-										double[] beta = Trainer.trainRegressionModel(data_2012.getMeasurements(), staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+										double[] beta = Trainer.trainRegressionModel(data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 										
 										File configuration_overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
 										
