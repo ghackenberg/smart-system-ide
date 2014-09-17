@@ -9,6 +9,9 @@ import org.xtream.core.model.Expression;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.model.markers.Objective;
+import org.xtream.core.model.markers.objectives.MaxObjective;
+import org.xtream.core.model.markers.objectives.MinObjective;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.optimizer.beam.Key;
@@ -62,6 +65,21 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 			
 			if (valid)
 			{
+				/*double objective = */root.getDescendantByClass(Objective.class).getPort().get(iterator, i);
+				
+				if (root.getDescendantsByClass(MinObjective.class).size() == 1)
+				{
+					// smaller?
+				}
+				else if (root.getDescendantsByClass(MaxObjective.class).size() == 1)
+				{
+					// greater?
+				}
+				else
+				{
+					throw new IllegalStateException("No objective defined!");
+				}
+				
 				clusters.get(key).clear();
 				clusters.get(key).add(iterator);
 				
