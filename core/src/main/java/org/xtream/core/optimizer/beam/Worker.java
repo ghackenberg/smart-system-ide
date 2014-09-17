@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer;
+package org.xtream.core.optimizer.beam;
 
 import java.util.ArrayList;
 import java.util.HashMap;

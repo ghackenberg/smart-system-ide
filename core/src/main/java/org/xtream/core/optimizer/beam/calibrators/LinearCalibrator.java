@@ -1,7 +1,7 @@
-package org.xtream.core.optimizer.calibrators;
+package org.xtream.core.optimizer.beam.calibrators;
 
 import org.xtream.core.model.containers.Component;
-import org.xtream.core.optimizer.Calibrator;
+import org.xtream.core.optimizer.beam.Calibrator;
 
 public class LinearCalibrator<T extends Component> extends Calibrator<T>
 {

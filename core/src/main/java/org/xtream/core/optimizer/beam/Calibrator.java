@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer;
+package org.xtream.core.optimizer.beam;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -60,7 +60,7 @@ public abstract class Calibrator<T extends Component>
 						{
 							CalibrationMonitor<T> monitor = new CalibrationMonitor<>();
 							
-							new Engine<>(root, processors).run(duration, samples, classes, random, monitor);
+							new Engine<>(root, samples, classes, random, processors).run(duration, monitor);
 							
 							System.out.print(iteration + " ");					
 							

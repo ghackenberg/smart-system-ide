@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
-import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Statistics;
+import org.xtream.core.optimizer.beam.Key;
 
 public class CMDMonitor<T extends Component> implements Monitor<T>
 {
