@@ -105,7 +105,9 @@ public class Optimizer
 									{	
 										overview_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + "," + outflow_past + "x" + outflow_order + ";");
 										
-										double[] beta = Trainer.trainRegressionModel(data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+										Polynom model = new Polynom(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+										
+										model.train(data_2012);
 										
 										File configuration_overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
 										
@@ -122,8 +124,8 @@ public class Optimizer
 										
 										for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
 										{
-											double[] error_regression_2011 = Tester.testRegressionModel(beta, data_2011, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
-											double[] error_regression_2012 = Tester.testRegressionModel(beta, data_2012, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
+											double[] error_regression_2011 = Tester.testRegressionModel(model, data_2011, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
+											double[] error_regression_2012 = Tester.testRegressionModel(model, data_2012, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
 											
 											configuration_overview_writer.write("Week " + (i + 1) + ";");
 											configuration_overview_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");

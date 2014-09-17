@@ -9,11 +9,9 @@ import org.neuroph.core.NeuralNetwork;
 public class Tester
 {
 	
-	public static double[] testRegressionModel(double[] beta, Dataset data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, int start, int length, String result_path) throws IOException
+	public static double[] testRegressionModel(Polynom model, Dataset data, int staustufe, int start, int length, String result_path) throws IOException
 	{
-		System.out.println("testRegressionModel(beta, data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ", " + start + ", " + length + ", \"" + result_path + "\")");
-		
-		int maximum_past = Math.max(level_past + 1, Math.max(inflow_past, outflow_past));
+		System.out.println("testRegressionModel(beta, data, " + staustufe + ", " + start + ", " + length + ", \"" + result_path + "\")");
 		
 		File result_file = new File(result_path);
 		
@@ -24,64 +22,58 @@ public class Tester
 		result_writer.write("Timepoint;Level measured;Level estimated;Level quotient\n");
 		
 		int count = 0;
+		
 		double error_quadratic = 0;
 		double error_max = 0;
 		double error_average = 0;
-		double[] y_estimated = new double[length + maximum_past];
 		
-		// Initialize estimated levels
+		double[] level_past = new double[model.getLevelPast()];
+		double[] inflow_past = new double[model.getInflowPast()];
+		double[] outflow_past = new double[model.getOutflowPast()];
 		
-		for (int i = 0; i < length + maximum_past; i++)
+		// Initialize level past
+		
+		for (int i = 0; i < model.getLevelPast(); i++)
 		{
-			y_estimated[i] = data.getLevel(staustufe, start - maximum_past + i);
+			level_past[i] = data.getLevel(staustufe, start - 1 - model.getLevelPast() + i);
 		}
 		
 		// Calculate estimated levels
 		
-		for (int i = maximum_past; i < maximum_past + length; i++)
-		{	
-			double y_measured = data.getLevel(staustufe, start - maximum_past + i);
-			
-			// Estimate level
-			
-			y_estimated[i] = beta[0];
-
-			for (int j = 0; j < level_past; j++)
+		for (int i = start; i < start + length; i++)
+		{
+			for (int j = 0; j < model.getInflowPast(); j++)
 			{
-				for (int k = 0; k < level_order; k++)
-				{
-					y_estimated[i] += beta[1 + j * level_order + k] * Math.pow(y_estimated[i - 1 - j], k + 1);
-				}
+				inflow_past[j] = data.getInflow(staustufe, i - j);
 			}
-			for (int j = 0; j < inflow_past; j++)
+			for (int j = 0; j < model.getOutflowPast(); j++)
 			{
-				for (int k = 0; k < inflow_order; k++)
-				{
-					y_estimated[i] += beta[1 + level_past * level_order + j * inflow_order + k] * Math.pow(data.getInflow(staustufe, start - maximum_past + i - j), k + 1);
-				}
-			}
-			for (int j = 0; j < outflow_past; j++)
-			{
-				for (int k = 0; k < outflow_order; k++)
-				{
-					y_estimated[i] += beta[1 + level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] * Math.pow(data.getOutflowTotal(staustufe, start - maximum_past + i - j), k + 1);
-				}
+				outflow_past[j] = data.getOutflowTotal(staustufe, i - j);
 			}
 			
-			if (y_estimated[i] == Double.NaN)
+			double level_measured = data.getLevel(staustufe, start - model.getMaximumPast() + i);
+			double level_estimated = model.estimate(level_past, inflow_past, outflow_past);
+			
+			if (level_estimated == Double.NaN)
 			{
 				System.out.println("Level estimated not a number: " + i);
 				
 				break;
 			}
 			
-			result_writer.write(data.getTimepoint(start - maximum_past + i) + ";" + String.valueOf(y_measured).replace('.',',') + ";" + String.valueOf(y_estimated[i]).replace('.',',') + ";" + String.valueOf(y_estimated[i] / y_measured).replace('.',',') + "\n");
+			result_writer.write(data.getTimepoint(start - model.getMaximumPast() + i) + ";" + String.valueOf(level_measured).replace('.',',') + ";" + String.valueOf(level_estimated).replace('.',',') + ";" + String.valueOf(level_estimated / level_measured).replace('.',',') + "\n");
 			
 			count++;
 
-			error_quadratic += (y_measured - y_estimated[i]) * (y_measured - y_estimated[i]);
-			error_max = Math.max(error_max, Math.abs(y_measured - y_estimated[i]));
-			error_average += Math.abs(y_measured - y_estimated[i]);
+			error_quadratic += (level_measured - level_estimated) * (level_measured - level_estimated);
+			error_max = Math.max(error_max, Math.abs(level_measured - level_estimated));
+			error_average += Math.abs(level_measured - level_estimated);
+			
+			for (int j = model.getLevelPast() - 1; j > 0; j--)
+			{
+				level_past[j] = level_past[j - 1];
+			}
+			level_past[0] = level_estimated;
 		}
 		
 		error_quadratic /= count;
