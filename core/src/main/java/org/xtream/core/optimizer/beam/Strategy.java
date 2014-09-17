@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer;
+package org.xtream.core.optimizer.beam;
 
 import java.util.List;
 import java.util.SortedMap;

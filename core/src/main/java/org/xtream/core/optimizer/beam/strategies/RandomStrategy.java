@@ -1,4 +1,4 @@
-package org.xtream.core.optimizer.strategies;
+package org.xtream.core.optimizer.beam.strategies;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,8 +8,8 @@ import java.util.TreeMap;
 
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
-import org.xtream.core.optimizer.Key;
-import org.xtream.core.optimizer.Strategy;
+import org.xtream.core.optimizer.beam.Key;
+import org.xtream.core.optimizer.beam.Strategy;
 
 public class RandomStrategy implements Strategy
 {

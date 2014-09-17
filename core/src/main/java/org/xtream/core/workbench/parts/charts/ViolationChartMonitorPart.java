@@ -12,8 +12,8 @@ import org.jfree.data.xy.CategoryTableXYDataset;
 import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.optimizer.Key;
 import org.xtream.core.optimizer.Statistics;
+import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.workbench.parts.ChartMonitorPart;
 
 public class ViolationChartMonitorPart<T extends Component> extends ChartMonitorPart<T, CategoryTableXYDataset>
