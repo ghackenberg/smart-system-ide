@@ -7,12 +7,14 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.projecthouse.model.Consumer;
 import org.xtream.demo.projecthouse.model.Producer;
 import org.xtream.demo.projecthouse.model.RootComponent;
 
 public class BreakerBoxComponent extends Component {
 	
+	private static final int MAXIMUM_POWER_HOUSE = 30000;
 	@SuppressWarnings("rawtypes")
 	public Port[] consumptionInputs;
 	@SuppressWarnings("rawtypes")
@@ -22,9 +24,12 @@ public class BreakerBoxComponent extends Component {
 	public ChannelExpression[] channels;
 	
 	public Port<Double> balanceOutput = new Port<>();
-	public Port<Double> accCostOutput = new Port<>();
+	public Port<Double> costOutput = new Port<>();
 	
-	public Chart cost = new Timeline(accCostOutput);
+	public Port<Boolean> balanceValidPort = new Port<>();
+	public Constraint balanceConstraint = new Constraint(balanceValidPort);
+	
+	public Chart cost = new Timeline(costOutput);
 	
 	public Expression<Double> balanceExpression = new Expression<Double>(balanceOutput) {		
 		
@@ -42,14 +47,22 @@ public class BreakerBoxComponent extends Component {
 		}
 	};
 	
-	public Expression<Double> accCostExpression = new Expression<Double>(accCostOutput) {
+	public Expression<Boolean> balanceValidExpression = new Expression<Boolean>(balanceValidPort) {
+		
+		@Override
+		protected Boolean evaluate(State state, int timepoint) {
+			if(balanceOutput.get(state, timepoint) < MAXIMUM_POWER_HOUSE) {
+				return true;
+			}
+			return false;
+		}
+	};
+	
+	public Expression<Double> costExpression = new Expression<Double>(costOutput) {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			if(timepoint == 0) {
-				return 0.;
-			}
-			return accCostOutput.get(state, timepoint - 1) - balanceOutput.get(state, timepoint)*RootComponent.ELECTRICITY_RATE;
+			return -balanceOutput.get(state, timepoint)*RootComponent.ELECTRICITY_RATE;
 		}
 	};
 

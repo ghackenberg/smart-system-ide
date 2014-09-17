@@ -1,8 +1,5 @@
 package org.xtream.demo.projecthouse.model.room;
 
-import java.io.File;
-import java.net.URISyntaxException;
-
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Module;
@@ -48,14 +45,7 @@ public class RoomModule extends Module {
 			windows[i] = new WindowModule(windowSpecs[i]);
 		}
 		peopleController = new PeopleController(peopleFile);
-		
-		File file;
-		try {
-			file = new File(getClass().getResource(temperatureFile).toURI());
-			temperatureController = new TemperatureController(file);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException("Problems creating file for " + temperatureFile);
-		}
+		temperatureController = new TemperatureController(temperatureFile);
 		
 		roomContext = new RoomContext(volume, lowerTemperatureLimit, upperTemperatureLimit, windows);		
 		heatingChannel = new ChannelExpression<>(roomContext.heatingInput, heatingController.onOffOutput);
