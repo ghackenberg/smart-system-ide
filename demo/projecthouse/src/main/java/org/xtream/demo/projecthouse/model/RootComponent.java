@@ -1,5 +1,7 @@
 package org.xtream.demo.projecthouse.model;
 
+import java.io.File;
+
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
@@ -18,7 +20,7 @@ public class RootComponent extends Component {
 
 	public static final double START_TEMPERATURE = 20.;
 	public static final double BRIGHTNESS_LIMIT = 100.;
-	public static final double ELECTRICITY_RATE = .24;
+	public static final double ELECTRICITY_RATE = .00024;
 	public static final double PELLET_PRICE = 1.;
 	private static final String LIVINGROOM_PEOPLE_CSV = "livingRoomPeople.csv";
 	private static final String BEDROOM_PEOPLE_CSV = "bedRoomPeople.csv";
@@ -77,8 +79,11 @@ public class RootComponent extends Component {
 	public LightsModule bathRoomLights2 = new LightsModule(40); //TODO [Andreas] Find out correct value
 	public RoomModule bathRoom2 = new RoomModule(4.42*2.50, 18, 24, BATHROOM_TEMPERATURE_CSV2, sun, bathRoomLights2, BATHROOM_PEOPLE_CSV2, bathRoomWindow2);
 	
+	//Outer temperature
+	TemperatureController outerTemperature = new TemperatureController(OUTER_TEMPERATURE_CSV);
+	
 	//Thermal system
-	public ThermalStorageModule thermalStorage = new ThermalStorageModule(OUTER_TEMPERATURE_CSV, livingRoom, bedRoom, bathRoom1, waterCloset, bathRoom2);
+	public ThermalStorageModule thermalStorage = new ThermalStorageModule(outerTemperature, livingRoom, bedRoom, bathRoom1, waterCloset, bathRoom2);
 	
 	//Net
 	public NetModule net = new NetModule(NET_CSV);
@@ -91,7 +96,7 @@ public class RootComponent extends Component {
 	
 	//PV
 	public PVComponent pv = new PVComponent();
-	
+	public ChannelExpression<Double> outTempChannel = new ChannelExpression<>(pv.outerTemperatureInput, outerTemperature.temperatureOutput);	
 	public ChannelExpression<Irradiation> irradiance = new ChannelExpression<>(pv.irradiationInput, sun.irradiationOutput);
 	
 	//Breaker Box

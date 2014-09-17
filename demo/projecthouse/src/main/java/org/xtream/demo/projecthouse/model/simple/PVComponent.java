@@ -12,6 +12,8 @@ import org.xtream.demo.projecthouse.model.Producer;
 public class PVComponent extends Component implements Producer {
 	
 	public Port<Irradiation> irradiationInput = new Port<>();
+	public Port<Double> outerTemperatureInput = new Port<>();
+	
 	public Port<Double> productionOutput = new Port<>();
 	
 	public Chart production = new Timeline(productionOutput);
@@ -20,11 +22,11 @@ public class PVComponent extends Component implements Producer {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return getPower(irradiationInput.get(state, timepoint).irradiance);
+			return getPower(irradiationInput.get(state, timepoint).irradiance, outerTemperatureInput.get(state, timepoint));
 		}
 	};
 
-	protected double getPower(double irradiance) {
+	protected double getPower(double irradiance, Double temperature) {
 		// TODO [Andreas] Get value from file with PV data
 		return irradiance*1000;
 	}

@@ -1,6 +1,7 @@
 package org.xtream.demo.projecthouse.model;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
@@ -17,8 +18,14 @@ public class TemperatureController extends Component {
 	
 	public Chart temperature = new Timeline(temperatureOutput);
 	
-	public TemperatureController(File file) {
+	public TemperatureController(String outerTemperatureFileName) {
 		super();
+		File file = null;
+		try {
+			file = new File(getClass().getResource(outerTemperatureFileName).toURI());
+		} catch (URISyntaxException e) {
+			throw new RuntimeException("Problems creating file for " + outerTemperatureFileName);
+		}
 		csvData = new CSVFileWithOneKey(file, 1);
 	}
 	

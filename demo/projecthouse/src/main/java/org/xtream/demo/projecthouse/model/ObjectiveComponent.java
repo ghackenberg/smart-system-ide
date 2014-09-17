@@ -18,10 +18,13 @@ public class ObjectiveComponent extends Component {
 	@SuppressWarnings("rawtypes")
 	public Port[] roomInputs;	
 	public Port<Double> netCostInput = new Port<>();
-	public Port<Double> netAutonomyInput = new Port<>();
+	public Port<Double> autonomyInput = new Port<>();
 	public Port<Double> netBalanceInput = new Port<>();
 	public Port<Double> pelletHeaterInput = new Port<>();
 	public Port<Double> constancyInput = new Port<>();
+	
+	public Port<Double> aggregatedCostPort = new Port<>();
+	public Port<Double> netBalancePort = new Port<>();
 	
 	public Port<Double> objectiveOutput = new Port<>();
 	
@@ -30,12 +33,13 @@ public class ObjectiveComponent extends Component {
 	@SuppressWarnings("rawtypes")
 	public ChannelExpression[] channels;
 	public ChannelExpression<Double> netCostChannel;
-	public ChannelExpression<Double> netAutonomyChannel;
+	public ChannelExpression<Double> autonomyChannel;
 	public ChannelExpression<Double> netBalanceChannel;
 	public ChannelExpression<Double> pelletHeaterChannel;
 	public ChannelExpression<Double> constancyChannel;
 	
-	public Chart objectiveChart = new Timeline(objectiveOutput, netCostInput, netAutonomyInput, pelletHeaterInput);
+	public Chart objectiveChart = new Timeline(objectiveOutput, aggregatedCostPort, netBalancePort);
+	public Chart aggregatedCost = new Timeline(netCostInput, pelletHeaterInput, aggregatedCostPort);
 	
 	@SuppressWarnings("unchecked")
 	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetModule net, BreakerBoxComponent breakerBox, RoomModule...rooms) {
@@ -45,19 +49,38 @@ public class ObjectiveComponent extends Component {
 			roomInputs[i] = new Port<Double>();
 			channels[i] = new ChannelExpression<>(roomInputs[i], rooms[i].roomContext.comfortOutput);
 		}
-		netCostChannel = new ChannelExpression<>(netCostInput, breakerBox.accCostOutput);
-		netAutonomyChannel = new ChannelExpression<>(netAutonomyInput, breakerBox.balanceOutput);
+		netCostChannel = new ChannelExpression<>(netCostInput, breakerBox.costOutput);
+		autonomyChannel = new ChannelExpression<>(autonomyInput, breakerBox.balanceOutput);
 		netBalanceChannel = new ChannelExpression<>(netBalanceInput, net.context.balanceOutput);
 		pelletHeaterChannel = new ChannelExpression<>(pelletHeaterInput, pelletHeater.context.costOutput);
 		constancyChannel = new ChannelExpression<>(constancyInput, net.context.constancyOutput);
 	}
+	
+	public Expression<Double> aggregatedCostExpression = new Expression<Double>(aggregatedCostPort) {
+
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			double cost = netCostInput.get(state, timepoint) + pelletHeaterInput.get(state, timepoint);
+			if(timepoint == 0) {
+				return cost;
+			}
+			return aggregatedCostPort.get(state, timepoint - 1) + cost;
+		}
+	};
+	public Expression<Double> netBalanceExpression = new Expression<Double>(netBalancePort) {
+
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			return Math.sqrt(Math.pow(netBalanceInput.get(state, timepoint), 2))/1000;
+		}
+	};
 	
 	public Expression<Double> objectiveExpression = new Expression<Double>(objectiveOutput) {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas] insert objective function
-			return netCostInput.get(state, timepoint);
+			return aggregatedCostPort.get(state, timepoint) + netBalancePort.get(state, timepoint);
 		}
 	};
 
