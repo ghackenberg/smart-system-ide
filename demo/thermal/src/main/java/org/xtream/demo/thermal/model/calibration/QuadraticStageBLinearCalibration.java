@@ -1,6 +1,6 @@
 package org.xtream.demo.thermal.model.calibration;
 
-import org.xtream.core.optimizer.calibrators.LinearCalibrator;
+import org.xtream.core.optimizer.beam.calibrators.LinearCalibrator;
 import org.xtream.demo.thermal.model.configuration.QuadraticStageBRootComponent;
 
 public class QuadraticStageBLinearCalibration
