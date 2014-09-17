@@ -13,7 +13,7 @@ public class Optimizer
 	public static final int MONTH = WEEK * 4;
 	
 	public static final int WEEK_MIN = 1;
-	public static final int WEEK_MAX = 46;
+	public static final int WEEK_MAX = 6;
 	public static final int WEEK_STEP = 1;
 	
 	// Level parameters

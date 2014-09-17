@@ -16,7 +16,7 @@ public class Dataset
 		}
 		
 		this.timepoints = timepoints.toArray(new String[timepoints.size()]);
-		this.measurements = measurements.toArray(new double[measurements.size()][Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS]);
+		this.measurements = measurements.toArray(new double[measurements.size()][Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3]);
 	}
 	
 	public String[] getTimepoints()
