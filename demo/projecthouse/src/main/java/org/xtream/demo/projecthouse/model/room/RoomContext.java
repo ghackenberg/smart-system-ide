@@ -11,7 +11,7 @@ import org.xtream.demo.projecthouse.model.RootComponent;
 import org.xtream.demo.projecthouse.model.room.window.WindowModule;
 
 public class RoomContext extends Component {
-	public Port<Irradiation> irradianceInput = new Port<>();
+	public Port<Irradiation> irradiationInput = new Port<>();
 	public Port<OnOffDecision> heatingInput = new Port<>();
 	public Port<OnOffDecision> lightsInput = new Port<>();
 	public Port<Double> port = new Port<>();
@@ -86,7 +86,7 @@ public class RoomContext extends Component {
 				return RootComponent.BRIGHTNESS_LIMIT;
 			}
 			for(int i = 0; i<blindsInputs.length; i++) {
-				if(Math.abs(windows[i].getOrientation() - irradianceInput.get(state, timepoint).orientation) < 75) {
+				if(Math.abs(windows[i].getOrientation() - irradiationInput.get(state, timepoint).orientation) < 75) {
 					brightness += ((Port<Double>)blindsInputs[i]).get(state, timepoint)*RootComponent.BRIGHTNESS_LIMIT*3;
 				}
 			}

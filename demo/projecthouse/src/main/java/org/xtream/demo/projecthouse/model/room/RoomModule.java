@@ -50,9 +50,9 @@ public class RoomModule extends Module {
 		roomContext = new RoomContext(volume, lowerTemperatureLimit, upperTemperatureLimit, windows);		
 		heatingChannel = new ChannelExpression<>(roomContext.heatingInput, heatingController.onOffOutput);
 		lightsChannel = new ChannelExpression<>(roomContext.lightsInput, lights.controller.onOffOutput);
-		sunChannel = new ChannelExpression<>(roomContext.irradianceInput, sun.irradiationOutput);
+		sunChannel = new ChannelExpression<>(roomContext.irradiationInput, sun.irradiationOutput);
 		temperatureChannel = new ChannelExpression<>(roomContext.temperatureInput, temperatureController.temperatureOutput);
-		peopleChannel = new ChannelExpression<>(roomContext.possibilityInput, peopleController.possibilityOutput);
+		peopleChannel = new ChannelExpression<>(roomContext.possibilityInput, peopleController.probabilityOutput);
 		
 		blindsControllers = new BlindsController[nrOfWindows];
 		blindsChannels = new ChannelExpression[nrOfWindows];
@@ -60,7 +60,7 @@ public class RoomModule extends Module {
 			blindsChannels[i] = new ChannelExpression<Double>(roomContext.blindsInputs[i], windows[i].blindsController.blindsOutput);
 		}
 		
-		people = new Timeline(peopleController.possibilityOutput);
+		people = new Timeline(peopleController.probabilityOutput);
 		temperature = new Timeline(roomContext.temperatureOutput);
 		brightness = new Timeline(roomContext.brightnessOutput);
 		

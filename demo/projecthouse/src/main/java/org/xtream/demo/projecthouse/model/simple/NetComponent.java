@@ -1,15 +1,17 @@
-package org.xtream.demo.projecthouse.model.net;
+package org.xtream.demo.projecthouse.model.simple;
 
 import java.io.File;
 import java.net.URISyntaxException;
 
+import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
+import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.demo.projecthouse.model.CSVFileWithOneKey;
 
-public class NetContext extends Component {
+public class NetComponent extends Component {
 	
 	CSVFileWithOneKey csvData;
 	
@@ -18,7 +20,10 @@ public class NetContext extends Component {
 	public Port<Double> balanceOutput = new Port<>();
 	public Port<Double> constancyOutput = new Port<>();
 	
-	public NetContext(String filename) {
+	public Chart constancy = new Timeline(constancyOutput);
+	public Chart balance = new Timeline(balanceOutput);
+	
+	public NetComponent(String filename) {
 		super();
 		try {
 			File file = new File(getClass().getResource(filename).toURI());
@@ -33,7 +38,7 @@ public class NetContext extends Component {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return csvData.get(timepoint, 1) - houseInput.get(state, timepoint);
+			return csvData.get(timepoint, 1) + houseInput.get(state, timepoint);
 		}
 	};
 	
