@@ -33,7 +33,7 @@ public class PolynomOptimizer
 	public static final int INFLOW_PAST_STEP = 1;
 	
 	public static final int INFLOW_ORDER_MIN = 1;
-	public static final int INFLOW_ORDER_MAX = 10;
+	public static final int INFLOW_ORDER_MAX = 3;
 	public static final int INFLOW_ORDER_STEP = 2;
 	
 	// Outflow parameters
@@ -48,39 +48,39 @@ public class PolynomOptimizer
 	
 	// Turbine outflow past parameters
 	
-	public static final int TURBINE_OUTFLOW_PAST_MIN = 1;
+	public static final int TURBINE_OUTFLOW_PAST_MIN = 2;
 	public static final int TURBINE_OUTFLOW_PAST_MAX = 2;
 	public static final int TURBINE_OUTFLOW_PAST_STEP = 1;
 	
 	// Turbine outflow order parameters
 	
-	public static final int TURBINE_OUTFLOW_ORDER_MIN = 1;
-	public static final int TURBINE_OUTFLOW_ORDER_MAX = 5;
-	public static final int TURBINE_OUTFLOW_ORDER_STEP = 2;
+	public static final int TURBINE_OUTFLOW_ORDER_MIN = 2;
+	public static final int TURBINE_OUTFLOW_ORDER_MAX = 2;
+	public static final int TURBINE_OUTFLOW_ORDER_STEP = 1;
 	
 	// Upper level past parameters
 	
 	public static final int UPPER_LEVEL_PAST_MIN = 1;
-	public static final int UPPER_LEVEL_PAST_MAX = 2;
+	public static final int UPPER_LEVEL_PAST_MAX = 1;
 	public static final int UPPER_LEVEL_PAST_STEP = 1;
 	
 	// Upper level order parameters
 	
-	public static final int UPPER_LEVEL_ORDER_MIN = 1;
+	public static final int UPPER_LEVEL_ORDER_MIN = 5;
 	public static final int UPPER_LEVEL_ORDER_MAX = 5;
-	public static final int UPPER_LEVEL_ORDER_STEP = 2;
+	public static final int UPPER_LEVEL_ORDER_STEP = 1;
 	
 	// Lower level past parameters
 	
-	public static final int LOWER_LEVEL_PAST_MIN = 1;
+	public static final int LOWER_LEVEL_PAST_MIN = 2;
 	public static final int LOWER_LEVEL_PAST_MAX = 2;
 	public static final int LOWER_LEVEL_PAST_STEP = 1;
 	
 	// Lower level order parameters
 	
-	public static final int LOWER_LEVEL_ORDER_MIN = 1;
+	public static final int LOWER_LEVEL_ORDER_MIN = 5;
 	public static final int LOWER_LEVEL_ORDER_MAX = 5;
-	public static final int LOWER_LEVEL_ORDER_STEP = 2;
+	public static final int LOWER_LEVEL_ORDER_STEP = 1;
 	
 	// Main
 
@@ -239,8 +239,8 @@ public class PolynomOptimizer
 				level_writer.write(inflow_order_best + ";");
 				level_writer.write(outflow_past_best + ";");
 				level_writer.write(outflow_order_best + ";");
-				level_writer.write(level_error_average_best + ";");
-				level_writer.write(level_error_maximum_best + "\n");
+				level_writer.write(String.valueOf(level_error_average_best).replace('.',',') + ";");
+				level_writer.write(String.valueOf(level_error_maximum_best).replace('.',',') + "\n");
 				level_writer.flush();
 
 				if (staustufe < 1)
@@ -371,8 +371,8 @@ public class PolynomOptimizer
 					production_writer.write(upper_level_order_best + ";");
 					production_writer.write(lower_level_past_best + ";");
 					production_writer.write(lower_level_order_best + ";");
-					production_writer.write(production_error_average_best + ";");
-					production_writer.write(production_error_maximum_best + "\n");
+					production_writer.write(String.valueOf(production_error_average_best).replace('.',',') + ";");
+					production_writer.write(String.valueOf(production_error_maximum_best).replace('.',',') + "\n");
 					production_writer.flush();
 				}
 			}
