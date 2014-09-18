@@ -141,87 +141,163 @@ public class PolynomOptimizer
 				{
 					for (int inflow_past = INFLOW_PAST_MIN; inflow_past <= INFLOW_PAST_MAX; inflow_past += INFLOW_PAST_STEP)
 					{
-						for (int outflow_past = OUTFLOW_PAST_MIN; outflow_past <= OUTFLOW_PAST_MAX; outflow_past += OUTFLOW_PAST_STEP)
+						for (int level_order = LEVEL_ORDER_MIN; level_order <= LEVEL_ORDER_MAX; level_order += LEVEL_ORDER_STEP)
 						{
-							for (int level_order = LEVEL_ORDER_MIN; level_order <= LEVEL_ORDER_MAX; level_order += LEVEL_ORDER_STEP)
+							for (int inflow_order = INFLOW_ORDER_MIN; inflow_order <= INFLOW_ORDER_MAX; inflow_order += INFLOW_ORDER_STEP)
 							{
-								for (int inflow_order = INFLOW_ORDER_MIN; inflow_order <= INFLOW_ORDER_MAX; inflow_order += INFLOW_ORDER_STEP)
+								if (staustufe < 5)
 								{
-									for (int outflow_order = OUTFLOW_ORDER_MIN; outflow_order <= OUTFLOW_ORDER_MAX; outflow_order += OUTFLOW_ORDER_STEP)
-									{	
-										// Files
-
-										File config_staustufe_level_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Level/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
-										config_staustufe_level_file.getParentFile().mkdirs();
-										
-										// Writers
-
-										FileWriter config_staustufe_level_writer = new FileWriter(config_staustufe_level_file);
-										config_staustufe_level_writer.write("Week;Year 2011 (Average);Year 2011 (Quadratic);Year 2011 (Maximum);Year 2012 (Average);Year 2012 (Quadratic);Year 2012 (Maximum)\n");
-										
-										// Model
-										
-										PolynomLevel model = new PolynomLevel(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
-										model.fit(data_2012);
-										
-										// Error
-										
-										double error_average = 0;
-										double error_maximum = 0;
-										
-										int count = 0;
-										
-										for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
-										{
-											double[] error_regression_2011 = PolynomTester.testLevelModel(model, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
-											double[] error_regression_2012 = PolynomTester.testLevelModel(model, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
+									for (int outflow_past = OUTFLOW_PAST_MIN; outflow_past <= OUTFLOW_PAST_MAX; outflow_past += OUTFLOW_PAST_STEP)
+									{
+										for (int outflow_order = OUTFLOW_ORDER_MIN; outflow_order <= OUTFLOW_ORDER_MAX; outflow_order += OUTFLOW_ORDER_STEP)
+										{	
+											// Files
+	
+											File config_staustufe_level_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Level/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
+											config_staustufe_level_file.getParentFile().mkdirs();
 											
-											config_staustufe_level_writer.write("Week " + (i + 1) + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2011[1]).replace('.',',') + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2011[2]).replace('.',',') + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2012[0]).replace('.',',') + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2012[1]).replace('.',',') + ";");
-											config_staustufe_level_writer.write(String.valueOf(error_regression_2012[2]).replace('.',',') + ";");
-											config_staustufe_level_writer.write("\n");
+											// Writers
+	
+											FileWriter config_staustufe_level_writer = new FileWriter(config_staustufe_level_file);
+											config_staustufe_level_writer.write("Week;Year 2011 (Average);Year 2011 (Quadratic);Year 2011 (Maximum);Year 2012 (Average);Year 2012 (Quadratic);Year 2012 (Maximum)\n");
 											
-											error_average += error_regression_2011[0] + error_regression_2012[0];
-											error_maximum = Math.max(error_maximum, Math.max(error_regression_2011[2], error_regression_2012[2]));
+											// Model
 											
-											count++;
-										}
-										
-										error_average /= (count * 2);
-										
-										config_staustufe_level_writer.close();
-										
-										// Remember better
-										
-										if (error_average != Double.NaN && error_maximum != Double.NaN)
-										{
-											staustufe_level_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + "," + outflow_past + "x" + outflow_order + ";");
-											staustufe_level_writer.write(String.valueOf(error_average).replace('.',',') + ";");
-											staustufe_level_writer.write(String.valueOf(error_maximum).replace('.',',') + ";");
-											staustufe_level_writer.write("\n");
+											PolynomLevel model = new PolynomLevel(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+											model.fit(data_2012);
 											
-											if (error_maximum < level_error_maximum_best)
+											// Error
+											
+											double error_average = 0;
+											double error_maximum = 0;
+											
+											int count = 0;
+											
+											for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
 											{
-												level_error_maximum_best = error_maximum;
-												level_error_average_best = error_average;
+												double[] error_regression_2011 = PolynomTester.testLevelModel(model, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
+												double[] error_regression_2012 = PolynomTester.testLevelModel(model, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
 												
-												level_past_best = level_past;
-												level_order_best = level_order;
-												inflow_past_best = inflow_past;
-												inflow_order_best = inflow_order;
-												outflow_past_best = outflow_past;
-												outflow_order_best = outflow_order;
+												config_staustufe_level_writer.write("Week " + (i + 1) + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2011[1]).replace('.',',') + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2011[2]).replace('.',',') + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2012[0]).replace('.',',') + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2012[1]).replace('.',',') + ";");
+												config_staustufe_level_writer.write(String.valueOf(error_regression_2012[2]).replace('.',',') + ";");
+												config_staustufe_level_writer.write("\n");
+												
+												error_average += error_regression_2011[0] + error_regression_2012[0];
+												error_maximum = Math.max(error_maximum, Math.max(error_regression_2011[2], error_regression_2012[2]));
+												
+												count++;
 											}
+											
+											error_average /= (count * 2);
+											
+											config_staustufe_level_writer.close();
+											
+											// Remember better
+											
+											if (error_average != Double.NaN && error_maximum != Double.NaN)
+											{
+												staustufe_level_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + "," + outflow_past + "x" + outflow_order + ";");
+												staustufe_level_writer.write(String.valueOf(error_average).replace('.',',') + ";");
+												staustufe_level_writer.write(String.valueOf(error_maximum).replace('.',',') + ";");
+												staustufe_level_writer.write("\n");
+												
+												if (error_maximum < level_error_maximum_best)
+												{
+													level_error_maximum_best = error_maximum;
+													level_error_average_best = error_average;
+													
+													level_past_best = level_past;
+													level_order_best = level_order;
+													inflow_past_best = inflow_past;
+													inflow_order_best = inflow_order;
+													outflow_past_best = outflow_past;
+													outflow_order_best = outflow_order;
+												}
+											}
+											
+											// Debug
+											
+											System.out.println("\nbest = " + level_past_best + "x" + level_order_best + "-" + inflow_past_best + "x" + inflow_order_best + "-" + outflow_past_best + "x" + outflow_order_best + "\n");
 										}
-										
-										// Debug
-										
-										System.out.println("\nbest = " + level_past_best + "x" + level_order_best + "-" + inflow_past_best + "x" + inflow_order_best + "-" + outflow_past_best + "x" + outflow_order_best + "\n");
 									}
+								}
+								else
+								{
+									// Files
+									
+									File config_staustufe_level_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Level/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + ".csv");
+									config_staustufe_level_file.getParentFile().mkdirs();
+									
+									// Writers
+
+									FileWriter config_staustufe_level_writer = new FileWriter(config_staustufe_level_file);
+									config_staustufe_level_writer.write("Week;Year 2011 (Average);Year 2011 (Quadratic);Year 2011 (Maximum);Year 2012 (Average);Year 2012 (Quadratic);Year 2012 (Maximum)\n");
+									
+									// Model
+									
+									PolynomLevelLast model = new PolynomLevelLast(staustufe, level_past, level_order, inflow_past, inflow_order);
+									model.fit(data_2012);
+									
+									// Error
+									
+									double error_average = 0;
+									double error_maximum = 0;
+									
+									int count = 0;
+									
+									for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
+									{
+										double[] error_regression_2011 = PolynomTester.testLevelLastModel(model, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "/2011/Week_" + i + ".csv");
+										double[] error_regression_2012 = PolynomTester.testLevelLastModel(model, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "/2012/Week_" + i + ".csv"); 
+										
+										config_staustufe_level_writer.write("Week " + (i + 1) + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2011[1]).replace('.',',') + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2011[2]).replace('.',',') + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2012[0]).replace('.',',') + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2012[1]).replace('.',',') + ";");
+										config_staustufe_level_writer.write(String.valueOf(error_regression_2012[2]).replace('.',',') + ";");
+										config_staustufe_level_writer.write("\n");
+										
+										error_average += error_regression_2011[0] + error_regression_2012[0];
+										error_maximum = Math.max(error_maximum, Math.max(error_regression_2011[2], error_regression_2012[2]));
+										
+										count++;
+									}
+									
+									error_average /= (count * 2);
+									
+									config_staustufe_level_writer.close();
+									
+									// Remember better
+									
+									if (error_average != Double.NaN && error_maximum != Double.NaN)
+									{
+										staustufe_level_writer.write(level_past + "x" + level_order + "," + inflow_past + "x" + inflow_order + ";");
+										staustufe_level_writer.write(String.valueOf(error_average).replace('.',',') + ";");
+										staustufe_level_writer.write(String.valueOf(error_maximum).replace('.',',') + ";");
+										staustufe_level_writer.write("\n");
+										
+										if (error_maximum < level_error_maximum_best)
+										{
+											level_error_maximum_best = error_maximum;
+											level_error_average_best = error_average;
+											
+											level_past_best = level_past;
+											level_order_best = level_order;
+											inflow_past_best = inflow_past;
+											inflow_order_best = inflow_order;
+										}
+									}
+									
+									// Debug
+									
+									System.out.println("\nbest = " + level_past_best + "x" + level_order_best + "-" + inflow_past_best + "x" + inflow_order_best + "-" + outflow_past_best + "x" + outflow_order_best + "\n");
 								}
 							}
 						}
@@ -237,8 +313,8 @@ public class PolynomOptimizer
 				level_writer.write(level_order_best + ";");
 				level_writer.write(inflow_past_best + ";");
 				level_writer.write(inflow_order_best + ";");
-				level_writer.write(outflow_past_best + ";");
-				level_writer.write(outflow_order_best + ";");
+				level_writer.write((staustufe < 5 ? outflow_past_best : "") + ";");
+				level_writer.write((staustufe < 5 ? outflow_order_best : "") + ";");
 				level_writer.write(String.valueOf(level_error_average_best).replace('.',',') + ";");
 				level_writer.write(String.valueOf(level_error_maximum_best).replace('.',',') + "\n");
 				level_writer.flush();
