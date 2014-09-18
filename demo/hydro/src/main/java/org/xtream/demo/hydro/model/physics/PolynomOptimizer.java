@@ -56,7 +56,7 @@ public class PolynomOptimizer
 	
 	public static final int TURBINE_OUTFLOW_ORDER_MIN = 1;
 	public static final int TURBINE_OUTFLOW_ORDER_MAX = 5;
-	public static final int TURBINE_OUTFLOW_ORDER_STEP = 1;
+	public static final int TURBINE_OUTFLOW_ORDER_STEP = 2;
 	
 	// Upper level past parameters
 	
@@ -68,7 +68,7 @@ public class PolynomOptimizer
 	
 	public static final int UPPER_LEVEL_ORDER_MIN = 1;
 	public static final int UPPER_LEVEL_ORDER_MAX = 5;
-	public static final int UPPER_LEVEL_ORDER_STEP = 1;
+	public static final int UPPER_LEVEL_ORDER_STEP = 2;
 	
 	// Lower level past parameters
 	
@@ -80,7 +80,7 @@ public class PolynomOptimizer
 	
 	public static final int LOWER_LEVEL_ORDER_MIN = 1;
 	public static final int LOWER_LEVEL_ORDER_MAX = 5;
-	public static final int LOWER_LEVEL_ORDER_STEP = 1;
+	public static final int LOWER_LEVEL_ORDER_STEP = 2;
 	
 	// Main
 
@@ -238,8 +238,8 @@ public class PolynomOptimizer
 				level_writer.write(inflow_past_best + ";");
 				level_writer.write(inflow_order_best + ";");
 				level_writer.write(outflow_past_best + ";");
-				level_writer.write(outflow_order_best + "\n");
-				level_writer.write(level_error_average_best + "\n");
+				level_writer.write(outflow_order_best + ";");
+				level_writer.write(level_error_average_best + ";");
 				level_writer.write(level_error_maximum_best + "\n");
 				level_writer.flush();
 
@@ -370,8 +370,8 @@ public class PolynomOptimizer
 					production_writer.write(upper_level_past_best + ";");
 					production_writer.write(upper_level_order_best + ";");
 					production_writer.write(lower_level_past_best + ";");
-					production_writer.write(lower_level_order_best + "\n");
-					production_writer.write(production_error_average_best + "\n");
+					production_writer.write(lower_level_order_best + ";");
+					production_writer.write(production_error_average_best + ";");
 					production_writer.write(production_error_maximum_best + "\n");
 					production_writer.flush();
 				}
