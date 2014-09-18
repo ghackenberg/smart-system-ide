@@ -60,6 +60,8 @@ public class DatasetParser
 						// ignore
 					}
 				}
+				
+				measurements.get(i - 1)[measurements.get(i - 1).length - 2] = 263 + measurements.get(i - 1)[measurements.get(i - 1).length - 2] / 100; 
 			/*
 			}
 			else
