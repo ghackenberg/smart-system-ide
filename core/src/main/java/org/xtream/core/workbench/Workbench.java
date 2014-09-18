@@ -20,6 +20,7 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Engine;
+import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
 import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
@@ -69,7 +70,7 @@ public class Workbench<T extends Component>
 			// Engine
 			
 			//engine = new org.xtream.core.optimizer.basic.Engine<T>(root);
-			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, randomness, Runtime.getRuntime().availableProcessors() - 1);
+			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, randomness, Runtime.getRuntime().availableProcessors() - 1, new KMeansStrategy(rounds));
 			
 			// Bus
 			
