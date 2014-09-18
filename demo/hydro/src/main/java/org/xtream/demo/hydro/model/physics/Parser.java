@@ -24,6 +24,7 @@ public class Parser
 		{
 			// Check if we have valid level measurements
 			
+			/*
 			boolean valid = true;
 			
 			for (int j = 1 + Constants.LEVEL_INDEX; j < 1 + Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3; j += Constants.STAUSTUFE_MEASUREMENTS)
@@ -44,6 +45,7 @@ public class Parser
 			
 			if (valid)
 			{
+			*/
 				timepoints.add(lines_string.get(i)[0]);
 				measurements.add(new double[Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3]);
 				
@@ -58,11 +60,13 @@ public class Parser
 						// ignore
 					}
 				}
+			/*
 			}
 			else
 			{
 				break;
 			}
+			*/
 		}
 		
 		reader.close();

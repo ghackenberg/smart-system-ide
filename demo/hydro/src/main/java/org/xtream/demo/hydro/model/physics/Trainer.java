@@ -1,14 +1,11 @@
 package org.xtream.demo.hydro.model.physics;
 
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
-import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.data.DataSet;
-import org.neuroph.nnet.Perceptron;
 
 public class Trainer
 {
 	
-	public static double[] trainRegressionModel(Dataset data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
+	public static double[] trainLevelModel(Dataset data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
 		System.out.println("trainRegressionModel(data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ")");
 		
@@ -25,21 +22,21 @@ public class Trainer
 			{
 				for (int k = 0; k < level_order; k++)
 				{
-					x[i - maximum_past][j * level_order + k] = Math.pow(data.getLevel(staustufe, i - 1 - j), k + 1);
+					x[i - maximum_past][j * level_order + k] = Math.pow(data.getLevel(staustufe, i - level_past + j), k + 1);
 				}
 			}
 			for (int j = 0; j < inflow_past; j++)
 			{
 				for (int k = 0; k < inflow_order; k++)
 				{
-					x[i - maximum_past][level_past * level_order + j * inflow_order + k] = Math.pow(data.getInflow(staustufe, i - j), k + 1);
+					x[i - maximum_past][level_past * level_order + j * inflow_order + k] = Math.pow(data.getInflow(staustufe, i - inflow_past + j + 1), k + 1);
 				}
 			}
 			for (int j = 0; j < outflow_past; j++)
 			{
 				for (int k = 0; k < outflow_order; k++)
 				{
-					x[i - maximum_past][level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] = Math.pow(data.getOutflowTotal(staustufe, i - j), k + 1);
+					x[i - maximum_past][level_past * level_order + inflow_past * inflow_order + j * outflow_order + k] = Math.pow(data.getOutflowTotal(staustufe, i - outflow_past + j + 1), k + 1);
 				}
 			}
 		}
@@ -85,40 +82,9 @@ public class Trainer
 		return beta;
 	}
 	
-	public static NeuralNetwork<?> trainNeuralModel(Dataset data, int staustufe, int level_past, int inflow_past, int outflow_past)
+	public static double[] trainProductionModel(Dataset dataset, int staustufe, int upper_level_past, int upper_level_order, int lower_level_past, int lower_level_order)
 	{
-		System.out.println("trainNeuralModel(data, " + staustufe + ", " + level_past + ", " + inflow_past + ", " + outflow_past + ")");
-		
-		int maximum_past = Math.max(level_past, Math.max(inflow_past, outflow_past));
-		
-		DataSet training = new DataSet(level_past + inflow_past + outflow_past, 1);
-		
-		for (int i = maximum_past; i < data.getLength() / 1000; i++)
-		{
-			double[] input = new double[level_past + inflow_past + outflow_past];
-			double[] output = new double[1];
-			
-			for (int j = 0; j < level_past;  j++)
-			{
-				input[j] = data.getLevel(staustufe, i - 1 - j);
-			}
-			for (int j = 0; j < inflow_past;  j++)
-			{
-				input[level_past + j] = data.getInflow(staustufe, i - j);
-			}
-			for (int j = 0; j < outflow_past;  j++)
-			{
-				input[level_past + inflow_past + j] = data.getOutflowTotal(staustufe, i - j);
-			}
-			output[0] = data.getLevel(staustufe, i);
-			
-			training.addRow(input, output);
-		}
-		
-		NeuralNetwork<?> network = new Perceptron(level_past + inflow_past + outflow_past, 1);
-		network.learn(training);
-		
-		return network;
+		throw new IllegalStateException("Not implemented yet!");
 	}
 
 }

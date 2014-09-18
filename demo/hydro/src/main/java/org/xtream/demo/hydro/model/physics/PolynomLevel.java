@@ -1,6 +1,6 @@
 package org.xtream.demo.hydro.model.physics;
 
-public class Polynom
+public class PolynomLevel
 {
 	
 	private int staustufe;
@@ -18,7 +18,7 @@ public class Polynom
 	
 	private double[] beta;
 	
-	public Polynom(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
+	public PolynomLevel(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
 		this.staustufe = staustufe;
 		
@@ -56,9 +56,9 @@ public class Polynom
 		return beta;
 	}
 	
-	public void train(Dataset dataset)
+	public void fit(Dataset dataset)
 	{
-		beta = Trainer.trainRegressionModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+		beta = Trainer.trainLevelModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 	}
 	
 	public double estimate(double[] levels, double[] inflows, double[] outflows)

@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.neuroph.core.NeuralNetwork;
-
 public class Tester
 {
 	
-	public static double[] testRegressionModel(Polynom model, Dataset data, int staustufe, int start, int length, String result_path) throws IOException
+	public static double[] testLevelModel(PolynomLevel model, Dataset data, int staustufe, int start, int length, String result_path) throws IOException
 	{
 		System.out.println("testRegressionModel(beta, data, " + staustufe + ", " + start + ", " + length + ", \"" + result_path + "\")");
 		
@@ -35,7 +33,7 @@ public class Tester
 		
 		for (int i = 0; i < model.getLevelPast(); i++)
 		{
-			level_past[i] = data.getLevel(staustufe, start - 1 - model.getLevelPast() + i);
+			level_past[i] = data.getLevel(staustufe, start - model.getLevelPast() + i);
 		}
 		
 		// Calculate estimated levels
@@ -44,24 +42,24 @@ public class Tester
 		{
 			for (int j = 0; j < model.getInflowPast(); j++)
 			{
-				inflow_past[j] = data.getInflow(staustufe, i - j);
+				inflow_past[j] = data.getInflow(staustufe, i - model.getInflowPast() + j + 1);
 			}
 			for (int j = 0; j < model.getOutflowPast(); j++)
 			{
-				outflow_past[j] = data.getOutflowTotal(staustufe, i - j);
+				outflow_past[j] = data.getOutflowTotal(staustufe, i - model.getOutflowPast() + j + 1);
 			}
 			
-			double level_measured = data.getLevel(staustufe, start - model.getMaximumPast() + i);
+			double level_measured = data.getLevel(staustufe, i);
 			double level_estimated = model.estimate(level_past, inflow_past, outflow_past);
 			
 			if (level_estimated == Double.NaN)
 			{
-				System.out.println("Level estimated not a number: " + i);
+				result_writer.close();
 				
-				break;
+				throw new IllegalStateException("Level estimated is not a number!");
 			}
 			
-			result_writer.write(data.getTimepoint(start - model.getMaximumPast() + i) + ";" + String.valueOf(level_measured).replace('.',',') + ";" + String.valueOf(level_estimated).replace('.',',') + ";" + String.valueOf(level_estimated / level_measured).replace('.',',') + "\n");
+			result_writer.write(data.getTimepoint(i) + ";" + String.valueOf(level_measured).replace('.',',') + ";" + String.valueOf(level_estimated).replace('.',',') + ";" + String.valueOf(level_estimated / level_measured).replace('.',',') + "\n");
 			
 			count++;
 
@@ -69,11 +67,11 @@ public class Tester
 			error_max = Math.max(error_max, Math.abs(level_measured - level_estimated));
 			error_average += Math.abs(level_measured - level_estimated);
 			
-			for (int j = model.getLevelPast() - 1; j > 0; j--)
+			for (int j = 1; j < model.getLevelPast(); j++)
 			{
-				level_past[j] = level_past[j - 1];
+				level_past[j - 1] = level_past[j];
 			}
-			level_past[0] = level_estimated;
+			level_past[model.getLevelPast() - 1] = level_estimated;
 		}
 		
 		error_quadratic /= count;
@@ -86,21 +84,9 @@ public class Tester
 		return new double[] {error_average, error_quadratic, error_max};
 	}
 	
-	public static double[] testNeuralNetwork(NeuralNetwork<?> network, Dataset data, int staustufe, int level_past, int inflow_past, int outflow_past, int start, int length, String result_path) throws IOException
+	public static double[] testProductionModel()
 	{
-		System.out.println("testNeuralModel(network, data, " + staustufe + ", " + level_past + ", " + inflow_past + ", " + outflow_past + ", " + start + ", " + length + ", \"" + result_path + "\")");
-		
-		File result_file = new File(result_path);
-		
-		result_file.getParentFile().mkdirs();
-	
-		FileWriter result_writer = new FileWriter(result_file);
-		
-		// TODO implement test procedure!
-		
-		result_writer.close();
-		
-		return null;
+		throw new IllegalStateException("Not implemented yet!");
 	}
 
 }
