@@ -1,17 +1,15 @@
 package org.xtream.demo.projecthouse.model;
 
-import java.io.File;
-
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.demo.projecthouse.model.battery.BatteryModule;
-import org.xtream.demo.projecthouse.model.net.NetModule;
 import org.xtream.demo.projecthouse.model.room.RoomModule;
 import org.xtream.demo.projecthouse.model.room.lights.LightsModule;
 import org.xtream.demo.projecthouse.model.room.window.WindowSpecification;
 import org.xtream.demo.projecthouse.model.simple.BreakerBoxComponent;
 import org.xtream.demo.projecthouse.model.simple.LoadsComponent;
+import org.xtream.demo.projecthouse.model.simple.NetComponent;
 import org.xtream.demo.projecthouse.model.simple.PVComponent;
 import org.xtream.demo.projecthouse.model.simple.SunComponent;
 import org.xtream.demo.projecthouse.model.thermalstorage.ThermalStorageModule;
@@ -86,7 +84,7 @@ public class RootComponent extends Component {
 	public ThermalStorageModule thermalStorage = new ThermalStorageModule(outerTemperature, livingRoom, bedRoom, bathRoom1, waterCloset, bathRoom2);
 	
 	//Net
-	public NetModule net = new NetModule(NET_CSV);
+	public NetComponent net = new NetComponent(NET_CSV);
 	
 	//Loads
 	public LoadsComponent loads = new LoadsComponent(LOADS_CONSUMPTION_CSV);
@@ -116,10 +114,8 @@ public class RootComponent extends Component {
 			battery,
 			pv
 	};
-	
-	public BreakerBoxComponent breakerBox = new BreakerBoxComponent(producers, consumers);
-	
-	public ChannelExpression<Double> houseNetChannel = new ChannelExpression<>(net.context.houseInput, breakerBox.balanceOutput);
+	public BreakerBoxComponent breakerBox = new BreakerBoxComponent(producers, consumers);	
+	public ChannelExpression<Double> houseNetChannel = new ChannelExpression<>(net.houseInput, breakerBox.balanceOutput);
 	
 	//Objective
 	public ObjectiveComponent objective = new ObjectiveComponent(thermalStorage.pelletHeater, net, breakerBox, livingRoom, bedRoom, bathRoom1, bathRoom2, waterCloset);

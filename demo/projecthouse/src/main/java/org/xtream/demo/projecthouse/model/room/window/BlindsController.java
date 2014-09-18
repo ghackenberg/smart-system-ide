@@ -11,7 +11,7 @@ public class BlindsController extends Component {
 	
 	public Port<Double> blindsOutput = new Port<Double>();
 	
-	public Expression<Double> blindsExpression = new RandomExpression(blindsOutput);
+	public Expression<Double> blindsExpression = new RandomExpression(blindsOutput); //TODO [Andreas] Maybe also use sun?
 	
 	public Chart blindsChart = new Timeline(blindsOutput);
 

@@ -8,9 +8,9 @@ import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.objectives.MinObjective;
-import org.xtream.demo.projecthouse.model.net.NetModule;
 import org.xtream.demo.projecthouse.model.room.RoomModule;
 import org.xtream.demo.projecthouse.model.simple.BreakerBoxComponent;
+import org.xtream.demo.projecthouse.model.simple.NetComponent;
 import org.xtream.demo.projecthouse.model.thermalstorage.pelletheater.PelletHeaterModule;
 
 public class ObjectiveComponent extends Component {
@@ -42,7 +42,7 @@ public class ObjectiveComponent extends Component {
 	public Chart aggregatedCost = new Timeline(netCostInput, pelletHeaterInput, aggregatedCostPort);
 	
 	@SuppressWarnings("unchecked")
-	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetModule net, BreakerBoxComponent breakerBox, RoomModule...rooms) {
+	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetComponent net, BreakerBoxComponent breakerBox, RoomModule...rooms) {
 		roomInputs = new Port[rooms.length];
 		channels = new ChannelExpression[rooms.length];
 		for(int i = 0; i < rooms.length; i++) {
@@ -51,9 +51,9 @@ public class ObjectiveComponent extends Component {
 		}
 		netCostChannel = new ChannelExpression<>(netCostInput, breakerBox.costOutput);
 		autonomyChannel = new ChannelExpression<>(autonomyInput, breakerBox.balanceOutput);
-		netBalanceChannel = new ChannelExpression<>(netBalanceInput, net.context.balanceOutput);
+		netBalanceChannel = new ChannelExpression<>(netBalanceInput, net.balanceOutput);
 		pelletHeaterChannel = new ChannelExpression<>(pelletHeaterInput, pelletHeater.context.costOutput);
-		constancyChannel = new ChannelExpression<>(constancyInput, net.context.constancyOutput);
+		constancyChannel = new ChannelExpression<>(constancyInput, net.constancyOutput);
 	}
 	
 	public Expression<Double> aggregatedCostExpression = new Expression<Double>(aggregatedCostPort) {

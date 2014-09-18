@@ -12,7 +12,7 @@ import org.xtream.demo.projecthouse.model.CSVFileWithOneKey;
 public class PeopleController extends Component {
 	public CSVFileWithOneKey csvData;
 	
-	public Port<Double> possibilityOutput = new Port<>();
+	public Port<Double> probabilityOutput = new Port<>();
 	
 	public PeopleController(String filename) {
 		super();
@@ -24,7 +24,7 @@ public class PeopleController extends Component {
 		}
 	}
 
-	public Expression<Double> possibilityExpression = new Expression<Double>(possibilityOutput) {
+	public Expression<Double> probabilityExpression = new Expression<Double>(probabilityOutput) {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
