@@ -305,8 +305,8 @@ public class PolynomOptimizer
 											
 											for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
 											{
-												double[] error_2011 = PolynomTester.testProductionModel(model, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2011/Week_" + i + ".csv");
-												double[] error_2012 = PolynomTester.testProductionModel(model, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2012/Week_" + i + ".csv");
+												double[] error_2011 = PolynomTester.testProductionModel(model, data_2011, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + turbine_outflow_past + "x" + turbine_outflow_order + "-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2011/Week_" + i + ".csv");
+												double[] error_2012 = PolynomTester.testProductionModel(model, data_2012, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + turbine_outflow_past + "x" + turbine_outflow_order + "-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2012/Week_" + i + ".csv");
 
 												config_staustufe_production_writer.write("Week " + (i + 1) + ";");
 												config_staustufe_production_writer.write(String.valueOf(error_2011[0]).replace('.',',') + ";");
