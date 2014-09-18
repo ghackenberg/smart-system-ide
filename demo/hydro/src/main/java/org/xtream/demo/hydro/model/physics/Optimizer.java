@@ -46,6 +46,30 @@ public class Optimizer
 	public static final int OUTFLOW_ORDER_MAX = 1;
 	public static final int OUTFLOW_ORDER_STEP = 1;
 	
+	// Upper level past parameters
+	
+	public static final int UPPER_LEVEL_PAST_MIN = 1;
+	public static final int UPPER_LEVEL_PAST_MAX = 1;
+	public static final int UPPER_LEVEL_PAST_STEP = 1;
+	
+	// Upper level order parameters
+	
+	public static final int UPPER_LEVEL_ORDER_MIN = 1;
+	public static final int UPPER_LEVEL_ORDER_MAX = 1;
+	public static final int UPPER_LEVEL_ORDER_STEP = 1;
+	
+	// Lower level past parameters
+	
+	public static final int LOWER_LEVEL_PAST_MIN = 1;
+	public static final int LOWER_LEVEL_PAST_MAX = 1;
+	public static final int LOWER_LEVEL_PAST_STEP = 1;
+	
+	// Lower level order parameters
+	
+	public static final int LOWER_LEVEL_ORDER_MIN = 1;
+	public static final int LOWER_LEVEL_ORDER_MAX = 1;
+	public static final int LOWER_LEVEL_ORDER_STEP = 1;
+	
 	// Main
 
 	public static void main(String[] args)
@@ -89,14 +113,6 @@ public class Optimizer
 					{
 						for (int outflow_past = OUTFLOW_PAST_MIN; outflow_past <= OUTFLOW_PAST_MAX; outflow_past += OUTFLOW_PAST_STEP)
 						{
-//							NeuralNetwork<?> network = trainNeuralModel(data_2012, staustufe, level_past, inflow_past, outflow_past);
-//
-//							for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
-//							{
-//								/*double[] error_neural_2011 = */testNeuralNetwork(network, data_2011, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
-//								/*double[] error_neural_2012 = */testNeuralNetwork(network, data_2012, staustufe, level_past, inflow_past, outflow_past, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Neural-" + level_past + "-" + inflow_past + "-" + outflow_past + "/2011/Week_" + i + ".csv");
-//							}
-							
 							for (int level_order = LEVEL_ORDER_MIN; level_order <= LEVEL_ORDER_MAX; level_order += LEVEL_ORDER_STEP)
 							{
 								for (int inflow_order = INFLOW_ORDER_MIN; inflow_order <= INFLOW_ORDER_MAX; inflow_order += INFLOW_ORDER_STEP)
@@ -109,7 +125,7 @@ public class Optimizer
 										
 										model.fit(data_2012);
 										
-										File configuration_overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
+										File configuration_overview_file = new File("csv/Comparison/Staustufe-" + staustufe + "/Level/Configuration-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + ".csv");
 										
 										configuration_overview_file.getParentFile().mkdirs();
 										
@@ -124,8 +140,8 @@ public class Optimizer
 										
 										for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
 										{
-											double[] error_regression_2011 = Tester.testLevelModel(model, data_2011, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
-											double[] error_regression_2012 = Tester.testLevelModel(model, data_2012, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Regression-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
+											double[] error_regression_2011 = Tester.testLevelModel(model, data_2011, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2011/Week_" + i + ".csv");
+											double[] error_regression_2012 = Tester.testLevelModel(model, data_2012, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Level/Data-" + level_past + "x" + level_order + "-" + inflow_past + "x" + inflow_order + "-" + outflow_past + "x" + outflow_order + "/2012/Week_" + i + ".csv"); 
 											
 											configuration_overview_writer.write("Week " + (i + 1) + ";");
 											configuration_overview_writer.write(String.valueOf(error_regression_2011[0]).replace('.',',') + ";");
@@ -186,6 +202,42 @@ public class Optimizer
 				configuration_writer.write(error_average_best + "\n");
 				configuration_writer.write(error_maximum_best + "\n");
 				configuration_writer.flush();
+				
+				for (int upper_level_past = UPPER_LEVEL_PAST_MIN; upper_level_past <= UPPER_LEVEL_PAST_MAX; upper_level_past += UPPER_LEVEL_PAST_STEP)
+				{
+					for (int lower_level_past = LOWER_LEVEL_PAST_MIN; lower_level_past <= LOWER_LEVEL_PAST_MAX; lower_level_past += LOWER_LEVEL_PAST_STEP)
+					{
+						for (int upper_level_order = UPPER_LEVEL_ORDER_MIN; upper_level_order <= UPPER_LEVEL_ORDER_MAX; upper_level_order += UPPER_LEVEL_ORDER_STEP)
+						{
+							for (int lower_level_order = LOWER_LEVEL_ORDER_MIN; lower_level_order <= LOWER_LEVEL_ORDER_MAX; lower_level_order += LOWER_LEVEL_ORDER_STEP)
+							{
+								PolynomProduction model = new PolynomProduction(staustufe, upper_level_past, upper_level_order, lower_level_past, lower_level_order);
+								
+								model.fit(data_2012);
+								
+								double error_average = 0;
+								double error_maximum = 0;
+								
+								int count = 0;
+								
+								for (int i = WEEK_MIN; i <= WEEK_MAX; i += WEEK_STEP)
+								{
+									double[] error_2011 = Tester.testProductionModel(model, data_2011, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2011/Week_" + i + ".csv");
+									double[] error_2012 = Tester.testProductionModel(model, data_2012, staustufe, WEEK * i, WEEK * 1, "csv/Comparison/Staustufe-" + staustufe + "/Production/Data-" + upper_level_past + "x" + upper_level_order + "-" + lower_level_past + "x" + lower_level_order + "/2012/Week_" + i + ".csv");
+
+									error_average += error_2011[0] + error_2012[0];
+									error_maximum = Math.max(error_maximum, Math.max(error_2011[2], error_2012[2]));
+									
+									count++;
+								}
+								
+								error_average /= (count * 2);
+								
+								System.out.println(error_average);
+							}
+						}
+					}	
+				}
 			}
 			
 			configuration_writer.close();

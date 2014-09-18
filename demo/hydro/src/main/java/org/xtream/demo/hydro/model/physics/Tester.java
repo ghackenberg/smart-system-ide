@@ -84,7 +84,7 @@ public class Tester
 		return new double[] {error_average, error_quadratic, error_max};
 	}
 	
-	public static double[] testProductionModel()
+	public static double[] testProductionModel(PolynomProduction model, Dataset data, int staustufe, int start, int length, String result_path)
 	{
 		throw new IllegalStateException("Not implemented yet!");
 	}
