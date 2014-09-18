@@ -1,6 +1,6 @@
 package org.xtream.demo.hydro.model.physics;
 
-public class Constants
+public class DatasetConstants
 {
 	
 	public static final int STAUSTUFE_COUNT = 5;

@@ -2,12 +2,12 @@ package org.xtream.demo.hydro.model.physics;
 
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 
-public class Trainer
+public class PolynomTrainer
 {
 	
 	public static double[] trainLevelModel(Dataset data, int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
-		System.out.println("trainRegressionModel(data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ")");
+		System.out.println("trainLevelModel(data, " + staustufe + ", " + level_past + ", " + level_order + ", " + inflow_past + ", " + inflow_order + ", " + outflow_past + ", " + outflow_order + ")");
 		
 		int maximum_past = Math.max(level_past + 1, Math.max(inflow_past, outflow_past));
 		
@@ -82,9 +82,47 @@ public class Trainer
 		return beta;
 	}
 	
-	public static double[] trainProductionModel(Dataset dataset, int staustufe, int upper_level_past, int upper_level_order, int lower_level_past, int lower_level_order)
+	public static double[] trainProductionModel(Dataset dataset, int staustufe, int turbine_outflow_past, int turbine_outflow_order, int upper_level_past, int upper_level_order, int lower_level_past, int lower_level_order)
 	{
-		throw new IllegalStateException("Not implemented yet!");
+		System.out.println("trainProductionModel(dataset, " + staustufe + ", " + turbine_outflow_past + ", " + turbine_outflow_order + ", " + upper_level_past + ", " + upper_level_order + ", " + lower_level_past + ", " + lower_level_order + ")");
+		
+		int maximum_past = Math.max(turbine_outflow_past, Math.max(upper_level_past, lower_level_past));
+		
+		double[] y = new double[dataset.getLength() - maximum_past];
+		double[][] x = new double[dataset.getLength() - maximum_past][turbine_outflow_past * turbine_outflow_order + upper_level_past * upper_level_order + lower_level_past * lower_level_order];
+		
+		for (int i = maximum_past; i < dataset.getLength(); i++)
+		{
+			y[i - maximum_past] = dataset.getProduction(staustufe, i);
+
+			for (int j = 0; j < turbine_outflow_past; j++)
+			{
+				for (int k = 0; k < turbine_outflow_order; k++)
+				{
+					x[i - maximum_past][j * turbine_outflow_order + k] = Math.pow(dataset.getOutflowTurbine(staustufe, i - turbine_outflow_past + j + 1), k + 1); 
+				}
+			}
+			for (int j = 0; j < upper_level_past; j++)
+			{
+				for (int k = 0; k < upper_level_order; k++)
+				{
+					x[i - maximum_past][turbine_outflow_past * turbine_outflow_order + j * upper_level_order + k] = Math.pow(dataset.getLevel(staustufe, i - upper_level_past + j + 1), k + 1); 
+				}
+			}
+			for (int j = 0; j < lower_level_past; j++)
+			{
+				for (int k = 0; k < lower_level_order; k++)
+				{
+					x[i - maximum_past][turbine_outflow_past * turbine_outflow_order + upper_level_past * upper_level_order + j * lower_level_order + k] = Math.pow(dataset.getLevel(staustufe + 1, i - lower_level_past + j + 1), k + 1); 
+				}
+			}
+		}
+		
+		OLSMultipleLinearRegression regression = new OLSMultipleLinearRegression();
+		
+		regression.newSampleData(y, x);
+		
+		return regression.estimateRegressionParameters();
 	}
 
 }

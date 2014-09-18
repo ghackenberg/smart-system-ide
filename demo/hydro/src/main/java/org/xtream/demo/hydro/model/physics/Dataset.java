@@ -16,7 +16,7 @@ public class Dataset
 		}
 		
 		this.timepoints = timepoints.toArray(new String[timepoints.size()]);
-		this.measurements = measurements.toArray(new double[measurements.size()][Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3]);
+		this.measurements = measurements.toArray(new double[measurements.size()][DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 3]);
 	}
 	
 	public String[] getTimepoints()
@@ -34,23 +34,23 @@ public class Dataset
 	}
 	public double getInflow(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.INFLOW_INDEX];
+		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.INFLOW_INDEX];
 	}
 	public double getLevel(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.LEVEL_INDEX];
+		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.LEVEL_INDEX];
 	}
 	public double getOutflowTotal(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.OUTFLOW_TOTAL_INDEX];
+		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.OUTFLOW_TOTAL_INDEX];
 	}
 	public double getOutflowTurbine(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.OUTFLOW_TURBINE_INDEX];
+		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.OUTFLOW_TURBINE_INDEX];
 	}
 	public double getProduction(int staustufe, int timepoint)
 	{
-		return measurements[timepoint][staustufe * Constants.STAUSTUFE_MEASUREMENTS + Constants.PRODUCTION_INDEX];
+		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.PRODUCTION_INDEX];
 	}
 	
 	public int getLength()

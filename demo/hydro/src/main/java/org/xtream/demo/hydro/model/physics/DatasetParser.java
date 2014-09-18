@@ -7,7 +7,7 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
 
-public class Parser
+public class DatasetParser
 {
 	
 	public static Dataset parseData(String file) throws IOException
@@ -47,9 +47,9 @@ public class Parser
 			{
 			*/
 				timepoints.add(lines_string.get(i)[0]);
-				measurements.add(new double[Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3]);
+				measurements.add(new double[DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 3]);
 				
-				for (int j = 1; j < 1 + Constants.STAUSTUFE_COUNT * Constants.STAUSTUFE_MEASUREMENTS + 3; j++)
+				for (int j = 1; j < 1 + DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 3; j++)
 				{
 					try
 					{

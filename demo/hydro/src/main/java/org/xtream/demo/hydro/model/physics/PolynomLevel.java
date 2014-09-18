@@ -34,6 +34,10 @@ public class PolynomLevel
 		maximum_past = Math.max(level_past, Math.max(inflow_past, outflow_past));
 	}
 	
+	public int getStaustufe()
+	{
+		return staustufe;
+	}
 	public int getLevelPast()
 	{
 		return level_past;
@@ -58,7 +62,7 @@ public class PolynomLevel
 	
 	public void fit(Dataset dataset)
 	{
-		beta = Trainer.trainLevelModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+		beta = PolynomTrainer.trainLevelModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 	}
 	
 	public double estimate(double[] levels, double[] inflows, double[] outflows)
