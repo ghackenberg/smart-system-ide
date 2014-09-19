@@ -1,4 +1,4 @@
-package org.xtream.demo.hydro.model.physics;
+package org.xtream.demo.hydro.data;
 
 import java.io.File;
 import java.io.FileWriter;
