@@ -92,6 +92,7 @@ public class PolynomOptimizer
 			
 			Dataset data_2011 = DatasetParser.parseData("csv/Regression_2011.csv");
 			Dataset data_2012 = DatasetParser.parseData("csv/Regression_2012.csv");
+			//Dataset data_2013 = DatasetParser.parseData("csv/Regression_2013.csv");
 			
 			// Files
 			
@@ -319,7 +320,7 @@ public class PolynomOptimizer
 				level_writer.write(String.valueOf(level_error_maximum_best).replace('.',',') + "\n");
 				level_writer.flush();
 
-				if (staustufe < 1)
+				if (staustufe < 5)
 				{
 					// Files
 					
