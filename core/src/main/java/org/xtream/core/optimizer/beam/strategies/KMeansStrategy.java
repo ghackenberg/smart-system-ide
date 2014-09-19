@@ -33,7 +33,7 @@ public class KMeansStrategy implements Strategy
 		
 		for (State state : currentStates)
 		{
-			keys.put(state, new Key(root, state, timepoint));
+			keys.put(state, new Key(root, state, minEquivalences, maxEquivalences, timepoint));
 		}
 		
 		// Initialize mittelwerte, i initial clusters
@@ -50,7 +50,7 @@ public class KMeansStrategy implements Strategy
 		
 		for (int i = 0; i < classes; i++)
 		{
-			Key key = new Key(root, minEquivalences, maxEquivalences);
+			Key key = new Key(root);
 			
 			clusters.put(key, new ArrayList<State>());
 		}
@@ -147,7 +147,7 @@ public class KMeansStrategy implements Strategy
 					
 					for (int i = 0; i < cluster.getKey().equivalences.length; i++)
 					{
-						cluster.getKey().equivalences[i] = Math.random() * (maxEquivalences[i] - minEquivalences[i]) + minEquivalences[i];
+						cluster.getKey().equivalences[i] = Math.random();
 					}
 				}
 			}

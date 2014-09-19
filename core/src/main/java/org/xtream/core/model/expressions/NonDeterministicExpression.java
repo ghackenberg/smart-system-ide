@@ -29,7 +29,7 @@ public abstract class NonDeterministicExpression<T> extends Expression<T>
 			}
 		}
 		
-		throw new IllegalStateException();
+		throw new IllegalStateException("No option available!");
 	}
 	
 	protected abstract Set<T> evaluateSet(State state, int timepoint);
