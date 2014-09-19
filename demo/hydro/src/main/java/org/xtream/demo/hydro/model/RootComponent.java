@@ -48,7 +48,7 @@ public class RootComponent extends Component
 	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.backward.ControlComponent();
 	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.forward.ControlComponent();
 	//public ControlComponent control = new org.xtream.demo.hydro.model.single.continuous.random.ControlComponent();
-	public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.backward.ControlComponent();
+	public ControlComponent control = new org.xtream.demo.hydro.model.control.single.discrete.backward.ControlComponent();
 	//public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.forward.ControlComponent();
 	//public ControlComponent control = new org.xtream.demo.hydro.model.single.discrete.random.ControlComponent();
 	//public ControlComponent control = new org.xtream.demo.hydro.model.split.continuous.backward.ControlComponent();
