@@ -28,13 +28,13 @@ public class PolynomOptimizer
 	
 	// Inflow parameters
 	
-	public static final int INFLOW_PAST_MIN = 5;
-	public static final int INFLOW_PAST_MAX = 5;
-	public static final int INFLOW_PAST_STEP = 1;
+	public static final int INFLOW_PAST_MIN = 1;
+	public static final int INFLOW_PAST_MAX = 15;
+	public static final int INFLOW_PAST_STEP = 2;
 	
 	public static final int INFLOW_ORDER_MIN = 1;
-	public static final int INFLOW_ORDER_MAX = 3;
-	public static final int INFLOW_ORDER_STEP = 2;
+	public static final int INFLOW_ORDER_MAX = 1;
+	public static final int INFLOW_ORDER_STEP = 1;
 	
 	// Outflow parameters
 	
@@ -48,14 +48,14 @@ public class PolynomOptimizer
 	
 	// Turbine outflow past parameters
 	
-	public static final int TURBINE_OUTFLOW_PAST_MIN = 2;
-	public static final int TURBINE_OUTFLOW_PAST_MAX = 2;
+	public static final int TURBINE_OUTFLOW_PAST_MIN = 1;
+	public static final int TURBINE_OUTFLOW_PAST_MAX = 1;
 	public static final int TURBINE_OUTFLOW_PAST_STEP = 1;
 	
 	// Turbine outflow order parameters
 	
-	public static final int TURBINE_OUTFLOW_ORDER_MIN = 2;
-	public static final int TURBINE_OUTFLOW_ORDER_MAX = 2;
+	public static final int TURBINE_OUTFLOW_ORDER_MIN = 1;
+	public static final int TURBINE_OUTFLOW_ORDER_MAX = 1;
 	public static final int TURBINE_OUTFLOW_ORDER_STEP = 1;
 	
 	// Upper level past parameters
@@ -66,20 +66,20 @@ public class PolynomOptimizer
 	
 	// Upper level order parameters
 	
-	public static final int UPPER_LEVEL_ORDER_MIN = 5;
-	public static final int UPPER_LEVEL_ORDER_MAX = 5;
+	public static final int UPPER_LEVEL_ORDER_MIN = 1;
+	public static final int UPPER_LEVEL_ORDER_MAX = 1;
 	public static final int UPPER_LEVEL_ORDER_STEP = 1;
 	
 	// Lower level past parameters
 	
-	public static final int LOWER_LEVEL_PAST_MIN = 2;
-	public static final int LOWER_LEVEL_PAST_MAX = 2;
+	public static final int LOWER_LEVEL_PAST_MIN = 1;
+	public static final int LOWER_LEVEL_PAST_MAX = 1;
 	public static final int LOWER_LEVEL_PAST_STEP = 1;
 	
 	// Lower level order parameters
 	
-	public static final int LOWER_LEVEL_ORDER_MIN = 5;
-	public static final int LOWER_LEVEL_ORDER_MAX = 5;
+	public static final int LOWER_LEVEL_ORDER_MIN = 1;
+	public static final int LOWER_LEVEL_ORDER_MAX = 1;
 	public static final int LOWER_LEVEL_ORDER_STEP = 1;
 	
 	// Main
