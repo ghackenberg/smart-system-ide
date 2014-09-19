@@ -132,7 +132,10 @@ public abstract class Part<T extends Component> implements Monitor<T>
 	@Override
 	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> clusters, State best)
 	{
-		state = best;
+		if (best != null)
+		{
+			state = best;
+		}
 	}
 	
 	@Override

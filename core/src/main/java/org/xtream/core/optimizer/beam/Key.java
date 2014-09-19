@@ -14,17 +14,17 @@ public class Key implements Comparable<Key>
 		equivalences = new double[0];
 	}
 	
-	public Key(Component root, double[] minEquivalences, double[] maxEquivalences)
+	public Key(Component root)
 	{
 		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 		
 		for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 		{
-			equivalences[i] = Math.random() * (maxEquivalences[i] - minEquivalences[i]) + minEquivalences[i];
+			equivalences[i] = Math.random();
 		}
 	}
 	
-	public Key(Component root, State state, int timepoint)
+	public Key(Component root, State state, double[] minEquivalences, double[] maxEquivalences, int timepoint)
 	{
 		equivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 		
@@ -32,7 +32,7 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				equivalences[i] = root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint);
+				equivalences[i] = (root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint) - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]);
 			}
 		}
 	}
