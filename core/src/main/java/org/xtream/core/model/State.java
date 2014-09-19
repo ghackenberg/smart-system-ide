@@ -66,7 +66,7 @@ public class State
 			}
 			else
 			{
-				throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be in the future (" + timepoint + ")!");
+				throw new IllegalStateException(port.getQualifiedName() + ": Timepoint must not be in the future (" + timepoint + " vs " + this.timepoint + ")!");
 			}
 		}
 		else

@@ -272,7 +272,13 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 			}
 			else
 			{
-				monitor.handle(timepoint, statistics, previousGroups, null);
+				statistics.sort = 0;
+				statistics.stats = 0;
+				statistics.minObjective = 0;
+				statistics.maxObjective = 0;
+				statistics.avgObjective = 0;
+				
+				monitor.handle(timepoint, statistics, currentGroups, null);
 				
 				break; // Stop optimization
 			}

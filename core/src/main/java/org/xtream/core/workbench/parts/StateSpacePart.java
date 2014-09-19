@@ -254,80 +254,83 @@ public class StateSpacePart<T extends Component> extends Part<T>
 	{
 		synchronized (mutex)
 		{
-			this.timepoint = timepoint;
-			this.statistics = statistics;
-			
-			// Create data structures
-			
-			states = new ArrayList<>();
-			followers = new HashMap<>();
-			leaders = new HashMap<>();
-			counts = new HashMap<>();
-			
-			for (int step = 0; step <= timepoint + 1; step++)
+			if (best != null)
 			{
-				states.add(new HashSet<State>());
-			}
-			
-			// Initialize data structures
-	
-			for (Entry<Key, List<State>> entry : clusters.entrySet())
-			{
-				State state = entry.getValue().get(0);
-				State leader = state;
+				this.timepoint = timepoint;
+				this.statistics = statistics;
 				
-				while (state != null)
+				// Create data structures
+				
+				states = new ArrayList<>();
+				followers = new HashMap<>();
+				leaders = new HashMap<>();
+				counts = new HashMap<>();
+				
+				for (int step = 0; step <= timepoint + 1; step++)
 				{
-					// States
+					states.add(new HashSet<State>());
+				}
+				
+				// Initialize data structures
+		
+				for (Entry<Key, List<State>> entry : clusters.entrySet())
+				{
+					State state = entry.getValue().get(0);
+					State leader = state;
 					
-					Set<State> set = states.get(state.getTimepoint() + 1);
-					
-					set.add(state);
-					
-					// Follower
-					
-					Set<State> next = followers.get(state.getPrevious());
-					
-					if (next == null)
+					while (state != null)
 					{
-						next = new HashSet<>();
+						// States
 						
-						followers.put(state.getPrevious(), next);
+						Set<State> set = states.get(state.getTimepoint() + 1);
+						
+						set.add(state);
+						
+						// Follower
+						
+						Set<State> next = followers.get(state.getPrevious());
+						
+						if (next == null)
+						{
+							next = new HashSet<>();
+							
+							followers.put(state.getPrevious(), next);
+						}
+						
+						next.add(state);
+						
+						// Leaders
+						
+						State current = leaders.get(state);
+						
+						if (current == null || leader.compareObjectiveTo(current) < 0)
+						{
+							leaders.put(state, leader);
+						}
+						
+						// Iterate
+						
+						state = state.getPrevious();
 					}
-					
-					next.add(state);
-					
-					// Leaders
-					
-					State current = leaders.get(state);
-					
-					if (current == null || leader.compareObjectiveTo(current) < 0)
-					{
-						leaders.put(state, leader);
-					}
-					
-					// Iterate
-					
-					state = state.getPrevious();
 				}
-			}
-			
-			for (int step = 0; step <= timepoint; step++)
-			{
-				for (State state : states.get(step + 1))
+				
+				for (int step = 0; step <= timepoint; step++)
 				{
-					double objective = getRoot().getDescendantByClass(Objective.class).getPort().get(state, step);
-					
-					minObjective = Math.min(minObjective, objective);
-					maxObjective = Math.max(maxObjective, objective);
+					for (State state : states.get(step + 1))
+					{
+						double objective = getRoot().getDescendantByClass(Objective.class).getPort().get(state, step);
+						
+						minObjective = Math.min(minObjective, objective);
+						maxObjective = Math.max(maxObjective, objective);
+					}
 				}
+				
+				countFollowers(states.get(0).iterator().next());
+				
+				// Repaint canvas
+				
+				canvas.repaint();
 			}
-			
-			countFollowers(states.get(0).iterator().next());
-			
-			// Repaint canvas
-			
-			canvas.repaint();
 		}
 	}
 	
