@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
@@ -198,6 +199,8 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				{
 					jfreechart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
 				}
+				
+				((NumberAxis) jfreechart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
 			}
 			else if (definition instanceof Histogram)
 			{
