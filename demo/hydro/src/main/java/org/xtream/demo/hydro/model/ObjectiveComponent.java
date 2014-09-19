@@ -6,16 +6,14 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
-import org.xtream.core.model.markers.Objective;
-import org.xtream.core.model.markers.objectives.MaxObjective;
 
 public class ObjectiveComponent extends Component
 {
 	
 	// Constants
 	
-	protected static double TURBINE_COST = 100;
-	protected static double WEIR_COST = 500;
+	protected static double TURBINE_COST = 0;
+	protected static double WEIR_COST = 0;
 	
 	// Ports
 
@@ -37,10 +35,6 @@ public class ObjectiveComponent extends Component
 	public Port<Double> objectiveOutput = new Port<>();
 	public Port<Double> rewardOutput = new Port<>();
 	public Port<Double> costOutput = new Port<>();
-	
-	// Objectives
-	
-	public Objective objective = new MaxObjective(objectiveOutput);
 	
 	// Charts
 	

@@ -47,9 +47,10 @@ public class DatasetParser
 			{
 			*/
 				timepoints.add(lines_string.get(i)[0]);
-				measurements.add(new double[DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 3]);
 				
-				for (int j = 1; j < 1 + DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 3; j++)
+				measurements.add(new double[DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 4]);
+				
+				for (int j = 1; j < 1 + DatasetConstants.STAUSTUFE_COUNT * DatasetConstants.STAUSTUFE_MEASUREMENTS + 4; j++)
 				{
 					try
 					{
@@ -61,7 +62,10 @@ public class DatasetParser
 					}
 				}
 				
-				measurements.get(i - 1)[measurements.get(i - 1).length - 2] = 263 + measurements.get(i - 1)[measurements.get(i - 1).length - 2] / 100; 
+				// Data fixes!
+				
+				measurements.get(i - 1)[measurements.get(i - 1).length - 3] = 263 + measurements.get(i - 1)[measurements.get(i - 1).length - 3] / 100;
+				measurements.get(i - 1)[measurements.get(i - 1).length - 1] = 1;
 			/*
 			}
 			else
@@ -90,6 +94,18 @@ public class DatasetParser
 		*/
 		
 		return new Dataset(timepoints, measurements);
+	}
+	
+	public static Dataset parseDataSilent(String file)
+	{
+		try
+		{
+			return parseData(file);
+		}
+		catch (Exception e)
+		{
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

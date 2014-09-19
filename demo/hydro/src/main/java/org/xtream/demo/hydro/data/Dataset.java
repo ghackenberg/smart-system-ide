@@ -52,6 +52,10 @@ public class Dataset
 	{
 		return measurements[timepoint][staustufe * DatasetConstants.STAUSTUFE_MEASUREMENTS + DatasetConstants.PRODUCTION_INDEX];
 	}
+	public double getPrice(int timepoint)
+	{
+		return measurements[timepoint][measurements[timepoint].length - 1];
+	}
 	
 	public int getLength()
 	{
