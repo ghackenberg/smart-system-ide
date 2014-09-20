@@ -2,6 +2,7 @@ package org.xtream.demo.hydro.model;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.charts.Series;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -16,7 +17,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), Constants.DURATION, Constants.SAMPLES, Constants.CLUSTERS, Constants.RANDOM, Constants.CACHING, Constants.ROUNDS);
+		new Workbench<>(new RootComponent(), Constants.DURATION, Constants.SAMPLES, Constants.CLUSTERS, Constants.RANDOM, Constants.CACHING, Constants.ROUNDS, Constants.PRUNE);
 	}
 	
 	// Components
@@ -24,9 +25,9 @@ public class RootComponent extends Component
 	// Reactive Components
 
 	public ScenarioComponent scenario = new ScenarioComponent();
-	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.actual.ControlComponent();
+	public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.actual.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.continuous.ControlComponent();
-	public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.discrete.ControlComponent();
+	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.discrete.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.split.continuous.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.split.discrete.ControlComponent();
 	public org.xtream.demo.hydro.model.context.reactive.ContextComponent context_reactive = new org.xtream.demo.hydro.model.context.reactive.ContextComponent();
@@ -44,17 +45,17 @@ public class RootComponent extends Component
 	
 	// Charts
 
-	public Chart inflowChart = new Timeline(scenario.inflowOutput);
-	public Chart priceChart = new Timeline(scenario.priceOutput);
-	public Chart productionChart = new Timeline(context_reactive.netProductionOutput, context_actual.netProductionOutput);
-	public Chart objectiveChart = new Timeline(objective_reactive.rewardOutput, objective_reactive.costOutput, objective_reactive.objectiveOutput, objective_actual.rewardOutput, objective_actual.costOutput, objective_actual.objectiveOutput);
-	
-	public Chart speicherseeLevelChart = new Timeline(context_reactive.speicherseeLevelOutput, context_actual.speicherseeLevelOutput);
-	public Chart volumen1LevelChart = new Timeline(context_reactive.volumen1LevelOutput, context_actual.volumen1LevelOutput);
-	public Chart volumen2LevelChart = new Timeline(context_reactive.volumen2LevelOutput, context_actual.volumen2LevelOutput);
-	public Chart volumen3LevelChart = new Timeline(context_reactive.volumen3LevelOutput, context_actual.volumen3LevelOutput);
-	public Chart volumen4LevelChart = new Timeline(context_reactive.volumen4LevelOutput, context_actual.volumen4LevelOutput);
-	public Chart volumen5LevelChart = new Timeline(context_reactive.volumen5LevelOutput, context_actual.volumen5LevelOutput);
+	public Chart inflowChart = new Timeline("Zufluss Bigonville", "Viertelstunde", "Kubikmeter pro Sekunde", new Series<>("Zufluss Bigonville", scenario.inflowOutput));
+	public Chart priceChart = new Timeline("Energiepreis", "Viertelstunde", "Euro", new Series<>("Energiepreis", scenario.priceOutput));
+	public Chart objectiveChart = new Timeline("Zielfunktion", "Viertelstunde", "Euro", new Series<>("Umsatz geschätzt", objective_reactive.rewardOutput), new Series<>("Kosten geschätzt", objective_reactive.costOutput), new Series<>("Gewinn geschätzt", objective_reactive.objectiveOutput), new Series<>("Umsatz gemessen", objective_actual.rewardOutput), new Series<>("Kosten gemessen", objective_actual.costOutput), new Series<>("Gewinn gemessen", objective_actual.objectiveOutput));
+
+	public Chart productionChart = new Timeline("Vergleich Energieproduktion", "Viertelstunde", "Kilowatt", new Series<>("Produktion geschätzt", context_reactive.netProductionOutput), new Series<>("Produktion gemessen", context_actual.netProductionOutput));
+	public Chart speicherseeLevelChart = new Timeline("Vergleich Speicherseepegel", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.speicherseeLevelOutput), new Series<>("Pegel gemessen", context_actual.speicherseeLevelOutput));
+	public Chart volumen1LevelChart = new Timeline("Vergleich Segmentpegel 1", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.volumen1LevelOutput), new Series<>("Pegel gemessen", context_actual.volumen1LevelOutput));
+	public Chart volumen2LevelChart = new Timeline("Vergleich Segmentpegel 2", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.volumen2LevelOutput), new Series<>("Pegel gemessen", context_actual.volumen2LevelOutput));
+	public Chart volumen3LevelChart = new Timeline("Vergleich Segmentpegel 3", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.volumen3LevelOutput), new Series<>("Pegel gemessen", context_actual.volumen3LevelOutput));
+	public Chart volumen4LevelChart = new Timeline("Vergleich Segmentpegel 4", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.volumen4LevelOutput), new Series<>("Pegel gemessen", context_actual.volumen4LevelOutput));
+	public Chart volumen5LevelChart = new Timeline("Vergleich Heidescheider Grundpegel", "Viertelstunde", "Meter", new Series<>("Pegel geschätzt", context_reactive.volumen5LevelOutput), new Series<>("Pegel gemessen", context_actual.volumen5LevelOutput));
 	
 	// Expressions
  

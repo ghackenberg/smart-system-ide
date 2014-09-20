@@ -20,6 +20,7 @@ public class Constants
 	public static double RANDOM = 0;
 	public static double CACHING = 0;
 	public static int ROUNDS = 1000;
+	public static boolean PRUNE = false;
 	
 	public static Dataset DATASET = DATASET_2012;
 	public static int START = WEEK * 13;
