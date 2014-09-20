@@ -19,6 +19,7 @@ import org.xtream.core.model.Chart;
 import org.xtream.core.model.Container;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Histogram;
+import org.xtream.core.model.charts.Series;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.containers.Component;
 import org.xtream.core.workbench.Event;
@@ -127,17 +128,17 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				
 				Timeline timeline = (Timeline) definition;
 				
-				for (Port<Double> port : timeline.getPorts())
+				for (Series<Double> series : timeline.getSeries())
 				{
 					double[][] data = new double[2][timepoint];
 					
 					for (int i = 0; i < timepoint; i++)
 					{
 						data[0][i] = i;
-						data[1][i] = port.get(getState(), i);
+						data[1][i] = series.getPort().get(getState(), i);
 					}
 					
-					dataset.addSeries(port.getQualifiedName(), data);
+					dataset.addSeries(series.getLabel(), data);
 				}
 				
 				getChart(definition).getXYPlot().setDataset(dataset);
@@ -189,13 +190,18 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		
 		if (jfreechart == null)
 		{
+			String label = definition.getLabel() != null ? definition.getLabel() : definition.getName();
+			String domain = definition.getDomain();
+			String range = definition.getRange();
+					
 			if (definition instanceof Timeline)
 			{
-				jfreechart = ChartFactory.createXYLineChart(definition.getName(), null, null, new DefaultXYDataset(), PlotOrientation.VERTICAL, true, true, false);
+				
+				jfreechart = ChartFactory.createXYLineChart(label, domain, range, new DefaultXYDataset(), PlotOrientation.VERTICAL, true, true, false);
 				
 				Timeline timeline = (Timeline) definition;
 				
-				for (int series = 0; series < timeline.getPorts().length; series++)
+				for (int series = 0; series < timeline.getSeries().length; series++)
 				{
 					jfreechart.getXYPlot().getRenderer().setSeriesStroke(series, new BasicStroke(STROKE));
 				}
@@ -204,7 +210,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 			}
 			else if (definition instanceof Histogram)
 			{
-				jfreechart = ChartFactory.createBarChart(definition.getName(), null, null, new DefaultCategoryDataset(), PlotOrientation.VERTICAL, true, true, false);
+				jfreechart = ChartFactory.createBarChart(label, domain, range, new DefaultCategoryDataset(), PlotOrientation.VERTICAL, true, true, false);
 			}
 			else
 			{

@@ -9,10 +9,22 @@ public class Histogram<T> extends Chart
 
 	@Reference
 	private Port<T>[] ports;
-	
+
 	@SafeVarargs
 	public Histogram(Port<T>... ports)
 	{
+		this(null, ports);
+	}
+	@SafeVarargs
+	public Histogram(String label, Port<T>... ports)
+	{
+		this(label, null, null, ports);
+	}
+	@SafeVarargs
+	public Histogram(String label, String domain, String range, Port<T>... ports)
+	{
+		super(label, domain, range);
+		
 		this.ports = ports;
 	}
 	

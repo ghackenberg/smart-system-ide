@@ -18,6 +18,7 @@ public class Worker<T extends Component> implements Runnable
 	private int timepoint;
 	private int samples;
 	private double randomness;
+	private boolean prune;
 	private Map<Key, List<State>> previousGroups;
 	private Queue<Key> queue;
 	
@@ -27,12 +28,13 @@ public class Worker<T extends Component> implements Runnable
 	private Map<Constraint, Integer> constraintViolations = new HashMap<>();
 	private int zeroOptionCount = 0;
 	
-	public Worker(T root, int timepoint, int samples, double randomness, Map<Key, List<State>> previousGroups, Queue<Key> queue)
+	public Worker(T root, int timepoint, int samples, double randomness, boolean prune, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
 		this.samples = samples;
 		this.randomness = randomness;
+		this.prune = prune;
 		this.previousGroups = previousGroups;
 		this.queue = queue;
 	}
@@ -121,6 +123,10 @@ public class Worker<T extends Component> implements Runnable
 						{
 							validCount++;
 							
+							currentStates.add(current);
+						}
+						else if (!prune)
+						{
 							currentStates.add(current);
 						}
 					}

@@ -59,11 +59,22 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds)
 	{
-		this(root, duration, samples, clusters, randomness, caching, rounds, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new StateSpacePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
+		this(root, duration, samples, clusters, randomness, caching, rounds, true);
+	}
+	
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune)
+	{
+		this(root, duration, samples, clusters, randomness, caching, rounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new StateSpacePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, Part<T>... parts)
+	{
+		this(root, duration, samples, clusters, randomness, caching, rounds, true, parts);
+	}
+	
+	@SafeVarargs
+	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune, Part<T>... parts)
 	{
 		try
 		{
@@ -206,7 +217,7 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			State best = engine.run(duration, allMonitor);
+			State best = engine.run(duration, prune, allMonitor);
 			
 			// print
 			
