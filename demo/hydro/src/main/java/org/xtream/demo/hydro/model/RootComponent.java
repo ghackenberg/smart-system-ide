@@ -25,9 +25,9 @@ public class RootComponent extends Component
 	// Reactive Components
 
 	public ScenarioComponent scenario = new ScenarioComponent();
-	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.actual.ControlComponent();
+	public ControlComponent control_reactive = Constants.PRUNE ? new org.xtream.demo.hydro.model.control.reactive.single.discrete.ControlComponent() : new org.xtream.demo.hydro.model.control.actual.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.continuous.ControlComponent();
-	public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.discrete.ControlComponent();
+	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.single.discrete.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.split.continuous.ControlComponent();
 	//public ControlComponent control_reactive = new org.xtream.demo.hydro.model.control.reactive.split.discrete.ControlComponent();
 	public org.xtream.demo.hydro.model.context.reactive.ContextComponent context_reactive = new org.xtream.demo.hydro.model.context.reactive.ContextComponent();
