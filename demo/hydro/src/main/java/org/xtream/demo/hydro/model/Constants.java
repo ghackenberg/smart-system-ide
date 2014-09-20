@@ -15,12 +15,12 @@ public class Constants
 	public static int WEEK = DAY * 7;
 	
 	public static int DURATION = WEEK * 1;
-	public static int SAMPLES = 100;
-	public static int CLUSTERS = 100;
+	public static boolean PRUNE = true;
+	public static int SAMPLES = PRUNE ? 100 : 1;
+	public static int CLUSTERS = PRUNE ? 200 : 1;
 	public static double RANDOM = 0;
-	public static double CACHING = 0;
-	public static int ROUNDS = 1000;
-	public static boolean PRUNE = false;
+	public static double CACHING = PRUNE ? 0 : 1;
+	public static int ROUNDS = PRUNE ? 1000 : 1;
 	
 	public static Dataset DATASET = DATASET_2012;
 	public static int START = WEEK * 13;
