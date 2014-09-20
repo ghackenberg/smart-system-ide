@@ -25,7 +25,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	}
 	
 	@Override
-	public State run(int duration, Monitor<T> monitor)
+	public State run(int duration, boolean prune, Monitor<T> monitor)
 	{
 		// Start monitor
 		

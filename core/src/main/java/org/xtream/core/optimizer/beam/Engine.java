@@ -57,7 +57,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	}
 	
 	@Override
-	public State run(int duration, Monitor<T> monitor)
+	public State run(int duration, boolean prune, Monitor<T> monitor)
 	{
 		// Start monitor
 		
@@ -95,7 +95,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 			
 			for (int proccessor = 0; proccessor < processors; proccessor++)
 			{
-				workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, previousGroups, queue));
+				workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, previousGroups, queue));
 				
 				threads.add(proccessor, new Thread(workers.get(proccessor)));
 				threads.get(proccessor).start();

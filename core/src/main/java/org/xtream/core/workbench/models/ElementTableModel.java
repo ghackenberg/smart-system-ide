@@ -44,7 +44,7 @@ public class ElementTableModel extends AbstractTableModel
 		}
 		if (column == 2)
 		{
-			return child.getDescription();
+			return child.getLabel();
 		}
 		
 		throw new IllegalStateException();

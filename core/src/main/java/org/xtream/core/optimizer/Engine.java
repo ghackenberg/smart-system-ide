@@ -13,6 +13,6 @@ public abstract class Engine<T extends Component>
 		this.root = root;
 	}
 	
-	public abstract State run(int duration, Monitor<T> monitor);
+	public abstract State run(int duration, boolean prune, Monitor<T> monitor);
 
 }

@@ -59,7 +59,7 @@ public abstract class Element
 		return icon;
 	}
 	
-	public String getDescription()
+	public String getLabel()
 	{
 		return description;
 	}
