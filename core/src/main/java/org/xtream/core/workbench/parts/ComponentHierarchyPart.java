@@ -7,8 +7,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Container;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.SelectionEvent;
 import org.xtream.core.workbench.models.nodes.ContainerTreeNode;

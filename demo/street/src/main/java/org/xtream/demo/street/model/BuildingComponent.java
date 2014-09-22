@@ -1,10 +1,10 @@
 package org.xtream.demo.street.model;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 
 public class BuildingComponent extends Component

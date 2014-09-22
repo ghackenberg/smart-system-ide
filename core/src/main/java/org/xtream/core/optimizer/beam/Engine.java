@@ -11,8 +11,8 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.model.markers.Objective;

@@ -1,6 +1,6 @@
 package org.xtream.demo.projecthouse.model.room.window;
 
-import org.xtream.core.model.containers.Module;
+import org.xtream.core.model.Module;
 
 public class WindowModule extends Module{
 	

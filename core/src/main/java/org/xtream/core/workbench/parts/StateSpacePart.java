@@ -16,8 +16,8 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.optimizer.beam.Key;

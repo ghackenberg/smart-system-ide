@@ -3,8 +3,8 @@ package org.xtream.core.workbench.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Element;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 

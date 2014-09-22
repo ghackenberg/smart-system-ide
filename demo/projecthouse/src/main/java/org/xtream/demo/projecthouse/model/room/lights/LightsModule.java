@@ -1,9 +1,9 @@
 package org.xtream.demo.projecthouse.model.room.lights;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Module;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
 import org.xtream.demo.projecthouse.model.Consumer;

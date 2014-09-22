@@ -10,10 +10,10 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Container;
 import org.xtream.core.model.Element;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
