@@ -9,7 +9,9 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.utilities.visitors.JoglVisitor;
+import org.xtream.core.utilities.visitors.JoglCameraVisitor;
+import org.xtream.core.utilities.visitors.JoglLightVisitor;
+import org.xtream.core.utilities.visitors.JoglShapeVisitor;
 import org.xtream.core.workbench.Event;
 import org.xtream.core.workbench.Part;
 import org.xtream.core.workbench.events.JumpEvent;
@@ -20,6 +22,7 @@ public class ModelScenePart<T extends Component> extends Part<T>
 {
 	
 	private GLJPanel canvas;
+	private int timepoint = 0;
 
 	public ModelScenePart()
 	{
@@ -68,22 +71,10 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						gl2.glEnable(GL2.GL_LIGHT0);
 						gl2.glEnable(GL2.GL_COLOR_MATERIAL);
 						
-						// Clear
-						gl2.glClearColor(1f, 1f, 1f, 0f);
-						gl2.glClearDepth(1f);
-
 						// Material
 						gl2.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, new float[] {1f, 1f, 1f, 1f}, 0);
 						gl2.glMaterialf(GL2.GL_FRONT, GL2.GL_SHININESS, 50f);
 						gl2.glColorMaterial(GL2.GL_FRONT, GL2.GL_AMBIENT_AND_DIFFUSE);
-						
-						// Light
-						gl2.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, new float[] {0.5f, 0.5f, 0.5f, 1f}, 0);
-						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, new float[] {0f, 20f, 5f, 0f}, 0);
-						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, new float[] {1f, 1f, 1f, 1f}, 0);
-						gl2.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, new float[] {1f, 1f, 1f, 1f}, 0);
-						
-						// TODO [Stefanie] Move OpenGL ClearColor/Depth and Light calls to JoglVisitor 
 					}
 					@Override
 					public void dispose(GLAutoDrawable drawable)
@@ -97,30 +88,15 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						GLU glu = new GLU();
 						GLUT glut = new GLUT();
 						
-						gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-						
-						// Modelview
 						gl2.glMatrixMode(GL2.GL_MODELVIEW);
 						{
-							gl2.glLoadIdentity();
-							glu.gluLookAt(10f, 10f, 10f, 0f, 0f, 0f, 0f, 1f, 0f);
+							new JoglLightVisitor(gl2, getState(), timepoint).handle(getRoot());
+							
+							gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+
+							new JoglCameraVisitor(gl2, glu, getState(), timepoint).handle(getRoot());
+							new JoglShapeVisitor(gl2, glut, getState(), timepoint).handle(getRoot());
 						}
-						
-						// Cube
-						gl2.glPushMatrix();
-						{
-							// Transform
-							gl2.glTranslatef(0f, 0f, 0f);
-							// Material
-							gl2.glColor3f(0f, 0f, 1f);
-							// Shape
-							glut.glutSolidCube(2);
-						}
-						gl2.glPopMatrix();
-						
-						// TODO [Stefanie] Move OpenGL calls to JoglVisitor
-						
-						new JoglVisitor().handle(getRoot());
 					}
 				}
 			);
@@ -138,6 +114,10 @@ public class ModelScenePart<T extends Component> extends Part<T>
 	{
 		if (event instanceof JumpEvent)
 		{
+			JumpEvent<T> jump = (JumpEvent<T>) event;
+			
+			timepoint = jump.getTimepoint();
+			
 			canvas.repaint();
 		}
 	}
