@@ -223,6 +223,8 @@ public abstract class Element
 		{
 			try
 			{
+				field.setAccessible(true);
+				
 				if (field.getAnnotation(Reference.class) == null)
 				{
 					Object object = field.get(this);
@@ -251,6 +253,8 @@ public abstract class Element
 			catch (IllegalArgumentException | IllegalAccessException e)
 			{
 				System.out.println(qualifiedName + "." + field.getName() + ": " + e.getClass().getName());
+				
+				e.printStackTrace();
 			}
 		}
 		/*
