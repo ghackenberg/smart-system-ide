@@ -17,6 +17,8 @@ import org.xtream.core.model.components.TransformComponent;
 import org.xtream.core.model.components.nodes.CameraComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
+import org.xtream.core.model.components.nodes.shapes.LineComponent;
+import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.model.components.transforms.IdentityComponent;
 import org.xtream.core.model.components.transforms.chains.RotationComponent;
 import org.xtream.core.model.components.transforms.chains.TranslationComponent;
@@ -116,16 +118,46 @@ public class IntegrateComponent extends Component
 		@SuppressWarnings("unused")
 		public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
 	};
+	public SphereComponent sphere = new SphereComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(0,255,0));
+		@SuppressWarnings("unused")
+		public Expression<Double> radiusExpression = new Expression<Double>(radiusOutput)
+		{
+			@Override protected Double evaluate(State state, int timepoint)
+			{
+				return timepoint / 100.0;
+			}
+		};
+	};
+	public LineComponent line = new LineComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(64,64,64));
+		@SuppressWarnings("unused")
+		public Expression<RealVector> startExpression = new ConstantExpression<RealVector>(startOutput, new ArrayRealVector(new double[] {0, 0, 0, 1}));
+		@SuppressWarnings("unused")
+		public Expression<RealVector> endExpression = new Expression<RealVector>(endOutput)
+		{
+			@Override protected RealVector evaluate(State state, int timepoint)
+			{
+				return new ArrayRealVector(new double[] {timepoint / 10., 0, 0, 1});
+			}
+		};
+	};
 	
 	//////////////
 	// CHANNELS //
 	//////////////
 
-	public ChannelExpression<RealMatrix> identityMatrixToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
-	public ChannelExpression<RealMatrix> identityMatrixToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
-	public ChannelExpression<RealMatrix> identityMatrixToRotation = new ChannelExpression<RealMatrix>(rotation.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToRotation = new ChannelExpression<RealMatrix>(rotation.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToSphere = new ChannelExpression<RealMatrix>(sphere.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> rotationToTranslation = new ChannelExpression<RealMatrix>(translation.transformInput, rotation.transformOutput);
-	public ChannelExpression<RealMatrix> translationMatrix = new ChannelExpression<RealMatrix>(cube.transformInput, translation.transformOutput);
+	public ChannelExpression<RealMatrix> rotationToLine = new ChannelExpression<RealMatrix>(line.transformInput, rotation.transformOutput);
+	public ChannelExpression<RealMatrix> translationToCube = new ChannelExpression<RealMatrix>(cube.transformInput, translation.transformOutput);
 	
 	/////////////////
 	// EXPRESSIONS //
