@@ -1,8 +1,6 @@
-package org.xtream.core.model.containers;
+package org.xtream.core.model;
 
 import java.net.URL;
-
-import org.xtream.core.model.Container;
 
 
 public abstract class Module extends Container

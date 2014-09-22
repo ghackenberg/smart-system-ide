@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.optimizer.beam.Strategy;
 

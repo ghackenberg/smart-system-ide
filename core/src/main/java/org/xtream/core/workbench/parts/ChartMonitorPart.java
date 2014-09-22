@@ -4,7 +4,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.RectangleInsets;
-import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.Component;
 import org.xtream.core.workbench.Part;
 
 public abstract class ChartMonitorPart<T extends Component, S extends XYDataset> extends Part<T>

@@ -1,8 +1,8 @@
 package org.xtream.demo.projecthouse.model.thermalstorage.pelletheater;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Module;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
 

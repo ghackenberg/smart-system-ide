@@ -1,17 +1,16 @@
 package org.xtream.core.utilities.visitors;
 
-import org.xtream.core.model.containers.Component;
-import org.xtream.core.model.nodes.Camera;
-import org.xtream.core.model.nodes.Group;
-import org.xtream.core.model.nodes.lights.Ambient;
-import org.xtream.core.model.nodes.lights.Directional;
-import org.xtream.core.model.nodes.lights.Point;
-import org.xtream.core.model.nodes.shapes.Box;
-import org.xtream.core.model.nodes.shapes.Cylinder;
-import org.xtream.core.model.nodes.shapes.Sphere;
-import org.xtream.core.model.transforms.Rotation;
-import org.xtream.core.model.transforms.Scale;
-import org.xtream.core.model.transforms.Translation;
+import org.xtream.core.model.Component;
+import org.xtream.core.model.components.nodes.CameraComponent;
+import org.xtream.core.model.components.nodes.lights.AmbientLightComponent;
+import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
+import org.xtream.core.model.components.nodes.lights.PointLightComponent;
+import org.xtream.core.model.components.nodes.shapes.BoxComponent;
+import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
+import org.xtream.core.model.components.nodes.shapes.SphereComponent;
+import org.xtream.core.model.components.transforms.chains.RotationComponent;
+import org.xtream.core.model.components.transforms.chains.ScaleComponent;
+import org.xtream.core.model.components.transforms.chains.TranslationComponent;
 import org.xtream.core.utilities.Visitor;
 
 public class PovrayVisitor extends Visitor
@@ -22,57 +21,52 @@ public class PovrayVisitor extends Visitor
 		
 	}
 	
-	public void handle(Ambient light)
+	public void handle(AmbientLightComponent light)
 	{
 		
 	}
 	
-	public void handle(Point light)
+	public void handle(PointLightComponent light)
 	{
 		
 	}
 	
-	public void handle(Directional light)
+	public void handle(DirectionalLightComponent light)
 	{
 		
 	}
 	
-	public void handle(Camera camera)
+	public void handle(CameraComponent camera)
 	{
 		
 	}
 	
-	public void handle(Group group)
+	public void handle(BoxComponent box)
 	{
 		
 	}
 	
-	public void handle(Box box)
+	public void handle(SphereComponent sphere)
 	{
 		
 	}
 	
-	public void handle(Sphere sphere)
+	public void handle(CylinderComponent cylinder)
 	{
 		
 	}
 	
-	public void handle(Cylinder cylinder)
+	public void handle(RotationComponent rotation)
 	{
 		
 	}
 	
-	public void handle(Rotation rotation)
+	public void handle(ScaleComponent scale)
 	{
 		
 	}
 	
-	public void handle(Scale scale)
-	{
-		
-	}
-	
-	public void handle(Translation translation)
+	public void handle(TranslationComponent translation)
 	{
 		
 	}

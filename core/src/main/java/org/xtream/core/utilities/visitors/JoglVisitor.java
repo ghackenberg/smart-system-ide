@@ -1,21 +1,20 @@
 package org.xtream.core.utilities.visitors;
 
-import org.xtream.core.model.Transform;
-import org.xtream.core.model.containers.Component;
-import org.xtream.core.model.nodes.Background;
-import org.xtream.core.model.nodes.Camera;
-import org.xtream.core.model.nodes.Group;
-import org.xtream.core.model.nodes.Light;
-import org.xtream.core.model.nodes.Shape;
-import org.xtream.core.model.nodes.lights.Ambient;
-import org.xtream.core.model.nodes.lights.Directional;
-import org.xtream.core.model.nodes.lights.Point;
-import org.xtream.core.model.nodes.shapes.Box;
-import org.xtream.core.model.nodes.shapes.Cylinder;
-import org.xtream.core.model.nodes.shapes.Sphere;
-import org.xtream.core.model.transforms.Rotation;
-import org.xtream.core.model.transforms.Scale;
-import org.xtream.core.model.transforms.Translation;
+import org.xtream.core.model.Component;
+import org.xtream.core.model.components.TransformComponent;
+import org.xtream.core.model.components.nodes.BackgroundComponent;
+import org.xtream.core.model.components.nodes.CameraComponent;
+import org.xtream.core.model.components.nodes.LightComponent;
+import org.xtream.core.model.components.nodes.ShapeComponent;
+import org.xtream.core.model.components.nodes.lights.AmbientLightComponent;
+import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
+import org.xtream.core.model.components.nodes.lights.PointLightComponent;
+import org.xtream.core.model.components.nodes.shapes.BoxComponent;
+import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
+import org.xtream.core.model.components.nodes.shapes.SphereComponent;
+import org.xtream.core.model.components.transforms.chains.RotationComponent;
+import org.xtream.core.model.components.transforms.chains.ScaleComponent;
+import org.xtream.core.model.components.transforms.chains.TranslationComponent;
 import org.xtream.core.utilities.Visitor;
 import org.xtream.core.utilities.filters.TypeFilter;
 
@@ -24,82 +23,71 @@ public class JoglVisitor extends Visitor
 	
 	public void handle(Component component)
 	{
-		traverse(component, "handleBefore", new TypeFilter(Transform.class));
-		traverse(component, new TypeFilter(Background.class));
-		traverse(component, new TypeFilter(Camera.class));
-		traverse(component, new TypeFilter(Light.class));
-		traverse(component, new TypeFilter(Shape.class));
-		traverse(component, new TypeFilter(Group.class));
+		traverse(component, "handleBefore", new TypeFilter(TransformComponent.class));
+		traverse(component, new TypeFilter(BackgroundComponent.class));
+		traverse(component, new TypeFilter(CameraComponent.class));
+		traverse(component, new TypeFilter(LightComponent.class));
+		traverse(component, new TypeFilter(ShapeComponent.class));
 		traverse(component, new TypeFilter(Component.class));
-		traverse(component, "handleAfter", true, new TypeFilter(Transform.class));
+		traverse(component, "handleAfter", true, new TypeFilter(TransformComponent.class));
 	}
 	
-	public void handle(Background background)
+	public void handle(BackgroundComponent background)
 	{
 		//System.out.println("Background!");
 	}
 	
-	public void handle(Ambient light)
+	public void handle(AmbientLightComponent light)
 	{
 		//System.out.println("Ambient light!");
 	}
 	
-	public void handle(Point light)
+	public void handle(PointLightComponent light)
 	{
 		//System.out.println("Point light!");
 	}
 	
-	public void handle(Directional light)
+	public void handle(DirectionalLightComponent light)
 	{
 		//System.out.println("Directional light!");
 	}
 	
-	public void handle(Camera camera)
+	public void handle(CameraComponent camera)
 	{
 		//System.out.println("Camera!");
 	}
 	
-	public void handle(Group group)
-	{
-		traverse(group, "handleBefore", new TypeFilter(Transform.class));
-		traverse(group, new TypeFilter(Camera.class));
-		traverse(group, new TypeFilter(Light.class));
-		traverse(group, new TypeFilter(Shape.class));
-		traverse(group, new TypeFilter(Group.class));
-		traverse(group, "handleAfter", true, new TypeFilter(Transform.class));
-	}
-	
-	public void handle(Box box)
+	public void handle(BoxComponent box)
 	{
 		//System.out.println("Box!");
 	}
 	
-	public void handle(Sphere sphere)
+	public void handle(SphereComponent sphere)
 	{
 		//System.out.println("Sphere!");
 	}
 	
-	public void handle(Cylinder cylinder)
+	public void handle(CylinderComponent cylinder)
 	{
 		//System.out.println("Cylinder!");
 	}
 	
-	public void handleBefore(Rotation rotation)
+	public void handleBefore(RotationComponent rotation)
 	{
 		//System.out.println("Rotation!");
 	}
 	
-	public void handleBefore(Scale scale)
+	public void handleBefore(ScaleComponent scale)
 	{
 		//System.out.println("Scale!");
 	}
 	
-	public void handleBefore(Translation translation)
+	public void handleBefore(TranslationComponent translation)
 	{
 		//System.out.println("Translation!");
 	}
 	
-	public void handleAfter(Transform transform)
+	public void handleAfter(TransformComponent transform)
 	{
 		//System.out.println("Transform!");
 	}

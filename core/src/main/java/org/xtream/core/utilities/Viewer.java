@@ -1,6 +1,6 @@
 package org.xtream.core.utilities;
 
-import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.Component;
 
 public interface Viewer<T extends Component>
 {

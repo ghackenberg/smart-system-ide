@@ -1,6 +1,6 @@
 package org.xtream.demo.projecthouse.model;
 
-import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.demo.projecthouse.model.battery.BatteryModule;

@@ -1,10 +1,10 @@
 package org.xtream.demo.hydro.model;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.charts.Series;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;

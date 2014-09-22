@@ -1,8 +1,8 @@
 package org.xtream.demo.mobile.model;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;

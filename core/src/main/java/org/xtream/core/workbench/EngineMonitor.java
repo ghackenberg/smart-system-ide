@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 
+import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.optimizer.Memory;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Statistics;

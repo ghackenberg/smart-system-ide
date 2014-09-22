@@ -1,12 +1,12 @@
 package org.xtream.demo.learning.model;
 
 import org.xtream.core.model.Chart;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Marker;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Histogram;
-import org.xtream.core.model.containers.Component;
 import org.xtream.core.model.markers.Constraint;
 
 public class ConstraintComponent extends Component

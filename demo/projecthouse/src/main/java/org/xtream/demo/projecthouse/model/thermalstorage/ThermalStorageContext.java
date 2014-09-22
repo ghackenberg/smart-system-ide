@@ -2,10 +2,10 @@ package org.xtream.demo.projecthouse.model.thermalstorage;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
+import org.xtream.core.model.Module;
 import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
-import org.xtream.core.model.containers.Module;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.projecthouse.enums.OnOffDecision;
 import org.xtream.demo.projecthouse.model.room.RoomModule;
