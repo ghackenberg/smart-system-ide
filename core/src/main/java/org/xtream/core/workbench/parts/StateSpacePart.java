@@ -121,13 +121,12 @@ public class StateSpacePart<T extends Component> extends Part<T>
 						{
 							if (timepoint > 0)
 							{
-								// Modelview
-								
 								gl2.glMatrixMode(GL2.GL_MODELVIEW);
-								{
-									gl2.glLoadIdentity();
-									glu.gluLookAt(timepoint * SCALE * 0.25, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, 0f, 0f, 0f, 1f, 0f);
-								}
+								
+								// Camera
+								
+								gl2.glLoadIdentity();
+								glu.gluLookAt(timepoint * SCALE * 0.25, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, timepoint * SCALE * 0.5, 0f, 0f, 0f, 1f, 0f);
 								
 								// Tree layout
 								

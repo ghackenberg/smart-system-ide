@@ -39,27 +39,33 @@ public class JoglShapeVisitor extends Visitor
 	
 	public void handle(CubeComponent box)
 	{
-		RealMatrix transform = box.transformInput.get(state, timepoint);
-		Color color = box.colorOutput.get(state, timepoint);
-		double size = box.sizeOutput.get(state, timepoint);
-		
-		// Transform
-		double[] coefficients = new double[16];
-		
-		for (int col = 0; col < 4; col++)
+		gl2.glPushMatrix();
 		{
-			for (int row = 0; row < 4; row++)
+			RealMatrix transform = box.transformInput.get(state, timepoint);
+			Color color = box.colorOutput.get(state, timepoint);
+			double size = box.sizeOutput.get(state, timepoint);
+			
+			// Transform
+			double[] coefficients = new double[16];
+			
+			for (int col = 0; col < 4; col++)
 			{
-				coefficients[col * 4 + row] = transform.getEntry(row, col);
+				for (int row = 0; row < 4; row++)
+				{
+					coefficients[col * 4 + row] = transform.getEntry(row, col);
+				}
 			}
+			
+			gl2.glMultMatrixd(coefficients, 0);
+			
+			System.out.println(color + " und " + size);
+			
+			// Material
+			gl2.glColor3f(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f);
+			// Shape
+			glut.glutSolidCube((float) size);
 		}
-		
-		gl2.glLoadMatrixd(coefficients, 0);
-		
-		// Material
-		gl2.glColor3f(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f);
-		// Shape
-		glut.glutSolidCube((float) size);
+		gl2.glPopMatrix();
 	}
 	
 	public void handle(SphereComponent sphere)

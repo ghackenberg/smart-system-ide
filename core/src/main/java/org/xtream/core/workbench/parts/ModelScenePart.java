@@ -90,11 +90,11 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						
 						gl2.glMatrixMode(GL2.GL_MODELVIEW);
 						{
+							new JoglCameraVisitor(gl2, glu, getState(), timepoint).handle(getRoot());
 							new JoglLightVisitor(gl2, getState(), timepoint).handle(getRoot());
 							
 							gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
-							new JoglCameraVisitor(gl2, glu, getState(), timepoint).handle(getRoot());
 							new JoglShapeVisitor(gl2, glut, getState(), timepoint).handle(getRoot());
 						}
 					}
