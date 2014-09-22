@@ -15,7 +15,7 @@ public class Constants
 	public static int WEEK = DAY * 7;
 	
 	public static int DURATION = WEEK * 1;
-	public static boolean PRUNE = false;
+	public static boolean PRUNE = true;
 	public static int SAMPLES = PRUNE ? 100 : 1;
 	public static int CLUSTERS = PRUNE ? 200 : 1;
 	public static double RANDOM = 0;
