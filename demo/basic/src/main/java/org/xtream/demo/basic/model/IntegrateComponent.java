@@ -18,7 +18,9 @@ import org.xtream.core.model.components.nodes.CameraComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.transforms.IdentityComponent;
+import org.xtream.core.model.components.transforms.chains.RotationComponent;
 import org.xtream.core.model.components.transforms.chains.TranslationComponent;
+import org.xtream.core.model.components.transforms.chains.rotations.YRotationComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Objective;
@@ -75,6 +77,17 @@ public class IntegrateComponent extends Component
 		@SuppressWarnings("unused")
 		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0,10,10,0}));
 	};
+	public RotationComponent rotation = new YRotationComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Double> angleExpression = new Expression<Double>(angleOutput)
+		{
+			@Override protected Double evaluate(State state, int timepoint)
+			{
+				return timepoint / 10.;
+			}
+		};
+	};
 	public TranslationComponent translation = new TranslationComponent()
 	{
 		@SuppressWarnings("unused")
@@ -110,7 +123,8 @@ public class IntegrateComponent extends Component
 
 	public ChannelExpression<RealMatrix> identityMatrixToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityMatrixToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
-	public ChannelExpression<RealMatrix> identityMatrixToTranslation = new ChannelExpression<RealMatrix>(translation.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityMatrixToRotation = new ChannelExpression<RealMatrix>(rotation.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> rotationToTranslation = new ChannelExpression<RealMatrix>(translation.transformInput, rotation.transformOutput);
 	public ChannelExpression<RealMatrix> translationMatrix = new ChannelExpression<RealMatrix>(cube.transformInput, translation.transformOutput);
 	
 	/////////////////
