@@ -7,6 +7,4 @@ public abstract class AmbientLightComponent extends LightComponent
 	
 	// Ports
 	
-	
-
 }
