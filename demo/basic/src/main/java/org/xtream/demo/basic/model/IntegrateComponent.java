@@ -82,7 +82,7 @@ public class IntegrateComponent extends Component
 		{
 			@Override protected Double evaluate(State state, int timepoint)
 			{
-				return output.get(state, timepoint);
+				return output.get(state, timepoint) / 10.;
 			}
 		};
 		@SuppressWarnings("unused")
@@ -93,7 +93,13 @@ public class IntegrateComponent extends Component
 	public CubeComponent cube = new CubeComponent()
 	{
 		@SuppressWarnings("unused")
-		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(255, 0, 0));
+		public Expression<Color> colorExpression = new Expression<Color>(colorOutput)
+		{
+			@Override protected Color evaluate(State state, int timepoint)
+			{
+				return new Color(255, timepoint, 0);
+			}
+		};
 		@SuppressWarnings("unused")
 		public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
 	};
