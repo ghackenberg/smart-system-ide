@@ -37,11 +37,11 @@ public class Constants
 	public static double WEHR3_TURBINE_DISCHARGE_MAX = 24;
 	public static double WEHR4_TURBINE_DISCHARGE_MAX = 7.2;
 	
-	public static double HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX = 105;
-	public static double WEHR1_WEIR_DISCHARGE_MAX = 105;
-	public static double WEHR2_WEIR_DISCHARGE_MAX = 105;
-	public static double WEHR3_WEIR_DISCHARGE_MAX = 105;
-	public static double WEHR4_WEIR_DISCHARGE_MAX = 105;
+	public static double HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX = 66;//43;0
+	public static double WEHR1_WEIR_DISCHARGE_MAX = 91.8;//69.1;44.2
+	public static double WEHR2_WEIR_DISCHARGE_MAX = 89;//73.2;6.2
+	public static double WEHR3_WEIR_DISCHARGE_MAX = 106.6;//86.2;40
+	public static double WEHR4_WEIR_DISCHARGE_MAX = 102.8;//71.8;32.2
 	
 	public static double HAUPTKRAFTWERK_DISCHARGE_MAX = HAUPTKRAFTWERK_TURBINE_DISCHARGE_MAX + HAUPTKRAFTWERK_WEIR_DISCHARGE_MAX;
 	public static double WEHR1_DISCHARGE_MAX = WEHR1_TURBINE_DISCHARGE_MAX + WEHR1_WEIR_DISCHARGE_MAX;
