@@ -108,12 +108,12 @@ public class BatteryContext extends Component {
 
 	protected double getDisChargeSpeed(Double soc) {
 		// TODO [Andreas] Get value from file with battery data
-		return 2000.;
+		return 500.;
 	}
 
 	protected double getChargeSpeed(Double soc) {
 		// TODO [Andreas] Get value from file with battery data
-		return 2000.;
+		return 200.;
 	}
 
 }

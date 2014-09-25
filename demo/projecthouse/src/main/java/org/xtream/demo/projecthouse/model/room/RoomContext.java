@@ -15,8 +15,8 @@ public class RoomContext extends Component {
 	public Port<OnOffDecision> heatingInput = new Port<>();
 	public Port<OnOffDecision> lightsInput = new Port<>();
 	public Port<Double> port = new Port<>();
-	public Port<Double> temperatureInput = new Port<>();
-	public Port<Double> possibilityInput = new Port<>();
+	public Port<Double> favoriteTemperatureInput = new Port<>();
+	public Port<Double> probabilityInput = new Port<>();
 	@SuppressWarnings("rawtypes")
 	public Port[] blindsInputs;
 
@@ -29,8 +29,8 @@ public class RoomContext extends Component {
 
 	public Constraint temperatureConstraint = new Constraint(
 			temperatureValidOutput);
-	public Constraint brightnessConstraint = new Constraint(
-			brightnessValidOutput);
+//	public Constraint brightnessConstraint = new Constraint(
+//			brightnessValidOutput);
 
 	private double volume;
 	private Double lowerTemperatureLimit;
@@ -60,7 +60,10 @@ public class RoomContext extends Component {
 				return RootComponent.START_TEMPERATURE;
 			}
 			double temperature = temperatureOutput.get(state, timepoint - 1);
-			// TODO [Andreas] Implement effects of heating
+			temperature -= .1;
+			if(heatingInput.get(state, timepoint) == OnOffDecision.ON) {
+				temperature += .3;
+			}
 			return temperature;
 		}
 	};
@@ -100,7 +103,7 @@ public class RoomContext extends Component {
 		@Override
 		protected Boolean evaluate(State state, int timepoint) {
 			//TODO [Andreas] Only needed when people in the room
-			return brightnessOutput.get(state, timepoint) >= RootComponent.BRIGHTNESS_LIMIT*possibilityInput.get(state, timepoint);
+			return brightnessOutput.get(state, timepoint) >= RootComponent.BRIGHTNESS_LIMIT*probabilityInput.get(state, timepoint);
 		}
 	};
 
@@ -109,9 +112,10 @@ public class RoomContext extends Component {
 
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return Math.pow(temperatureOutput.get(state, timepoint)
-					- temperatureInput.get(state, timepoint), 2)
-					* possibilityInput.get(state, timepoint);
+			return Math.sqrt(Math.pow(temperatureOutput.get(state, timepoint)
+					- favoriteTemperatureInput.get(state, timepoint), 2)
+					* probabilityInput.get(state, timepoint)
+					);
 		}
 	};
 

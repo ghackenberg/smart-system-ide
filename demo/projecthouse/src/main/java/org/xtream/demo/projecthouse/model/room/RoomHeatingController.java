@@ -7,9 +7,12 @@ import org.xtream.demo.projecthouse.enums.OnOffDecision;
 import org.xtream.demo.projecthouse.expressions.RandomOnOffExpression;
 
 public class RoomHeatingController extends Component {
-	
+
+	public Port<Double> roomTemperatureInput = new Port<>();
+	public Port<Double> favoriteTemperatureInput = new Port<>();
+
 	public Port<OnOffDecision> onOffOutput = new Port<>();
-	
+
 	public Expression<OnOffDecision> onOffExpression = new RandomOnOffExpression(onOffOutput);
 
 }
