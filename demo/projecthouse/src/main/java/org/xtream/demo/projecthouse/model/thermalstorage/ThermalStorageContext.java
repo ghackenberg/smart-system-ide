@@ -41,12 +41,32 @@ public class ThermalStorageContext extends Module {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			if(timepoint == 0) {
-				return MIN_TEMP;
+				return 65.;
 			}
-			double oldTemperature = temperatureOutput.get(state, timepoint - 1);
-			double outerTemperature = outerTemperatureInput.get(state, timepoint);
-			//TODO [Andreas]
-			return oldTemperature;
+			double temperature = temperatureOutput.get(state, timepoint - 1);
+//			double outerTemperature = outerTemperatureInput.get(state, timepoint);
+//			switch(heatpumpInput.get(state, timepoint)) {
+//			case 1:
+//				temperature += 5.;
+//				break;
+//			case 2:
+//				temperature += 8.;
+//				break;
+//			default: break;
+//			}
+//			if(pelletHeaterInput.get(state, timepoint) == OnOffDecision.ON) {
+//				temperature += 5.;
+//			}
+//			if(electricHeatingElementInput.get(state, timepoint) == OnOffDecision.ON) {
+//				temperature += 8.;
+//			}
+//			for(Port<OnOffDecision> roomHeatingInput : roomHeatingInputs) {
+//				if(roomHeatingInput.get(state, timepoint) == OnOffDecision.ON) {
+//					temperature -= 10.;
+//				}
+//			}
+			
+			return temperature;
 		}
 	};
 	

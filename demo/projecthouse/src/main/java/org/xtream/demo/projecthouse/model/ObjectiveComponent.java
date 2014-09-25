@@ -25,6 +25,7 @@ public class ObjectiveComponent extends Component {
 	
 	public Port<Double> aggregatedCostPort = new Port<>();
 	public Port<Double> netBalancePort = new Port<>();
+	public Port<Double> comfortPort = new Port<>();
 	
 	public Port<Double> objectiveOutput = new Port<>();
 	
@@ -40,6 +41,7 @@ public class ObjectiveComponent extends Component {
 	
 	public Chart objectiveChart = new Timeline(objectiveOutput, aggregatedCostPort, netBalancePort);
 	public Chart aggregatedCost = new Timeline(netCostInput, pelletHeaterInput, aggregatedCostPort);
+	public Chart comfort = new Timeline(comfortPort);
 	
 	@SuppressWarnings("unchecked")
 	public ObjectiveComponent(PelletHeaterModule pelletHeater, NetComponent net, BreakerBoxComponent breakerBox, RoomModule...rooms) {
@@ -47,7 +49,7 @@ public class ObjectiveComponent extends Component {
 		channels = new ChannelExpression[rooms.length];
 		for(int i = 0; i < rooms.length; i++) {
 			roomInputs[i] = new Port<Double>();
-			channels[i] = new ChannelExpression<>(roomInputs[i], rooms[i].roomContext.comfortOutput);
+			channels[i] = new ChannelExpression<>(roomInputs[i], rooms[i].context.comfortOutput);
 		}
 		netCostChannel = new ChannelExpression<>(netCostInput, breakerBox.costOutput);
 		autonomyChannel = new ChannelExpression<>(autonomyInput, breakerBox.balanceOutput);
@@ -67,6 +69,7 @@ public class ObjectiveComponent extends Component {
 			return aggregatedCostPort.get(state, timepoint - 1) + cost;
 		}
 	};
+	
 	public Expression<Double> netBalanceExpression = new Expression<Double>(netBalancePort) {
 
 		@Override
@@ -75,12 +78,24 @@ public class ObjectiveComponent extends Component {
 		}
 	};
 	
+	public Expression<Double> comfortExpression = new Expression<Double>(comfortPort) {
+
+		@Override
+		protected Double evaluate(State state, int timepoint) {
+			double comfort = 0;
+			for(Port<Double> roomInput : roomInputs) {
+				comfort += roomInput.get(state, timepoint);
+			}
+			return comfort/3;
+		}
+	};
+	
 	public Expression<Double> objectiveExpression = new Expression<Double>(objectiveOutput) {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas] insert objective function
-			return aggregatedCostPort.get(state, timepoint) + netBalancePort.get(state, timepoint);
+			return aggregatedCostPort.get(state, timepoint) + netBalancePort.get(state, timepoint) + comfortPort.get(state, timepoint);
 		}
 	};
 

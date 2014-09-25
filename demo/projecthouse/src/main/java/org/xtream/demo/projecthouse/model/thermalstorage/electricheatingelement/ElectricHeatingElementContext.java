@@ -17,7 +17,10 @@ public class ElectricHeatingElementContext extends Component {
 		@Override
 		protected Double evaluate(State state, int timepoint) {
 			// TODO [Andreas] Fill with correct values
-			return 8000*RootComponent.ELECTRICITY_RATE;
+			if(onOffInput.get(state, timepoint) == OnOffDecision.ON) {
+				return 8000*RootComponent.ELECTRICITY_RATE;				
+			}
+			return 0.;
 		}
 	};
 

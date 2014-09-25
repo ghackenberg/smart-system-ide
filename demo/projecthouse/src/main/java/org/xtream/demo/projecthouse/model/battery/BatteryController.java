@@ -7,6 +7,8 @@ import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.demo.projecthouse.enums.ChargingDecision;
 
 public class BatteryController extends Component {
+	
+	public Port<Double> socInput = new Port<>();
 
 	public Port<ChargingDecision> chargingOutput = new Port<>();
 
