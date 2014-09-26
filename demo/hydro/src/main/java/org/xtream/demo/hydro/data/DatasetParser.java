@@ -65,7 +65,11 @@ public class DatasetParser
 				// Data fixes!
 				
 				measurements.get(i - 1)[measurements.get(i - 1).length - 3] = 263 + measurements.get(i - 1)[measurements.get(i - 1).length - 3] / 100;
-				measurements.get(i - 1)[measurements.get(i - 1).length - 1] = 1;
+				
+				if (measurements.get(i - 1)[measurements.get(i - 1).length - 1] == 0)
+				{
+					measurements.get(i - 1)[measurements.get(i - 1).length - 1] = 1;
+				}
 			/*
 			}
 			else
