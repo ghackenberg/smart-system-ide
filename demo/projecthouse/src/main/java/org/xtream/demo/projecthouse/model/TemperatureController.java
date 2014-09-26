@@ -33,7 +33,7 @@ public class TemperatureController extends Component {
 		
 		@Override
 		protected Double evaluate(State state, int timepoint) {
-			return csvData.get(timepoint, 1);
+			return csvData.get(timepoint, 1)/10;
 		}
 	};
 
