@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.State;
-import org.xtream.core.model.containers.Component;
+import org.xtream.core.model.Component;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
@@ -28,7 +28,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	}
 	
 	@Override
-	public State run(int duration, Monitor<T> monitor)
+	public State run(int duration, boolean prune, Monitor<T> monitor)
 	{
 		// Start monitor
 		
