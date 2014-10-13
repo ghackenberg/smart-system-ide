@@ -10,11 +10,9 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
 import org.xtream.core.model.components.AmbientComponent;
 import org.xtream.core.model.components.BackgroundComponent;
-import org.xtream.core.model.components.nodes.LightComponent;
 import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
 import org.xtream.core.utilities.Visitor;
-import org.xtream.core.utilities.filters.TypeFilter;
 
 public class JoglLightVisitor extends Visitor
 {
@@ -32,10 +30,7 @@ public class JoglLightVisitor extends Visitor
 	
 	public void handle(Component component)
 	{
-		traverse(component, new TypeFilter(BackgroundComponent.class));
-		traverse(component, new TypeFilter(AmbientComponent.class));
-		traverse(component, new TypeFilter(LightComponent.class));
-		traverse(component, new TypeFilter(Component.class));
+		traverse(component);
 	}
 	
 	public void handle(BackgroundComponent background)

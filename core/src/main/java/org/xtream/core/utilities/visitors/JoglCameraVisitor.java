@@ -9,7 +9,6 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
 import org.xtream.core.model.components.nodes.CameraComponent;
 import org.xtream.core.utilities.Visitor;
-import org.xtream.core.utilities.filters.TypeFilter;
 
 public class JoglCameraVisitor extends Visitor
 {
@@ -27,8 +26,7 @@ public class JoglCameraVisitor extends Visitor
 	
 	public void handle(Component component)
 	{
-		traverse(component, new TypeFilter(CameraComponent.class));
-		traverse(component, new TypeFilter(Component.class));
+		traverse(component);
 	}
 	
 	public void handle(CameraComponent camera)

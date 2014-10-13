@@ -7,8 +7,6 @@ import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
-import org.xtream.core.model.components.transforms.chains.ScaleComponent;
-import org.xtream.core.model.components.transforms.chains.TranslationComponent;
 import org.xtream.core.utilities.Visitor;
 
 public class PovrayVisitor extends Visitor
@@ -16,7 +14,7 @@ public class PovrayVisitor extends Visitor
 	
 	public void handle(Component component)
 	{
-		
+		traverse(component);
 	}
 	
 	public void handle(AmbientComponent light)
@@ -36,27 +34,17 @@ public class PovrayVisitor extends Visitor
 	
 	public void handle(CameraComponent camera)
 	{
-		
+		System.out.println("Camera " + camera);
 	}
 	
 	public void handle(CubeComponent box)
 	{
-		
+		System.out.println("Cube " + box);
 	}
 	
 	public void handle(SphereComponent sphere)
 	{
-		
-	}
-	
-	public void handle(ScaleComponent scale)
-	{
-		
-	}
-	
-	public void handle(TranslationComponent translation)
-	{
-		
+		System.out.println("Sphere " + sphere);
 	}
 
 }

@@ -8,12 +8,10 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.model.components.nodes.ShapeComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.nodes.shapes.LineComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.utilities.Visitor;
-import org.xtream.core.utilities.filters.TypeFilter;
 
 import com.jogamp.opengl.util.gl2.GLUT;
 
@@ -35,8 +33,7 @@ public class JoglShapeVisitor extends Visitor
 	
 	public void handle(Component component)
 	{
-		traverse(component, new TypeFilter(ShapeComponent.class));
-		traverse(component, new TypeFilter(Component.class));
+		traverse(component);
 	}
 	
 	public void handle(CubeComponent box)
