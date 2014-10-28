@@ -2,16 +2,30 @@ package org.xtream.core.workbench;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintStream;
+import java.text.DecimalFormat;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -25,6 +39,7 @@ import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.utilities.printers.CSVPrinter;
+import org.xtream.core.utilities.visitors.PovrayVisitor;
 import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
@@ -56,6 +71,9 @@ public class Workbench<T extends Component>
 	private Bus<T> bus;
 	private JSlider slider;
 	private int timepoint = -1;
+	private static int counter = 0;
+	private int speed = 1000;
+	private int sliderMax;
 	
 	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds)
 	{
@@ -74,7 +92,7 @@ public class Workbench<T extends Component>
 	}
 	
 	@SafeVarargs
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune, Part<T>... parts)
+	public Workbench(final T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune, Part<T>... parts)
 	{
 		try
 		{
@@ -144,6 +162,28 @@ public class Workbench<T extends Component>
 				}
 			);
 			
+			final Icon iconPause = new ImageIcon(Workbench.class.getClassLoader().getResource("pause.png"));
+			final Icon iconStart = new ImageIcon(Workbench.class.getClassLoader().getResource("play.png"));
+			final Icon iconSave = new ImageIcon(Workbench.class.getClassLoader().getResource("save.png"));
+			final Icon iconRepeat = new ImageIcon(Workbench.class.getClassLoader().getResource("repeat.png"));
+			
+			final JButton start = new JButton(iconStart);
+			start.setEnabled(false);
+			start.setPreferredSize(new Dimension(30,30));
+			
+			JButton export = new JButton(iconSave);
+			export.setEnabled(false);
+			export.setPreferredSize(new Dimension(30,30));
+			
+			final JToggleButton repeat = new JToggleButton(iconRepeat);
+			repeat.setEnabled(false);
+			repeat.setPreferredSize(new Dimension(30,30));
+			
+			SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 100, 1);
+			final JSpinner rate = new JSpinner(model);
+			rate.setPreferredSize(new Dimension(45,30));
+			rate.setEnabled(false);
+			
 			// Toolbar
 			
 			JToolBar topbar = new JToolBar("Toolbar");
@@ -167,11 +207,21 @@ public class Workbench<T extends Component>
 			topbar.add(new JLabel("Memory"));
 			topbar.add(memoryBar);
 			
+			JPanel panelWest = new JPanel(new FlowLayout());
+			panelWest.add(start);
+			panelWest.add(rate);
+			panelWest.add(repeat);
+			
+			JPanel panelEast = new JPanel(new FlowLayout());
+			panelEast.add(export);
+			
 			JToolBar bottombar = new JToolBar("Toolbar");
 			bottombar.setFloatable(false);
 			bottombar.setLayout(new BorderLayout());
+			bottombar.add(panelWest, BorderLayout.WEST);
 			bottombar.add(slider, BorderLayout.CENTER);
-			
+			bottombar.add(panelEast, BorderLayout.EAST);
+
 			// Dock
 			
 			SplitDockGrid grid = new SplitDockGrid();
@@ -217,13 +267,148 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			State best = engine.run(duration, prune, allMonitor);
+			final State best = engine.run(duration, prune, allMonitor);
+			sliderMax = slider.getMaximum();
 			
 			// print
 			
 			CSVPrinter<T> printer = new CSVPrinter<>(new PrintStream("Printer.csv"));
 			
 			printer.print(root, best, best.getTimepoint());
+			
+			// timer
+			
+			ActionListener listener = new ActionListener() 
+			{			
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					
+						counter = slider.getValue();
+						counter += 1;
+						if (counter <= sliderMax)
+						{
+							slider.setValue(counter);
+						}
+						else
+						{
+							if (repeat.isSelected() == false)
+							{
+								start.setIcon(iconStart);
+							}
+							else
+							{
+								slider.setValue(0);
+								counter = 0;
+							}
+						}
+				}
+			};
+			
+			
+			final Timer timer = new Timer(speed, listener);
+			timer.setDelay(1000);
+			
+			ChangeListener changeLi = new ChangeListener() 
+			{
+				@Override
+				public void stateChanged(ChangeEvent ce) 
+				{
+					timer.setDelay(1000/((int)rate.getValue()));
+				}
+			};
+		
+			// enable buttons
+			
+			start.setEnabled(true);
+			start.addActionListener(new ActionListener() 
+			{			
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					if (start.getIcon() == iconStart)
+					{
+						if (slider.getValue() == sliderMax)
+						{
+							slider.setValue(0);
+							timer.start();
+							start.setIcon(iconPause);
+						}
+						else
+						{
+							timer.start();
+							start.setIcon(iconPause);
+						}
+					}
+					else
+					{
+						timer.stop();
+						start.setIcon(iconStart);
+					}
+					
+				}
+			});
+			
+			repeat.setEnabled(true);
+			
+			export.setEnabled(true);
+			export.addActionListener(new ActionListener() 
+			{
+				@Override
+				public void actionPerformed(ActionEvent e) 
+				{
+					try
+					{
+						JFileChooser exportFile = new JFileChooser();
+						exportFile.setDialogTitle("Save");
+						exportFile.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+						int ret = exportFile.showSaveDialog(null);
+						if(ret == JFileChooser.APPROVE_OPTION)
+						{						
+							String path = exportFile.getSelectedFile().getAbsolutePath();
+							System.out.println("Path" + path);
+							String povPath = path + File.separator + "Movie.avs";
+							
+							FileWriter avi_writer = new FileWriter(povPath);
+							
+							for (int timepoint = 0; timepoint <= slider.getMaximum(); timepoint++)
+							{	
+								DecimalFormat df = new DecimalFormat("00");
+								String pov = path + File.separator +"Frame_" + df.format(timepoint) + ".pov";
+								FileWriter writer = new FileWriter(pov);
+								new PovrayVisitor(writer, best, timepoint).handle(root);
+								
+								writer.close();
+								
+								// Render frame
+								
+								Process process = Runtime.getRuntime().exec("pvengine /EXIT /RENDER " + pov);
+								process.waitFor();
+							}
+							
+							avi_writer.write("ImageSource(\"" + path + File.separator + "Frame_%02d.png\", 00, 95," + (int)rate.getValue() +")");
+							avi_writer.close();
+						
+							// Save movie as AVI File
+							
+							Runtime.getRuntime().exec("vdubmod");
+						
+						}
+						else
+						{
+							exportFile.cancelSelection();
+						}
+					}
+					catch (Exception ex)
+					{
+						ex.printStackTrace();
+					}
+				}
+			});
+			
+			rate.setEnabled(true);
+			rate.addChangeListener(changeLi);
+			
 		}
 		catch (Exception e)
 		{

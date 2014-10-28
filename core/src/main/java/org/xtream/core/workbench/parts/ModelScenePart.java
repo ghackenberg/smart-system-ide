@@ -9,6 +9,7 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.xtream.core.model.Component;
+import org.xtream.core.model.components.nodes.LightComponent;
 import org.xtream.core.utilities.visitors.JoglCameraVisitor;
 import org.xtream.core.utilities.visitors.JoglLightVisitor;
 import org.xtream.core.utilities.visitors.JoglShapeVisitor;
@@ -68,7 +69,17 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						// Features
 						gl2.glEnable(GL2.GL_DEPTH_TEST);
 						gl2.glEnable(GL2.GL_LIGHTING);
+						
+						System.out.println(getRoot().getDescendantsByClass(LightComponent.class).size() + " lichter gefunden");
+						
 						gl2.glEnable(GL2.GL_LIGHT0);
+						gl2.glEnable(GL2.GL_LIGHT1);
+						gl2.glEnable(GL2.GL_LIGHT2);
+						gl2.glEnable(GL2.GL_LIGHT3);
+						gl2.glEnable(GL2.GL_LIGHT4);
+						gl2.glEnable(GL2.GL_LIGHT5);
+						gl2.glEnable(GL2.GL_LIGHT6);
+						gl2.glEnable(GL2.GL_LIGHT7);
 						gl2.glEnable(GL2.GL_COLOR_MATERIAL);
 						
 						// Material
@@ -91,13 +102,11 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						gl2.glMatrixMode(GL2.GL_MODELVIEW);
 						{
 							new JoglCameraVisitor(gl2, glu, getState(), timepoint).handle(getRoot());
-							new JoglLightVisitor(gl2, getState(), timepoint).handle(getRoot());
-							
+							new JoglLightVisitor(gl2, glu, getState(), timepoint).handle(getRoot());
 							gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-
 							new JoglShapeVisitor(gl2, glut, getState(), timepoint).handle(getRoot());
 						}
-					}
+				    }
 				}
 			);
 			

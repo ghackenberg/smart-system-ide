@@ -13,10 +13,14 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AmbientComponent;
 import org.xtream.core.model.components.BackgroundComponent;
+import org.xtream.core.model.components.PlaneComponent;
 import org.xtream.core.model.components.TransformComponent;
 import org.xtream.core.model.components.nodes.CameraComponent;
+import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
+import org.xtream.core.model.components.nodes.shapes.ConeComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
+import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
 import org.xtream.core.model.components.nodes.shapes.LineComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.model.components.transforms.IdentityComponent;
@@ -56,6 +60,13 @@ public class IntegrateComponent extends Component
 		@SuppressWarnings("unused")
 		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(255, 255, 255));
 	};
+	public PlaneComponent plane = new PlaneComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(255, 255, 255));
+		@SuppressWarnings("unused")
+		public Expression<Double> heightxpression = new ConstantExpression<Double>(heightOutput, -1.);
+	};
 	public AmbientComponent ambient = new AmbientComponent()
 	{
 		@SuppressWarnings("unused")
@@ -77,7 +88,16 @@ public class IntegrateComponent extends Component
 		@SuppressWarnings("unused")
 		public Expression<Color> diffuseExpression = new ConstantExpression<Color>(diffuseOutput, new Color(255,255,255));
 		@SuppressWarnings("unused")
-		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0,10,10,0}));
+		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0,10,10,1}));
+	};
+	public DirectionalLightComponent light1 = new DirectionalLightComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> specularExpression = new ConstantExpression<Color>(specularOutput, new Color(255,255,255));
+		@SuppressWarnings("unused")
+		public Expression<Color> diffuseExpression = new ConstantExpression<Color>(diffuseOutput, new Color(255,255,255));
+		@SuppressWarnings("unused")
+		public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {0,-10,-10,0}));
 	};
 	public RotationComponent rotation = new YRotationComponent()
 	{
@@ -117,6 +137,10 @@ public class IntegrateComponent extends Component
 		};
 		@SuppressWarnings("unused")
 		public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
+		@SuppressWarnings("unused")
+		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
+		@SuppressWarnings("unused")
+		public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
 	};
 	public SphereComponent sphere = new SphereComponent()
 	{
@@ -130,6 +154,8 @@ public class IntegrateComponent extends Component
 				return timepoint / 100.0;
 			}
 		};
+		@SuppressWarnings("unused")
+		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
 	};
 	public LineComponent line = new LineComponent()
 	{
@@ -146,6 +172,28 @@ public class IntegrateComponent extends Component
 			}
 		};
 	};
+	public CylinderComponent cylinder = new CylinderComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(255,0,0));
+
+		@SuppressWarnings("unused")
+		public Expression<Double> baseExpression = new ConstantExpression<Double>(baseOutput, 1.);
+		
+		@SuppressWarnings("unused")
+		public Expression<Double> heightExpression = new ConstantExpression<Double>(heightOutput, 1.);
+	};
+	public ConeComponent cone = new ConeComponent()
+	{
+		@SuppressWarnings("unused")
+		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(0,0,255));
+
+		@SuppressWarnings("unused")
+		public Expression<Double> baseExpression = new ConstantExpression<Double>(baseOutput, 1.);
+		
+		@SuppressWarnings("unused")
+		public Expression<Double> heightExpression = new ConstantExpression<Double>(heightOutput, 1.);
+	};
 	
 	//////////////
 	// CHANNELS //
@@ -153,11 +201,15 @@ public class IntegrateComponent extends Component
 
 	public ChannelExpression<RealMatrix> identityToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToLight1 = new ChannelExpression<RealMatrix>(light1.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToRotation = new ChannelExpression<RealMatrix>(rotation.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToSphere = new ChannelExpression<RealMatrix>(sphere.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToCylinder = new ChannelExpression<RealMatrix>(cylinder.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToCone = new ChannelExpression<RealMatrix>(cone.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> rotationToTranslation = new ChannelExpression<RealMatrix>(translation.transformInput, rotation.transformOutput);
 	public ChannelExpression<RealMatrix> rotationToLine = new ChannelExpression<RealMatrix>(line.transformInput, rotation.transformOutput);
 	public ChannelExpression<RealMatrix> translationToCube = new ChannelExpression<RealMatrix>(cube.transformInput, translation.transformOutput);
+	public ChannelExpression<RealMatrix> translationToCylinder = new ChannelExpression<RealMatrix>(cylinder.transformInput, translation.transformOutput);
 	
 	/////////////////
 	// EXPRESSIONS //
