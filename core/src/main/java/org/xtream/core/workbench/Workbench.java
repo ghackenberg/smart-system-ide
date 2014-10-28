@@ -162,10 +162,10 @@ public class Workbench<T extends Component>
 				}
 			);
 			
-			final Icon iconPause = new ImageIcon(Workbench.class.getClassLoader().getResource("pause.png"));
-			final Icon iconStart = new ImageIcon(Workbench.class.getClassLoader().getResource("play.png"));
-			final Icon iconSave = new ImageIcon(Workbench.class.getClassLoader().getResource("save.png"));
-			final Icon iconRepeat = new ImageIcon(Workbench.class.getClassLoader().getResource("repeat.png"));
+			final Icon iconPause = new ImageIcon(Workbench.class.getClassLoader().getResource("buttons/pause.png"));
+			final Icon iconStart = new ImageIcon(Workbench.class.getClassLoader().getResource("buttons/play.png"));
+			final Icon iconSave = new ImageIcon(Workbench.class.getClassLoader().getResource("buttons/save.png"));
+			final Icon iconRepeat = new ImageIcon(Workbench.class.getClassLoader().getResource("buttons/repeat.png"));
 			
 			final JButton start = new JButton(iconStart);
 			start.setEnabled(false);

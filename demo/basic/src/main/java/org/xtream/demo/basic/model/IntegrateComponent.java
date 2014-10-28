@@ -13,7 +13,6 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.components.AmbientComponent;
 import org.xtream.core.model.components.BackgroundComponent;
-import org.xtream.core.model.components.PlaneComponent;
 import org.xtream.core.model.components.TransformComponent;
 import org.xtream.core.model.components.nodes.CameraComponent;
 import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
@@ -22,6 +21,7 @@ import org.xtream.core.model.components.nodes.shapes.ConeComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
 import org.xtream.core.model.components.nodes.shapes.LineComponent;
+import org.xtream.core.model.components.nodes.shapes.PlaneComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.model.components.transforms.IdentityComponent;
 import org.xtream.core.model.components.transforms.chains.RotationComponent;
@@ -65,7 +65,7 @@ public class IntegrateComponent extends Component
 		@SuppressWarnings("unused")
 		public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(255, 255, 255));
 		@SuppressWarnings("unused")
-		public Expression<Double> heightxpression = new ConstantExpression<Double>(heightOutput, -1.);
+		public Expression<Double> heightExpression = new ConstantExpression<Double>(heightOutput, -1.);
 	};
 	public AmbientComponent ambient = new AmbientComponent()
 	{
@@ -202,6 +202,7 @@ public class IntegrateComponent extends Component
 	public ChannelExpression<RealMatrix> identityToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToLight1 = new ChannelExpression<RealMatrix>(light1.transformInput, identity.transformOutput);
+	public ChannelExpression<RealMatrix> identityToPlane = new ChannelExpression<RealMatrix>(plane.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToRotation = new ChannelExpression<RealMatrix>(rotation.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToSphere = new ChannelExpression<RealMatrix>(sphere.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToCylinder = new ChannelExpression<RealMatrix>(cylinder.transformInput, identity.transformOutput);
