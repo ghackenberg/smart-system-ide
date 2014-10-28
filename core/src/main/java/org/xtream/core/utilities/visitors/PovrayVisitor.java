@@ -10,7 +10,6 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
 import org.xtream.core.model.components.AmbientComponent;
 import org.xtream.core.model.components.BackgroundComponent;
-import org.xtream.core.model.components.PlaneComponent;
 import org.xtream.core.model.components.nodes.CameraComponent;
 import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
@@ -18,6 +17,7 @@ import org.xtream.core.model.components.nodes.shapes.ConeComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
 import org.xtream.core.model.components.nodes.shapes.LineComponent;
+import org.xtream.core.model.components.nodes.shapes.PlaneComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.model.components.nodes.shapes.TorusComponent;
 import org.xtream.core.utilities.Visitor;
@@ -114,11 +114,12 @@ public class PovrayVisitor extends Visitor
 	{
 		try 
 		{
+			RealMatrix transform = plane.transformInput.get(state, timepoint);
 			Color color = plane.colorOutput.get(state, timepoint);
 			Double height = plane.heightOutput.get(state, timepoint);
 			
 			writer.write(System.getProperty( "line.separator" ));
-			writer.write("plane{ <0,1,0>," + height + " texture{pigment{" + handle(color) +"}}}");
+			writer.write("plane { <0,1,0>, " + height + " texture { pigment { " + handle(color) +" } } " + handle(transform) + " }");
 		} 
 		catch (IOException e) 
 		{
@@ -150,7 +151,6 @@ public class PovrayVisitor extends Visitor
 	{
 		try 
 		{
-			//RealVector position = sphere.positionOutput.get(state, timepoint);
 			RealMatrix transform = sphere.transformInput.get(state, timepoint);
 			double radius = sphere.radiusOutput.get(state, timepoint);
 			Color color = sphere.colorOutput.get(state, timepoint);

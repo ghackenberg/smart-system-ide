@@ -12,6 +12,7 @@ import org.xtream.core.model.components.nodes.shapes.ConeComponent;
 import org.xtream.core.model.components.nodes.shapes.CubeComponent;
 import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
 import org.xtream.core.model.components.nodes.shapes.LineComponent;
+import org.xtream.core.model.components.nodes.shapes.PlaneComponent;
 import org.xtream.core.model.components.nodes.shapes.SphereComponent;
 import org.xtream.core.model.components.nodes.shapes.TorusComponent;
 import org.xtream.core.utilities.Visitor;
@@ -38,6 +39,41 @@ public class JoglShapeVisitor extends Visitor
 	{
 		traverse(component);
 	}
+	
+	public void handle(PlaneComponent plane)
+	{
+		gl2.glPushMatrix();
+		{
+			RealMatrix transform = plane.transformInput.get(state, timepoint);
+			float height = plane.heightOutput.get(state, timepoint).floatValue();
+			Color color = plane.colorOutput.get(state, timepoint);
+			
+			// Transform
+			
+			double[] coefficients = new double[16];
+			
+			for (int col = 0; col < 4; col++)
+			{
+				for (int row = 0; row < 4; row++)
+				{
+					coefficients[col * 4 + row] = transform.getEntry(row, col);
+				}
+			}
+			
+			gl2.glMultMatrixd(coefficients, 0);
+			
+			// Material
+			gl2.glColor3f(color.getRed()/255.f, color.getGreen()/255.f, color.getBlue()/255.f);
+			// Shape
+			gl2.glBegin(GL2.GL_QUADS);
+		        gl2.glVertex3f(-100, height, -100);
+		        gl2.glVertex3f(-100, height, +100);
+		        gl2.glVertex3f(+100, height, +100);
+		        gl2.glVertex3f(+100, height, -100);
+	        gl2.glEnd();
+		}
+		gl2.glPopMatrix();
+    }
 	
 	public void handle(CubeComponent box)
 	{

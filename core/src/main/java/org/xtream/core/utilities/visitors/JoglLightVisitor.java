@@ -11,7 +11,6 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
 import org.xtream.core.model.components.AmbientComponent;
 import org.xtream.core.model.components.BackgroundComponent;
-import org.xtream.core.model.components.PlaneComponent;
 import org.xtream.core.model.components.nodes.lights.DirectionalLightComponent;
 import org.xtream.core.model.components.nodes.lights.PointLightComponent;
 import org.xtream.core.utilities.Visitor;
@@ -20,14 +19,14 @@ public class JoglLightVisitor extends Visitor
 {
 	
 	private GL2 gl2;
-	private GLU glu;
+	//private GLU glu;
 	private State state;
 	private int timepoint;
 	
 	public JoglLightVisitor(GL2 gl2, GLU glu, State state, int timepoint)
 	{
 		this.gl2 = gl2;
-		this.glu = glu;
+		//this.glu = glu;
 		this.state = state;
 		this.timepoint = timepoint;
 	}
@@ -44,26 +43,6 @@ public class JoglLightVisitor extends Visitor
 		// Clear
 		gl2.glClearColor(color.getRed() / 255.f, color.getGreen() / 255.f, color.getBlue() / 255.f, 0f);
 		gl2.glClearDepth(1f);
-	}
-	
-	public void handle(PlaneComponent plane)
-	{		
-		Color color = plane.colorOutput.get(state, timepoint);
-		
-		//Plane
-		
-		drawField(gl2, glu);
-		gl2.glColor3f(color.getRed()/255.f, color.getGreen()/255.f, color.getBlue()/255.f);
-    }
-	
-	public void drawField(GL2 gl2, GLU glu) 
-	{
-		gl2.glBegin(GL2.GL_QUADS);
-        gl2.glVertex3f(-100, 0f, -100);
-        gl2.glVertex3f(-100, 0f, +100);
-        gl2.glVertex3f(+100, 0f, +100);
-        gl2.glVertex3f(+100, 0f, -100);
-        gl2.glEnd();
 	}
 	
 	public void handle(AmbientComponent ambient)
