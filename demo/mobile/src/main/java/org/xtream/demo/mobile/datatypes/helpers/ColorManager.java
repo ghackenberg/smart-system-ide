@@ -9,6 +9,11 @@ public class ColorManager
 	public ColorManager() 
 	{
 		colorValues = new HashMap<String, Float>();
+
+		// Fixed values for featured example		
+		colorValues.put("OriginA", 0.33f);
+		colorValues.put("OriginB", 0.66f);
+		colorValues.put("OriginC", 0.99f);
 	}
 	
 	public float generateColor(String token, float threshold) 

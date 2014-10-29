@@ -104,6 +104,8 @@ public class IntegrateComponent extends Component
 		rotationToTranslationEdges = new ChannelExpression[edgeSize];
 		translationToEdges = new ChannelExpression[edgeSize];
 		
+		// Color distinction threshold for individual traffic participants
+		float threshold = 1.0f/modulesLength*2;
 		
 		for (int i = 0; i < modulesLength; i++)
 		{
@@ -120,7 +122,7 @@ public class IntegrateComponent extends Component
 			positionZ[i] = new ChannelExpression<>(positionZInputs[i], vehicleModule.context.positionZOutput);
 			
 			// Determine color for sphere based on origin
-			final Color sphereColor = new Color(Color.HSBtoRGB(colorManager.generateColor(vehicleModule.startPositionParameter, 0.10f), 1.f, 0.75f));
+			final Color sphereColor = new Color(Color.HSBtoRGB(colorManager.generateColor(vehicleModule.startPositionParameter, threshold), 1.f, 0.75f));
 			
 			positionSpheres[i] = new SphereComponent() 
 			{
@@ -134,6 +136,8 @@ public class IntegrateComponent extends Component
 						return 1.10;
 					}
 				};
+				@SuppressWarnings("unused")
+				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
 			};
 		
 			translationPositionSpheres[i] = new TranslationComponent()
@@ -182,9 +186,13 @@ public class IntegrateComponent extends Component
 			nodes[iterator] = new CubeComponent() 
 			{
 				@SuppressWarnings("unused")
-				public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(128,128,128));
+				public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(112,112,112));
 				@SuppressWarnings("unused")
 				public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
+				@SuppressWarnings("unused")
+				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
+				@SuppressWarnings("unused")
+				public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {0, 0, 0, 0}));
 			};
 			
 			final Double nodeXPos = Double.parseDouble(node.getXpos());
@@ -286,23 +294,15 @@ public class IntegrateComponent extends Component
 	
 	public SphereComponent[] positionSpheres;
 	public TranslationComponent[] translationPositionSpheres;
-	public ChannelExpression<RealMatrix>[] rotationToTranslationPositionSpheres;
-	public ChannelExpression<RealMatrix>[] translationToPositionSpheres;
 	
 	public CubeComponent[] nodes;
 	public TranslationComponent[] translationNodes;
-	public ChannelExpression<RealMatrix>[] rotationToTranslationNodes;
-	public ChannelExpression<RealMatrix>[] translationToNodeCubes;
 	
 	public LineComponent[] nodeHeightEdges;
 	public TranslationComponent[] translationNodeHeightEdges;
-	public ChannelExpression<RealMatrix>[] rotationToTranslationNodeHeightEdges;
-	public ChannelExpression<RealMatrix>[] translationToNodeHeightEdges;
 	
 	public LineComponent[] edges;
 	public TranslationComponent[] translationEdges;
-	public ChannelExpression<RealMatrix>[] rotationToTranslationEdges;
-	public ChannelExpression<RealMatrix>[] translationToEdges;
 	
 	public TransformComponent identity = new IdentityComponent()
 	{
@@ -355,6 +355,18 @@ public class IntegrateComponent extends Component
 	public ChannelExpression<Double>[] positionX;
 	public ChannelExpression<Double>[] positionY;
 	public ChannelExpression<Double>[] positionZ;
+	
+	public ChannelExpression<RealMatrix>[] rotationToTranslationPositionSpheres;
+	public ChannelExpression<RealMatrix>[] translationToPositionSpheres;
+	
+	public ChannelExpression<RealMatrix>[] rotationToTranslationNodes;
+	public ChannelExpression<RealMatrix>[] translationToNodeCubes;
+	
+	public ChannelExpression<RealMatrix>[] rotationToTranslationNodeHeightEdges;
+	public ChannelExpression<RealMatrix>[] translationToNodeHeightEdges;
+	
+	public ChannelExpression<RealMatrix>[] rotationToTranslationEdges;
+	public ChannelExpression<RealMatrix>[] translationToEdges;
 	
 	public ChannelExpression<RealMatrix> identityToCamera = new ChannelExpression<RealMatrix>(camera.transformInput, identity.transformOutput);
 	public ChannelExpression<RealMatrix> identityToLight = new ChannelExpression<RealMatrix>(light.transformInput, identity.transformOutput);
