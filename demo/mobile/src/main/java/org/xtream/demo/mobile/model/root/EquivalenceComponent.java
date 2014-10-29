@@ -50,11 +50,9 @@ public class EquivalenceComponent extends Component
 			
 			for (int i = 0; i < chargeStateRelativeInputs.length; i++)
 			{
-				System.out.println(chargeStateRelativeInputs[i].get(state, timepoint));
 				sum += chargeStateRelativeInputs[i].get(state, timepoint);
 			}
 			
-			System.out.println(sum);
 			return sum;
 		}
 	};
