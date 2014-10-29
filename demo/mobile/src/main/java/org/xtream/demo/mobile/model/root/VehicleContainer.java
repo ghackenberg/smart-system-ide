@@ -25,11 +25,15 @@ public class VehicleContainer extends GenericModuleContainer
     public ConstraintsComponent constraints;
     public ObjectiveComponent objectives;
 
+    // Parameters
+    public String startPositionParameter;
+    
     // Previews
     public Chart modulePreview;
 
 	public VehicleContainer(Graph graph, String startPosition, String destinationPosition, Double timeResolution, Double timeWeight, Double powerWeight, Double chargeState, Double chargeRate, Double vMax, Double mileage, Double vehicleLength, Double vehicleWidth)
 	{
+		this.startPositionParameter = startPosition;
         this.context = new ContextComponent(graph, startPosition, destinationPosition, timeResolution, chargeState, chargeRate, mileage, vehicleLength, vehicleWidth);
         this.logics = new LogicsComponent(graph, timeResolution, vMax);
         this.constraints = new ConstraintsComponent();
