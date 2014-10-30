@@ -4,20 +4,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.xtream.demo.mobile.datatypes.Graph;
-import org.xtream.demo.mobile.model.IntegrateComponent;
+import org.xtream.demo.mobile.model.SceneComponent;
 import org.xtream.demo.mobile.model.root.ModulesContainer;
 
 public class IntegrateComponentBuilder {
 
-	public IntegrateComponent buildIntegrateComponent (Graph graph, ModulesContainer modules) {
+	public SceneComponent buildIntegrateComponent (Graph graph, ModulesContainer modules) {
 		
-		IntegrateComponent builtIntegrateComponent = null;
+		SceneComponent builtIntegrateComponent = null;
 		
 		try 
 		{
-			Class<IntegrateComponent> integrateClass = IntegrateComponent.class;
-			Constructor<IntegrateComponent> constructor = integrateClass.getConstructor(org.xtream.demo.mobile.datatypes.Graph.class, org.xtream.demo.mobile.model.root.ModulesContainer.class);
-			IntegrateComponent integrate = constructor.newInstance(graph, modules);
+			Class<SceneComponent> integrateClass = SceneComponent.class;
+			Constructor<SceneComponent> constructor = integrateClass.getConstructor(org.xtream.demo.mobile.datatypes.Graph.class, org.xtream.demo.mobile.model.root.ModulesContainer.class);
+			SceneComponent integrate = constructor.newInstance(graph, modules);
 
 			builtIntegrateComponent = integrate;
 		} 

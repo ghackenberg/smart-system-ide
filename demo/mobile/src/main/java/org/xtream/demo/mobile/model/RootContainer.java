@@ -21,7 +21,7 @@ public class RootContainer extends Component
 //	public static double CACHING = 0;
 	
 	public static int SIZE = 20;
-	public static int DURATION = 96;
+	public static int DURATION = 10;
 	public static int SAMPLES = 100;
 	public static int CLUSTERS = 10;
 	public static double RANDOMNESS = 0;
@@ -45,7 +45,7 @@ public class RootContainer extends Component
 		objective = new ObjectiveComponent(modules);
 		equivalences = new EquivalenceComponent(modules);
 		constraints = new ConstraintsComponent(SIZE, graph, modules);
-		integrate = new IntegrateComponent(graph, modules);
+		integrate = new SceneComponent(graph, modules);
 		
 		costChart = new Timeline(objective.costOutput);
 	}
@@ -56,7 +56,7 @@ public class RootContainer extends Component
 	public EquivalenceComponent equivalences;
 	public ObjectiveComponent objective;
 	public ConstraintsComponent constraints;
-	public IntegrateComponent integrate;
+	public SceneComponent integrate;
 	
 	// Charts
 	
