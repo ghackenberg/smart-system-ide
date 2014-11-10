@@ -180,9 +180,9 @@ public class Workbench<T extends Component>
 			repeat.setPreferredSize(new Dimension(30,30));
 			
 			SpinnerNumberModel model = new SpinnerNumberModel(1, 1, 100, 1);
-			final JSpinner rate = new JSpinner(model);
-			rate.setPreferredSize(new Dimension(45,30));
-			rate.setEnabled(false);
+			final JSpinner rateSpinner = new JSpinner(model);
+			rateSpinner.setPreferredSize(new Dimension(45,30));
+			rateSpinner.setEnabled(false);
 			
 			// Toolbar
 			
@@ -209,7 +209,7 @@ public class Workbench<T extends Component>
 			
 			JPanel panelWest = new JPanel(new FlowLayout());
 			panelWest.add(start);
-			panelWest.add(rate);
+			panelWest.add(rateSpinner);
 			panelWest.add(repeat);
 			
 			JPanel panelEast = new JPanel(new FlowLayout());
@@ -314,7 +314,7 @@ public class Workbench<T extends Component>
 				@Override
 				public void stateChanged(ChangeEvent ce) 
 				{
-					timer.setDelay(1000/((int)rate.getValue()));
+					timer.setDelay(1000/((int)rateSpinner.getValue()));
 				}
 			};
 		
@@ -386,13 +386,8 @@ public class Workbench<T extends Component>
 								process.waitFor();
 							}
 							
-							avi_writer.write("ImageSource(\"" + path + File.separator + "Frame_%02d.png\", 00, 95," + (int)rate.getValue() +")");
+							avi_writer.write("ImageSource(\"" + path + File.separator + "Frame_%02d.png\", 00, " + slider.getMaximum() + " ," + (int)rateSpinner.getValue() +")");
 							avi_writer.close();
-						
-							// Save movie as AVI File
-							
-							Runtime.getRuntime().exec("vdubmod");
-						
 						}
 						else
 						{
@@ -406,8 +401,8 @@ public class Workbench<T extends Component>
 				}
 			});
 			
-			rate.setEnabled(true);
-			rate.addChangeListener(changeLi);
+			rateSpinner.setEnabled(true);
+			rateSpinner.addChangeListener(changeLi);
 			
 		}
 		catch (Exception e)

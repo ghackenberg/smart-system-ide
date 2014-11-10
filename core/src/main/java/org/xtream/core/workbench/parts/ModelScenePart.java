@@ -9,7 +9,6 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import org.xtream.core.model.Component;
-import org.xtream.core.model.components.nodes.LightComponent;
 import org.xtream.core.utilities.visitors.JoglCameraVisitor;
 import org.xtream.core.utilities.visitors.JoglLightVisitor;
 import org.xtream.core.utilities.visitors.JoglShapeVisitor;
@@ -68,10 +67,7 @@ public class ModelScenePart<T extends Component> extends Part<T>
 						
 						// Features
 						gl2.glEnable(GL2.GL_DEPTH_TEST);
-						gl2.glEnable(GL2.GL_LIGHTING);
-						
-						System.out.println(getRoot().getDescendantsByClass(LightComponent.class).size() + " lichter gefunden");
-						
+						gl2.glEnable(GL2.GL_LIGHTING);						
 						gl2.glEnable(GL2.GL_LIGHT0);
 						gl2.glEnable(GL2.GL_LIGHT1);
 						gl2.glEnable(GL2.GL_LIGHT2);
