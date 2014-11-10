@@ -135,8 +135,8 @@ public class SceneComponent extends Component
 						return 1.10;
 					}
 				};
-				@SuppressWarnings("unused")
-				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
+//				@SuppressWarnings("unused")
+//				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
 			};
 		
 			translationPositionSpheres[i] = new TranslationComponent()
@@ -188,10 +188,10 @@ public class SceneComponent extends Component
 				public Expression<Color> colorExpression = new ConstantExpression<Color>(colorOutput, new Color(112,112,112));
 				@SuppressWarnings("unused")
 				public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
-				@SuppressWarnings("unused")
-				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
-				@SuppressWarnings("unused")
-				public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {0, 0, 0, 0}));
+//				@SuppressWarnings("unused")
+//				public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {0, 0, 0}));
+//				@SuppressWarnings("unused")
+//				public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {0, 0, 0, 0}));
 			};
 			
 			final Double nodeXPos = Double.parseDouble(node.getXpos());
