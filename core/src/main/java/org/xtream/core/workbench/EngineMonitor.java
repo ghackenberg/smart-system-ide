@@ -39,11 +39,11 @@ public class EngineMonitor<T extends Component> implements Monitor<T>
 	@Override
 	public void handle(int timepoint, Statistics statistics, Map<Key, List<State>> equivalenceClasses, State best)
 	{
-		double progress = (timepoint + 1.) / duration * 100;
+		double progress = (best.getTimepoint() + 1.) / duration * 100;
 		
 		timeBar.setValue((int) progress);
 		memoryBar.setValue(getMemoryProgress());
-		slider.setMaximum(timepoint);
+		slider.setMaximum(best.getTimepoint());
 		slider.setValue(timepoint);
 	}
 

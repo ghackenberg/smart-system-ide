@@ -36,7 +36,7 @@ public class RootComponent extends Component {
 	private static final String NET_CSV = "net.csv";
 
 	public static void main(String[] args) {
-		new Workbench<>(new RootComponent(), 144, 100, 50, 0, 0, 50);
+		new Workbench<>(new RootComponent(), 144, 100, 50, 1, 0, 0, 50);
 	}
 	
 	//Sun

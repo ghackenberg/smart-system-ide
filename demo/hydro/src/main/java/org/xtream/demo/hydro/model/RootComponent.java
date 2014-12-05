@@ -29,7 +29,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), Constants.DURATION, Constants.SAMPLES, Constants.CLUSTERS, Constants.RANDOM, Constants.CACHING, Constants.ROUNDS, Constants.PRUNE);
+		new Workbench<>(new RootComponent(), Constants.DURATION, Constants.SAMPLES, Constants.CLUSTERS, Constants.ROUNDS, Constants.RANDOM, Constants.CACHING, Constants.CLUSTER_ROUNDS, Constants.PRUNE);
 	}
 	
 	// Components
