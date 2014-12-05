@@ -14,13 +14,14 @@ public class RootComponent extends Component
 	public static final int DURATION = 100;
 	public static final int SAMPLES = 50;
 	public static final int CLUSTERS = 100;
+	public static final int ROUNDS = 1;
 	public static final double RANDOMNESS = 0;
 	public static final double CACHING = 0;
-	public static final int ROUNDS = 50;
+	public static final int CLUSTER_ROUNDS = 50;
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(SIZE), DURATION, SAMPLES, CLUSTERS, RANDOMNESS, CACHING, ROUNDS);
+		new Workbench<>(new RootComponent(SIZE), DURATION, SAMPLES, CLUSTERS, ROUNDS, RANDOMNESS, CACHING, CLUSTER_ROUNDS);
 	}
 	
 	// Constructors

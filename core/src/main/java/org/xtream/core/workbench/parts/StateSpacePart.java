@@ -253,7 +253,7 @@ public class StateSpacePart<T extends Component> extends Part<T>
 	{
 		synchronized (mutex)
 		{
-			if (best != null)
+			if (clusters.size() > 0)
 			{
 				this.timepoint = timepoint;
 				this.statistics = statistics;

@@ -15,9 +15,17 @@ import org.xtream.core.workbench.Workbench;
 public class RootComponent extends Component
 {
 	
+	private static final int DURATION = 96;
+	private static final int SAMPLES = 100;
+	private static final int CLUSTERS = 10;
+	private static final int ROUNDS = 1;
+	private static final double RANDOMNESS = 0.0;
+	private static final double CACHING = 0.0;
+	private static final int CLUSTER_ROUNDS = 50;
+	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 96, 100, 10, 0, 0, 50);
+		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, ROUNDS, RANDOMNESS, CACHING, CLUSTER_ROUNDS);
 	}
 	
 	////////////

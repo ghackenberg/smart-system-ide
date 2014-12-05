@@ -12,6 +12,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.ValueMarker;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.DefaultXYDataset;
 import org.jfree.ui.RectangleInsets;
@@ -35,8 +36,9 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	
 	private JPanel panel;
 	private Map<Chart, JFreeChart> charts = new HashMap<>();
+	private Map<Chart, ValueMarker> markers = new HashMap<>();
 	private Container container;
-	private int timepoint = 0;
+	private int timepoint = -1;
 	
 	public ComponentChartsPart()
 	{
@@ -118,6 +120,11 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	
 	public void update(int timepoint)
 	{
+		if (timepoint == -1)
+		{
+			return;
+		}
+		
 		this.timepoint = timepoint;
 		
 		for (Chart definition : container.getChildrenByClass(Chart.class))
@@ -130,9 +137,9 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				
 				for (Series<Double> series : timeline.getSeries())
 				{
-					double[][] data = new double[2][timepoint];
+					double[][] data = new double[2][getState().getTimepoint() + 1];
 					
-					for (int i = 0; i < timepoint; i++)
+					for (int i = 0; i <= getState().getTimepoint(); i++)
 					{
 						data[0][i] = i;
 						data[1][i] = series.getPort().get(getState(), i);
@@ -142,6 +149,8 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				}
 				
 				getChart(definition).getXYPlot().setDataset(dataset);
+				
+				getMarker(definition).setValue(timepoint);
 			}
 			else if (definition instanceof Histogram)
 			{
@@ -153,7 +162,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				{
 					Map<String, Integer> map = new HashMap<String, Integer>();
 					
-					for (int i = 0; i < timepoint; i++)
+					for (int i = 0; i <= getState().getTimepoint(); i++)
 					{
 						if (!(map.containsKey(port.get(getState(), i).toString())))
 						{
@@ -207,6 +216,8 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 				}
 				
 				((NumberAxis) jfreechart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
+				
+				jfreechart.getXYPlot().addDomainMarker(getMarker(definition));
 			}
 			else if (definition instanceof Histogram)
 			{
@@ -225,6 +236,21 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 		}
 			
 		return jfreechart;
+	}
+	
+	private ValueMarker getMarker(Chart chart)
+	{
+		ValueMarker marker = markers.get(chart);
+		
+		if (marker == null)
+		{
+			marker = new ValueMarker(0);
+			marker.setStroke(new BasicStroke(STROKE));
+			
+			markers.put(chart, marker);
+		}
+		
+		return marker;
 	}
 
 }

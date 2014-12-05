@@ -75,31 +75,31 @@ public class Workbench<T extends Component>
 	private int speed = 1000;
 	private int sliderMax;
 	
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds)
+	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds)
 	{
-		this(root, duration, samples, clusters, randomness, caching, rounds, true);
+		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, true);
 	}
 	
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune)
+	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune)
 	{
-		this(root, duration, samples, clusters, randomness, caching, rounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new StateSpacePart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
-	}
-	
-	@SafeVarargs
-	public Workbench(T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, Part<T>... parts)
-	{
-		this(root, duration, samples, clusters, randomness, caching, rounds, true, parts);
+		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new StateSpacePart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
-	public Workbench(final T root, int duration, int samples, int clusters, double randomness, double caching, int rounds, boolean prune, Part<T>... parts)
+	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, Part<T>... parts)
+	{
+		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, true, parts);
+	}
+	
+	@SafeVarargs
+	public Workbench(final T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune, Part<T>... parts)
 	{
 		try
 		{
 			// Engine
 			
 			//engine = new org.xtream.core.optimizer.basic.Engine<T>(root);
-			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, randomness, Runtime.getRuntime().availableProcessors() - 1, new KMeansStrategy(rounds));
+			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, Runtime.getRuntime().availableProcessors() - 1, new KMeansStrategy(clusterRounds));
 			
 			// Bus
 			
