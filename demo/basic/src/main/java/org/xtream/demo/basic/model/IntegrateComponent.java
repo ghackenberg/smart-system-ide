@@ -137,10 +137,6 @@ public class IntegrateComponent extends Component
 		};
 		@SuppressWarnings("unused")
 		public Expression<Double> sizeExpression = new ConstantExpression<Double>(sizeOutput, 1.);
-		@SuppressWarnings("unused")
-		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
-		@SuppressWarnings("unused")
-		public Expression<RealVector> directionExpression = new ConstantExpression<RealVector>(directionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
 	};
 	public SphereComponent sphere = new SphereComponent()
 	{
@@ -154,8 +150,6 @@ public class IntegrateComponent extends Component
 				return timepoint / 100.0;
 			}
 		};
-		@SuppressWarnings("unused")
-		public Expression<RealVector> positionExpression = new ConstantExpression<RealVector>(positionOutput, new ArrayRealVector(new double[] {1, 1, 0}));
 	};
 	public LineComponent line = new LineComponent()
 	{
