@@ -18,10 +18,10 @@ public class Constants
 	public static boolean PRUNE = true;
 	public static int SAMPLES = PRUNE ? 100 : 1;
 	public static int CLUSTERS = PRUNE ? 100 : 1;
-	public static int ROUNDS = 10;
+	public static int ROUNDS = 2;
 	public static double RANDOM = 0;
 	public static double CACHING = PRUNE ? 0 : 1;
-	public static int CLUSTER_ROUNDS = PRUNE ? 1000 : 1;
+	public static int CLUSTER_ROUNDS = PRUNE ? 50 : 1;
 	
 	public static Dataset DATASET = DATASET_2012;
 	public static int START = WEEK * 13;

@@ -93,7 +93,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	{
 		if (timepoint < duration)
 		{
-			for (int round = 0; round < (Math.random() < (1. / (best.getTimepoint() + 2.) + Math.pow(1. - (timepoint * 1.) / (duration * 1.), best.getTimepoint() + 2.)) ? rounds : 1); round++)
+			for (int round = 0; best.getTimepoint() < (duration - 1) && round < rounds; round++)
 			{
 				// Prepare statistics
 				
