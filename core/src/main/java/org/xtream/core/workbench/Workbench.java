@@ -32,8 +32,9 @@ import javax.swing.event.ChangeListener;
 import org.jfree.ui.ApplicationFrame;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
-import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.Engine;
+import org.xtream.core.optimizer.Monitor;
+import org.xtream.core.optimizer.beam.Strategy;
 import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
 import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
@@ -41,7 +42,6 @@ import org.xtream.core.utilities.monitors.CompositeMonitor;
 import org.xtream.core.utilities.printers.CSVPrinter;
 import org.xtream.core.utilities.visitors.PovrayVisitor;
 import org.xtream.core.workbench.events.JumpEvent;
-import org.xtream.core.workbench.parts.ComponentArchitecturePart;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenPart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
@@ -82,7 +82,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune)
 	{
-		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new ComponentArchitecturePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new StateSpacePart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
+		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
@@ -96,10 +96,15 @@ public class Workbench<T extends Component>
 	{
 		try
 		{
+			// Strategy
+			
+			//Strategy strategy = new RandomStrategy();
+			//Strategy strategy = new GridStrategy();
+			Strategy strategy = new KMeansStrategy(clusterRounds);
+			
 			// Engine
 			
-			//engine = new org.xtream.core.optimizer.basic.Engine<T>(root);
-			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, Runtime.getRuntime().availableProcessors() - 1, new KMeansStrategy(clusterRounds));
+			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, Runtime.getRuntime().availableProcessors() - 1, strategy);
 			
 			// Bus
 			
@@ -122,16 +127,18 @@ public class Workbench<T extends Component>
 			JTextField durationField = new JTextField("" + duration, 5);
 			JTextField samplesField = new JTextField("" + samples, 5);
 			JTextField clustersField = new JTextField("" + clusters, 5);
+			JTextField roundsField = new JTextField("" + rounds, 5);
 			JTextField randomnessField = new JTextField("" + randomness, 5);
 			JTextField cachingField = new JTextField("" + caching, 5);
-			JTextField roundsField = new JTextField("" + rounds, 5);
+			JTextField clusterRoundsField = new JTextField("" + clusterRounds, 5);
 			
 			durationField.setEditable(false);
 			samplesField.setEditable(false);
 			clustersField.setEditable(false);
+			roundsField.setEditable(false);
 			randomnessField.setEditable(false);
 			cachingField.setEditable(false);
-			roundsField.setEditable(false);
+			clusterRoundsField.setEditable(false);
 			
 			JProgressBar timeBar = new JProgressBar();
 			JProgressBar memoryBar = new JProgressBar();
@@ -195,12 +202,14 @@ public class Workbench<T extends Component>
 			topbar.add(clustersField);
 			topbar.add(new JLabel("Samples"));
 			topbar.add(samplesField);
+			topbar.add(new JLabel("Rounds"));
+			topbar.add(roundsField);
 			topbar.add(new JLabel("Randomness"));
 			topbar.add(randomnessField);
 			topbar.add(new JLabel("Caching"));
 			topbar.add(cachingField);
-			topbar.add(new JLabel("Rounds"));
-			topbar.add(roundsField);
+			topbar.add(new JLabel("Cluster Rounds"));
+			topbar.add(clusterRoundsField);
 			topbar.addSeparator();
 			topbar.add(new JLabel("Time"));
 			topbar.add(timeBar);
