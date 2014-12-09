@@ -32,17 +32,18 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	private int clusters;
 	private int rounds;
 	private double randomness;
+	private long duration;
 	private Strategy strategy;
 	
-	public Engine(T root, int samples, int clusters, int rounds, double randomness)
+	public Engine(T root, int samples, int clusters, int rounds, double randomness, long duration)
 	{
-		this(root, samples, clusters, rounds, randomness, Runtime.getRuntime().availableProcessors());
+		this(root, samples, clusters, rounds, randomness, duration, Runtime.getRuntime().availableProcessors());
 	}
-	public Engine(T root, int samples, int classes, int rounds, double randomness, int processors)
+	public Engine(T root, int samples, int classes, int rounds, double randomness, long duration, int processors)
 	{
-		this(root, samples, classes, rounds, randomness, processors, new RandomStrategy());
+		this(root, samples, classes, rounds, randomness, duration, processors, new RandomStrategy());
 	}
-	public Engine(T root, int samples, int classes, int rounds, double randomness, int processors, Strategy strategy)
+	public Engine(T root, int samples, int classes, int rounds, double randomness, long duration, int processors, Strategy strategy)
 	{
 		super(root);
 		
@@ -50,6 +51,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 		this.clusters = classes;
 		this.rounds = rounds;
 		this.randomness = randomness;
+		this.duration = duration;
 		this.processors = processors;
 		this.strategy = strategy;
 		
@@ -111,7 +113,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				
 				for (int proccessor = 0; proccessor < processors; proccessor++)
 				{
-					workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, previousClusters, queue));
+					workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, this.duration, previousClusters, queue));
 					
 					threads.add(proccessor, new Thread(workers.get(proccessor)));
 					threads.get(proccessor).start();
@@ -158,42 +160,31 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				
 				statistics.norm = System.currentTimeMillis();
 				
-				double[] minEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
-				double[] maxEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
+				statistics.minEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
+				statistics.maxEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 				
 				for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 				{
-					minEquivalences[i] = Double.MAX_VALUE;
-					maxEquivalences[i] = Double.MIN_VALUE;
+					statistics.minEquivalences[i] = Double.MAX_VALUE;
+					statistics.maxEquivalences[i] = Double.MIN_VALUE;
 				}
 				
 				for (State current : currentStates)
 				{
 					for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 					{
-						minEquivalences[i] = Math.min(minEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
-						maxEquivalences[i] = Math.max(maxEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
-					}
-				}
-				
-				for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
-				{
-					if (minEquivalences[i] == maxEquivalences[i])
-					{
-						minEquivalences[i] = 0.;
-						maxEquivalences[i] = 1.;
+						statistics.minEquivalences[i] = Math.min(statistics.minEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
+						statistics.maxEquivalences[i] = Math.max(statistics.maxEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
 					}
 				}
 				
 				statistics.norm = System.currentTimeMillis() - statistics.norm;
 				
-				// Sort groups
-				
-				// Factorize cluster strategy
+				// Cluster states
 				
 				statistics.cluster = System.currentTimeMillis();
 				
-				SortedMap<Key, List<State>> currentClusters = strategy.execute(currentStates, minEquivalences, maxEquivalences, clusters, timepoint, root);
+				SortedMap<Key, List<State>> currentClusters = strategy.execute(currentStates, statistics.minEquivalences, statistics.maxEquivalences, clusters, timepoint, root);
 				
 				statistics.cluster = System.currentTimeMillis() - statistics.cluster;
 				

@@ -18,15 +18,19 @@ public class KMeansStrategy implements Strategy
 {
 	
 	private int rounds;
+	private long duration;
 	
-	public KMeansStrategy(int rounds)
+	public KMeansStrategy(int rounds, long duration)
 	{
 		this.rounds = rounds;
+		this.duration = duration;
 	}
 
 	@Override
 	public SortedMap<Key, List<State>> execute(List<State> currentStates, double[] minEquivalences, double[] maxEquivalences, int classes, int timepoint, Component root)
 	{
+		long deadline = System.currentTimeMillis() + duration;
+		
 		// Initialize state keys
 		
 		Map<State, Key> keys = new HashMap<>();
@@ -66,7 +70,7 @@ public class KMeansStrategy implements Strategy
 		
 		// Rearrange states for defined number of rounds
 		
-		for (int round = 0; round < rounds; round++)
+		for (int round = 0; System.currentTimeMillis() < deadline && round < rounds; round++)
 		{
 			// Reset state to cluster mapping
 			

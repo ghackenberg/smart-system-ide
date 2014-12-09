@@ -22,5 +22,7 @@ public class Statistics
 	public long stats;
 	public Map<Constraint, Integer> violations;
 	public int zeroOptionCount;
+	public double[] minEquivalences;
+	public double[] maxEquivalences;
 
 }
