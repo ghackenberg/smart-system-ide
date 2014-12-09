@@ -32,6 +32,12 @@ public class Constants
 	public static double VOLUMEN3_LEVEL_MAX = 2.9;
 	public static double VOLUMEN4_LEVEL_MAX = 3.4;
 	
+	public static double HAUPTKRAFTWERK_DISCHARGE_CHANGE_COST = 133.47;
+	public static double WEHR1_DISCHARGE_CHANGE_COST = 3.73;
+	public static double WEHR2_DISCHARGE_CHANGE_COST = 2.35;
+	public static double WEHR3_DISCHARGE_CHANGE_COST = 3.88;
+	public static double WEHR4_DISCHARGE_CHANGE_COST = 3.69;
+	
 	public static double HAUPTKRAFTWERK_TURBINE_DISCHARGE_MAX = 30;
 	public static double WEHR1_TURBINE_DISCHARGE_MAX = 24;
 	public static double WEHR2_TURBINE_DISCHARGE_MAX = 24;

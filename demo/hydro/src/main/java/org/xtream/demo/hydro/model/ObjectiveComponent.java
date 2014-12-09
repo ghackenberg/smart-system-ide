@@ -61,56 +61,25 @@ public class ObjectiveComponent extends Component
 			{
 				double sum = 0;
 				
-				// hauptkraftwerk turbine
+				if (hauptkraftwerkTurbineDischargeInput.get(state, timepoint - 1) != hauptkraftwerkTurbineDischargeInput.get(state, timepoint) || hauptkraftwerkWeirDischargeInput.get(state, timepoint - 1) != hauptkraftwerkWeirDischargeInput.get(state, timepoint))
 				{
-					double diff = hauptkraftwerkTurbineDischargeInput.get(state, timepoint - 1) - hauptkraftwerkTurbineDischargeInput.get(state, timepoint);
-					sum += diff * diff * TURBINE_COST;
+					sum += Constants.HAUPTKRAFTWERK_DISCHARGE_CHANGE_COST;
 				}
-				// wehr1 turbine
+				if (wehr1TurbineDischargeInput.get(state, timepoint - 1) != wehr1TurbineDischargeInput.get(state, timepoint) || wehr1WeirDischargeInput.get(state, timepoint - 1) != wehr1WeirDischargeInput.get(state, timepoint))
 				{
-					double diff = wehr1TurbineDischargeInput.get(state, timepoint - 1) - wehr1TurbineDischargeInput.get(state, timepoint);
-					sum += diff * diff * TURBINE_COST;
+					sum += Constants.WEHR1_DISCHARGE_CHANGE_COST;
 				}
-				// wehr2 turbine
+				if (wehr2TurbineDischargeInput.get(state, timepoint - 1) != wehr2TurbineDischargeInput.get(state, timepoint) || wehr2WeirDischargeInput.get(state, timepoint - 1) != wehr2WeirDischargeInput.get(state, timepoint))
 				{
-					double diff = wehr2TurbineDischargeInput.get(state, timepoint - 1) - wehr2TurbineDischargeInput.get(state, timepoint);
-					sum += diff * diff * TURBINE_COST;
+					sum += Constants.WEHR2_DISCHARGE_CHANGE_COST;
 				}
-				// wehr3 turbine
+				if (wehr3TurbineDischargeInput.get(state, timepoint - 1) != wehr3TurbineDischargeInput.get(state, timepoint) || wehr3WeirDischargeInput.get(state, timepoint - 1) != wehr3WeirDischargeInput.get(state, timepoint))
 				{
-					double diff = wehr3TurbineDischargeInput.get(state, timepoint - 1) - wehr3TurbineDischargeInput.get(state, timepoint);
-					sum += diff * diff * TURBINE_COST;
+					sum += Constants.WEHR3_DISCHARGE_CHANGE_COST;
 				}
-				// wehr4 turbine
+				if (wehr4TurbineDischargeInput.get(state, timepoint - 1) != wehr4TurbineDischargeInput.get(state, timepoint) || wehr4WeirDischargeInput.get(state, timepoint - 1) != wehr4WeirDischargeInput.get(state, timepoint))
 				{
-					double diff = wehr4TurbineDischargeInput.get(state, timepoint - 1) - wehr4TurbineDischargeInput.get(state, timepoint);
-					sum += diff * diff * TURBINE_COST;
-				}
-				
-				// hauptkraftwerk weir
-				{
-					double diff = hauptkraftwerkWeirDischargeInput.get(state, timepoint - 1) - hauptkraftwerkWeirDischargeInput.get(state, timepoint);
-					sum += diff * diff * WEIR_COST;
-				}
-				// wehr1 weir
-				{
-					double diff = wehr1WeirDischargeInput.get(state, timepoint - 1) - wehr1WeirDischargeInput.get(state, timepoint);
-					sum += diff * diff * WEIR_COST;
-				}
-				// wehr2 weir
-				{
-					double diff = wehr2WeirDischargeInput.get(state, timepoint - 1) - wehr2WeirDischargeInput.get(state, timepoint);
-					sum += diff * diff * WEIR_COST;
-				}
-				// wehr3 weir
-				{
-					double diff = wehr3WeirDischargeInput.get(state, timepoint - 1) - wehr3WeirDischargeInput.get(state, timepoint);
-					sum += diff * diff * WEIR_COST;
-				}
-				// wehr4 weir
-				{
-					double diff = wehr4WeirDischargeInput.get(state, timepoint - 1) - wehr4WeirDischargeInput.get(state, timepoint);
-					sum += diff * diff * WEIR_COST;
+					sum += Constants.WEHR4_DISCHARGE_CHANGE_COST;
 				}
 				
 				return costOutput.get(state, timepoint - 1) - sum;
