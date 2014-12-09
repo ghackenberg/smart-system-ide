@@ -20,7 +20,9 @@ public class Key implements Comparable<Key>
 		
 		for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 		{
-			equivalences[i] = Math.random();
+			Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
+			
+			equivalences[i] = Math.random() * equivalence.getWeight();
 		}
 	}
 	
@@ -32,7 +34,16 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				equivalences[i] = (root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint) - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]);
+				Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
+				
+				if (minEquivalences[i] != maxEquivalences[i])
+				{
+					equivalences[i] = (equivalence.getPort().get(state, timepoint) - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * equivalence.getWeight();
+				}
+				else
+				{
+					equivalences[i] = 0;
+				}
 			}
 		}
 	}
@@ -47,11 +58,20 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				double originalValue = root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(state, timepoint);
-				double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
-				double discreteValue = Math.floor(normalizedValue);
+				Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
 				
-				equivalences[i] = discreteValue;
+				if (minEquivalences[i] != maxEquivalences[i])
+				{
+					double originalValue = equivalence.getPort().get(state, timepoint);
+					double normalizedValue = (originalValue - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * scale;
+					double discreteValue = Math.floor(normalizedValue);
+					
+					equivalences[i] = discreteValue;
+				}
+				else
+				{
+					equivalences[i] = 0;
+				}
 			}
 		}
 	}

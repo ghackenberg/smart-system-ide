@@ -24,11 +24,11 @@ public class EquivalenceComponent extends Component
 	/*
 	public Equivalence volumenAverageEquivalence = new Equivalence(volumenAverageOutput);
 	*/
-	public Equivalence speicherseeLevelEquivalence = new Equivalence(speicherseeLevelInput);
-	public Equivalence volumen1LevelEquivalence = new Equivalence(volumen1LevelInput);
-	public Equivalence volumen2LevelEquivalence = new Equivalence(volumen2LevelInput);
-	public Equivalence volumen3LevelEquivalence = new Equivalence(volumen3LevelInput);
-	public Equivalence volumen4LevelEquivalence = new Equivalence(volumen4LevelInput);
+	public Equivalence speicherseeLevelEquivalence = new Equivalence(speicherseeLevelInput, 5);
+	//public Equivalence volumen1LevelEquivalence = new Equivalence(volumen1LevelInput);
+	//public Equivalence volumen2LevelEquivalence = new Equivalence(volumen2LevelInput);
+	//public Equivalence volumen3LevelEquivalence = new Equivalence(volumen3LevelInput);
+	//public Equivalence volumen4LevelEquivalence = new Equivalence(volumen4LevelInput);
 	
 	// Expressions
 	

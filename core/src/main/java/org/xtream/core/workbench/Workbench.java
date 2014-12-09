@@ -35,7 +35,7 @@ import org.xtream.core.model.State;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
 import org.xtream.core.optimizer.beam.Strategy;
-import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
+import org.xtream.core.optimizer.beam.strategies.GridStrategy;
 import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
@@ -45,6 +45,7 @@ import org.xtream.core.workbench.events.JumpEvent;
 import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenPart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
+import org.xtream.core.workbench.parts.EquivalenceChartsPart;
 import org.xtream.core.workbench.parts.ModelScenePart;
 import org.xtream.core.workbench.parts.StateSpacePart;
 import org.xtream.core.workbench.parts.charts.ClusterChartMonitorPart;
@@ -53,7 +54,6 @@ import org.xtream.core.workbench.parts.charts.ObjectiveChartMonitorPart;
 import org.xtream.core.workbench.parts.charts.OptionChartMonitorPart;
 import org.xtream.core.workbench.parts.charts.StateChartMonitorPart;
 import org.xtream.core.workbench.parts.charts.TimeChartMonitorPart;
-import org.xtream.core.workbench.parts.charts.TraceChartMonitorPart;
 import org.xtream.core.workbench.parts.charts.ViolationChartMonitorPart;
 
 import bibliothek.extension.gui.dock.theme.EclipseTheme;
@@ -82,7 +82,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune)
 	{
-		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new TraceChartMonitorPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
+		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new EquivalenceChartsPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
@@ -99,12 +99,12 @@ public class Workbench<T extends Component>
 			// Strategy
 			
 			//Strategy strategy = new RandomStrategy();
-			//Strategy strategy = new GridStrategy();
-			Strategy strategy = new KMeansStrategy(clusterRounds);
+			Strategy strategy = new GridStrategy();
+			//Strategy strategy = new KMeansStrategy(clusterRounds, 750);
 			
 			// Engine
 			
-			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, Runtime.getRuntime().availableProcessors() - 1, strategy);
+			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, 5, Runtime.getRuntime().availableProcessors() - 1, strategy);
 			
 			// Bus
 			
