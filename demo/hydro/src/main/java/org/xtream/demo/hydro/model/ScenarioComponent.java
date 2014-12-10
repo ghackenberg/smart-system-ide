@@ -26,14 +26,14 @@ public class ScenarioComponent extends Component
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
-			return Constants.DATASET.getInflow(0, Constants.START + timepoint);
+			return Constants.DATASET_TEST.getInflow(0, Constants.START + timepoint);
 		}
 	};
 	public Expression<Double> priceExpression = new Expression<Double>(priceOutput)
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
-			return Constants.DATASET.getPrice(Constants.START + timepoint);
+			return Constants.DATASET_TEST.getPrice(Constants.START + timepoint);
 		}
 
 	};

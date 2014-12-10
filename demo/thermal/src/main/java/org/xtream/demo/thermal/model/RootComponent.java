@@ -19,11 +19,13 @@ public abstract class RootComponent extends Component
 	public static int SIZE = 10;
 	public static int DURATION = 96 * 3;
 	public static int SAMPLES = 100;
-	public static int CLASSES = 50;
-	public static int ROUNDS = 1;
+	public static int CLUSTERS = 50;
+	public static int BRANCH_ROUNDS = 2;
+	public static int BRANCH_DURATION = 5;
 	public static double RANDOMNESS = 0.0;
-	public static double CACHING = 0.0;
+	public static boolean PRUNE = true;
 	public static int CLUSTER_ROUNDS = 50;
+	public static int CLUSTER_DURATION = 750;
 	
 	public RootComponent(Stage stage)
 	{

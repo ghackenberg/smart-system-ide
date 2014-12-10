@@ -30,7 +30,7 @@ public class BarrageComponent extends Component
 	public BarrageComponent(int staustufe, int turbine_outflow_past, int turbine_outflow_order, int upper_level_past, int upper_level_order, int lower_level_past, int lower_level_order)
 	{
 		model = new PolynomProduction(staustufe, turbine_outflow_past, turbine_outflow_order, upper_level_past, upper_level_order, lower_level_past, lower_level_order);
-		model.fit(Constants.DATASET);
+		model.fit(Constants.DATASET_TEST);
 	}
 	
 	// Ports
@@ -74,7 +74,7 @@ public class BarrageComponent extends Component
 				}
 				else
 				{
-					turbine_outflow_past[turbine_outflow_past.length - 1 - i] = Constants.DATASET.getOutflowTurbine(model.getStaustufe(), Constants.START + timepoint - i);
+					turbine_outflow_past[turbine_outflow_past.length - 1 - i] = Constants.DATASET_TEST.getOutflowTurbine(model.getStaustufe(), Constants.START + timepoint - i);
 				}
 			}
 			for (int i = 0; i < model.getUpperLevelPast(); i++)
@@ -85,7 +85,7 @@ public class BarrageComponent extends Component
 				}
 				else
 				{
-					upper_level_past[upper_level_past.length - 1 - i] = Constants.DATASET.getLevel(model.getStaustufe(), Constants.START + timepoint - i);
+					upper_level_past[upper_level_past.length - 1 - i] = Constants.DATASET_TEST.getLevel(model.getStaustufe(), Constants.START + timepoint - i);
 				}
 			}
 			for (int i = 0; i < model.getLowerLevelPast(); i++)
@@ -96,7 +96,7 @@ public class BarrageComponent extends Component
 				}
 				else
 				{
-					lower_level_past[lower_level_past.length - 1 - i] = Constants.DATASET.getLevel(model.getStaustufe() + 1, Constants.START + timepoint - i);
+					lower_level_past[lower_level_past.length - 1 - i] = Constants.DATASET_TEST.getLevel(model.getStaustufe() + 1, Constants.START + timepoint - i);
 				}
 			}
 			

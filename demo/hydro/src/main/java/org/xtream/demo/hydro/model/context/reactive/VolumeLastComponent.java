@@ -19,7 +19,7 @@ public class VolumeLastComponent extends Component
 	public VolumeLastComponent(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order)
 	{
 		model = new PolynomLevelLast(staustufe, level_past, level_order, inflow_past, inflow_order);
-		model.fit(Constants.DATASET);
+		model.fit(Constants.DATASET_TRAIN);
 	}
 	
 	// Ports
@@ -41,7 +41,7 @@ public class VolumeLastComponent extends Component
 		{
 			if (timepoint == 0)
 			{
-				return Constants.DATASET.getLevel(model.getStaustufe(), Constants.START + timepoint);
+				return Constants.DATASET_TEST.getLevel(model.getStaustufe(), Constants.START + timepoint);
 			}
 			else
 			{
@@ -56,7 +56,7 @@ public class VolumeLastComponent extends Component
 					}
 					else
 					{
-						levels[levels.length - 1 - i] = Constants.DATASET.getLevel(model.getStaustufe(), Constants.START + timepoint - 1 - i);
+						levels[levels.length - 1 - i] = Constants.DATASET_TEST.getLevel(model.getStaustufe(), Constants.START + timepoint - 1 - i);
 					}
 				}
 				for (int i = 0; i < model.getInflowPast(); i++)
@@ -67,7 +67,7 @@ public class VolumeLastComponent extends Component
 					}
 					else
 					{
-						inflows[inflows.length - 1 - i] = Constants.DATASET.getInflow(model.getStaustufe(), Constants.START + timepoint - i);
+						inflows[inflows.length - 1 - i] = Constants.DATASET_TEST.getInflow(model.getStaustufe(), Constants.START + timepoint - i);
 					}
 				}
 				

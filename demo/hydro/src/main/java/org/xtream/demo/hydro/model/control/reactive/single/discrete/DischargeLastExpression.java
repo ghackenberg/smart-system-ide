@@ -22,7 +22,7 @@ public class DischargeLastExpression extends NonDeterministicExpression<Double>
 		
 		if (timepoint == 0)
 		{
-			previous = Constants.DATASET.getOutflowTotal(5, Constants.START + timepoint - 1);
+			previous = Constants.DATASET_TEST.getOutflowTotal(5, Constants.START + timepoint - 1);
 		}
 		else
 		{

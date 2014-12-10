@@ -20,6 +20,9 @@ import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
+import org.xtream.core.optimizer.beam.Engine;
+import org.xtream.core.optimizer.beam.Strategy;
+import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -29,7 +32,13 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), Constants.DURATION, Constants.SAMPLES, Constants.CLUSTERS, Constants.ROUNDS, Constants.RANDOM, Constants.CACHING, Constants.CLUSTER_ROUNDS, Constants.PRUNE);
+		Strategy strategy = new KMeansStrategy(Constants.CLUSTER_ROUNDS, Constants.CLUSTER_DURATION);
+		//Strategy strategy = new GridStrategy();
+		//Strategy strategy = new RandomStrategy();
+		
+		Engine<RootComponent> engine = new Engine<>(new RootComponent(), Constants.SAMPLES, Constants.CLUSTERS, Constants.BRANCH_ROUNDS, Constants.BRANCH_DURATION, Constants.RANDOMNESS, Constants.PRUNE, strategy);
+		
+		new Workbench<>(engine, Constants.DURATION);
 	}
 	
 	// Components

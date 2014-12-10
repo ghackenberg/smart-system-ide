@@ -6,7 +6,6 @@ import org.xtream.core.model.Port;
 import org.xtream.core.model.State;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.core.model.markers.Equivalence;
 import org.xtream.demo.hydro.model.Constants;
 
 public class RiverComponent extends Component
@@ -63,10 +62,6 @@ public class RiverComponent extends Component
 	
 	public Constraint levelConstraint = new Constraint(levelConstraintOutput);
 	public Constraint dischargeConstraint = new Constraint(dischargeConstraintOutput);
-	
-	// Equivalences
-	
-	public Equivalence dischargeEquivalence = new Equivalence(wehr4.dischargeOutput);
 	
 	// Expressions
 	
@@ -142,7 +137,7 @@ public class RiverComponent extends Component
 			
 			if (timepoint == 0)
 			{
-				discharge_previous = Constants.DATASET.getOutflowTotal(5, Constants.START + timepoint - 1);
+				discharge_previous = Constants.DATASET_TEST.getOutflowTotal(5, Constants.START + timepoint - 1);
 			}
 			else
 			{

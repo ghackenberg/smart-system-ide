@@ -120,7 +120,7 @@ public class ComponentChartsPart<T extends Component> extends Part<T>
 	
 	public void update(int timepoint)
 	{
-		if (timepoint == -1)
+		if (timepoint == -1 || container == null)
 		{
 			return;
 		}

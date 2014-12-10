@@ -28,7 +28,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	}
 	
 	@Override
-	public State run(int duration, boolean prune, Monitor<T> monitor)
+	public State run(int duration, Monitor<T> monitor)
 	{
 		// Start monitor
 		
@@ -63,7 +63,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 		return best;
 	}
 	
-	public State follow(State previous, State best, int timepoint, int duration, Key key, Map<Key, List<State>> clusters, Monitor<T> monitor, Statistics statistics) 
+	private State follow(State previous, State best, int timepoint, int duration, Key key, Map<Key, List<State>> clusters, Monitor<T> monitor, Statistics statistics) 
 	{
 	   for (int i = 0; i < samples; i++)
 	   {

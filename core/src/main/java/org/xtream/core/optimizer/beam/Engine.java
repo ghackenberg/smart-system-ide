@@ -25,42 +25,53 @@ import org.xtream.core.optimizer.beam.strategies.RandomStrategy;
 public class Engine<T extends Component> extends org.xtream.core.optimizer.Engine<T>
 {
 	
-	private int processors;
-	private List<Thread> threads;
-	private List<Worker<T>> workers;
 	private int samples;
 	private int clusters;
-	private int rounds;
+	private int branch_rounds;
+	private long branch_duration;
 	private double randomness;
-	private long duration;
+	private boolean prune;
 	private Strategy strategy;
+	private int processors;
 	
-	public Engine(T root, int samples, int clusters, int rounds, double randomness, long duration)
+	private List<Thread> threads;
+	private List<Worker<T>> workers;
+
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration)
 	{
-		this(root, samples, clusters, rounds, randomness, duration, Runtime.getRuntime().availableProcessors());
+		this(root, samples, clusters, branch_rounds, branch_duration, 0.25);
 	}
-	public Engine(T root, int samples, int classes, int rounds, double randomness, long duration, int processors)
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness)
 	{
-		this(root, samples, classes, rounds, randomness, duration, processors, new RandomStrategy());
+		this(root, samples, clusters, branch_rounds, branch_duration, randomness, true);
 	}
-	public Engine(T root, int samples, int classes, int rounds, double randomness, long duration, int processors, Strategy strategy)
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune)
+	{
+		this(root, samples, clusters, branch_rounds, branch_duration, randomness, prune, new RandomStrategy());
+	}
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune, Strategy strategy)
+	{
+		this(root, samples, clusters, branch_rounds, branch_duration, randomness, prune, strategy, Runtime.getRuntime().availableProcessors() - 1);
+	}
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune, Strategy strategy, int processors)
 	{
 		super(root);
 		
 		this.samples = samples;
-		this.clusters = classes;
-		this.rounds = rounds;
+		this.clusters = clusters;
+		this.branch_rounds = branch_rounds;
+		this.branch_duration = branch_duration;
 		this.randomness = randomness;
-		this.duration = duration;
-		this.processors = processors;
+		this.prune = prune;
 		this.strategy = strategy;
+		this.processors = processors;
 		
 		threads = new ArrayList<>(processors);
 		workers = new ArrayList<>(processors);
 	}
 	
 	@Override
-	public State run(int duration, boolean prune, Monitor<T> monitor)
+	public State run(int duration, Monitor<T> monitor)
 	{
 		// Start monitor
 		
@@ -80,7 +91,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 		
 		// Run optimization
 		
-		best = run(prune, 0, duration, best, clusters, monitor);
+		best = run(0, duration, best, clusters, monitor);
 		
 		// Stop monitor
 		
@@ -91,11 +102,11 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 		return best;
 	}
 	
-	private State run(boolean prune, int timepoint, int duration, State best, SortedMap<Key, List<State>> previousClusters, Monitor<T> monitor)
+	private State run(int timepoint, int duration, State best, SortedMap<Key, List<State>> previousClusters, Monitor<T> monitor)
 	{
 		if (timepoint < duration)
 		{
-			for (int round = 0; best.getTimepoint() < (duration - 1) && round < rounds; round++)
+			for (int round = 0; best.getTimepoint() < (duration - 1) && round < branch_rounds; round++)
 			{
 				// Prepare statistics
 				
@@ -113,7 +124,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				
 				for (int proccessor = 0; proccessor < processors; proccessor++)
 				{
-					workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, this.duration, previousClusters, queue));
+					workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, this.branch_duration, previousClusters, queue));
 					
 					threads.add(proccessor, new Thread(workers.get(proccessor)));
 					threads.get(proccessor).start();
@@ -270,7 +281,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 					
 					// Follow clusters
 					
-					best = run(prune, timepoint + 1, duration, best, currentClusters, monitor);
+					best = run(timepoint + 1, duration, best, currentClusters, monitor);
 				}
 				else
 				{
