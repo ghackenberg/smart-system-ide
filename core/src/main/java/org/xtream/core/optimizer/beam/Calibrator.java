@@ -60,7 +60,7 @@ public abstract class Calibrator<T extends Component>
 						{
 							CalibrationMonitor<T> monitor = new CalibrationMonitor<>();
 							
-							new Engine<>(root, samples, classes, 1, random, processors).run(duration, true, monitor);
+							new Engine<>(root, samples, classes, 1, 5, random).run(duration, monitor);
 							
 							System.out.print(iteration + " ");					
 							

@@ -34,8 +34,6 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
 import org.xtream.core.optimizer.Engine;
 import org.xtream.core.optimizer.Monitor;
-import org.xtream.core.optimizer.beam.Strategy;
-import org.xtream.core.optimizer.beam.strategies.GridStrategy;
 import org.xtream.core.utilities.monitors.CMDMonitor;
 import org.xtream.core.utilities.monitors.CSVMonitor;
 import org.xtream.core.utilities.monitors.CompositeMonitor;
@@ -67,7 +65,6 @@ public class Workbench<T extends Component>
 	
 	private static String TITLE = "XTREAM - Dynamic Optimization Framework";
 	
-	private Engine<T> engine;
 	private Bus<T> bus;
 	private JSlider slider;
 	private int timepoint = -1;
@@ -75,48 +72,37 @@ public class Workbench<T extends Component>
 	private int speed = 1000;
 	private int sliderMax;
 	
-	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds)
+	public Workbench(T root, int duration)
 	{
-		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, true);
+		this(new org.xtream.core.optimizer.beam.Engine<>(root, 100, 100, 2, 5), duration);
 	}
 	
-	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune)
+	public Workbench(Engine<T> engine, int duration)
 	{
-		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, prune, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new EquivalenceChartsPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
-	}
-	
-	@SafeVarargs
-	public Workbench(T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, Part<T>... parts)
-	{
-		this(root, duration, samples, clusters, rounds, randomness, caching, clusterRounds, true, parts);
+		this(engine, duration, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new EquivalenceChartsPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
-	public Workbench(final T root, int duration, int samples, int clusters, int rounds, double randomness, double caching, int clusterRounds, boolean prune, Part<T>... parts)
+	public Workbench(Engine<T> engine, int duration, Part<T>... parts)
 	{
 		try
 		{
-			// Strategy
+			final T root = engine.getRoot();
 			
-			//Strategy strategy = new RandomStrategy();
-			Strategy strategy = new GridStrategy();
-			//Strategy strategy = new KMeansStrategy(clusterRounds, 750);
-			
-			// Engine
-			
-			engine = new org.xtream.core.optimizer.beam.Engine<>(root, samples, clusters, rounds, randomness, 5, Runtime.getRuntime().availableProcessors() - 1, strategy);
+			// Init
+
+			root.init(0.0);
 			
 			// Bus
 			
 			bus = new Bus<T>();
+			
+			// Parts
+			
 			for (Part<T> part : parts)
 			{
 				part.setBus(bus);
 			}
-			
-			// Root
-			
-			root.init(caching);
 			for (Part<T> part : parts)
 			{
 				part.setRoot(root);
@@ -125,28 +111,14 @@ public class Workbench<T extends Component>
 			// Controls
 			
 			JTextField durationField = new JTextField("" + duration, 5);
-			JTextField samplesField = new JTextField("" + samples, 5);
-			JTextField clustersField = new JTextField("" + clusters, 5);
-			JTextField roundsField = new JTextField("" + rounds, 5);
-			JTextField randomnessField = new JTextField("" + randomness, 5);
-			JTextField cachingField = new JTextField("" + caching, 5);
-			JTextField clusterRoundsField = new JTextField("" + clusterRounds, 5);
-			
 			durationField.setEditable(false);
-			samplesField.setEditable(false);
-			clustersField.setEditable(false);
-			roundsField.setEditable(false);
-			randomnessField.setEditable(false);
-			cachingField.setEditable(false);
-			clusterRoundsField.setEditable(false);
 			
 			JProgressBar timeBar = new JProgressBar();
-			JProgressBar memoryBar = new JProgressBar();
-			
 			timeBar.setStringPainted(true);
-			memoryBar.setStringPainted(true);
-			
 			timeBar.setForeground(Color.GREEN);
+			
+			JProgressBar memoryBar = new JProgressBar();
+			memoryBar.setStringPainted(true);
 			memoryBar.setForeground(Color.RED);
 			
 			slider = new JSlider(0, 0, 0);
@@ -198,18 +170,6 @@ public class Workbench<T extends Component>
 			topbar.setLayout(new FlowLayout(FlowLayout.LEFT));
 			topbar.add(new JLabel("Duration"));
 			topbar.add(durationField);
-			topbar.add(new JLabel("Clusters"));
-			topbar.add(clustersField);
-			topbar.add(new JLabel("Samples"));
-			topbar.add(samplesField);
-			topbar.add(new JLabel("Rounds"));
-			topbar.add(roundsField);
-			topbar.add(new JLabel("Randomness"));
-			topbar.add(randomnessField);
-			topbar.add(new JLabel("Caching"));
-			topbar.add(cachingField);
-			topbar.add(new JLabel("Cluster Rounds"));
-			topbar.add(clusterRoundsField);
 			topbar.addSeparator();
 			topbar.add(new JLabel("Time"));
 			topbar.add(timeBar);
@@ -276,13 +236,12 @@ public class Workbench<T extends Component>
 			
 			// run
 			
-			final State best = engine.run(duration, prune, allMonitor);
+			final State best = engine.run(duration, allMonitor);
 			sliderMax = slider.getMaximum();
 			
 			// print
 			
 			CSVPrinter<T> printer = new CSVPrinter<>(new PrintStream("Printer.csv"));
-			
 			printer.print(root, best, best.getTimepoint());
 			
 			// timer

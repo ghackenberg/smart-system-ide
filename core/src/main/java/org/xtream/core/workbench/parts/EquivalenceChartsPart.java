@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.CategoryTableXYDataset;
 import org.xtream.core.model.Component;
@@ -84,6 +85,7 @@ public class EquivalenceChartsPart<T extends Component> extends Part<T>
 			JFreeChart chart = ChartFactory.createXYLineChart(equivalence.getQualifiedName(), "Step", "Value", dataset, PlotOrientation.VERTICAL, true, false, false);
 			chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 			chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
+			((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
 			charts.put(equivalence, chart);
 			
 			ChartPanel chart_panel = new ChartPanel(chart);
@@ -109,7 +111,7 @@ public class EquivalenceChartsPart<T extends Component> extends Part<T>
 	{
 		super.handle(timepoint, statistics, clusters, best);
 		
-		if (statistics.minEquivalences != null && statistics.maxEquivalences != null)
+		if (clusters.size() > 0 && statistics.minEquivalences != null && statistics.maxEquivalences != null)
 		{
 			for (int i = 0; i < equivalences.size(); i++)
 			{

@@ -10,6 +10,7 @@ import org.xtream.core.model.expressions.ConstantNonDeterministicExpression;
 import org.xtream.core.model.expressions.ConstantProbabilisticExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Equivalence;
+import org.xtream.core.optimizer.beam.Engine;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -18,14 +19,12 @@ public class RootComponent extends Component
 	private static final int DURATION = 96;
 	private static final int SAMPLES = 100;
 	private static final int CLUSTERS = 10;
-	private static final int ROUNDS = 1;
-	private static final double RANDOMNESS = 0.0;
-	private static final double CACHING = 0.0;
-	private static final int CLUSTER_ROUNDS = 50;
+	private static final int BRANCH_ROUNDS = 1;
+	private static final int BRANCH_DURATION = 5;
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), DURATION, SAMPLES, CLUSTERS, ROUNDS, RANDOMNESS, CACHING, CLUSTER_ROUNDS);
+		new Workbench<>(new Engine<Component>(new RootComponent(), SAMPLES, CLUSTERS, BRANCH_ROUNDS, BRANCH_DURATION), DURATION);
 	}
 	
 	////////////

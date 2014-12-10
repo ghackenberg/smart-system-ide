@@ -5,6 +5,7 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.charts.Timeline;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.optimizer.beam.Engine;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -12,7 +13,7 @@ public class RootComponent extends Component
 
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(2), 96, 50, 25, 1, 0, 0, 50);
+		new Workbench<>(new Engine<>(new RootComponent(2), 100, 100, 2, 5), 96);
 	}
 	
 	// Constructors

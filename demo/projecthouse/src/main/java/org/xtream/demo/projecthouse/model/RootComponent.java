@@ -2,6 +2,9 @@ package org.xtream.demo.projecthouse.model;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.expressions.ChannelExpression;
+import org.xtream.core.optimizer.beam.Engine;
+import org.xtream.core.optimizer.beam.Strategy;
+import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
 import org.xtream.core.workbench.Workbench;
 import org.xtream.demo.projecthouse.model.battery.BatteryModule;
 import org.xtream.demo.projecthouse.model.room.RoomModule;
@@ -36,7 +39,11 @@ public class RootComponent extends Component {
 	private static final String NET_CSV = "net.csv";
 
 	public static void main(String[] args) {
-		new Workbench<>(new RootComponent(), 144, 100, 50, 1, 0, 0, 50);
+		Strategy strategy = new KMeansStrategy(1000, 750);
+		
+		Engine<RootComponent> engine = new Engine<>(new RootComponent(), 100, 100, 2, 5, 0.25, true, strategy);
+		
+		new Workbench<>(engine, 144);
 	}
 	
 	//Sun
