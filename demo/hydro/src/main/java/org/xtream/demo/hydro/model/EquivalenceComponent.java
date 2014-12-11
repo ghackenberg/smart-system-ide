@@ -17,7 +17,7 @@ public class EquivalenceComponent extends Component
 	
 	// Equivalences
 	
-	public Equivalence speicherseeLevelEquivalence = new Equivalence(speicherseeLevelInput, 100);
+	public Equivalence speicherseeLevelEquivalence = new Equivalence(speicherseeLevelInput, 200);
 	public Equivalence volumen1LevelEquivalence = new Equivalence(volumen1LevelInput);
 	public Equivalence volumen2LevelEquivalence = new Equivalence(volumen2LevelInput);
 	public Equivalence volumen3LevelEquivalence = new Equivalence(volumen3LevelInput);
