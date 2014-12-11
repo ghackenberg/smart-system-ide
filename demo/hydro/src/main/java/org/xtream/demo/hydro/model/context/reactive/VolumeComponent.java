@@ -16,6 +16,7 @@ import org.xtream.core.model.components.transforms.chains.TranslationComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.model.markers.Equivalence;
 
 public abstract class VolumeComponent extends Component
 {
@@ -24,17 +25,23 @@ public abstract class VolumeComponent extends Component
 	
 	private int staustufe;
 	
+	private int inflowPast;
+	
 	private double levelMin;
 	private double levelMax;
 	
 	// Constructors
 	
-	public VolumeComponent(int staustufe, double levelMin, double levelMax)
+	public VolumeComponent(int staustufe, int inflowPast, double levelMin, double levelMax)
 	{
 		this.staustufe = staustufe;
 		
+		this.inflowPast = inflowPast;
+		
 		this.levelMin = levelMin;
 		this.levelMax = levelMax;
+		
+		inflowFutureEquivalence = new Equivalence(inflowFutureOutput, staustufe == 4 ? 50 : 1);
 	}
 	
 	// Ports
@@ -48,9 +55,15 @@ public abstract class VolumeComponent extends Component
 	public Port<Double> levelOutput = new Port<Double>();
 	public Port<Boolean> bandOutput = new Port<Boolean>();
 	
+	public Port<Double> inflowFutureOutput = new Port<Double>();
+	
 	// Constraints
 	
 	public Constraint bandConstraint = new Constraint(bandOutput);
+	
+	// Equivalences
+	
+	public Equivalence inflowFutureEquivalence;
 	
 	// Charts
 	
@@ -78,6 +91,27 @@ public abstract class VolumeComponent extends Component
 		@Override protected Boolean evaluate(State state, int timepoint)
 		{
 			return levelOutput.get(state, timepoint) >= levelMin - 0.01 && levelOutput.get(state, timepoint) <= levelMax + 0.01;
+		}
+	};
+	public Expression<Double> inflowFutureExpression = new Expression<Double>(inflowFutureOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			double result = 0;
+			
+			for (int i = 0; i < inflowPast - 1; i++)
+			{
+				if (timepoint - i >= 0)
+				{
+					result += inflowInput.get(state, timepoint - i);
+				}
+				else
+				{
+					break;
+				}
+			}
+			
+			return result;
 		}
 	};
 	

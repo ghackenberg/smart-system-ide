@@ -17,7 +17,7 @@ public class VolumeDirectComponent extends VolumeComponent
 	
 	public VolumeDirectComponent(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, double levelMin, double levelMax)
 	{
-		super(staustufe, levelMin, levelMax);
+		super(staustufe, inflow_past, levelMin, levelMax);
 		
 		model = new PolynomLevelDirect(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 		model.fit(Constants.DATASET_TRAIN);

@@ -17,7 +17,7 @@ public class VolumeDeltaComponent extends VolumeComponent
 	
 	public VolumeDeltaComponent(int staustufe, int inflow_past, int inflow_order, int outflow_past, int outflow_order, double levelMin, double levelMax)
 	{
-		super(staustufe, levelMin, levelMax);
+		super(staustufe, inflow_past, levelMin, levelMax);
 		
 		model = new PolynomLevelDelta(staustufe, inflow_past, inflow_order, outflow_past, outflow_order);
 		model.fit(Constants.DATASET_TRAIN);
