@@ -7,6 +7,7 @@ import org.xtream.core.model.State;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.demo.hydro.model.Constants;
+import org.xtream.demo.hydro.model.context.reactive.volume.VolumeDirectComponent;
 
 public class RiverComponent extends Component
 {
@@ -44,12 +45,19 @@ public class RiverComponent extends Component
 	public Port<Boolean> dischargeConstraintOutput = new Port<>();
 	
 	// Components
-	
-	public VolumeComponent speichersee = new VolumeComponent(0, 1, 1, 1, 1, 1, 1, 315, 315 + Constants.SPEICHERSEE_LEVEL_MAX);
-	public VolumeComponent volumen1 = new VolumeComponent(1, 1, 1, 1, 1, 1, 1, 275.4, 275.4 + Constants.VOLUMEN1_LEVEL_MAX);
-	public VolumeComponent volumen2 = new VolumeComponent(2, 1, 1, 1, 1, 1, 1, 271.7, 271.7 + Constants.VOLUMEN2_LEVEL_MAX);
-	public VolumeComponent volumen3 = new VolumeComponent(3, 1, 1, 5, 1, 1, 1, 269.2, 269.2 + Constants.VOLUMEN3_LEVEL_MAX);
-	public VolumeComponent volumen4 = new VolumeComponent(4, 1, 1, 15, 1, 1, 1, 267.6, 267.6 + Constants.VOLUMEN4_LEVEL_MAX);
+
+	public VolumeComponent speichersee = new VolumeDirectComponent(0, 1, 1, 1, 1, 1, 1, 315, 315 + Constants.SPEICHERSEE_LEVEL_MAX);
+	public VolumeComponent volumen1 = new VolumeDirectComponent(1, 1, 1, 1, 1, 1, 1, 275.4, 275.4 + Constants.VOLUMEN1_LEVEL_MAX);
+	public VolumeComponent volumen2 = new VolumeDirectComponent(2, 1, 1, 1, 1, 1, 1, 271.7, 271.7 + Constants.VOLUMEN2_LEVEL_MAX);
+	public VolumeComponent volumen3 = new VolumeDirectComponent(3, 1, 1, 5, 1, 1, 1, 269.2, 269.2 + Constants.VOLUMEN3_LEVEL_MAX);
+	public VolumeComponent volumen4 = new VolumeDirectComponent(4, 1, 1, 15, 1, 1, 1, 267.6, 267.6 + Constants.VOLUMEN4_LEVEL_MAX);
+	/*
+	public VolumeComponent speichersee = new VolumeDeltaComponent(0, 1, 1, 1, 1, 315, 315 + Constants.SPEICHERSEE_LEVEL_MAX);
+	public VolumeComponent volumen1 = new VolumeDeltaComponent(1, 1, 1, 1, 1, 275.4, 275.4 + Constants.VOLUMEN1_LEVEL_MAX);
+	public VolumeComponent volumen2 = new VolumeDeltaComponent(2, 1, 1, 1, 1, 271.7, 271.7 + Constants.VOLUMEN2_LEVEL_MAX);
+	public VolumeComponent volumen3 = new VolumeDeltaComponent(3, 5, 1, 1, 1, 269.2, 269.2 + Constants.VOLUMEN3_LEVEL_MAX);
+	public VolumeComponent volumen4 = new VolumeDeltaComponent(4, 15, 1, 1, 1, 267.6, 267.6 + Constants.VOLUMEN4_LEVEL_MAX);
+	*/
 	public VolumeLastComponent volumen5 = new VolumeLastComponent(5, 1, 1, 1, 1);
 	
 	public BarrageComponent hauptkraftwerk = new BarrageComponent(0, 1, 1, 1, 1, 1, 1);

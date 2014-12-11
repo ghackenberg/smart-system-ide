@@ -1,6 +1,6 @@
 package org.xtream.demo.hydro.data;
 
-public class PolynomLevel
+public class PolynomLevelDirect
 {
 	
 	private int staustufe;
@@ -18,7 +18,7 @@ public class PolynomLevel
 	
 	private double[] beta;
 	
-	public PolynomLevel(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
+	public PolynomLevelDirect(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order)
 	{
 		this.staustufe = staustufe;
 		
@@ -62,7 +62,7 @@ public class PolynomLevel
 	
 	public void fit(Dataset dataset)
 	{
-		beta = PolynomTrainer.trainLevelModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+		beta = PolynomTrainer.trainLevelDirectModel(dataset, staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 	}
 	
 	public double estimate(double[] levels, double[] inflows, double[] outflows)

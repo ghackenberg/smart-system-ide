@@ -7,7 +7,7 @@ import java.io.IOException;
 public class PolynomTester
 {
 	
-	public static double[] testLevelModel(PolynomLevel model, Dataset data, int start, int length, String result_path) throws IOException
+	public static double[] testLevelModel(PolynomLevelDirect model, Dataset data, int start, int length, String result_path) throws IOException
 	{
 		System.out.println("testLevelModel(model, data, " + start + ", " + length + ", \"" + result_path + "\")");
 		

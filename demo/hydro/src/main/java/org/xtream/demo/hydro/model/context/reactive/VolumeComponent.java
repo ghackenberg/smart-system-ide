@@ -16,28 +16,25 @@ import org.xtream.core.model.components.transforms.chains.TranslationComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
-import org.xtream.demo.hydro.data.PolynomLevel;
-import org.xtream.demo.hydro.model.Constants;
 
-public class VolumeComponent extends Component
+public abstract class VolumeComponent extends Component
 {
 	
 	// Parameters
 	
+	private int staustufe;
+	
 	private double levelMin;
 	private double levelMax;
 	
-	private PolynomLevel model;
-	
 	// Constructors
 	
-	public VolumeComponent(int staustufe, int level_past, int level_order, int inflow_past, int inflow_order, int outflow_past, int outflow_order, double levelMin, double levelMax)
+	public VolumeComponent(int staustufe, double levelMin, double levelMax)
 	{
+		this.staustufe = staustufe;
+		
 		this.levelMin = levelMin;
 		this.levelMax = levelMax;
-		
-		model = new PolynomLevel(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
-		model.fit(Constants.DATASET_TRAIN);
 	}
 	
 	// Ports
@@ -62,58 +59,6 @@ public class VolumeComponent extends Component
 	
 	// Expressions
 	
-	public Expression<Double> levelExpression = new Expression<Double>(levelOutput, true)
-	{
-		@Override protected Double evaluate(State state, int timepoint)
-		{
-			if (timepoint == 0)
-			{
-				return Constants.DATASET_TEST.getLevel(model.getStaustufe(), Constants.START + timepoint);
-			}
-			else
-			{
-				double[] levels = new double[model.getLevelPast()];
-				double[] inflows = new double[model.getInflowPast()];
-				double[] outflows = new double[model.getOutflowPast()];
-				
-				for (int i = 0; i < model.getLevelPast(); i++)
-				{
-					if (i < timepoint)
-					{
-						levels[levels.length - 1 - i] = levelOutput.get(state, timepoint - 1 - i);
-					}
-					else
-					{
-						levels[levels.length - 1 - i] = Constants.DATASET_TEST.getLevel(model.getStaustufe(), Constants.START + timepoint - 1 - i);
-					}
-				}
-				for (int i = 0; i < model.getInflowPast(); i++)
-				{
-					if (i <= timepoint)
-					{
-						inflows[inflows.length - 1 - i] = inflowInput.get(state, timepoint - i);
-					}
-					else
-					{
-						inflows[inflows.length - 1 - i] = Constants.DATASET_TEST.getInflow(model.getStaustufe(), Constants.START + timepoint - i);
-					}
-				}
-				for (int i = 0; i < model.getOutflowPast(); i++)
-				{
-					if (i <= timepoint)
-					{
-						outflows[outflows.length - 1 - i] = outflowInput.get(state, timepoint - i);
-					}
-					else
-					{
-						outflows[outflows.length - 1 - i] = Constants.DATASET_TEST.getOutflowTotal(model.getStaustufe(), Constants.START + timepoint - i);
-					}
-				}
-				
-				return model.estimate(levels, inflows, outflows);
-			}
-		}
-	};
 	public Expression<Double> levelMinExpression = new Expression<Double>(levelMinOutput)
 	{
 		@Override protected Double evaluate(State state, int timepoint)
@@ -162,7 +107,7 @@ public class VolumeComponent extends Component
 			@Override
 			protected Double evaluate(State state, int timepoint)
 			{
-				return model.getStaustufe() * 2.;
+				return staustufe * 2.;
 			}
 		};
 	};
@@ -186,7 +131,7 @@ public class VolumeComponent extends Component
 			@Override
 			protected Double evaluate(State state, int timepoint)
 			{
-				return model.getStaustufe() * 2.;
+				return staustufe * 2.;
 			}
 		};
 	};
@@ -210,7 +155,7 @@ public class VolumeComponent extends Component
 			@Override
 			protected Double evaluate(State state, int timepoint)
 			{
-				return model.getStaustufe() * 2.;
+				return staustufe * 2.;
 			}
 		};
 	};

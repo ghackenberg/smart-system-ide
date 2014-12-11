@@ -164,7 +164,7 @@ public class PolynomOptimizer
 											
 											// Model
 											
-											PolynomLevel model = new PolynomLevel(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
+											PolynomLevelDirect model = new PolynomLevelDirect(staustufe, level_past, level_order, inflow_past, inflow_order, outflow_past, outflow_order);
 											model.fit(data_2012);
 											
 											// Error

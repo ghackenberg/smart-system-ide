@@ -20,13 +20,13 @@ public class Constants
 	public static int CLUSTERS = PRUNE ? 100 : 1;
 	public static int BRANCH_ROUNDS = PRUNE ? 2 : 1;
 	public static int BRANCH_DURATION = 10;
-	public static double RANDOMNESS = 1;
+	public static double RANDOMNESS = 0.5;
 	public static int CLUSTER_ROUNDS = PRUNE ? 1000 : 1;
 	public static int CLUSTER_DURATION = 1000;
 	
-	public static Dataset DATASET_TRAIN = DATASET_2013;
+	public static Dataset DATASET_TRAIN = DATASET_2012;
 	public static Dataset DATASET_TEST = DATASET_2011;
-	public static int START = WEEK * 10;
+	public static int START = WEEK * 4;
 	
 	public static double SPEICHERSEE_LEVEL_MAX = 5;
 	public static double VOLUMEN1_LEVEL_MAX = 1.6;
@@ -62,13 +62,13 @@ public class Constants
 	public static int WEHR1_TURBINE_STEPS = 2;
 	public static int WEHR2_TURBINE_STEPS = 2;
 	public static int WEHR3_TURBINE_STEPS = 2;
-	public static int WEHR4_TURBINE_STEPS = 10;
+	public static int WEHR4_TURBINE_STEPS = 5;
 
-	public static int HAUPTKRAFTWERK_WEIR_STEPS = 10;
-	public static int WEHR1_WEIR_STEPS = 10;
-	public static int WEHR2_WEIR_STEPS = 10;
-	public static int WEHR3_WEIR_STEPS = 10;
-	public static int WEHR4_WEIR_STEPS = 10;
+	public static int HAUPTKRAFTWERK_WEIR_STEPS = 2;
+	public static int WEHR1_WEIR_STEPS = 2;
+	public static int WEHR2_WEIR_STEPS = 2;
+	public static int WEHR3_WEIR_STEPS = 2;
+	public static int WEHR4_WEIR_STEPS = 5;
 	
 	public static int WEHR4_STEPS = 10;
 

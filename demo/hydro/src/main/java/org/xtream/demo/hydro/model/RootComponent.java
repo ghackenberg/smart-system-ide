@@ -104,6 +104,7 @@ public class RootComponent extends Component
 	
 	// Objectives
 	
+	//public Objective objectiveMarker = new MaxObjective(context_reactive.speicherseeLevelOutput);
 	public Objective objectiveMarker = new MaxObjective(objective_reactive.objectiveOutput);
 	
 	// Charts
