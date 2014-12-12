@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.State;
+import org.xtream.core.model.markers.Equivalence;
 import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.optimizer.beam.Strategy;
 
@@ -148,10 +149,11 @@ public class KMeansStrategy implements Strategy
 				else
 				{
 					// Initialize the cluster dimensions randomly
+					List<Equivalence> equivalences = root.getDescendantsByClass(Equivalence.class);
 					
-					for (int i = 0; i < cluster.getKey().equivalences.length; i++)
+					for (int i = 0; i < equivalences.size(); i++)
 					{
-						cluster.getKey().equivalences[i] = Math.random();
+						cluster.getKey().equivalences[i] = Math.random() * equivalences.get(i).getWeight();
 					}
 				}
 			}
