@@ -2,7 +2,6 @@ package org.xtream.demo.hydro.model.control.reactive.single;
 
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
-import org.xtream.core.model.markers.Equivalence;
 import org.xtream.demo.hydro.model.Constants;
 
 public class ControlComponent extends org.xtream.demo.hydro.model.ControlComponent
@@ -29,9 +28,5 @@ public class ControlComponent extends org.xtream.demo.hydro.model.ControlCompone
 	public Expression<Double> wehr2WeirDischargeExpression = new WeirDischargeExpression(wehr2WeirDischargeOutput, wehr2DischargeOutput, priceInput, Constants.WEHR2_TURBINE_DISCHARGE_MAX, Constants.WEHR2_WEIR_DISCHARGE_MAX);
 	public Expression<Double> wehr3WeirDischargeExpression = new WeirDischargeExpression(wehr3WeirDischargeOutput, wehr3DischargeOutput, priceInput, Constants.WEHR3_TURBINE_DISCHARGE_MAX, Constants.WEHR3_WEIR_DISCHARGE_MAX);
 	public Expression<Double> wehr4WeirDischargeExpression = new WeirDischargeExpression(wehr4WeirDischargeOutput, wehr4DischargeOutput, priceInput, Constants.WEHR4_TURBINE_DISCHARGE_MAX, Constants.WEHR4_WEIR_DISCHARGE_MAX);
-	
-	// Equivalences
-	
-	public Equivalence dischargeEquivalence = new Equivalence(wehr4DischargeOutput);
 
 }

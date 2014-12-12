@@ -22,7 +22,9 @@ import org.xtream.core.model.markers.Objective;
 import org.xtream.core.model.markers.objectives.MaxObjective;
 import org.xtream.core.optimizer.beam.Engine;
 import org.xtream.core.optimizer.beam.Strategy;
+import org.xtream.core.optimizer.beam.strategies.GridStrategy;
 import org.xtream.core.optimizer.beam.strategies.KMeansStrategy;
+import org.xtream.core.optimizer.beam.strategies.RandomStrategy;
 import org.xtream.core.workbench.Workbench;
 
 public class RootComponent extends Component
@@ -32,9 +34,24 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		Strategy strategy = new KMeansStrategy(Constants.CLUSTER_ROUNDS, Constants.CLUSTER_DURATION);
-		//Strategy strategy = new GridStrategy();
-		//Strategy strategy = new RandomStrategy();
+		Strategy strategy = null;
+		
+		if (Constants.STRATEGY == 0)
+		{
+			strategy = new KMeansStrategy(Constants.CLUSTER_ROUNDS, Constants.CLUSTER_DURATION);
+		}
+		else if (Constants.STRATEGY == 1)
+		{
+			strategy = new GridStrategy();
+		}
+		else if (Constants.STRATEGY == 2)
+		{
+			strategy = new RandomStrategy();
+		}
+		else
+		{
+			throw new IllegalStateException("Strategy not defined (" + Constants.STRATEGY + ")!");
+		}
 		
 		Engine<RootComponent> engine = new Engine<>(new RootComponent(), Constants.SAMPLES, Constants.CLUSTERS, Constants.BRANCH_ROUNDS, Constants.BRANCH_DURATION, Constants.RANDOMNESS, Constants.PRUNE, strategy);
 		
@@ -104,7 +121,6 @@ public class RootComponent extends Component
 	
 	// Objectives
 	
-	//public Objective objectiveMarker = new MaxObjective(context_reactive.speicherseeLevelOutput);
 	public Objective objectiveMarker = new MaxObjective(objective_reactive.objectiveOutput);
 	
 	// Charts

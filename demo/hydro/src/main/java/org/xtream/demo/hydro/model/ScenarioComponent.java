@@ -12,6 +12,7 @@ public class ScenarioComponent extends Component
 	
 	// Ports
 	
+	public Port<String> timepointOutput = new Port<>();
 	public Port<Double> inflowOutput = new Port<>();
 	public Port<Double> priceOutput = new Port<>();
 	
@@ -22,6 +23,13 @@ public class ScenarioComponent extends Component
 	
 	// Expressions
 	
+	public Expression<String> timepointExpression = new Expression<String>(timepointOutput)
+	{
+		@Override protected String evaluate(State state, int timepoint)
+		{
+			return Constants.DATASET_TEST.getTimepoint(Constants.START + timepoint);
+		}
+	};
 	public Expression<Double> inflowExpression = new Expression<Double>(inflowOutput)
 	{
 		@Override protected Double evaluate(State state, int timepoint)

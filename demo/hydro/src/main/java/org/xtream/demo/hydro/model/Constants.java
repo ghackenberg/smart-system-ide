@@ -13,6 +13,8 @@ public class Constants
 	public static int HOUR = 4;
 	public static int DAY = HOUR * 24;
 	public static int WEEK = DAY * 7;
+	
+	public static int STRATEGY = 0;
 
 	public static boolean PRUNE = true;
 	public static int DURATION = WEEK * 1;

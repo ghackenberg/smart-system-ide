@@ -17,6 +17,7 @@ import org.xtream.core.model.expressions.ChannelExpression;
 import org.xtream.core.model.expressions.ConstantExpression;
 import org.xtream.core.model.markers.Constraint;
 import org.xtream.core.model.markers.Equivalence;
+import org.xtream.demo.hydro.model.Constants;
 
 public abstract class VolumeComponent extends Component
 {
@@ -41,7 +42,10 @@ public abstract class VolumeComponent extends Component
 		this.levelMin = levelMin;
 		this.levelMax = levelMax;
 		
-		inflowFutureEquivalence = new Equivalence(inflowFutureOutput, staustufe == 4 ? 50 : 1);
+		if (staustufe == 4 || Constants.STRATEGY != 1) // Do not use for grid strategy
+		{
+			inflowFutureEquivalence = new Equivalence(inflowFutureOutput, staustufe == 4 ? 50 : 1);
+		}
 	}
 	
 	// Ports
