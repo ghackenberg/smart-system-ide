@@ -34,10 +34,10 @@ public class Key implements Comparable<Key>
 		{
 			for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 			{
-				Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
-				
 				if (minEquivalences[i] != maxEquivalences[i])
 				{
+					Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
+					
 					equivalences[i] = (equivalence.getPort().get(state, timepoint) - minEquivalences[i]) / (maxEquivalences[i] - minEquivalences[i]) * equivalence.getWeight();
 				}
 				else

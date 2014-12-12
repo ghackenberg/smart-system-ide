@@ -44,7 +44,7 @@ public abstract class VolumeComponent extends Component
 		
 		if (staustufe == 4 || Constants.STRATEGY != 1) // Do not use for grid strategy
 		{
-			inflowFutureEquivalence = new Equivalence(inflowFutureOutput, staustufe == 4 ? 50 : 1);
+			inflowFutureEquivalence = new Equivalence(inflowFutureOutput, staustufe == 4 ? 2 : 1);
 		}
 	}
 	

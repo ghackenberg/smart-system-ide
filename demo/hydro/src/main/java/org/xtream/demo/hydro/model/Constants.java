@@ -14,7 +14,7 @@ public class Constants
 	public static int DAY = HOUR * 24;
 	public static int WEEK = DAY * 7;
 	
-	public static int STRATEGY = 0;
+	public static int STRATEGY = 1;
 
 	public static boolean PRUNE = true;
 	public static int DURATION = WEEK * 1;
@@ -28,7 +28,7 @@ public class Constants
 	
 	public static Dataset DATASET_TRAIN = DATASET_2012;
 	public static Dataset DATASET_TEST = DATASET_2011;
-	public static int START = WEEK * 4;
+	public static int START = WEEK * 20;
 	
 	public static double SPEICHERSEE_LEVEL_MAX = 5;
 	public static double VOLUMEN1_LEVEL_MAX = 1.6;
