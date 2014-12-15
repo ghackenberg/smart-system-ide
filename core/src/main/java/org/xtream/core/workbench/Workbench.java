@@ -318,6 +318,17 @@ public class Workbench<T extends Component>
 			});
 			
 			repeat.setEnabled(true);
+			repeat.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (slider.getValue() == sliderMax)
+					{
+						timer.stop();
+						slider.setValue(sliderMax);
+					}
+				}
+			});
 			
 			export.setEnabled(true);
 			export.addActionListener(new ActionListener() 
