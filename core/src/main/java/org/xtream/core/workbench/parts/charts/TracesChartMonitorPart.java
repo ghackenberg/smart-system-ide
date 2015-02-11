@@ -17,20 +17,20 @@ import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.workbench.parts.ChartMonitorPart;
 
-public class TraceChartMonitorPart<T extends Component> extends ChartMonitorPart<T, DefaultXYDataset>
+public class TracesChartMonitorPart<T extends Component> extends ChartMonitorPart<T, DefaultXYDataset>
 {
 	
-	public TraceChartMonitorPart()
+	public TracesChartMonitorPart()
 	{
 		this(0, 0);
 	}
-	public TraceChartMonitorPart(int x, int y)
+	public TracesChartMonitorPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public TraceChartMonitorPart(int x, int y, int width, int height)
+	public TracesChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Traces", x, y, width, height);
+		super("Traces chart", x, y, width, height);
 	}
 
 	@Override

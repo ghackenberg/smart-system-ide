@@ -27,7 +27,7 @@ public class ObjectiveChartMonitorPart<T extends Component> extends ChartMonitor
 	}
 	public ObjectiveChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Objective", x, y, width, height);
+		super("Objective chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));

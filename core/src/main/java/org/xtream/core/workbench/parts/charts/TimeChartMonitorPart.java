@@ -27,11 +27,13 @@ public class TimeChartMonitorPart<T extends Component> extends ChartMonitorPart<
 	}
 	public TimeChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Time", x, y, width, height);
+		super("Time chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
 		chart.getXYPlot().getRenderer().setSeriesStroke(2, new BasicStroke(STROKE));
+		chart.getXYPlot().getRenderer().setSeriesStroke(3, new BasicStroke(STROKE));
+		chart.getXYPlot().getRenderer().setSeriesStroke(4, new BasicStroke(STROKE));
 	}
 
 	@Override
@@ -42,7 +44,7 @@ public class TimeChartMonitorPart<T extends Component> extends ChartMonitorPart<
 	@Override
 	protected JFreeChart createChart()
 	{
-		return ChartFactory.createStackedXYAreaChart("Time", null, "Milliseconds", dataset, PlotOrientation.VERTICAL, true, true, false);
+		return ChartFactory.createXYLineChart(null, null, "Milliseconds", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}
 	
 	@Override
@@ -59,10 +61,10 @@ public class TimeChartMonitorPart<T extends Component> extends ChartMonitorPart<
 		super.handle(timepoint, statistics, equivalenceClasses, best);
 		
 		dataset.add(timepoint, statistics.branch, "Branch");
-		dataset.add(timepoint, statistics.norm, "Normalize");
-		dataset.add(timepoint, statistics.cluster, "Cluster");
-		dataset.add(timepoint, statistics.sort, "Sort");
-		dataset.add(timepoint, statistics.stats, "Stats");
+		dataset.add(timepoint, statistics.branch + statistics.norm, "Normalize");
+		dataset.add(timepoint, statistics.branch + statistics.norm + statistics.cluster, "Cluster");
+		dataset.add(timepoint, statistics.branch + statistics.norm + statistics.cluster + statistics.sort, "Sort");
+		dataset.add(timepoint, statistics.branch + statistics.norm + statistics.cluster + statistics.sort + statistics.stats, "Stats");
 	}
 
 }

@@ -29,7 +29,7 @@ public class ViolationChartMonitorPart<T extends Component> extends ChartMonitor
 	}
 	public ViolationChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Constraint Violations", x, y, width, height);
+		super("Constraint violations chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 	}

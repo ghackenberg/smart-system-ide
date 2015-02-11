@@ -14,22 +14,24 @@ import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.workbench.parts.ChartMonitorPart;
 
-public class OptionChartMonitorPart<T extends Component> extends ChartMonitorPart<T, CategoryTableXYDataset>
+public class StatesChartMonitorPart<T extends Component> extends ChartMonitorPart<T, CategoryTableXYDataset>
 {
 	
-	public OptionChartMonitorPart()
+	public StatesChartMonitorPart()
 	{
 		this(0, 0);
 	}
-	public OptionChartMonitorPart(int x, int y)
+	public StatesChartMonitorPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public OptionChartMonitorPart(int x, int y, int width, int height)
+	public StatesChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Zero Options", x, y, width, height);
+		super("States chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
+		chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
+		chart.getXYPlot().getRenderer().setSeriesStroke(2, new BasicStroke(STROKE));
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class OptionChartMonitorPart<T extends Component> extends ChartMonitorPar
 	@Override
 	protected JFreeChart createChart()
 	{
-		return ChartFactory.createXYLineChart(null, null, "Count", dataset, PlotOrientation.VERTICAL, false, true, false);
+		return ChartFactory.createXYLineChart(null, null, "Count", dataset, PlotOrientation.VERTICAL, true, true, false);
 	}
 	
 	@Override
@@ -56,7 +58,9 @@ public class OptionChartMonitorPart<T extends Component> extends ChartMonitorPar
 	{
 		super.handle(timepoint, statistics, equivalenceClasses, best);
 		
-		dataset.add(timepoint, statistics.zeroOptionCount, "Zero Options");
+		dataset.add(timepoint, statistics.generatedStates, "Generated");
+		dataset.add(timepoint, statistics.validStates, "Valid");
+		dataset.add(timepoint, statistics.preferredStates, "Preferred");
 	}
 
 }

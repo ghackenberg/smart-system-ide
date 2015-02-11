@@ -25,7 +25,6 @@ public class EquivalencesChartsPart<T extends Component> extends Part<T>
 {
 	
 	private static int PADDING = 0;
-	//private static int STROKE = 3;
 	
 	private List<Equivalence> equivalences;
 	
@@ -96,8 +95,8 @@ public class EquivalencesChartsPart<T extends Component> extends Part<T>
 				
 				// Create chart
 				JFreeChart chart = ChartFactory.createScatterPlot(short_name, outer.getName(), inner.getName(), new DefaultXYDataset(), PlotOrientation.VERTICAL, false, false, false);
-				((NumberAxis) chart.getXYPlot().getDomainAxis()).setAutoRange(false);
-				((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRange(false);
+				((NumberAxis) chart.getXYPlot().getDomainAxis()).setAutoRangeIncludesZero(false);
+				((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
 				charts.put(long_name, chart);
 				
 				// Create panel
@@ -127,7 +126,7 @@ public class EquivalencesChartsPart<T extends Component> extends Part<T>
 		{
 			entry.getValue().getXYPlot().setDataset(new DefaultXYDataset());
 		}
-
+		
 		for (Entry<String, Double> entry : minimum_x.entrySet())
 		{
 			entry.setValue(Double.MAX_VALUE);
@@ -205,19 +204,32 @@ public class EquivalencesChartsPart<T extends Component> extends Part<T>
 						dataset.addSeries(number++, data);
 					}
 					
-					// Remember ranges					
+					// Add range
+					double[][] data = new double[2][4];
+					
+					data[0][0] = min_x;
+					data[1][0] = min_y;
+					
+					data[0][1] = max_x;
+					data[1][1] = max_y;
+					
+					data[0][2] = min_x;
+					data[1][2] = max_y;
+					
+					data[0][3] = max_x;
+					data[1][3] = min_y;
+					
+					dataset.addSeries(number++, data);
+					
+					// Set dataset					
+					chart.getXYPlot().setDataset(dataset);
+					
+					// Set range		
 					minimum_x.put(long_name, min_x);
 					minimum_y.put(long_name, min_y);
 					
 					maximum_x.put(long_name, max_x);
 					maximum_y.put(long_name, max_y);
-					
-					// Set dataset					
-					chart.getXYPlot().setDataset(dataset);
-					
-					// Set ranges
-					((NumberAxis) chart.getXYPlot().getDomainAxis()).setRange(min_x, max_x);
-					((NumberAxis) chart.getXYPlot().getRangeAxis()).setRange(min_y, max_y);
 				}
 			}
 		}
