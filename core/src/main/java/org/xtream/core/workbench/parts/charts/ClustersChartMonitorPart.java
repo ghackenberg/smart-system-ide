@@ -14,20 +14,20 @@ import org.xtream.core.optimizer.Statistics;
 import org.xtream.core.optimizer.beam.Key;
 import org.xtream.core.workbench.parts.ChartMonitorPart;
 
-public class ClusterChartMonitorPart<T extends Component> extends ChartMonitorPart<T, CategoryTableXYDataset>
+public class ClustersChartMonitorPart<T extends Component> extends ChartMonitorPart<T, CategoryTableXYDataset>
 {
 	
-	public ClusterChartMonitorPart()
+	public ClustersChartMonitorPart()
 	{
 		this(0, 0);
 	}
-	public ClusterChartMonitorPart(int x, int y)
+	public ClustersChartMonitorPart(int x, int y)
 	{
 		this(x, y, 1, 1);
 	}
-	public ClusterChartMonitorPart(int x, int y, int width, int height)
+	public ClustersChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Clusters", x, y, width, height);
+		super("Clusters chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 	}

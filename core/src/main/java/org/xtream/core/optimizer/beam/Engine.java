@@ -171,6 +171,8 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				
 				statistics.norm = System.currentTimeMillis();
 				
+				//State[][] extremes = new State[root.getDescendantsByClass(Equivalence.class).size()][2];
+				
 				statistics.minEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 				statistics.maxEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 				

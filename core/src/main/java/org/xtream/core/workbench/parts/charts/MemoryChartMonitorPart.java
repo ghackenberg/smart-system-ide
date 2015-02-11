@@ -28,7 +28,7 @@ public class MemoryChartMonitorPart<T extends Component> extends ChartMonitorPar
 	}
 	public MemoryChartMonitorPart(int x, int y, int width, int height)
 	{
-		super("Memory", x, y, width, height);
+		super("Memory chart", x, y, width, height);
 		
 		chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
 		chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
