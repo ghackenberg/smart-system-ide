@@ -14,7 +14,7 @@ public class LinearStageARootComponent extends LinearRootComponent
 	{
 		Strategy strategy = new KMeansStrategy(CLUSTER_ROUNDS, CLUSTER_DURATION);
 		
-		Engine<LinearStageARootComponent> engine = new Engine<>(new LinearStageARootComponent(), SAMPLES, CLUSTERS, BRANCH_ROUNDS, BRANCH_DURATION, RANDOMNESS, PRUNE, strategy);
+		Engine<LinearStageARootComponent> engine = new Engine<>(new LinearStageARootComponent(), SAMPLES, CLUSTERS, BRANCH_ROUNDS, BRANCH_DURATION, PRUNE, strategy);
 		
 		new Workbench<>(engine, DURATION);
 	}

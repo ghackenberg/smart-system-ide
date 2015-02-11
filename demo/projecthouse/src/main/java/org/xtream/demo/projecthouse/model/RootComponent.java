@@ -41,7 +41,7 @@ public class RootComponent extends Component {
 	public static void main(String[] args) {
 		Strategy strategy = new KMeansStrategy(1000, 750);
 		
-		Engine<RootComponent> engine = new Engine<>(new RootComponent(), 100, 100, 2, 5, 0.25, true, strategy);
+		Engine<RootComponent> engine = new Engine<>(new RootComponent(), 100, 100, 2, 5, true, strategy);
 		
 		new Workbench<>(engine, 144);
 	}
