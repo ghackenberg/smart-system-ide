@@ -44,6 +44,7 @@ import org.xtream.core.workbench.parts.ComponentChartsPart;
 import org.xtream.core.workbench.parts.ComponentChildrenPart;
 import org.xtream.core.workbench.parts.ComponentHierarchyPart;
 import org.xtream.core.workbench.parts.EquivalenceChartsPart;
+import org.xtream.core.workbench.parts.EquivalencesChartsPart;
 import org.xtream.core.workbench.parts.ModelScenePart;
 import org.xtream.core.workbench.parts.StateSpacePart;
 import org.xtream.core.workbench.parts.charts.ClusterChartMonitorPart;
@@ -79,7 +80,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(Engine<T> engine, int duration)
 	{
-		this(engine, duration, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,2,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new EquivalenceChartsPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
+		this(engine, duration, new ComponentHierarchyPart<T>(0,0,1,2), new ComponentChildrenPart<T>(0,2,1,2), new StateSpacePart<T>(1,0,1,2), new EquivalencesChartsPart<T>(2,0,1,2), new OptionChartMonitorPart<T>(3,0), new ViolationChartMonitorPart<T>(4,0), new ModelScenePart<T>(1,2,2,2), new ComponentChartsPart<T>(3,2,2,2), new StateChartMonitorPart<T>(5,0), new ClusterChartMonitorPart<T>(5,1), new EquivalenceChartsPart<T>(3,1), new ObjectiveChartMonitorPart<T>(4,1), new TimeChartMonitorPart<T>(5,2), new MemoryChartMonitorPart<T>(5,3));
 	}
 	
 	@SafeVarargs
