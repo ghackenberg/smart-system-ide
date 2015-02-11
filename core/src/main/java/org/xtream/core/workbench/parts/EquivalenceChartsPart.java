@@ -46,7 +46,7 @@ public class EquivalenceChartsPart<T extends Component> extends Part<T>
 	}
 	public EquivalenceChartsPart(int x, int y, int width, int height)
 	{
-		super("Component charts", EquivalenceChartsPart.class.getClassLoader().getResource("parts/component_charts.png"), x, y, width, height);
+		super("Equivalence charts", EquivalenceChartsPart.class.getClassLoader().getResource("parts/component_charts.png"), x, y, width, height);
 		
 		layout = new GridLayout();
 		layout.setHgap(PADDING);
