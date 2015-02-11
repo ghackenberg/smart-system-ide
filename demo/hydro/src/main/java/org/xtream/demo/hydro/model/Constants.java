@@ -18,11 +18,10 @@ public class Constants
 
 	public static boolean PRUNE = true;
 	public static int DURATION = WEEK * 1;
-	public static int SAMPLES = PRUNE ? 100 : 1;
-	public static int CLUSTERS = PRUNE ? 100 : 1;
+	public static int SAMPLES = PRUNE ? 250 : 1;
+	public static int CLUSTERS = PRUNE ? 50 : 1;
 	public static int BRANCH_ROUNDS = PRUNE ? 2 : 1;
 	public static int BRANCH_DURATION = 10;
-	public static double RANDOMNESS = 0.5;
 	public static int CLUSTER_ROUNDS = PRUNE ? 1000 : 1;
 	public static int CLUSTER_DURATION = 1000;
 	
@@ -64,14 +63,14 @@ public class Constants
 	public static int WEHR1_TURBINE_STEPS = 2;
 	public static int WEHR2_TURBINE_STEPS = 2;
 	public static int WEHR3_TURBINE_STEPS = 2;
-	public static int WEHR4_TURBINE_STEPS = 5;
+	public static int WEHR4_TURBINE_STEPS = 10;
 
 	public static int HAUPTKRAFTWERK_WEIR_STEPS = 2;
 	public static int WEHR1_WEIR_STEPS = 2;
 	public static int WEHR2_WEIR_STEPS = 2;
 	public static int WEHR3_WEIR_STEPS = 2;
-	public static int WEHR4_WEIR_STEPS = 5;
+	public static int WEHR4_WEIR_STEPS = 10;
 	
-	public static int WEHR4_STEPS = 10;
+	public static int WEHR4_STEPS = WEHR4_TURBINE_STEPS + WEHR4_WEIR_STEPS;
 
 }

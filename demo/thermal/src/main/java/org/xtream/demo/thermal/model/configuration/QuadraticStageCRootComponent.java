@@ -14,7 +14,7 @@ public class QuadraticStageCRootComponent extends QuadraticRootComponent
 	{
 		Strategy strategy = new KMeansStrategy(CLUSTER_ROUNDS, CLUSTER_DURATION);
 		
-		Engine<QuadraticStageCRootComponent> engine = new Engine<>(new QuadraticStageCRootComponent(), SAMPLES, CLUSTERS, BRANCH_ROUNDS, BRANCH_DURATION, RANDOMNESS, PRUNE, strategy);
+		Engine<QuadraticStageCRootComponent> engine = new Engine<>(new QuadraticStageCRootComponent(), SAMPLES, CLUSTERS, BRANCH_ROUNDS, BRANCH_DURATION, PRUNE, strategy);
 		
 		new Workbench<>(engine, DURATION);
 	}

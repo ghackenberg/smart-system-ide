@@ -29,31 +29,26 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	private int clusters;
 	private int branch_rounds;
 	private long branch_duration;
-	private double randomness;
 	private boolean prune;
 	private Strategy strategy;
 	private int processors;
 	
 	private List<Thread> threads;
 	private List<Worker<T>> workers;
-
+	
 	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration)
 	{
-		this(root, samples, clusters, branch_rounds, branch_duration, 0.25);
+		this(root, samples, clusters, branch_rounds, branch_duration, true);
 	}
-	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness)
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, boolean prune)
 	{
-		this(root, samples, clusters, branch_rounds, branch_duration, randomness, true);
+		this(root, samples, clusters, branch_rounds, branch_duration, prune, new RandomStrategy());
 	}
-	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune)
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, boolean prune, Strategy strategy)
 	{
-		this(root, samples, clusters, branch_rounds, branch_duration, randomness, prune, new RandomStrategy());
+		this(root, samples, clusters, branch_rounds, branch_duration, prune, strategy, Runtime.getRuntime().availableProcessors() - 1);
 	}
-	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune, Strategy strategy)
-	{
-		this(root, samples, clusters, branch_rounds, branch_duration, randomness, prune, strategy, Runtime.getRuntime().availableProcessors() - 1);
-	}
-	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, double randomness, boolean prune, Strategy strategy, int processors)
+	public Engine(T root, int samples, int clusters, int branch_rounds, long branch_duration, boolean prune, Strategy strategy, int processors)
 	{
 		super(root);
 		
@@ -61,7 +56,6 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 		this.clusters = clusters;
 		this.branch_rounds = branch_rounds;
 		this.branch_duration = branch_duration;
-		this.randomness = randomness;
 		this.prune = prune;
 		this.strategy = strategy;
 		this.processors = processors;
@@ -106,8 +100,10 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 	{
 		if (timepoint < duration)
 		{
-			for (int round = 0; best.getTimepoint() < (duration - 1) && round < branch_rounds; round++)
+			for (int round = 0; best.getTimepoint() < (duration - 1) && (timepoint == 0 || round < branch_rounds); round++)
 			{
+				System.out.println("timepoint " + timepoint + ", round " + round);
+				
 				// Prepare statistics
 				
 				Statistics statistics = new Statistics();
@@ -124,7 +120,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				
 				for (int proccessor = 0; proccessor < processors; proccessor++)
 				{
-					workers.add(proccessor, new Worker<T>(root, timepoint, samples, randomness, prune, this.branch_duration, previousClusters, queue));
+					workers.add(proccessor, new Worker<T>(root, timepoint, samples, prune, this.branch_duration, previousClusters, queue));
 					
 					threads.add(proccessor, new Thread(workers.get(proccessor)));
 					threads.get(proccessor).start();
@@ -165,13 +161,13 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 					}
 				}
 				
+				System.out.println("Branching finished!");
+				
 				statistics.branch = System.currentTimeMillis() - statistics.branch;
 				
 				// Calculate bounds
 				
 				statistics.norm = System.currentTimeMillis();
-				
-				//State[][] extremes = new State[root.getDescendantsByClass(Equivalence.class).size()][2];
 				
 				statistics.minEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
 				statistics.maxEquivalences = new double[root.getDescendantsByClass(Equivalence.class).size()];
@@ -186,8 +182,10 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				{
 					for (int i = 0; i < root.getDescendantsByClass(Equivalence.class).size(); i++)
 					{
-						statistics.minEquivalences[i] = Math.min(statistics.minEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
-						statistics.maxEquivalences[i] = Math.max(statistics.maxEquivalences[i], root.getDescendantsByClass(Equivalence.class).get(i).getPort().get(current, timepoint));
+						Equivalence equivalence = root.getDescendantsByClass(Equivalence.class).get(i);
+						
+						statistics.minEquivalences[i] = Math.min(statistics.minEquivalences[i], equivalence.getPort().get(current, timepoint));
+						statistics.maxEquivalences[i] = Math.max(statistics.maxEquivalences[i], equivalence.getPort().get(current, timepoint));
 					}
 				}
 				
@@ -297,6 +295,7 @@ public class Engine<T extends Component> extends org.xtream.core.optimizer.Engin
 				}
 			}
 		}
+		
 		return best;
 	}
 

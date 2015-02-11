@@ -11,13 +11,13 @@ import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.State;
 import org.xtream.core.model.markers.Constraint;
+import org.xtream.core.model.markers.Equivalence;
 
 public class Worker<T extends Component> implements Runnable
 {
 	private T root;
 	private int timepoint;
 	private int samples;
-	private double randomness;
 	private boolean prune;
 	private long duration;
 	private Map<Key, List<State>> previousGroups;
@@ -29,12 +29,11 @@ public class Worker<T extends Component> implements Runnable
 	private Map<Constraint, Integer> constraintViolations = new HashMap<>();
 	private int zeroOptionCount = 0;
 	
-	public Worker(T root, int timepoint, int samples, double randomness, boolean prune, long duration, Map<Key, List<State>> previousGroups, Queue<Key> queue)
+	public Worker(T root, int timepoint, int samples, boolean prune, long duration, Map<Key, List<State>> previousGroups, Queue<Key> queue)
 	{
 		this.root = root;
 		this.timepoint = timepoint;
 		this.samples = samples;
-		this.randomness = randomness;
 		this.prune = prune;
 		this.duration = duration;
 		this.previousGroups = previousGroups;
@@ -75,77 +74,48 @@ public class Worker<T extends Component> implements Runnable
 				
 				long deadline = System.currentTimeMillis() + duration;
 				
-				for (int sample = 0; System.currentTimeMillis() < deadline && sample < samples; sample++)
+				// Best state
+				process(previousGroup.get(0));
+				
+				// Extreme states
+				if (previousGroup.size() > 1)
 				{
-					generatedCount++;
+					List<Equivalence> equivalences = root.getDescendantsByClass(Equivalence.class);
 					
-					// Select Status
-					
-					State previous = previousGroup.get(0);
-					
-					if (sample > samples * (1 - randomness))
+					for (Equivalence equivalence : equivalences)
 					{
-						int random = (int) Math.floor(Math.random() * previousGroup.size());
+						double min_value = equivalence.getPort().get(previousGroup.get(0), timepoint - 1);
+						double max_value = equivalence.getPort().get(previousGroup.get(0), timepoint - 1);
 						
-						previous = previousGroup.get(random);
-					}
-					
-					try
-					{
-						// Create state object
+						State min_state = previousGroup.get(0);
+						State max_state = previousGroup.get(0);
 						
-						State current = new State(root, timepoint, previous);
-						
-						// Calculate caching expressions
-						
-						for (Expression<?> expression : root.getCachingExpressions())
+						for (State state : previousGroup)
 						{
-							expression.get(current, timepoint);
-						}
-						
-						// Check state validity
-						
-						boolean valid = true;
-						
-						for (Constraint constraint : root.getDescendantsByClass(Constraint.class))
-						{
-							valid = valid && constraint.getPort().get(current, timepoint);
+							double value = equivalence.getPort().get(state, timepoint - 1);
 							
-							if (!constraint.getPort().get(current, timepoint))
+							if (value < min_value)
 							{
-								if (!constraintViolations.containsKey(constraint))
-								{
-									constraintViolations.put(constraint, 0);
-								}
-								constraintViolations.put(constraint, constraintViolations.get(constraint) + 1);
+								min_value = value;
+								min_state = state;
+							}
+							if (value > max_value)
+							{
+								max_value = value;
+								max_state = state;
 							}
 						}
 						
-						// Remember valid state
-						
-						if (valid)
-						{
-							validCount++;
-							
-							currentStates.add(current);
-						}
-						else
-						{
-							sample--;
-							
-							if (!prune)
-							{
-								currentStates.add(current);
-							}
-						}
+						process(min_state);
+						process(max_state);
 					}
-					catch (IllegalStateException e)
+					
+					// Random states
+					while (System.currentTimeMillis() < deadline)
 					{
-						// TODO Count per expression that fails!
+						int random = (int) Math.floor(1 + Math.random() * (previousGroup.size() - 1));
 						
-						e.printStackTrace();
-						
-						zeroOptionCount++;
+						process(previousGroup.get(random));
 					}
 				}
 			}
@@ -153,6 +123,74 @@ public class Worker<T extends Component> implements Runnable
 		catch (NoSuchElementException exception)
 		{
 			// Done!
+		}
+	}
+	
+	private void process(State previous)
+	{
+		for (int sample = 0; sample < samples; sample++)
+		{
+			generatedCount++;
+			
+			// Select Status
+			
+			try
+			{
+				// Create state object
+				
+				State current = new State(root, timepoint, previous);
+				
+				// Calculate caching expressions
+				
+				for (Expression<?> expression : root.getCachingExpressions())
+				{
+					expression.get(current, timepoint);
+				}
+				
+				// Check state validity
+				
+				boolean valid = true;
+				
+				for (Constraint constraint : root.getDescendantsByClass(Constraint.class))
+				{
+					valid = valid && constraint.getPort().get(current, timepoint);
+					
+					if (!constraint.getPort().get(current, timepoint))
+					{
+						if (!constraintViolations.containsKey(constraint))
+						{
+							constraintViolations.put(constraint, 0);
+						}
+						constraintViolations.put(constraint, constraintViolations.get(constraint) + 1);
+					}
+				}
+				
+				// Remember valid state
+				
+				if (valid)
+				{
+					validCount++;
+					
+					currentStates.add(current);
+				}
+				else
+				{
+					//sample--;
+					
+					if (!prune)
+					{
+						currentStates.add(current);
+					}
+				}
+			}
+			catch (IllegalStateException e)
+			{
+				// TODO Count per expression that fails!
+				
+				e.printStackTrace();
+				
+				zeroOptionCount++;
+			}
 		}
 	}
 

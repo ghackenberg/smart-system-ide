@@ -17,10 +17,10 @@ public class EquivalenceComponent extends Component
 		
 		if (Constants.STRATEGY != 1) // do not use for grid strategy
 		{
-			volumen1LevelEquivalence = new Equivalence(volumen1LevelInput);
-			volumen2LevelEquivalence = new Equivalence(volumen2LevelInput);
-			volumen3LevelEquivalence = new Equivalence(volumen3LevelInput);
-			volumen4LevelEquivalence = new Equivalence(volumen4LevelInput, 2);
+			//volumen1LevelEquivalence = new Equivalence(volumen1LevelInput);
+			//volumen2LevelEquivalence = new Equivalence(volumen2LevelInput);
+			//volumen3LevelEquivalence = new Equivalence(volumen3LevelInput);
+			//volumen4LevelEquivalence = new Equivalence(volumen4LevelInput, 2);
 		}
 		else
 		{

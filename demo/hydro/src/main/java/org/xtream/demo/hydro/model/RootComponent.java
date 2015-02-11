@@ -53,7 +53,7 @@ public class RootComponent extends Component
 			throw new IllegalStateException("Strategy not defined (" + Constants.STRATEGY + ")!");
 		}
 		
-		Engine<RootComponent> engine = new Engine<>(new RootComponent(), Constants.SAMPLES, Constants.CLUSTERS, Constants.BRANCH_ROUNDS, Constants.BRANCH_DURATION, Constants.RANDOMNESS, Constants.PRUNE, strategy);
+		Engine<RootComponent> engine = new Engine<>(new RootComponent(), Constants.SAMPLES, Constants.CLUSTERS, Constants.BRANCH_ROUNDS, Constants.BRANCH_DURATION, Constants.PRUNE, strategy);
 		
 		new Workbench<>(engine, Constants.DURATION);
 	}
