@@ -49,6 +49,7 @@ public class RootComponent extends Component
 	public SlideComponent slide_one = new SlideComponent(2.0,0.0,2.0);
 	public SlideComponent slide_two = new SlideComponent(2.0,0.0,2.0);
 	public SlideComponent slide_three= new SlideComponent(0.0,2.0,2.0);
+	public WorkpieceComponent workpiece = new WorkpieceComponent(0,0);
 	
 	public BackgroundComponent background = new BackgroundComponent()
 	{
@@ -121,11 +122,12 @@ public class RootComponent extends Component
 		public Expression<Double> zExpression = new ConstantExpression<>(zOutput, 12.0);
 	};
 	
-	// Expressions
+	// Channels
 	
 	public Expression<RealMatrix> transformIdentityToCamera = new ChannelExpression<>(camera.transformInput, identity.transformOutput);
 	public Expression<RealMatrix> transformIdentityToLight= new ChannelExpression<>(light.transformInput, identity.transformOutput);
 	public Expression<RealMatrix> transformIdentityToPlane = new ChannelExpression<>(plane.transformInput, identity.transformOutput);
+	public Expression<RealMatrix> transformIdentityToWorkpiece = new ChannelExpression<>(workpiece.transformInput, identity.transformOutput);
 	
 	public Expression<RealMatrix> transformIdentityToTranslationStack = new ChannelExpression<>(translation_stack.transformInput, identity.transformOutput);
 	public Expression<RealMatrix> transformIdentityToTranslationCrane = new ChannelExpression<>(translation_crane.transformInput, identity.transformOutput);
@@ -142,6 +144,18 @@ public class RootComponent extends Component
 	public Expression<RealMatrix> transformTranslationSlideOneToSlideOne = new ChannelExpression<>(slide_one.transformInput, translation_slide_one.transformOutput);
 	public Expression<RealMatrix> transformTranslationSlideTwoToSlideTwo = new ChannelExpression<>(slide_two.transformInput, translation_slide_two.transformOutput);
 	public Expression<RealMatrix> transformTranslationSlideThreeToSlideThree = new ChannelExpression<>(slide_three.transformInput, translation_slide_three.transformOutput);
+	
+	public Expression<RealVector> positionWorkpieceToConveyor = new ChannelExpression<>(conveyor.positionInput, workpiece.positionOutput);
+	public Expression<RealVector> positionWorkpieceToStack = new ChannelExpression<>(stack.positionInput, workpiece.positionOutput);
+	public Expression<RealVector> positionWorkpieceToStamp = new ChannelExpression<>(stamp.positionInput, workpiece.positionOutput);
+	public Expression<Integer> typeWorkpieceToConveyor = new ChannelExpression<>(conveyor.typeInput, workpiece.typeOutput);
+	public Expression<Integer> typeWorkpieceToStack = new ChannelExpression<>(stack.typeInput, workpiece.typeOutput);
+	public Expression<Integer> typeWorkpieceToStamp = new ChannelExpression<>(stamp.typeInput, workpiece.typeOutput);
+	public Expression<Integer> stateWorkpieceToConveyor = new ChannelExpression<>(conveyor.stateInput, workpiece.stateOutput);
+	public Expression<Integer> stateWorkpieceToStack = new ChannelExpression<>(stack.stateInput, workpiece.stateOutput);
+	public Expression<Integer> stateWorkpieceToStamp = new ChannelExpression<>(stamp.stateInput, workpiece.stateOutput);
+	
+	// Expressions
 	
 	public Expression<Double> objectiveExpression = new Expression<Double>(objectiveOutput, true)
 	{
