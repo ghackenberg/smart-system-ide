@@ -42,6 +42,8 @@ public class CylinderComponent extends Component
 	public Port<RealMatrix> transformInput = new Port<>();
 	
 	public Port<Double> positionOutput = new Port<>();
+	public Port<Boolean> retractedOutput = new Port<>();
+	public Port<Boolean> extractedOutput = new Port<>();
 	
 	// Components
 
@@ -82,10 +84,12 @@ public class CylinderComponent extends Component
 		public Expression<Color> colorExpression = new ConstantExpression<>(colorOutput, new Color(0,255,0));
 	};
 	
-	// Expressions
+	// Channels
 	
 	public Expression<RealMatrix> transformToLower = new ChannelExpression<>(lower.transformInput, transformInput);
 	public Expression<RealMatrix> transformToUpper = new ChannelExpression<>(upper.transformInput, transformInput);
+	
+	// Expressions
 	
 	public Expression<Double> positionExpression = new Expression<Double>(positionOutput, true)
 	{
@@ -107,6 +111,20 @@ public class CylinderComponent extends Component
 			{
 				throw new IllegalStateException();
 			}
+		}
+	};
+	public Expression<Boolean> retractedExpression = new Expression<Boolean>(retractedOutput)
+	{
+		@Override protected Boolean evaluate(State state, int timepoint)
+		{
+			return positionOutput.get(state, timepoint) == lower_height;
+		}
+	};
+	public Expression<Boolean> extractedExpression = new Expression<Boolean>(extractedOutput)
+	{
+		@Override protected Boolean evaluate(State state, int timepoint)
+		{
+			return positionOutput.get(state, timepoint) == lower_height + upper_height;
 		}
 	};
 

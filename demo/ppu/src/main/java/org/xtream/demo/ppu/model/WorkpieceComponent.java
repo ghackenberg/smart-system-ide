@@ -36,6 +36,15 @@ public class WorkpieceComponent extends Component
 	// Ports
 	
 	public Port<RealMatrix> transformInput = new Port<>();
+	public Port<Double> positionStackCylinder = new Port<>();
+	public Port<Double> positionCraneCylinder = new Port<>();
+	public Port<Double> positionCraneArm = new Port<>();
+	public Port<Double> positionStampCylinderOne = new Port<>();
+	public Port<Double> positionStampCylinderTwo = new Port<>();
+	public Port<Double> positionConveyorCylinderOne = new Port<>();
+	public Port<Double> positionConveyorCylinderTwo = new Port<>();
+	public Port<Double> energyCraneArmSucker = new Port<>();
+	
 	public Port<RealVector> positionOutput = new Port<>();
 	public Port<Integer> typeOutput = new Port<>();
 	public Port<Integer> stateOutput = new Port<>();
@@ -92,7 +101,7 @@ public class WorkpieceComponent extends Component
 		{
 			if (timepoint == 0)
 			{
-				return new ArrayRealVector(new double[] {-3.0,2.0,0.0,1.0});
+				return new ArrayRealVector(new double[] {3.0,2.0,0.0,1.0});
 			}
 			else
 			{

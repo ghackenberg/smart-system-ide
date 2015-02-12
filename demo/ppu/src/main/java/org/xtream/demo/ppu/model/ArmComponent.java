@@ -97,5 +97,12 @@ public class ArmComponent extends Component
 			}
 		}
 	};
+	public Expression<Double> energyExpression = new Expression<Double>(sucker.energyInput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return Math.random() < 0.5 ? 0.0 : 1.0;
+		}
+	};
 
 }
