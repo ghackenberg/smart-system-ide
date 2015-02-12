@@ -29,7 +29,7 @@ public class RootComponent extends Component
 	
 	public static void main(String[] args)
 	{
-		new Workbench<>(new RootComponent(), 30);
+		new Workbench<>(new RootComponent(), 50);
 	}
 	
 	// Ports
@@ -154,6 +154,15 @@ public class RootComponent extends Component
 	public Expression<Integer> stateWorkpieceToConveyor = new ChannelExpression<>(conveyor.stateInput, workpiece.stateOutput);
 	public Expression<Integer> stateWorkpieceToStack = new ChannelExpression<>(stack.stateInput, workpiece.stateOutput);
 	public Expression<Integer> stateWorkpieceToStamp = new ChannelExpression<>(stamp.stateInput, workpiece.stateOutput);
+	
+	public Expression<Double> positionStackCylinderToWorkpiece = new ChannelExpression<>(workpiece.positionStackCylinder, stack.cylinder.positionOutput);
+	public Expression<Double> positionCraneCylinderToWorkpiece = new ChannelExpression<>(workpiece.positionCraneCylinder, crane.cylinder.positionOutput);
+	public Expression<Double> positionCraneArmToWorkpiece = new ChannelExpression<>(workpiece.positionCraneArm, crane.arm.positionOutput);
+	public Expression<Double> positionStampCylinderOneToWorkpiece = new ChannelExpression<>(workpiece.positionStampCylinderOne, stamp.cylinder_one.positionOutput);
+	public Expression<Double> positionStampCylinderTwoToWorkpiece = new ChannelExpression<>(workpiece.positionStampCylinderTwo, stamp.cylinder_two.positionOutput);
+	public Expression<Double> positionConveyorCylinderOneToWorkpiece = new ChannelExpression<>(workpiece.positionConveyorCylinderOne, conveyor.cylinder_one.positionOutput);
+	public Expression<Double> positionConveyorCylinderTwoToWorkpiece = new ChannelExpression<>(workpiece.positionConveyorCylinderTwo, conveyor.cylinder_two.positionOutput);
+	public Expression<Double> energyCraneArmSuckerToWorkpiece = new ChannelExpression<>(workpiece.energyCraneArmSucker, crane.arm.sucker.energyOutput);
 	
 	// Expressions
 	

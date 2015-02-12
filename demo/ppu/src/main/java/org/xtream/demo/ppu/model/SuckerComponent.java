@@ -6,6 +6,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
 import org.xtream.core.model.Port;
+import org.xtream.core.model.State;
 import org.xtream.core.model.components.nodes.shapes.CylinderComponent;
 import org.xtream.core.model.components.transforms.chains.RotationComponent;
 import org.xtream.core.model.expressions.ChannelExpression;
@@ -18,6 +19,9 @@ public class SuckerComponent extends Component
 	// Ports
 	
 	public Port<RealMatrix> transformInput = new Port<>();
+	public Port<Double> energyInput = new Port<>();
+	
+	public Port<Double> energyOutput = new Port<>();
 	
 	// Components
 	
@@ -31,5 +35,15 @@ public class SuckerComponent extends Component
 	// Channels
 	
 	public Expression<RealMatrix> transformToCylinder = new ChannelExpression<>(cylinder.transformInput, transformInput);
+	
+	// Expressions
+	
+	public Expression<Double> energyExpression = new Expression<Double>(energyOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return energyInput.get(state, timepoint);
+		}
+	};
 
 }
