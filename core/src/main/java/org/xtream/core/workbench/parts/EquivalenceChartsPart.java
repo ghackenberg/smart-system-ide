@@ -65,33 +65,36 @@ public class EquivalenceChartsPart<T extends Component> extends Part<T>
 		
 		equivalences = root.getDescendantsByClass(Equivalence.class);
 		
-		int cols = (int) Math.ceil(Math.sqrt(equivalences.size()));
-		int rows = (int) Math.ceil(Math.sqrt(equivalences.size()));
-		
-		layout.setColumns(cols);
-		layout.setRows(rows);
-		
 		charts.clear();
 		datasets.clear();
 		panels.clear();
 		
 		panel.removeAll();
 		
-		for (Equivalence equivalence : equivalences)
+		int cols = (int) Math.ceil(Math.sqrt(equivalences.size()));
+		int rows = (int) Math.ceil(Math.sqrt(equivalences.size()));
+		
+		if (rows > 0 && cols > 0)
 		{
-			CategoryTableXYDataset dataset = new CategoryTableXYDataset();
-			datasets.put(equivalence, dataset);
+			layout.setColumns(cols);
+			layout.setRows(rows);
 			
-			JFreeChart chart = ChartFactory.createXYLineChart(equivalence.getQualifiedName(), "Step", "Value", dataset, PlotOrientation.VERTICAL, true, false, false);
-			chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
-			chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
-			((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
-			charts.put(equivalence, chart);
-			
-			ChartPanel chart_panel = new ChartPanel(chart);
-			panels.put(equivalence, chart_panel);
-			
-			panel.add(chart_panel);
+			for (Equivalence equivalence : equivalences)
+			{
+				CategoryTableXYDataset dataset = new CategoryTableXYDataset();
+				datasets.put(equivalence, dataset);
+				
+				JFreeChart chart = ChartFactory.createXYLineChart(equivalence.getQualifiedName(), "Step", "Value", dataset, PlotOrientation.VERTICAL, true, false, false);
+				chart.getXYPlot().getRenderer().setSeriesStroke(0, new BasicStroke(STROKE));
+				chart.getXYPlot().getRenderer().setSeriesStroke(1, new BasicStroke(STROKE));
+				((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
+				charts.put(equivalence, chart);
+				
+				ChartPanel chart_panel = new ChartPanel(chart);
+				panels.put(equivalence, chart_panel);
+				
+				panel.add(chart_panel);
+			}
 		}
 	}
 	

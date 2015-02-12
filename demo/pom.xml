@@ -19,6 +19,7 @@
 		<module>street</module>
 		<module>thermal</module>
 		<module>projecthouse</module>
+		<module>ppu</module>
 	</modules>
 	
 	<dependencies>
