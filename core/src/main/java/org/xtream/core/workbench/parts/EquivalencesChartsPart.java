@@ -64,55 +64,58 @@ public class EquivalencesChartsPart<T extends Component> extends Part<T>
 	{
 		super.setRoot(root);
 		
-		equivalences = root.getDescendantsByClass(Equivalence.class);
-		
-		int count = equivalences.size() * (equivalences.size() - 1) / 2;
-		
-		int cols = (int) Math.ceil(Math.sqrt(count));
-		int rows = (int) Math.ceil(Math.sqrt(count));
-		
-		layout.setColumns(cols);
-		layout.setRows(rows);
-		
 		charts.clear();
 		panels.clear();
 		
 		panel.removeAll();
 		
-		for (int i = 0; i < equivalences.size(); i++)
+		equivalences = root.getDescendantsByClass(Equivalence.class);
+		
+		int count = equivalences.size() * (equivalences.size() - 1) / 2;
+		
+		if (count > 0)
 		{
-			// Get outer
-			Equivalence outer = equivalences.get(i);
+			int cols = (int) Math.ceil(Math.sqrt(count));
+			int rows = (int) Math.ceil(Math.sqrt(count));
 			
-			for (int j = i + 1; j < equivalences.size(); j++)
+			layout.setColumns(cols);
+			layout.setRows(rows);
+			
+			for (int i = 0; i < equivalences.size(); i++)
 			{
-				// Get inner
-				Equivalence inner = equivalences.get(j);
+				// Get outer
+				Equivalence outer = equivalences.get(i);
 				
-				// Get name
-				String long_name = outer.getQualifiedName() + " - " + inner.getQualifiedName();
-				String short_name = outer.getName() + " - " + inner.getName();
-				
-				// Create chart
-				JFreeChart chart = ChartFactory.createScatterPlot(short_name, outer.getName(), inner.getName(), new DefaultXYDataset(), PlotOrientation.VERTICAL, false, false, false);
-				((NumberAxis) chart.getXYPlot().getDomainAxis()).setAutoRangeIncludesZero(false);
-				((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
-				charts.put(long_name, chart);
-				
-				// Create panel
-				ChartPanel chart_panel = new ChartPanel(chart);
-				panels.put(long_name, chart_panel);
-				
-				// Create minimum
-				minimum_x.put(long_name, Double.MAX_VALUE);
-				minimum_y.put(long_name, Double.MAX_VALUE);
-				
-				// Create maximum
-				maximum_x.put(long_name, -Double.MAX_VALUE);
-				maximum_y.put(long_name, -Double.MAX_VALUE);
-				
-				// Add panel
-				panel.add(chart_panel);
+				for (int j = i + 1; j < equivalences.size(); j++)
+				{
+					// Get inner
+					Equivalence inner = equivalences.get(j);
+					
+					// Get name
+					String long_name = outer.getQualifiedName() + " - " + inner.getQualifiedName();
+					String short_name = outer.getName() + " - " + inner.getName();
+					
+					// Create chart
+					JFreeChart chart = ChartFactory.createScatterPlot(short_name, outer.getName(), inner.getName(), new DefaultXYDataset(), PlotOrientation.VERTICAL, false, false, false);
+					((NumberAxis) chart.getXYPlot().getDomainAxis()).setAutoRangeIncludesZero(false);
+					((NumberAxis) chart.getXYPlot().getRangeAxis()).setAutoRangeIncludesZero(false);
+					charts.put(long_name, chart);
+					
+					// Create panel
+					ChartPanel chart_panel = new ChartPanel(chart);
+					panels.put(long_name, chart_panel);
+					
+					// Create minimum
+					minimum_x.put(long_name, Double.MAX_VALUE);
+					minimum_y.put(long_name, Double.MAX_VALUE);
+					
+					// Create maximum
+					maximum_x.put(long_name, -Double.MAX_VALUE);
+					maximum_y.put(long_name, -Double.MAX_VALUE);
+					
+					// Add panel
+					panel.add(chart_panel);
+				}
 			}
 		}
 	}

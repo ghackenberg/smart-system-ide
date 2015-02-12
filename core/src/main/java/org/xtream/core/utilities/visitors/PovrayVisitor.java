@@ -55,7 +55,7 @@ public class PovrayVisitor extends Visitor
 			//Color specular = light.specularOutput.get(state, timepoint);
 			
 			writer.write(System.getProperty( "line.separator" ));
-			writer.write("light_source{ " + handle(position) + " " + handle(diffuse) + " }");
+			writer.write("light_source{ " + handle(position) + " " + handle(diffuse) + " area_light <5,0,0>, <0,0,5>, 5, 5 adaptive 1 jitter }");
 		} 
 		catch (IOException e) 
 		{

@@ -76,7 +76,7 @@ public class Workbench<T extends Component>
 	
 	public Workbench(T root, int duration)
 	{
-		this(new org.xtream.core.optimizer.beam.Engine<>(root, 100, 100, 2, 5), duration);
+		this(new org.xtream.core.optimizer.beam.Engine<>(root, 10, 10, 2, 5), duration);
 	}
 	
 	public Workbench(Engine<T> engine, int duration)
