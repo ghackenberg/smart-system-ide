@@ -1,0 +1,271 @@
+<Graph name="Graph1">
+
+	<!-- Nodes -->
+
+	<Node name="OriginA" weight="1.0" xpos="25.0" ypos="0.0"/>
+	
+	<Node name="A1" weight="1.0" xpos="25.0" ypos="5.0"/>
+	<Node name="A2" weight="1.0" xpos="25.0" ypos="10.0"/>
+	<Node name="A3" weight="1.0" xpos="25.0" ypos="15.0"/>
+	<Node name="A4" weight="1.0" xpos="25.0" ypos="20.0"/>
+	<Node name="A5" weight="1.0" xpos="25.0" ypos="25.0"/>
+	<Node name="A6" weight="1.0" xpos="25.0" ypos="30.0"/>
+	<Node name="A7" weight="1.0" xpos="25.0" ypos="35.0"/>
+	<Node name="A8" weight="1.0" xpos="25.0" ypos="40.0"/>
+	<Node name="A9" weight="1.0" xpos="25.0" ypos="45.0"/>
+	<Node name="A10" weight="1.0" xpos="25.0" ypos="50.0"/>
+	<Node name="A11" weight="1.0" xpos="25.0" ypos="55.0"/>
+	<Node name="A12" weight="1.0" xpos="25.0" ypos="60.0"/>
+	<Node name="A13" weight="1.0" xpos="25.0" ypos="65.0"/>
+	<Node name="A14" weight="1.0" xpos="25.0" ypos="70.0"/>
+	
+	<Node name="AA1" weight="1.4" xpos="30.0" ypos="5.0"/>
+	<Node name="AA2" weight="1.4" xpos="30.0" ypos="10.0"/>
+	<Node name="AA3" weight="1.4" xpos="30.0" ypos="15.0"/>
+	<Node name="AA4" weight="1.4" xpos="30.0" ypos="20.0"/>
+	<Node name="AA5" weight="1.4" xpos="30.0" ypos="25.0"/>
+	<Node name="AA6" weight="1.4" xpos="30.0" ypos="30.0"/>
+	<Node name="AA7" weight="1.0" xpos="30.0" ypos="35.0"/>
+	<Node name="AA8" weight="1.0" xpos="30.0" ypos="40.0"/>
+	<Node name="AA9" weight="1.0" xpos="30.0" ypos="45.0"/>
+	<Node name="AA10" weight="1.0" xpos="30.0" ypos="50.0"/>
+	<Node name="AA11" weight="1.0" xpos="30.0" ypos="55.0"/>
+	<Node name="AA12" weight="1.0" xpos="30.0" ypos="60.0"/>
+	<Node name="AA13" weight="1.0" xpos="30.0" ypos="65.0"/>
+	<Node name="AA14" weight="1.0" xpos="30.0" ypos="70.0"/>
+		
+	
+	<Node name="OriginB" weight="1.0" xpos="0.0" ypos="25.0"/>
+	
+	<Node name="B1" weight="1.0" xpos="5.0" ypos="30.0"/>
+	<Node name="B2" weight="1.0" xpos="10.0" ypos="30.0"/>
+	<Node name="B3" weight="1.0" xpos="15.0" ypos="30.0"/>
+	<Node name="B4" weight="1.0" xpos="20.0" ypos="30.0"/>
+	<Node name="B7" weight="1.8" xpos="35.0" ypos="30.0"/>
+	<Node name="B8" weight="1.4" xpos="40.0" ypos="30.0"/>
+	<Node name="B9" weight="1.0" xpos="45.0" ypos="30.0"/>
+	<Node name="B10" weight="1.0" xpos="50.0" ypos="30.0"/>
+	<Node name="B11" weight="1.0" xpos="55.0" ypos="30.0"/>
+	<Node name="B12" weight="1.0" xpos="60.0" ypos="30.0"/>
+	<Node name="B13" weight="1.0" xpos="65.0" ypos="30.0"/>
+	<Node name="B14" weight="1.0" xpos="70.0" ypos="30.0"/>
+	
+	<Node name="BB1" weight="1.0" xpos="5.0" ypos="25.0"/>
+	<Node name="BB2" weight="1.0" xpos="10.0" ypos="25.0"/>
+	<Node name="BB3" weight="1.0" xpos="15.0" ypos="25.0"/>
+	<Node name="BB4" weight="1.0" xpos="20.0" ypos="25.0"/>
+	<Node name="BB7" weight="1.8" xpos="35.0" ypos="25.0"/>
+	<Node name="BB8" weight="1.4" xpos="40.0" ypos="25.0"/>
+	<Node name="BB9" weight="1.0" xpos="45.0" ypos="25.0"/>
+	<Node name="BB10" weight="1.0" xpos="50.0" ypos="25.0"/>
+	<Node name="BB11" weight="1.0" xpos="55.0" ypos="25.0"/>
+	<Node name="BB12" weight="1.0" xpos="60.0" ypos="25.0"/>
+	<Node name="BB13" weight="1.0" xpos="65.0" ypos="25.0"/>
+	<Node name="BB14" weight="1.0" xpos="70.0" ypos="25.0"/>
+	
+	
+	<Node name="OriginC" weight="1.0" xpos="0.0" ypos="45.0"/>
+	
+	<Node name="C1" weight="1.0" xpos="5.0" ypos="50.0"/>
+	<Node name="C2" weight="1.0" xpos="10.0" ypos="50.0"/>
+	<Node name="C3" weight="1.0" xpos="15.0" ypos="50.0"/>
+	<Node name="C4" weight="1.0" xpos="20.0" ypos="50.0"/>
+	<Node name="C7" weight="1.0" xpos="35.0" ypos="50.0"/>
+	<Node name="C8" weight="1.0" xpos="40.0" ypos="50.0"/>
+	<Node name="C9" weight="1.2" xpos="45.0" ypos="50.0"/>
+	<Node name="C10" weight="1.4" xpos="50.0" ypos="50.0"/>
+	<Node name="C11" weight="1.2" xpos="55.0" ypos="50.0"/>
+	<Node name="C12" weight="1.0" xpos="60.0" ypos="50.0"/>
+	<Node name="C13" weight="1.0" xpos="65.0" ypos="50.0"/>
+	<Node name="C14" weight="1.0" xpos="70.0" ypos="50.0"/>
+	
+	<Node name="CC1" weight="1.0" xpos="5.0" ypos="45.0"/>
+	<Node name="CC2" weight="1.0" xpos="10.0" ypos="45.0"/>
+	<Node name="CC3" weight="1.0" xpos="15.0" ypos="45.0"/>
+	<Node name="CC4" weight="1.0" xpos="20.0" ypos="45.0"/>
+	<Node name="CC7" weight="1.0" xpos="35.0" ypos="45.0"/>
+	<Node name="CC8" weight="1.0" xpos="40.0" ypos="45.0"/>
+	<Node name="CC9" weight="1.2" xpos="45.0" ypos="45.0"/>
+	<Node name="CC10" weight="1.4" xpos="50.0" ypos="45.0"/>
+	<Node name="CC11" weight="1.2" xpos="55.0" ypos="45.0"/>
+	<Node name="CC12" weight="1.0" xpos="60.0" ypos="45.0"/>
+	<Node name="CC13" weight="1.0" xpos="65.0" ypos="45.0"/>
+	<Node name="CC14" weight="1.0" xpos="70.0" ypos="45.0"/>
+	
+	<Node name="D1" weight="1.2" xpos="45.0" ypos="5.0"/>
+	<Node name="D2" weight="1.2" xpos="45.0" ypos="10.0"/>
+	<Node name="D3" weight="1.2" xpos="45.0" ypos="15.0"/>
+	<Node name="D4" weight="1.2" xpos="45.0" ypos="20.0"/>
+	<Node name="D7" weight="1.0" xpos="45.0" ypos="35.0"/>
+	<Node name="D8" weight="1.0" xpos="45.0" ypos="40.0"/>
+	<Node name="D11" weight="1.0" xpos="45.0" ypos="55.0"/>
+	<Node name="D12" weight="1.0" xpos="45.0" ypos="60.0"/>
+	<Node name="D13" weight="1.0" xpos="45.0" ypos="65.0"/>
+	<Node name="D14" weight="1.0" xpos="45.0" ypos="70.0"/>
+	
+	<Node name="DD1" weight="1.2" xpos="50.0" ypos="5.0"/>
+	<Node name="DD2" weight="1.2" xpos="50.0" ypos="10.0"/>
+	<Node name="DD3" weight="1.2" xpos="50.0" ypos="15.0"/>
+	<Node name="DD4" weight="1.2" xpos="50.0" ypos="20.0"/>
+	<Node name="DD7" weight="1.0" xpos="50.0" ypos="35.0"/>
+	<Node name="DD8" weight="1.0" xpos="50.0" ypos="40.0"/>
+	<Node name="DD11" weight="1.0" xpos="50.0" ypos="55.0"/>
+	<Node name="DD12" weight="1.0" xpos="50.0" ypos="60.0"/>
+	<Node name="DD13" weight="1.0" xpos="50.0" ypos="65.0"/>
+	<Node name="DD14" weight="1.0" xpos="50.0" ypos="70.0"/>
+
+	<Node name="DestinationA" weight="1.0" xpos="25.0" ypos="75.0"/>
+	
+	<Node name="DestinationB" weight="1.0" xpos="75.0" ypos="25.0"/>
+	
+	<Node name="DestinationC" weight="1.0" xpos="75.0" ypos="45.0"/>
+	
+	<!-- Stations Start Positions/Destinations-->
+
+	<!-- Streets -->
+	<Edge name="OriginAA1" source="OriginA" target="A1" weight="100.0" tag="residential"/>
+	
+	<Edge name="OriginA" source="OriginA" target="OriginA" weight="100.0" tag="station"/>
+	<Edge name="DestinationA" source="DestinationA" target="DestinationA" weight="100.0" tag="station"/>
+	
+	<Edge name="A14DestinationA" source="A14" target="DestinationA" weight="100.0" tag="residential"/>
+	
+	
+	<Edge name="OriginBB1" source="OriginB" target="B1" weight="100.0" tag="residential"/>
+	<Edge name="OriginB" source="OriginB" target="OriginB" weight="100.0" tag="station"/>
+	<Edge name="DestinationB" source="DestinationB" target="DestinationB" weight="100.0" tag="station"/>
+	<Edge name="B14DestinationB" source="B14" target="DestinationB" weight="100.0" tag="residential"/>
+	
+	<Edge name="OriginCC1" source="OriginC" target="C1" weight="100.0" tag="residential"/>
+	<Edge name="OriginC" source="OriginC" target="OriginC" weight="100.0" tag="station"/>
+	<Edge name="DestinationC" source="DestinationC" target="DestinationC" weight="100.0" tag="station"/>
+	<Edge name="C14DestinationC" source="C14" target="DestinationC" weight="100.0" tag="residential"/>
+	
+	<Edge name="A1A2" source="A1" target="A2" weight="100.0" tag="residential"/>
+	<Edge name="A2A3" source="A2" target="A3" weight="100.0" tag="residential"/>
+	<Edge name="A3A4" source="A3" target="A4" weight="100.0" tag="residential"/>
+	<Edge name="A4A5" source="A4" target="A5" weight="100.0" tag="residential"/>
+	<Edge name="A5A6" source="A5" target="A6" weight="100.0" tag="residential"/>
+	<Edge name="A6A7" source="A6" target="A7" weight="100.0" tag="residential"/>
+	<Edge name="A7A8" source="A7" target="A8" weight="100.0" tag="residential"/>
+	<Edge name="A8A9" source="A8" target="A9" weight="100.0" tag="residential"/>
+	<Edge name="A9A10" source="A9" target="A10" weight="100.0" tag="residential"/>
+	<Edge name="A10A11" source="A10" target="A11" weight="100.0" tag="residential"/>
+	<Edge name="A11A12" source="A11" target="A12" weight="100.0" tag="residential"/>
+	<Edge name="A12A13" source="A12" target="A13" weight="100.0" tag="residential"/>
+	<Edge name="A13A14" source="A13" target="A14" weight="100.0" tag="residential"/>
+	
+	<Edge name="AA1AA2" target="AA1" source="AA2" weight="100.0" tag="residential"/>
+	<Edge name="AA2AA3" target="AA2" source="AA3" weight="100.0" tag="residential"/>
+	<Edge name="AA3AA4" target="AA3" source="AA4" weight="100.0" tag="residential"/>
+	<Edge name="AA4AA5" target="AA4" source="AA5" weight="100.0" tag="residential"/>
+	<Edge name="AA5AA6" target="AA5" source="AA6" weight="100.0" tag="residential"/>
+	<Edge name="AA6AA7" target="AA6" source="AA7" weight="100.0" tag="residential"/>
+	<Edge name="AA7AA8" target="AA7" source="AA8" weight="100.0" tag="residential"/>
+	<Edge name="AA8AA9" target="AA8" source="AA9" weight="100.0" tag="residential"/>
+	<Edge name="AA9AA10" target="AA9" source="AA10" weight="100.0" tag="residential"/>
+	<Edge name="AA10AA11" target="AA10" source="AA11" weight="100.0" tag="residential"/>
+	<Edge name="AA11AA12" target="AA11" source="AA12" weight="100.0" tag="residential"/>
+	<Edge name="AA12AA13" target="AA12" source="AA13" weight="100.0" tag="residential"/>
+	<Edge name="AA13AA14" target="AA13" source="AA14" weight="100.0" tag="residential"/>
+	
+	<Edge name="B1B2" source="B1" target="B2" weight="100.0" tag="residential"/>
+	<Edge name="B2B3" source="B2" target="B3" weight="100.0" tag="residential"/>
+	<Edge name="B3B4" source="B3" target="B4" weight="100.0" tag="residential"/>
+	<Edge name="B4A6" source="B4" target="A6" weight="100.0" tag="residential"/>
+	<Edge name="AA5A5" source="AA5" target="A5" weight="100.0" tag="residential"/>
+	<Edge name="AA6B7" source="AA6" target="B7" weight="100.0" tag="residential"/>
+	<Edge name="B7B8" source="B7" target="B8" weight="100.0" tag="residential"/>
+	<Edge name="B8B9" source="B8" target="B9" weight="100.0" tag="residential"/>
+	<Edge name="B9B10" source="B9" target="B10" weight="100.0" tag="residential"/>
+	<Edge name="B10B11" source="B10" target="B11" weight="100.0" tag="residential"/>
+	<Edge name="B11B12" source="B11" target="B12" weight="100.0" tag="residential"/>
+	<Edge name="B12B13" source="B12" target="B13" weight="100.0" tag="residential"/>
+	<Edge name="B13B14" source="B13" target="B14" weight="100.0" tag="residential"/>
+	
+	<Edge name="BB9B9" target="B9" source="BB9" weight="100.0" tag="residential"/>
+	<Edge name="B9D7" target="D7" source="B9" weight="100.0" tag="residential"/>
+	
+	<Edge name="BB1BB2" target="BB1" source="BB2" weight="100.0" tag="residential"/>
+	<Edge name="BB2BB3" target="BB2" source="BB3" weight="100.0" tag="residential"/>
+	<Edge name="BB3BB4" target="BB3" source="BB4" weight="100.0" tag="residential"/>
+	<Edge name="BB4A5" target="BB4" source="A5" weight="100.0" tag="residential"/>
+	<Edge name="A6AA6" target="AA6" source="A6" weight="100.0" tag="residential"/>
+	<Edge name="AA5BB7" target="AA5" source="BB7" weight="100.0" tag="residential"/>
+	<Edge name="BB7BB8" target="BB7" source="BB8" weight="100.0" tag="residential"/>
+	<Edge name="BB8BB9" target="BB8" source="BB9" weight="100.0" tag="residential"/>
+	<Edge name="BB9BB10" target="BB9" source="BB10" weight="100.0" tag="residential"/>
+	<Edge name="BB10BB11" target="BB10" source="BB11" weight="100.0" tag="residential"/>
+	<Edge name="BB11BB12" target="BB11" source="BB12" weight="100.0" tag="residential"/>
+	<Edge name="BB12BB13" target="BB12" source="BB13" weight="100.0" tag="residential"/>
+	<Edge name="BB13BB14" target="BB13" source="BB14" weight="100.0" tag="residential"/>
+	
+	<Edge name="C1C2" source="C1" target="C2" weight="100.0" tag="residential"/>
+	<Edge name="C2C3" source="C2" target="C3" weight="100.0" tag="residential"/>
+	<Edge name="C3C4" source="C3" target="C4" weight="100.0" tag="residential"/>
+	<Edge name="C4A10" source="C4" target="A10" weight="100.0" tag="residential"/>
+	<Edge name="AA9A9" source="AA9" target="A9" weight="100.0" tag="residential"/>
+	<Edge name="CC7AA9" source="CC7" target="AA9" weight="100.0" tag="residential"/>
+	<Edge name="C7C8" source="C7" target="C8" weight="100.0" tag="residential"/>
+	<Edge name="C8C9" source="C8" target="C9" weight="100.0" tag="residential"/>
+	<Edge name="C9C10" source="C9" target="C10" weight="100.0" tag="residential"/>
+	<Edge name="C10C11" source="C10" target="C11" weight="100.0" tag="residential"/>
+	<Edge name="C11C12" source="C11" target="C12" weight="100.0" tag="residential"/>
+	<Edge name="C12C13" source="C12" target="C13" weight="100.0" tag="residential"/>
+	<Edge name="C13C14" source="C13" target="C14" weight="100.0" tag="residential"/>
+	
+	<Edge name="CC1CC2" target="CC1" source="CC2" weight="100.0" tag="residential"/>
+	<Edge name="CC2CC3" target="CC2" source="CC3" weight="100.0" tag="residential"/>
+	<Edge name="CC3CC4" target="CC3" source="CC4" weight="100.0" tag="residential"/>
+	<Edge name="CC4A9" target="CC4" source="A9" weight="100.0" tag="residential"/>
+	<Edge name="A10AA10" target="AA10" source="A10" weight="100.0" tag="residential"/>
+	<Edge name="AA10C7" target="C7" source="AA10" weight="100.0" tag="residential"/>
+	<Edge name="CC7CC8" target="CC7" source="CC8" weight="100.0" tag="residential"/>
+	<Edge name="CC8CC9" target="CC8" source="CC9" weight="100.0" tag="residential"/>
+	<Edge name="CC9CC10" target="CC9" source="CC10" weight="100.0" tag="residential"/>
+	<Edge name="CC10CC11" target="CC10" source="CC11" weight="100.0" tag="residential"/>
+	<Edge name="CC11CC12" target="CC11" source="CC12" weight="100.0" tag="residential"/>
+	<Edge name="CC12CC13" target="CC12" source="CC13" weight="100.0" tag="residential"/>
+	<Edge name="CC13CC14" target="CC13" source="CC14" weight="100.0" tag="residential"/>
+	
+	<Edge name="D1D2" source="D1" target="D2" weight="100.0" tag="residential"/>
+	<Edge name="D2D3" source="D2" target="D3" weight="100.0" tag="residential"/>
+	<Edge name="D3D4" source="D3" target="D4" weight="100.0" tag="residential"/>
+	<Edge name="D4BB9" source="D4" target="BB9" weight="100.0" tag="residential"/>
+	<Edge name="D7D8" source="D7" target="D8" weight="100.0" tag="residential"/>
+	<Edge name="D8CC9" source="D8" target="CC9" weight="100.0" tag="residential"/>
+	<Edge name="CC9C9" source="CC9" target="C9" weight="100.0" tag="residential"/>
+	<Edge name="C9D11" source="C9" target="D11" weight="100.0" tag="residential"/>
+	<Edge name="D11D12" source="D11" target="D12" weight="100.0" tag="residential"/>
+	<Edge name="D12D13" source="D12" target="D13" weight="100.0" tag="residential"/>
+	<Edge name="D13D14" source="D13" target="D14" weight="100.0" tag="residential"/>
+	
+	<Edge name="DD1DD2" target="DD1" source="DD2" weight="100.0" tag="residential"/>
+	<Edge name="DD2DD3" target="DD2" source="DD3" weight="100.0" tag="residential"/>
+	<Edge name="DD3DD4" target="DD3" source="DD4" weight="100.0" tag="residential"/>
+	<Edge name="DD4BB10" target="DD4" source="BB10" weight="100.0" tag="residential"/>
+	<Edge name="B10BB10" target="BB10" source="B10" weight="100.0" tag="residential"/>
+	<Edge name="B10DD7" target="B10" source="DD7" weight="100.0" tag="residential"/>
+	<Edge name="DD7DD8" target="DD7" source="DD8" weight="100.0" tag="residential"/>
+	<Edge name="DD8CC10" target="DD8" source="CC10" weight="100.0" tag="residential"/>
+	<Edge name="CC10C10" target="CC10" source="C10" weight="100.0" tag="residential"/>
+	<Edge name="C10DD11" target="C10" source="DD11" weight="100.0" tag="residential"/>
+	<Edge name="DD11DD12" target="DD11" source="DD12" weight="100.0" tag="residential"/>
+	<Edge name="DD12DD13" target="DD12" source="DD13" weight="100.0" tag="residential"/>
+	<Edge name="DD13DD14" target="DD13" source="DD14" weight="100.0" tag="residential"/>
+	
+	<Edge name="AA1A1" source="AA1" target="A1" weight="100.0" tag="residential"/>
+	<Edge name="A14AA14" source="A14" target="AA14" weight="100.0" tag="residential"/>
+	
+	<Edge name="BB1B1" source="BB1" target="B1" weight="100.0" tag="residential"/>
+	<Edge name="B14BB14" source="B14" target="BB14" weight="100.0" tag="residential"/>
+	
+	<Edge name="CC1C1" source="CC1" target="C1" weight="100.0" tag="residential"/>
+	<Edge name="C14CC14" source="C14" target="CC14" weight="100.0" tag="residential"/>
+	
+	<Edge name="DD1D1" source="DD1" target="D1" weight="100.0" tag="residential"/>
+	<Edge name="D14DD14" source="D14" target="DD14" weight="100.0" tag="residential"/>
+	
+	
+	
+</Graph>
