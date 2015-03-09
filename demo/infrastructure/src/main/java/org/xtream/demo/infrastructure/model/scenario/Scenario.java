@@ -8,11 +8,12 @@ import org.xtream.demo.infrastructure.model.transportation.TransportationCompone
 public abstract class Scenario
 {
 	public static int DURATION = 60;
-	public static int SAMPLES = 10;
-	public static int CLUSTERS = 30;
-	public static double RANDOMNESS = 0.0;
-	public static double CACHING = 0;
-	public static int ROUNDS = 1000;
+	public static int SAMPLES = 75;
+	public static int CLUSTERS = 75;
+	public static int BRANCH_ROUNDS = 2;
+	public static long BRANCH_DURATION = 5;
+	public static int KMEANS_ROUNDS = 1000;
+	public static long KMEANS_DURATION = 100;
 	
 	public static Double MODELSCALE = 1.0; // 60 seconds 
 	public static Graph context = new Graph("InfrastructureMAP.xml");
