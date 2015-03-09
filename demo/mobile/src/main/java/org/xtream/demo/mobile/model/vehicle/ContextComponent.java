@@ -1,6 +1,7 @@
 package org.xtream.demo.mobile.model.vehicle;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.xtream.core.model.Component;
 import org.xtream.core.model.Expression;
@@ -44,6 +45,7 @@ public class ContextComponent extends Component
 	public Port<Edge> positionInput = new Port<>();
 	public Port<LinkedList<Edge>> positionListInput = new Port<>();
 	public Port<Double> speedAbsoluteInput = new Port<>();
+	public Port<List<Edge>> pathInput = new Port<>();
 	
 	// Outputs External/Internal
 	
@@ -51,6 +53,14 @@ public class ContextComponent extends Component
 	public Port<Edge> destinationPositionOutput = new Port<>();
 	public Port<Double> positionTraversedLengthOutput = new Port<>();
 	public Port<Double> positionEdgeLengthOutput= new Port<>();
+	
+	public Port<Double> positionXOutput = new Port<>();
+	public Port<Double> positionYOutput = new Port<>();
+	public Port<Double> positionZOutput = new Port<>();
+	
+	public Port<Double> shortestPathLengthIndexOutput = new Port<>();
+	public Port<Double> pathWeightIndexOutput = new Port<>();
+	public Port<Double> pathLengthIndexOutput = new Port<>();
 	
 	public Port<Double> powerOutput = new Port<>();
 	
@@ -63,9 +73,6 @@ public class ContextComponent extends Component
 	public Port<Boolean> drivingIndicatorOutput = new Port<>();	
 	
 	// Outputs Internal
-	public Port<Double> positionXOutput = new Port<>();
-	public Port<Double> positionYOutput = new Port<>();
-	public Port<Double> positionZOutput = new Port<>();
 	
 	public Port<Double> positionEdgeCapacityOutput = new Port<>();
 	public Port<String> positionEdgeTypeOutput = new Port<>();
@@ -310,6 +317,58 @@ public class ContextComponent extends Component
 		}		
 	};
 	
+	public Expression<Double> shortestPathLengthIndexExpression = new Expression<Double>(shortestPathLengthIndexOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			List<Edge> shortestPath = graph.getShortestPath(graph.getTargetNode(positionInput.get(state, timepoint).getName()), graph.getTargetNode(destinationPositionOutput.get(state, timepoint).getName()));
+			
+			double shortestPathLengthIndex = 0.;
+			
+			for (Edge e : shortestPath)
+			{
+				double differenceX = Math.pow((Double.parseDouble(graph.getNode(e.getTarget()).getXpos())-Double.parseDouble(graph.getNode(e.getSource()).getXpos())), 2);
+				double differenceY = Math.pow((Double.parseDouble(graph.getNode(e.getTarget()).getYpos())-Double.parseDouble(graph.getNode(e.getSource()).getYpos())), 2);
+				
+				shortestPathLengthIndex += Math.sqrt(differenceX+differenceY);
+			}
+			return shortestPathLengthIndex;
+		}
+	};
+	
+	public Expression<Double> pathWeightIndexExpression = new Expression<Double>(pathWeightIndexOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return 0.;
+//			double pathWeightIndex = 0.;
+//			
+//			for (Edge e : pathInput.get(state, timepoint))
+//			{
+//				pathWeightIndex += Math.sqrt(Math.pow((Double.parseDouble(graph.getNode(e.getTarget()).getWeight())-Double.parseDouble(graph.getNode(e.getSource()).getWeight())), 2));
+//			}
+//			return pathWeightIndex;
+		}
+	};
+	
+	public Expression<Double> pathLengthIndexExpression = new Expression<Double>(pathLengthIndexOutput)
+	{
+		@Override protected Double evaluate(State state, int timepoint)
+		{
+			return 0.;
+//			double pathLengthIndex = 0.;
+//			
+//			for (Edge e : pathInput.get(state, timepoint))
+//			{
+//				double differenceX = Math.pow((Double.parseDouble(graph.getNode(e.getTarget()).getXpos())-Double.parseDouble(graph.getNode(e.getSource()).getXpos())), 2);
+//				double differenceY = Math.pow((Double.parseDouble(graph.getNode(e.getTarget()).getYpos())-Double.parseDouble(graph.getNode(e.getSource()).getYpos())), 2);
+//				
+//				pathLengthIndex += Math.sqrt(differenceX+differenceY);
+//			}
+//			return pathLengthIndex;
+		}
+	};
+	
 	public Expression<Boolean> drivingIndicatorExpression = new Expression<Boolean>(drivingIndicatorOutput)
 	{
 		@Override protected Boolean evaluate(State state, int timepoint)
@@ -365,16 +424,17 @@ public class ContextComponent extends Component
 			if (speedAbsoluteInput.get(state, timepoint) > 0)
 			{
 				
-				double slope;
-				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedAbsoluteInput.get(state, timepoint),2)))
-				{
-					slope = (Math.pow(speedAbsoluteInput.get(state, timepoint), 2))+positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint); 
-				}
-				else {
-					slope = 0.;
-				}
-				
-				return (mileage*10*(slope*0.3));
+//				double slope;
+//				if (Math.abs(positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint)) < (Math.pow(speedAbsoluteInput.get(state, timepoint),2)))
+//				{
+//					slope = (Math.pow(speedAbsoluteInput.get(state, timepoint), 2))+positionAltitudeDifferenceOutput.get(state, timepoint)+positionAltitudeDifferenceOutput.get(state, timepoint); 
+//				}
+//				else {
+//					slope = 0.;
+//				}
+				//return (mileage*(Math.pow(speedAbsoluteInput.get(state, timepoint),2))+mileage*(speedAbsoluteInput.get(state, timepoint)*Math.pow(positionAltitudeDifferenceOutput.get(state, timepoint), 4)));
+				return mileage*(speedAbsoluteInput.get(state, timepoint)*Math.pow(positionAltitudeDifferenceOutput.get(state, timepoint), 2));
+				//return (mileage*(slope*2));
 			}
 			else
 			{

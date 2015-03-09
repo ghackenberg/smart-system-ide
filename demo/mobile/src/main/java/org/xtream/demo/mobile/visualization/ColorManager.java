@@ -1,4 +1,4 @@
-package org.xtream.demo.mobile.datatypes.helpers;
+package org.xtream.demo.mobile.visualization;
 
 import java.util.HashMap;
 

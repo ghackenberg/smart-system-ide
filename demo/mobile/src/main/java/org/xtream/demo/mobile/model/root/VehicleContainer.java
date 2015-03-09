@@ -1,6 +1,7 @@
 package org.xtream.demo.mobile.model.root;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.xtream.core.model.Chart;
 import org.xtream.core.model.Expression;
@@ -57,6 +58,7 @@ public class VehicleContainer extends GenericModuleContainer
         drivingIndicator2 = new ChannelExpression<>(logics.drivingIndicatorInput, context.drivingIndicatorOutput);
         position2 = new ChannelExpression<>(context.positionInput, logics.positionOutput);
         positionList = new ChannelExpression<>(context.positionListInput, logics.positionEdgeListOutput);
+        path = new ChannelExpression<>(context.pathInput, logics.pathOutput);
         speedInternal = new ChannelExpression<>(context.speedAbsoluteInput, logics.speedAbsoluteOutput);
         power2 = new ChannelExpression<>(objectives.powerInput, context.powerOutput);
         targetReached = new ChannelExpression<>(objectives.targetReachedInput, context.targetReachedOutput);
@@ -133,6 +135,7 @@ public class VehicleContainer extends GenericModuleContainer
 	public ChannelExpression<Edge> position2;
 	public ChannelExpression<LinkedList<Edge>> positionList;
 	public ChannelExpression<Double> speedInternal;
+	public ChannelExpression<List<Edge>> path;
 	
 	// Channels: context -> objective
 	

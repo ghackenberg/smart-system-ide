@@ -486,7 +486,7 @@ public class Graph
 	public List<Edge> generatePath(Node source, Node target) {
 	
 		List<Edge> edgeList = new LinkedList<Edge>();
-		int alternatives = 3;
+		int alternatives = 2;
 		
 		if (source.equals(target)) 
 		{
@@ -512,6 +512,7 @@ public class Graph
 		if (list != null) 
 		{
 			GraphPath<Node, DefaultWeightedEdge> last = list.get((int) (list.size()*(Math.random()*0.51)));
+			//GraphPath<Node, DefaultWeightedEdge> last = list.get((int) (list.size()*(Math.random())));
 			
 			for (DefaultWeightedEdge e : last.getEdgeList())
 			{
