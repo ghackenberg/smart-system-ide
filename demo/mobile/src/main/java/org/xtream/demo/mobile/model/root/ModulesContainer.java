@@ -55,11 +55,8 @@ public class ModulesContainer extends Container
 		this(graph, getModules(size, graph));
 	}
 	
-
 	public ModulesContainer(Graph graph, VehicleContainer[] vehicleContainers)
 	{
         modules = vehicleContainers;
 	}
-
-
 }
