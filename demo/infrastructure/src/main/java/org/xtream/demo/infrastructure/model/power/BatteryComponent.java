@@ -50,18 +50,65 @@ public class BatteryComponent extends EnergyComponent
 	{
 		@Override protected Double evaluate(State state, int timepoint)
 		{
+		
+		if (timepoint == 0)
+		{
 			if (probabilityOutput.get(state, timepoint) > 0.)
 			{
-				return stateOfChargeSpeed;
+				if ((0.5 * stateOfCharge) * batteryLoss - stateOfChargeSpeed >= stateOfChargeMinimum)
+				{
+					return stateOfChargeSpeed;
+				}
+				else 
+				{
+					return 0.;
+				}
 			}
 			else if (probabilityOutput.get(state, timepoint) < 0.) 
 			{
-				return -stateOfChargeSpeed;
+				if ((0.5 * stateOfCharge) * batteryLoss + stateOfChargeSpeed * batteryEfficiency <= stateOfChargeMaximum)
+				{
+					return -stateOfChargeSpeed;
+				}
+				else 
+				{
+					return 0.;
+				}
 			}
 			else 
 			{
 				return 0.;
 			}
+		}
+		else 
+		{
+			if (probabilityOutput.get(state, timepoint) > 0.)
+			{
+				if (stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss - stateOfChargeSpeed >= stateOfChargeMinimum)
+				{
+					return stateOfChargeSpeed;
+				}
+				else 
+				{
+					return 0.;
+				}
+			}
+			else if (probabilityOutput.get(state, timepoint) < 0.) 
+			{
+				if (stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss + stateOfChargeSpeed * batteryEfficiency <= stateOfChargeMaximum)
+				{
+					return -stateOfChargeSpeed;
+				}
+				else 
+				{
+					return 0.;
+				}
+			}
+			else 
+			{
+				return 0.;
+			}
+		}
 		}
 	};
 	
@@ -77,7 +124,14 @@ public class BatteryComponent extends EnergyComponent
 			{
 				if (probabilityOutput.get(state, timepoint) < 0.)
 				{
-					return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss + stateOfChargeSpeed * batteryEfficiency; 
+					if (stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss + stateOfChargeSpeed * batteryEfficiency <= stateOfChargeMaximum) 
+					{
+						return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss + stateOfChargeSpeed * batteryEfficiency; 
+					}
+					else 
+					{
+						return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss;
+					}
 				}
 				else if (probabilityOutput.get(state, timepoint) == 0.)
 				{
@@ -85,7 +139,14 @@ public class BatteryComponent extends EnergyComponent
 				}
 				else if (probabilityOutput.get(state, timepoint) > 0.)
 				{
-					return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss - stateOfChargeSpeed;
+					if (stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss - stateOfChargeSpeed >= stateOfChargeMinimum)
+					{
+						return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss - stateOfChargeSpeed;
+					} 
+					else
+					{
+						return stateOfChargeOutput.get(state, timepoint - 1) * batteryLoss;
+					}
 				}
 					
 				throw new IllegalStateException();
