@@ -1,9 +1,31 @@
-\section{Introduction (1 page)}
+\section{Introduction (1.5 pages)}
 
 {\color{red} Wie soll die Argumentation hier verlaufen?}
 
 Increasing awareness of the environmental impacts of driving has spawned many recent approaches addressing energy-efficient vehicle behavior in the context of Intelligent Transportation Systems (ITS). Taking consistent steps towards CO2 reduction and independence from fossil fuels, in recent time, hybrid electric vehicles (HEV) and electric vehicles (EV) have seen increased attention in research. 
 Furthermore, the impact on the power distribution network remains a challenge for electric vehicles with Grid-to-Vehicle (G2V) as well as Vehicle-to-Grid (V2G) interactions to consider.
+
+\subsection{Related work (0.5 pages)}
+\label{section:related_work}
+
+{\color{red} K\"onnen wir hier noch eine Unterstruktur finden?}
+
+In recent time, approaches dealing with the optimal charging scheduling for electric vehicles have seen widespread attention in research. 
+
+Sundstrom et al. \cite{sundstrom2010planning} consider the capacity of the electricity grid in the charging of electric vehicles, thereby avoiding overloading in the grid.
+An approach by Schlote et al. \cite{schlote2012balanced} implements load-balancing strategies for charging demand at charging points into the routing decisions of electric vehicles, resulting in reduced travel times and congestion. 
+Furthermore, attempts to integrate intelligent charging behavior of electric vehicles into smart grids have been made. 
+
+Alonso et al. \cite{alonso2014optimal} examine optimal charging scheduling for electric vehicles in smart grids, achieving optimal behavior for charging of EVs within a representative low-voltage net topology. The objective is oriented towards obtaining daily optimal scheduling of EV demand on transformer substations.
+
+However, common among these approaches is that demand alleviation within the power grid represents the main objective. Therefore, differing or additional objectives as well as constraints of the traffic system, it's individual EVs and the power grid can not be represented. Furthermore, differing configurations in regard to the objectives cannot be explored and analyzed. 
+
+Soares et al. \cite{soares2012electric} propose an electric vehicle scenario simulator, which enables the definition of electric vehicle scenarios in the context of smart grids and distribution networks.
+However, it's scope for scenario simulation is limited to the definition of electric vehicles scenarios and relies on external tools for specific analysis and determining impact on the power grid.
+
+In summary, all considered approaches have in common that they aim to address the objectives of energy-efficient system behavior.
+
+The issue remains that none of the approaches allow to rapidly explore and evaluate holistic transportation scenarios due to limited scope and intended objectives. Interfacing components of infrastructures are only partially or not considered, leading to insufficient observations about the feasibility of future transportation scenarios.
 
 \subsection{Problem}
 
@@ -12,6 +34,15 @@ After studying related work, we have identified two major problems with existing
 \subsection{Contribution}
 
 To overcome the current situation we extend an existing approach to transportation system modeling and scenario exploration such that the electricity network can be represented in greater detail. Then we derive a systematic approach to modeling and varying the parameters of future transportation system and electricity network scenarios. Finally, we demonstrate the approach using a number of examples and discuss its strengths and weaknesses.
+
+%The main contributions of this paper are:
+
+%\begin{enumerate}
+%	\item Description of a lightweight approach for modeling and exploring dynamics of future
+%	transportation scenarios based on objectives, situations and infrastructures
+%	\item Demonstration of the approach using a basic scenario employing a basic traffic network and power grid infrastructure
+%	and resulting interactions with electric vehicles
+%\end{enumerate}
 
 \subsection{Outline}
 
