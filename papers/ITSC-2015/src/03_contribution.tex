@@ -1,10 +1,51 @@
 \section{Contribution (2 pages)}
 
-TBD
+Our approach is based on emergent property estimation techniques \cite{hackenberg2012towards} and uses a model-based approach for validating requirements in early phases of development proposed in \cite{hackenberg2014rapid}, relying on partial system models to ease modeling effort. An adaption to the ITS domain of this modeling technique was proposed in \cite{ascher2014early}, facilitating the formulation of multi-objective traffic flows as an optimal control problem consisting of state variables, control variables, constraints and objectives. The approach employs a generic solver for system behavior estimation, which utilizes stochastic optimization techniques.
+
+In this work, we propose an component-based approach for the exploration and evaluation of future transportation scenarios. Transportation scenarios are considered in terms of the power grid and traffic network. The scope of the approach is to 
+
+In the approach, scenarios are defined by objectives, situations and infrastructures representing defining model parameters. Objectives represent operational costs of different components, such as the traffic network and the power grid. Situations describe dynamic behavior such as profiles of individual traffic participants and loads on the power grid (i.e. production and consumption). Infrastructures represent the static structure and landscape of the contained power grid and traffic network. The underlying structure of this approach is shown in Figure~\ref{fig:approach}.
+
+Through the differentiation into scenarios, different a
+
+%The approach enables the segmentation of 
+%both for the power grid and the traffic network. 
+%incorporating traffic networks and power grid infrastructures.
+%Being capable of addressing objectives
+%and the utilization of different infrastructures of traffic participants, charging stations and the electricity grid. 
+%Extension of an existing lightweight approach to traffic flow modeling
+%with electric infrastructure components.
+
+The main contributions of this paper are:
+
+\begin{enumerate}
+	\item Description of a lightweight approach for modeling and exploring dynamics of future
+	transportation scenarios based on objectives, situations and infrastructures
+	\item Demonstration of the approach using a basic scenario employing a basic traffic network and power grid infrastructure
+	and resulting interactions with electric vehicles
+\end{enumerate}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[width=1\columnwidth]{../gfx/approach.png}
+	\caption{Overview of transportation scenario modeling including objective, situation and infrastructure parameters for the power grid and the traffic network.}
+	\label{fig:approach}
+\end{figure}
+
+Model definition is aided by a composite model architecture fitted to transportation scenario modeling seen in Figure~\ref{fig:model}. On it's highest level, the model architecture is represented by the system model, which contains separate models for the traffic and the power system. The traffic model represents the traffic system, in which individual cars within the traffic infrastructure are contained. Similarly, the power model represents the power system, which is comprised by different energy producing or energy consuming power devices, such as solar panels, energy storages and charging stations. Furthermore, the power system includes the electricity infrastructure, such as low-voltage nets and medium-voltage nets. Model components have a set of input and output ports, which represent observations about specific state variables. Directed connections between ports allow the modeling of interactivity between different components.
+
+Subsequently we describe the different components of the model architecture based on their state variables, control variables, constraints and objectives. 
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[width=0.925\columnwidth]{../gfx/model.png}
+	\caption{Overview of model architecture fitted to transportation scenario modeling}
+	\label{fig:model}
+\end{figure}
 
 \subsection{System Model}
 
-TBD
+The system model consists of the (1) Transportation System and the (2) Power System, aggregating contained components.
 
 \subsection{Traffic Model}
 
@@ -38,10 +79,12 @@ TBD
 
 TBD
 
-\subsubsection{Charing Station}
+\subsubsection{Charging Station}
 
 TBD
 
 \subsection{Scenario Modeling}
+
+Parameters
 
 TBD
