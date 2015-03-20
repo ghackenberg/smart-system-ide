@@ -2,26 +2,32 @@
 
 {\color{red} Wie soll die Argumentation hier verlaufen?}
 
-Increasing awareness of the environmental impacts of driving has spawned many recent approaches addressing energy-efficient vehicle behavior in the context of Intelligent Transportation Systems (ITS). Taking consistent steps towards CO2 reduction and independence from fossil fuels, in recent time, hybrid electric vehicles (HEV) and electric vehicles (EV) have seen increased attention in research. 
-Furthermore, the impact on the power distribution network remains a challenge for electric vehicles with Grid-to-Vehicle (G2V) as well as Vehicle-to-Grid (V2G) interactions to consider.
+% EV Motivation, Grid Impact of EVs, Balancing Demand 
+In recent years, increasing awareness of environmental impacts has sparked increased interest in electric vehicles (EV) as a means to diminish dependence on fossil fuels. EVs can provide a sustainable alternative to conventional fuel vehicles if their specific demands can be sufficiently addressed by the electricty network and the transportation system.
+To support the promise of a viable alternative, impacts on the power grid from EVs remain a major factor that needs to be addressed for truly smart grids, as sustainability of such a concept is strongly related with efficiently balancing energy. 
+However, the efficient balancing of energy for EVs within the power grid remains a challenge - a challenge which increases with the inevitable adaption of EVs. 
 
 \subsection{Related work (0.5 pages)}
 \label{section:related_work}
 
 {\color{red} K\"onnen wir hier noch eine Unterstruktur finden?}
 
-In recent time, approaches dealing with the optimal charging scheduling for electric vehicles have seen widespread attention in research. 
+% Approaches for Charging Scheduling
+In recent time, approaches dealing with the optimal charging scheduling for electric vehicles have seen widespread attention in research.
 
 Sundstrom et al. \cite{sundstrom2010planning} consider the capacity of the electricity grid in the charging of electric vehicles, thereby avoiding overloading in the grid.
-An approach by Schlote et al. \cite{schlote2012balanced} implements load-balancing strategies for charging demand at charging points into the routing decisions of electric vehicles, resulting in reduced travel times and congestion. 
-Furthermore, attempts to integrate intelligent charging behavior of electric vehicles into smart grids have been made. 
+Considering the necessity of charging while driving, Schlote et al. \cite{schlote2012balanced} implement load-balancing strategies for charging demand at charging points into the routing decisions of electric vehicles, resulting in reduced travel times and congestion in the traffic network. 
 
+Furthermore, attempts to integrate intelligent charging behavior of electric vehicles into smart grids have been made. 
 Alonso et al. \cite{alonso2014optimal} examine optimal charging scheduling for electric vehicles in smart grids, achieving optimal behavior for charging of EVs within a representative low-voltage net topology. The objective is oriented towards obtaining daily optimal scheduling of EV demand on transformer substations.
 
 However, common among these approaches is that demand alleviation within the power grid represents the main objective. Therefore, differing or additional objectives as well as constraints of the traffic system, it's individual EVs and the power grid can not be represented. Furthermore, differing configurations in regard to the objectives cannot be explored and analyzed. 
 
-Soares et al. \cite{soares2012electric} propose an electric vehicle scenario simulator, which enables the definition of electric vehicle scenarios in the context of smart grids and distribution networks.
-However, it's scope for scenario simulation is limited to the definition of electric vehicles scenarios and relies on external tools for specific analysis and determining impact on the power grid.
+% Importance of V2G + Economic impacts
+Additional complexity stems from the broadness of possible interactions of EVs with the power grid. Vehicle-to-Grid (V2G) interactions are diverse in their nature and intended objectives. The economic impacts of vehicle carried batteries have been studied in the past to have significant influence ~\cite{peterson2010economics,erdinc2014economic}. Therefore, it is important to understand the specific objectives and how they influence the power grid. Furthermore, for engineering transportation systems of the future it is important to consider the constraints and objectives - for future scenarios EVs with autonomous objectives have to considered.
+
+% Scenario definition
+Examining the effects of EVs based on scenarios, Soares et al. \cite{soares2012electric} propose an electric vehicle scenario simulator, which enables the definition of electric vehicle scenarios in the context of smart grids and distribution networks. However, it's scope for scenario simulation is limited to the definition of electric vehicles scenarios and relies on external tools for specific analysis and determining impact on the power grid.
 
 In summary, all considered approaches have in common that they aim to address the objectives of energy-efficient system behavior.
 
@@ -46,4 +52,4 @@ To overcome the current situation we extend an existing approach to transportati
 
 \subsection{Outline}
 
-In the following, we first provide an overview of related work in Section~\ref{section:related_work}. Then we describe our approach to integrated transportation system and electricity network modeling in Section~\ref{section:contribution_1} followed by our approach to systematic parameter variation in Section~\ref{section:contribution_2}. Thereon we discuss a number of examples in Section~\ref{section:evaluation}. Finally we conclude with a summary of our contributions, remaining deficiencies and future work in Section~\ref{section:conclusion}.
+In the following, we describe our approach to integrated transportation system and electricity network modeling in Section~\ref{section:contribution_1} followed by our approach to systematic parameter variation in Section~\ref{section:contribution_2}. Thereon we discuss a number of examples in Section~\ref{section:evaluation}. Finally we conclude with a summary of our contributions, remaining deficiencies and future work in Section~\ref{section:conclusion}.
