@@ -1,47 +1,105 @@
 \section{Evaluation by examples (1.5 pages)}
 \label{section:evaluation}
 
-{\color{red} Welche Beispiele kommen hier?}
-
 In the following we evaluate the proposed approach to multi-domain system modeling and systematic parameter variation using a number of examples. First we describe the examples in Section~\ref{section:examples} before discussing various issues in Section~\ref{section:discussion}.
 
 \subsection{Examples}
 \label{section:examples}
 
-\begin{figure*}[t]
-	\centering
-	
-	\begin{subfigure}{\columnwidth}
-		\includegraphics[width=\columnwidth]{../gfx/example.png}
-		\caption{Example 1}
-		\label{figure:examples_1}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{\columnwidth}
-		\includegraphics[width=\columnwidth]{../gfx/example.png}
-		\caption{Example 2}
-		\label{figure:examples_2}
-	\end{subfigure}
-	
-	\begin{subfigure}{\columnwidth}
-		\includegraphics[width=\columnwidth]{../gfx/example.png}
-		\caption{Example 3}
-		\label{figure:examples_3}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}{\columnwidth}
-		\includegraphics[width=\columnwidth]{../gfx/example.png}
-		\caption{Example 4}
-		\label{figure:examples_4}
-	\end{subfigure}
-	
-	\caption{Examples.}
-	\label{figure:examples}
-\end{figure*}
+\subsubsection{Example 1: Single car}
+Example 1 describes a basic scenario. It encompasses the intelligent transportation and power system. It is consisted of the transportation system with a single car only. The power system is omitted for this example.
+Emphasis is placed on the analysis of the cars' driving behavior without the implications of the power system. 
 
-TBD
+The components are initialized with the following parameters:
+
+\begin{itemize}
+	\item Intelligent Transportation System: Transportation System (...)
+	\item Transportation System: Traffic Network Graph, Car Component (...)
+	\item Car Component:
+	\begin{itemize}  
+		\item Start Position = "OriginA", 
+		\item Destination Position = "DestinationA",
+		\item SoC Objective Weight = "1" 
+		\item Time Objective Weight = "1" 
+		\item Power Objective Weight = "1"
+		\item Priority = "1",
+		\item Length = "1"
+		\item Weight = "1"
+		\item State of Charge = "85"
+		\item State of Charge Minimum = "0"
+		\item State of Charge Maximum = "85" 
+		\item Charge Rate Inflow = "3" 
+		\item Charge Rate Outflow = "3" 
+		\item Vehicle Range Anxiety = "0.2" 
+		\item Charging Station Selection Randomness = "0.3"
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Example 2: Single car and electric devices}
+Example 2 describes an extension to Example 1 by adding the power system component to the Intelligent Transportation and Power System. The power system consists of single electric devices of different types, i.e. one charging station, one solar panel, one power battery, as well as single low voltage and medium voltage nets. The parameters for the car are equal to the ones defined in Example 1.
+
+The power system and the components of the power system are initialized with the following parameters:
+
+\begin{itemize}
+	\item Intelligent Transportation System: Transportation System (...), Power System (...)
+	\item Power System: Traffic Network Graph, Solar Panel Component (...), Charging Station Component (), Power Battery Component (...), Charging Station Component (...), Low Voltage Net Component (...), Medium Voltage Net Component (...)
+	
+	\item Low Voltage Net Component:
+	\begin{itemize}  
+		\item Balance Objective Weight = "1"
+		\item Size = "3"
+		\item Capacity = "200"
+	\end{itemize}
+	
+	\item Medium Voltage Net Component:
+	\begin{itemize}  
+		\item Balance Objective Weight = "1"
+		\item Size = "1"
+		\item Capacity = "200"
+	\end{itemize}
+	
+	\item Solar Panel Component:
+	\begin{itemize}
+		\item Power Scale = "5"
+	\end{itemize}	
+	
+	\item Charging Station Component:
+	\begin{itemize}
+		\item Position = "OriginA", 
+		\item Charge Rate = "3"
+	\end{itemize}
+	
+	\item Power Battery Component:
+	\begin{itemize}
+		\item State of Charge = "1",
+		\item Minimum State of Charge = "1",
+		\item Maximum State of Charge = "1", 
+		\item Battery Efficiency = "0.99",
+		\item Battery Loss = "0.1",
+		\item Charge Rate = "3"
+	\end{itemize}	
+			
+\end{itemize}
+
+
+\subsubsection{Example 3: Multiple cars and electric devices}
+Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) uniform cars.
+The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
+It features a uniform parameter distribution of cars and electric devices and uses the parameters described in Examples 1 and 2.
+
+The transportation system, it's car components as well as the power system and the subcomponents of the power system are initialized with the following parameters:
+
+\subsubsection{Example 4: Variation of multiple cars and electric devices}
+Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) different cars.
+The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
+It features a variable parameter distribution of cars and electric devices.
+
+The transportation system, it's car components as well as the power system and the subcomponents of the power system are initialized with the following parameters:
 
 \subsection{Discussion}
 \label{section:discussion}
 
 TBD
+
+Combination possibilities
+
