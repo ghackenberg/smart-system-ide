@@ -1,97 +1,145 @@
 \section{Demonstration by examples (1.5 pages)}
 \label{section:evaluation}
 
-In the following we evaluate the proposed approach to multi-domain system modeling and systematic parameter variation using a number of examples. First we describe the examples in Section~\ref{section:evaluation} before discussing various issues in Section~\ref{section:discussion}.
+% First we describe the examples in Section~\ref{section:evaluation} before discussing various issues in Section~\ref{section:discussion}.
+In the following we evaluate the proposed parametric approach to holistic transportation system and electric network scenario modeling using a number of examples. 
 
-\subsection{Single car}
-Example 1 describes a basic scenario. It encompasses the intelligent transportation and power system. It is consisted of the transportation system with a single car only. The power system is omitted for this example.
-Emphasis is placed on the analysis of the cars' driving behavior without the implications of the power system. 
+The examples study the effects of different objectives balances and diverse composition of transportation and electric networks. For this, different weights for the cost functions of the transportation system on the one side, and the power system on the other side are employed. Furthermore, the examples explore the different composition of renewable energy producers within the power system and their impact. In each scenario, the cars have to drive from origin to destination, while their state of charge is to 50\% depleted.
 
-The components are initialized with the following parameters:
+Specifically, the employed parameters are described in sequence:
 
-\begin{itemize}
-	\item Intelligent Transportation System: Transportation System (...)
-	\item Transportation System: Traffic Network Graph, Car Component (...)
-	\item Car Component:
-	\begin{itemize}  
-		\item Start Position = "OriginA", 
-		\item Destination Position = "DestinationA",
-		\item SoC Objective Weight = "1" 
-		\item Time Objective Weight = "1" 
-		\item Power Objective Weight = "1"
-		\item Priority = "1",
-		\item Length = "1"
-		\item Weight = "1"
-		\item State of Charge = "85"
-		\item State of Charge Minimum = "0"
-		\item State of Charge Maximum = "85" 
-		\item Charge Rate Inflow = "3" 
-		\item Charge Rate Outflow = "3" 
-		\item Vehicle Range Anxiety = "0.2" 
-		\item Charging Station Selection Randomness = "0.3"
-	\end{itemize}
-\end{itemize}
+The car components are initialized with the following parameters:
 
-\subsection{Single car and electric devices}
-Example 2 describes an extension to Example 1 by adding the power system component to the Intelligent Transportation and Power System. The power system consists of single electric devices of different types, i.e. one charging station, one solar panel, one power battery, as well as single low voltage and medium voltage nets. The parameters for the car are equal to the ones defined in Example 1.
+%\begin{itemize}
+%	\item Intelligent Transportation System: Transportation System (...)
+%	\item Transportation System: Traffic Network Graph, Car Component (...)
+%	\item Car Component:
+%	\begin{itemize}  
+%		\item Start Position = "OriginA", 
+%		\item Destination Position = "DestinationA",
+%		\item SoC Objective Weight = "1" 
+%		\item Time Objective Weight = "1" 
+%		\item Power Objective Weight = "1"
+%		\item Priority = "1",
+%		\item Length = "1"
+%		\item Weight = "1"
+%		\item State of Charge = "85"
+%		\item State of Charge Minimum = "0"
+%		\item State of Charge Maximum = "85" 
+%		\item Charge Rate Inflow = "3" 
+%		\item Charge Rate Outflow = "3" 
+%		\item Vehicle Range Anxiety = "0.2" 
+%		\item Charging Station Selection Randomness = "0.3"
+%	\end{itemize}
+%\end{itemize}
 
 The power system and the components of the power system are initialized with the following parameters:
 
-\begin{itemize}
-	\item Intelligent Transportation System: Transportation System (...), Power System (...)
-	\item Power System: Traffic Network Graph, Solar Panel Component (...), Charging Station Component (), Power Battery Component (...), Charging Station Component (...), Low Voltage Net Component (...), Medium Voltage Net Component (...)
-	
-	\item Low Voltage Net Component:
-	\begin{itemize}  
-		\item Balance Objective Weight = "1"
-		\item Size = "3"
-		\item Capacity = "200"
-	\end{itemize}
-	
-	\item Medium Voltage Net Component:
-	\begin{itemize}  
-		\item Balance Objective Weight = "1"
-		\item Size = "1"
-		\item Capacity = "200"
-	\end{itemize}
-	
-	\item Solar Panel Component:
-	\begin{itemize}
-		\item Power Scale = "5"
-	\end{itemize}	
-	
-	\item Charging Station Component:
-	\begin{itemize}
-		\item Position = "OriginA", 
-		\item Charge Rate = "3"
-	\end{itemize}
-	
-	\item Power Battery Component:
-	\begin{itemize}
-		\item State of Charge = "1",
-		\item Minimum State of Charge = "1",
-		\item Maximum State of Charge = "1", 
-		\item Battery Efficiency = "0.99",
-		\item Battery Loss = "0.1",
-		\item Charge Rate = "3"
-	\end{itemize}	
-	
+%\begin{itemize}
+%	\item Intelligent Transportation System: Transportation System (...), Power System (...)
+%	\item Power System: Traffic Network Graph, Solar Panel Component (...), Charging Station Component (), Power Battery Component (...), Charging Station Component (...), Low Voltage Net Component (...), Medium Voltage Net Component (...)
+%	
+%	\item Low Voltage Net Component:
+%	\begin{itemize}  
+%		\item Balance Objective Weight = "1"
+%		\item Size = "3"
+%		\item Capacity = "200"
+%	\end{itemize}
+%	
+%	\item Medium Voltage Net Component:
+%	\begin{itemize}  
+%		\item Balance Objective Weight = "1"
+%		\item Size = "1"
+%		\item Capacity = "200"
+%	\end{itemize}
+%	
+%	\item Solar Panel Component:
+%	\begin{itemize}
+%		\item Power Scale = "5"
+%	\end{itemize}	
+%	
+%	\item Charging Station Component:
+%	\begin{itemize}
+%		\item Position = "OriginA", 
+%		\item Charge Rate = "3"
+%	\end{itemize}
+%	
+%	\item Power Battery Component:
+%	\begin{itemize}
+%		\item State of Charge = "1",
+%		\item Minimum State of Charge = "1",
+%		\item Maximum State of Charge = "1", 
+%		\item Battery Efficiency = "0.99",
+%		\item Battery Loss = "0.1",
+%		\item Charge Rate = "3"
+%	\end{itemize}	
+%	
+%\end{itemize}
+
+For all examples a time resolution of 60 seconds is employed.
+
+\begin{table}[h]
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Example Overview}
+	\centering
+	\begin{tabular}{lll}
+		\hline
+		\textbf{Parameter}                    & \textbf{Unit}    & \textbf{Value} \\ \hline
+		Number Cars                     	  & Numeral         & 20 \\
+		Number Charging Stations              & Numeral         & 8 \\
+		Number Batteries                      & Numeral         & 5 \\
+		Number Solar Panels                   & Numeral         & 5 \\
+	\end{tabular}
+\end{table}
+
+\subsection{Low Renewable Energy Sources and Weight on Transportation System}
+Example 1 describes a basic scenario. It encompasses the intelligent transportation and power system. It is consisted of the transportation system with a single car only. The power system is omitted for this example.
+Emphasis is placed on the analysis of the cars' driving behavior without the implications of the power system. 
+
+\begin{itemize}  
+	\item Transportation System Weight: 0.75
+	\item Power System Weight: 0.25
+	\item Number of Charging Stations: 8
+	\item Solar Panel Capacity: 12.5
+	\item Battery Capacity: 100.0
 \end{itemize}
 
+\subsection{Low Renewable Energy Sources and Weight on Power System}
+Example 2 describes an extension to Example 1 by adding the power system component to the Intelligent Transportation and Power System. The power system consists of single electric devices of different types, i.e. one charging station, one solar panel, one power battery, as well as single low voltage and medium voltage nets. The parameters for the car are equal to the ones defined in Example 1.
 
-\subsection{Multiple cars and electric devices}
+\begin{itemize}  
+	\item Transportation System Weight: 0.25
+	\item Power System Weight: 0.75
+	\item Number of Charging Stations: 8
+	\item Solar Panel Capacity: 12.5
+	\item Battery Capacity: 100.0
+\end{itemize}
+
+\subsection{High Renewable Energy Sources and Weight on Transportation System}
 Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) uniform cars.
 The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
 It features a uniform parameter distribution of cars and electric devices and uses the parameters described in Examples 1 and 2.
 
-The transportation system, it's car components as well as the power system and the subcomponents of the power system are initialized with the following parameters:
+\begin{itemize}  
+	\item Transportation System Weight: 0.75
+	\item Power System Weight: 0.25
+	\item Number of Charging Stations: 16
+	\item Solar Panel Capacity: 50.0
+	\item Battery Capacity: 400.0
+\end{itemize}
 
-\subsection{Variation of multiple cars and electric devices}
+\subsection{High Renewable Energy Sources and Weight on Power System System}
 Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) different cars.
 The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
 It features a variable parameter distribution of cars and electric devices.
 
-The transportation system, it's car components as well as the power system and the subcomponents of the power system are initialized with the following parameters:
+\begin{itemize}  
+	\item Transportation System Weight: 0.25
+	\item Power System Weight: 0.75
+	\item Number of Charging Stations: 16
+	\item Solar Panel Capacity: 50.0
+	\item Battery Capacity: 400.0
+\end{itemize}
 
 \section{Discussion (0.75 Pages)}
 \label{section:discussion}
