@@ -1,159 +1,78 @@
 \section{Demonstration by examples (1.5 pages)}
 \label{section:evaluation}
 
-% First we describe the examples in Section~\ref{section:evaluation} before discussing various issues in Section~\ref{section:discussion}.
-In the following we evaluate the proposed parametric approach to holistic transportation system and electric network scenario modeling using a number of examples. 
+To demonstrate the presented approach, we show a set of different examples with diverse scenario configurations and employed model parameters. Specifically, the proposed examples evaluate the effects of different weight balances between the objectives of the transportation and the power system. 
+Furthermore, in the examples, different levels of smart and renewable energy penetration are considered. 
 
-The examples study the effects of different objectives balances and diverse composition of transportation and electric networks. For this, different weights for the cost functions of the transportation system on the one side, and the power system on the other side are employed. Furthermore, the examples explore the different composition of renewable energy producers within the power system and their impact. In each scenario, the cars have to drive from origin to destination, while their state of charge is to 50\% depleted.
 
-Specifically, the employed parameters are described in sequence:
+Among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. 
+In terms of aggregated costs, weights of the individual cost functions of power and transportation systems are alternated in the intelligent transportation and power system.
 
-The car components are initialized with the following parameters:
+In terms of the power system and it's electric devices, examples include 10 static load components, 5 solar panels, 5 batteries and depending on example, 16 or 56 charging stations. In terms of electricity infrastructure, 4 low voltage nets and 1 medium voltage net are employed. Between examples 1-2 and examples 3-4 power system parameters are varied in terms of the number of charging stations as well as in terms of solar panel and battery capacities. Specifically, the number of charging stations from examples 1 and 2 is increased to the total number of nodes on the traffic network, i.e. 56, in examples 3 and 4. Additionally, form examples 1-2 to examples 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. 
 
-%\begin{itemize}
-%	\item Intelligent Transportation System: Transportation System (...)
-%	\item Transportation System: Traffic Network Graph, Car Component (...)
-%	\item Car Component:
-%	\begin{itemize}  
-%		\item Start Position = "OriginA", 
-%		\item Destination Position = "DestinationA",
-%		\item SoC Objective Weight = "1" 
-%		\item Time Objective Weight = "1" 
-%		\item Power Objective Weight = "1"
-%		\item Priority = "1",
-%		\item Length = "1"
-%		\item Weight = "1"
-%		\item State of Charge = "85"
-%		\item State of Charge Minimum = "0"
-%		\item State of Charge Maximum = "85" 
-%		\item Charge Rate Inflow = "3" 
-%		\item Charge Rate Outflow = "3" 
-%		\item Vehicle Range Anxiety = "0.2" 
-%		\item Charging Station Selection Randomness = "0.3"
-%	\end{itemize}
-%\end{itemize}
+For the transportation system, examples feature a total number of 240 cars. Cars are divided in equal numbers between reference types $C_{A}$, $C_{B}$ and $C_{C}$ with the difference between reference types respectively being state of charge levels at 33\%, 66\% or 99\% of maximum levels. In terms of positioning on the traffic network, origin position of individual cars is randomly drawn from all edges present in the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
 
-The power system and the components of the power system are initialized with the following parameters:
-
-%\begin{itemize}
-%	\item Intelligent Transportation System: Transportation System (...), Power System (...)
-%	\item Power System: Traffic Network Graph, Solar Panel Component (...), Charging Station Component (), Power Battery Component (...), Charging Station Component (...), Low Voltage Net Component (...), Medium Voltage Net Component (...)
-%	
-%	\item Low Voltage Net Component:
-%	\begin{itemize}  
-%		\item Balance Objective Weight = "1"
-%		\item Size = "3"
-%		\item Capacity = "200"
-%	\end{itemize}
-%	
-%	\item Medium Voltage Net Component:
-%	\begin{itemize}  
-%		\item Balance Objective Weight = "1"
-%		\item Size = "1"
-%		\item Capacity = "200"
-%	\end{itemize}
-%	
-%	\item Solar Panel Component:
-%	\begin{itemize}
-%		\item Power Scale = "5"
-%	\end{itemize}	
-%	
-%	\item Charging Station Component:
-%	\begin{itemize}
-%		\item Position = "OriginA", 
-%		\item Charge Rate = "3"
-%	\end{itemize}
-%	
-%	\item Power Battery Component:
-%	\begin{itemize}
-%		\item State of Charge = "1",
-%		\item Minimum State of Charge = "1",
-%		\item Maximum State of Charge = "1", 
-%		\item Battery Efficiency = "0.99",
-%		\item Battery Loss = "0.1",
-%		\item Charge Rate = "3"
-%	\end{itemize}	
-%	
-%\end{itemize}
-
-For all examples a time resolution of 60 seconds is employed.
+Specifically, differences between the examples for the transportation system and it's subcomponents are described in Table~\ref{tab:example1}. 
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
 	\caption{Example Overview}
+	\label{tab:example1}
 	\centering
-	\begin{tabular}{lll}
+	\begin{tabular}{llllll}
 		\hline
-		\textbf{Parameter}                    & \textbf{Unit}    & \textbf{Value} \\ \hline
-		Number Cars                     	  & Numeral         & 20 \\
-		Number Charging Stations              & Numeral         & 8 \\
-		Number Batteries                      & Numeral         & 5 \\
-		Number Solar Panels                   & Numeral         & 5 \\
+		\textbf{Parameter/Reference Type}                    & \textbf{Ex. A}    & \textbf{Ex. B} & \textbf{Ex. C} & \textbf{Ex. D}\\ \hline
+		Weight Transp. System 			& 0.75	      & 0.25  	& 0.75	& 0.25\\
+		Weight Power System 			& 0.25	      & 0.75  	& 0.25	& 0.75\\
+		Number Charging Stations              & 16         & 16 		& 56	& 56\\
+		Capacity Batteries          & 100 kW/h         & 100 kW/h 		& 400 kW/h		& 400 kW/h\\
+		Capacity Solar Panels               & 25 kW/h         & 25 kW/h 		& 50 kW/h		& 50 kW/h	\\ \hline
+		Intelligent TS and EN                 & $IS_{A}$         & $IS_{B}$ 		& $IS_{A}$		& $IS_{B}$	\\ 
+		Transportation System                 & $TS_{A}$         & $TS_{A}$ 		& $TS_{A}$		& $TS_{A}$	\\ 
+		Electric Network                & $EN_{A}$         & $EN_{A}$ 		& $EN_{B}$		& $EN_{B}$	\\ 
+		Cars                  & $C_{A,B,C}$          & $C_{A,B,C}$		& $C_{A,B,C}$		& $C_{A,B,C}$	\\ 
+		Low Voltage Nets                 & $LV_{A}$         & $LV_{A}$ 		& $LV_{A}$		& $LV_{A}$	\\ 
+		Medium Voltage Nets                 & $MV_{A}$         & $MV_{A}$ 		& $MV_{A}$		& $MV_{A}$	\\ 
+		Charging Stations                 & $CS_{A}$         & $CS_{A}$ 		& $CS_{A}$		& $CS_{A}$	\\ 
+		Power Batteries                & $PB_{A}$         & $PB_{A}$ 		& $PB_{B}$		& $PB_{B}$	\\ 
+		Solar Panels                 & $SP_{A}$         & $SP_{A}$ 		& $SP_{B}$		& $SP_{B}$	\\ 
+		Static Loads                 & $SL_{A}$         & $SL_{A}$ 		& $SL_{B}$		& $SL_{B}$	\\ \hline
 	\end{tabular}
 \end{table}
 
-\subsection{Low Renewable Energy Sources and Weight on Transportation System}
-Example 1 describes a basic scenario. It encompasses the intelligent transportation and power system. It is consisted of the transportation system with a single car only. The power system is omitted for this example.
-Emphasis is placed on the analysis of the cars' driving behavior without the implications of the power system. 
+\subsubsection{Example 1}
+Example 1 describes a scenario with a low number and low capacities of smart and renewable energy devices. That is, low solar panel capacity, low battery capacity is available and static profile simulating net influence has high impact. Also, only a low number of charging stations is available for cars. More weight is put on the costs incurred by transportation instead of the power system, in benefit of achieving the objectives of the transportation system. Behavior estimation results show low frequency of edges around and on charging stations. Furthermore, net balance is prone to high and sudden fluctuations in load. Little equalization of negative net balances is made by cars discharging at charging stations. In result, incurred transportation system costs are very high, while power system costs are low.
 
-\begin{itemize}  
-	\item Transportation System Weight: 0.75
-	\item Power System Weight: 0.25
-	\item Number of Charging Stations: 8
-	\item Solar Panel Capacity: 12.5
-	\item Battery Capacity: 100.0
-\end{itemize}
+\subsubsection{Example 2}
 
-\subsection{Low Renewable Energy Sources and Weight on Power System}
-Example 2 describes an extension to Example 1 by adding the power system component to the Intelligent Transportation and Power System. The power system consists of single electric devices of different types, i.e. one charging station, one solar panel, one power battery, as well as single low voltage and medium voltage nets. The parameters for the car are equal to the ones defined in Example 1.
+In Example 2, numbers and capacities of smart and renewable energy devices are equal to Example 1. However, different to Example 1, more weight is put on the costs incurred by power system instead of the transportation system, in benefit of achieving the objectives of the power system. Behavior estimation results show higher frequency of edges around and on charging stations compared to example 1. Also in contrast to Example 1, net negative balances are equalized more heavily, which can be traced to cars discharging at charging stations. While energy capacity of storages and solar panels is low and load balancing only occurs to small degree, balancing is more heavily utilized compared to Example 1. Due to objective weight, costs of the power system are higher than in example 1, but in combination with the transportation system, lower total costs are achieved.
 
-\begin{itemize}  
-	\item Transportation System Weight: 0.25
-	\item Power System Weight: 0.75
-	\item Number of Charging Stations: 8
-	\item Solar Panel Capacity: 12.5
-	\item Battery Capacity: 100.0
-\end{itemize}
+\subsubsection{Example 3}
 
-\subsection{High Renewable Energy Sources and Weight on Transportation System}
-Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) uniform cars.
-The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
-It features a uniform parameter distribution of cars and electric devices and uses the parameters described in Examples 1 and 2.
+In Example 3, smart and renewable energy penetration is increased through additional solar panel and battery capacity as well as a higher number of charging stations distributed on the traffic network. Also, the profile of static loads is more evened out, as the power grid and it's electric devices get more smart resulting in a less power load peaks. 
+Equal to example 1, more weight is put on the costs incurred by transportation instead of the power system, in benefit of achieving the objectives of the transportation system. Behavior estimation results show low frequency of edges around and on charging stations. Furthermore, net balance is prone to high and sudden fluctuations in load. Equalization of negative net balances is seen by higher capacities of solar panels and batteries as well as a higher number of charging stations, in contrast to Examples 1 and 2. In result, costs are much lower compared to examples 1 and 2.
 
-\begin{itemize}  
-	\item Transportation System Weight: 0.75
-	\item Power System Weight: 0.25
-	\item Number of Charging Stations: 16
-	\item Solar Panel Capacity: 50.0
-	\item Battery Capacity: 400.0
-\end{itemize}
+\subsubsection{Example 4}
 
-\subsection{High Renewable Energy Sources and Weight on Power System System}
-Example 3 describes a extension of Example 2. It consists of the transportation system with multiple (10) different cars.
-The power system consists of ten electric devices of each different type, i.e. charging stations (10), solar panels (10), power batteries (10), as well multiple low voltage nets (10) and a single medium voltage net.
-It features a variable parameter distribution of cars and electric devices.
-
-\begin{itemize}  
-	\item Transportation System Weight: 0.25
-	\item Power System Weight: 0.75
-	\item Number of Charging Stations: 16
-	\item Solar Panel Capacity: 50.0
-	\item Battery Capacity: 400.0
-\end{itemize}
+In Example 4, numbers and capacities of smart and renewable energy devices are equal to Example 3. Different to example 3, weight of power system costs is greater than weight of transportation system costs. Behavior estimation results show higher frequency of edges around and on charging stations compared to example 3, however, compared to example 2, frequency is distributed more evenly across the traffic network. In contrast to Example 3, negative net balances are equalized more evenly. In result, this leads to very low power system and low transportation system costs.
 
 \section{Discussion (0.75 Pages)}
 \label{section:discussion}
 
-TBD
-
 \subsection{Validity}
 
-Battery degradation
+The scope of our approach is to provide an overview of possible behavior during early phases of systems engineering. In this context, for system modeling we employ high-level models, which provide an estimation of system behavior. Therefore, it has to be shown whether according behavior specification and estimation prove to be valid compared with detailed traffic and electrical network simulations. In presented examples, model state is evaluated in steps of 60 seconds over all total time of 30 minutes, showing only a small portion of behavior over time. 
+However, computational complexity of models during behavior optimization could represent an issue, as continuous values of time and state have to be considered. In contrast, in our model, values of state and time are modeled in discrete steps to reduce computational complexity. In our model, 
 
-Model accuracy of described power and transportation system (vs SUMO)
+The proposed approach provides an estimation over traffic and energy flows within high-level scenarios. In terms of the traffic infrastructure, a representation of the traffic network has been employed, on which behavior of individual cars can be observed microscopically. Currently, a traffic network of 45km in width and 45km in length is considered. More detailed traffic networks could be employed to more accurately represent real world traffic infrastructures. Our current traffic network neglects low-level infrastructure such as traffic lights and turns within roads, i.e. bended roads. In our model, a directed graph consisted of nodes and edges is employed instead, which imposes constraints on traffic flows through node and edge capacities. Furthermore, the currently employed vehicle model doesn't consider acceleration, deceleration and gravitational forces during turns, but uses average values for speed and energy consumption instead. In terms of the power system and electric infrastructure, only a basic net architecture consisting of two levels, i.e. low and medium voltage nets, is considered, neglecting a representative structure found in real world circumstances. Further abstraction is employed by static profile components, which aggregate intermittent net loads over time, representing high-level abstractions with diminished accuracy. Furthermore, charging and discharging of cars at charging stations utilizes static loads in contrast to variable loads, due to reduction of possible behavior space and computational complexity. In Summary, comparison between our approach and implementation in a simulation framework like SUMO could provide a means for validation of our approach, especially in terms of behavior the transportation system.
 
-TBD
+In the results obtained from the examples, it has been shown that overall net balance stabilization is higher, when the weight of the power system cost function was higher. In contrast, findings were, when more weight was put on the transportation system cost function, showed lower net balance stabilization. In this context, it remains an issue of validity, whether such an objective distinction between different systems and according objective parameter variation can be applied to real world scenarios, especially when considering a large number of potentially involved objectives. To reduce complexity, several objectives of EVs which are of increased interest to the individual driver such as battery degradation and energy price have been neglected in our model. Therefore, interactions in the context of V2G observed in the examples could prove to be optimistic in contrast to reality. 
 
 \subsection{Novelty}
 
-TBD
+In contrast to existing approaches, we proposed an approach which allows for holistic modeling of transportation systems and electric networks, allowing for detailed analysis of objectives, constraints and interactions of both systems. Previous approaches have especially shown limitations in scope towards detailed modeling of the electric network and it's individual electric devices and/or infrastructure. In contrast, our approach allows for detailed representation of electric devices and electricity infrastructure. 
+In this context, the modeling technique allows to explore and evaluate the interactions between power and transportation systems. 
+The modeling technique allows to evaluate the interactions between power and transportation systems through charging stations. For this, a novelty mapping via dynamic channels has been used. Compared to previous work on the modeling technique which employs static channels between components, our approach expanded on this through the addition of dynamic channels mapping connections between different systems dynamically.
+
+Firstly, holistic parametrization of both transportation and power systems allows to consider diverse sets of parameters in different configurations. Secondly, our approach utilizes cost functions in terms of achieving intended system behavior - behavior of both systems can be observed and directly traced to objectives. The objective based approach provides the possibilities for systematically adjusting objectives, i.e. cost functions of individual components resulting in different outcomes, as seen in presented examples. With regard to behavior estimation results, examples showed the feasibility of our approach for modeling V2G interactions. Furthermore, detailed modeling of electric devices enables traceability of energy flows to traffic flows.
+
