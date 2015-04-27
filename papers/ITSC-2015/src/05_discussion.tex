@@ -1,25 +1,25 @@
-\section{Discussion (0.75 Pages)}
+\section{Discussion}
 \label{section:discussion}
 
 In the following we discuss our approach with respect to four questions: How \textit{valid} are the underlying system models and the behavior estimation results? How \textit{novel} is the approach compared to existing studies on electro-mobility? How \textit{efficient} is the technique to evaluate different scenarios? And finally how \textit{applicable} is our approach in practice?
 
 \subsection{Validity}
 
-We discuss the validity of our approach with respect to \textit{time and state resolution}, the \textit{transportation system model}, the \textit{electric network model} and the \textit{exemplary results}.
+We discuss the validity of our approach with respect to \textit{time and state resolution}, the \textit{transportation system model}, the \textit{power system model} and the \textit{exemplary results}.
 
-\subsubsection{Time/State Resolution}
+\subsubsection{Time/state resolution}
 
 The scope of our approach is to provide an overview of possible behavior during early phases of systems engineering. In this context, for system modeling we employ high-level models, which provide an estimation of system behavior. Therefore, it has to be shown whether according behavior specification and estimation prove to be valid compared with detailed traffic and electrical network simulations. In presented examples, model state is evaluated in steps of 60 seconds over all total time of 30 minutes, showing only a small portion of behavior over time. However, computational complexity of models during behavior optimization could represent an issue, as continuous values of time and state have to be considered. In contrast, in our model, values of state and time are modeled in discrete steps to reduce computational complexity. In our model, 
 
-\subsubsection{Transportation System Model}
+\subsubsection{Transportation system model}
 
 The proposed approach provides an estimation over traffic and energy flows within high-level scenarios. In terms of the traffic infrastructure, a representation of the traffic network has been employed, on which behavior of individual cars can be observed microscopically. Currently, a traffic network of 45km in width and 45km in length is considered. More detailed traffic networks could be employed to more accurately represent real world traffic infrastructures. Our current traffic network neglects low-level infrastructure such as traffic lights and turns within roads, i.e. bended roads. In our model, a directed graph consisted of nodes and edges is employed instead, which imposes constraints on traffic flows through node and edge capacities. Furthermore, the currently employed vehicle model doesn't consider acceleration, deceleration and gravitational forces during turns, but uses average values for speed and energy consumption instead.
 
-\subsubsection{Electric Network Model}
+\subsubsection{Power system model}
 
 In terms of the power system and electric infrastructure, only a basic net architecture consisting of two levels, i.e. low and medium voltage nets, is considered, neglecting a representative structure found in real world circumstances. Further abstraction is employed by static profile components, which aggregate intermittent net loads over time, representing high-level abstractions with diminished accuracy. Furthermore, charging and discharging of cars at charging stations utilizes static loads in contrast to variable loads, due to reduction of possible behavior space and computational complexity. In Summary, comparison between our approach and implementation in a simulation framework like SUMO could provide a means for validation of our approach, especially in terms of behavior the transportation system.
 
-\subsubsection{Exemplary Results}
+\subsubsection{Exemplary results}
 
 In the results obtained from the examples, it has been shown that overall net balance stabilization is higher, when the weight of the power system cost function was higher. In contrast, findings were, when more weight was put on the transportation system cost function, showed lower net balance stabilization. In this context, it remains an issue of validity, whether such an objective distinction between different systems and according objective parameter variation can be applied to real world scenarios, especially when considering a large number of potentially involved objectives. To reduce complexity, several objectives of EVs which are of increased interest to the individual driver such as battery degradation and energy price have been neglected in our model. Therefore, interactions in the context of V2G observed in the examples could prove to be optimistic in contrast to reality. 
 
