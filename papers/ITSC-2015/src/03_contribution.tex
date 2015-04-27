@@ -1,12 +1,12 @@
-\begin{figure*}[h]
+\section{Holistic parametric approach}
+\label{section:contribution_1}
+
+\begin{figure*}[b]
 	\centering
 	\includegraphics[width=\textwidth]{../gfx/model2.pdf}
 	\caption{Overview of the multi-domain system modeling approach including the transportation system and the power system.}
 	\label{fig:model}
 \end{figure*}
-
-\section{Holistic parametric approach (3 pages)}
-\label{section:contribution_1}
 
 In our approach, model definition is aided by a composite model architecture fitted to transportation scenario modeling seen in Figure~\ref{fig:model}. On it's highest level, the model architecture is represented by the intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component is comprised of the individual car components within the traffic infrastructure. Similarly, the power system component is comprised of different energy producing or energy consuming energy device components, such as solar panels, energy storages and charging stations. Furthermore, the power system component includes electricity infrastructure such as low-voltage nets and medium-voltage net components. Parametrization allows for all components to be initialized using reference types, i.e. aggregated sets of parameters.
 %The holistic parametric approach considers modeling and varying parameters of future transportation scenarios of both transportation and power systems.
@@ -75,7 +75,7 @@ The transportation system $TS$ is a structure representing the traffic infrastru
 
 In terms of behavior, the transportation system specifies a cost function which aggregates the costs of the individual car components it contains. For this, the costs of cars are multiplied by the individual priority specified for each car. These costs are aggregated to a single cost function. To ensure valid behavior, the transportation system implements a constraint on the car components which tests if cars overlap on their respective positions on the traffic network.
 
-\subsection{Car}
+\subsection{Electric Vehicle}
 
 Cars $C$ represent entities within the transportation system, which are are defined by their position on the traffic network. In terms of physical representation, they are defined through their length and weight. Furthermore, they hold a battery of given capacity, i.e. the state of charge. Furthermore, they encode rates defining the power transfer rate between car battery and charging stations.
 
