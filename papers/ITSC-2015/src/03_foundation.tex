@@ -1,12 +1,14 @@
 \section{Underlying systems modeling technique}
 \label{section:foundation}
 
-Our approach is based on emergent property estimation techniques \cite{hackenberg2012towards} and uses a model-based approach for validating requirements in early phases of system development proposed in \cite{hackenberg2014rapid}. An adaption to the ITS domain of this modeling technique was proposed in \cite{ascher2014early}, which facilitates the formulation of multi-objective traffic flows as an optimal control problem consisting of state variables, control variables, constraints and objectives. The approach employs a generic solver, which utilizes stochastic (i.e.\ Monte-Carlo) optimization techniques. The proposed modeling technique employs the concept of components to break down complex problems into smaller pieces to be able to solve them more easily. For one, components are described by their behavior, i.e. the reachable state space. Furthermore, components are described by their ports and directed connections, i.e. channels between the ports of components. An overview of the meta-model of the approach is given in Figure~\ref{fig:meta_model}.
+Our approach is based on emergent property estimation techniques \cite{hackenberg2012towards} that have been integrated into a rapid prototyping method for the smart energy systems domain~\cite{hackenberg2014rapid}. An instantiation of the underlying systems modeling technique for the intelligent transportation systems (ITS) domain was proposed in~\cite{ascher2014early}. The instantiation enables the formulation of multi-objective traffic flows as an optimal control problem over state variables (e.g.\ vehicle position), control variables (e.g.\ vehicle speed and route), constraints (e.g.\ collision avoidance) and objectives (e.g.\ energy efficiency). Finally, the approach employs a generic solver that utilizes stochastic (i.e.\ Monte-Carlo) optimization techniques.
+
+Originally, the modeling technique allowed one to express static interaction between components (e.g.\ vehicles and controllers) based on input/output (I/O) ports (e.g.\ vehicle speed) and channels (e.g.\ vehicle speed from controller to vehicle and vice versa). In this work we extend the underlying systems modeling technique to cope with scenario parameters as well as the dynamic interaction between transportation and power system (i.e.\ vehicle and charging station) as shown in Figure~\ref{fig:meta_model}.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\columnwidth]{../gfx/meta_model.pdf}
-	\caption{Meta-model of the underlying systems modeling technique extended with the concept of dynamic channels.}
+	\caption{Meta-model of the underlying systems modeling technique extended with parameters and dynamic channels.}
 	\label{fig:meta_model}
 \end{figure}
 
