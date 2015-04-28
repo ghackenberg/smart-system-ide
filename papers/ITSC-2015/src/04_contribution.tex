@@ -18,7 +18,7 @@ The intelligent transportation and power system $IS$ is a structure which contai
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Intelligent transportation and power system parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}     & \textbf{$IS_{A}$} & \textbf{$IS_{B}$}       & \textbf{Description} \\ \hline
 		TN\_Graph               & $...$ & $...$  	  & Traffic network (Graph)     \\
@@ -26,10 +26,10 @@ The intelligent transportation and power system $IS$ is a structure which contai
 		PS               & $var$ 	 & $var$ & Contained power system    \\
 		Weight\_TS               & $0.75$  & $0.25$ & Weight of transportation system costs (\%)       \\ 
 		Weight\_PS               & $0.25$  & $0.75$  		  & Weight of power system costs (\%)   \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
-In terms of behavior, the intelligent transportation and power system specifies a cost function which aggregates the costs of the transportation system and the electric network. On this cost function, a minimization objective is defined.
+In terms of behavior, the intelligent transportation and power system specifies a cost function which aggregates the cost of the transportation and the power system using the weight parameters $Weight\_TS$ and $Weight\_PS$. On this cost function a minimization objective is defined.
 
 \subsection{Transportation system}
 
@@ -39,13 +39,13 @@ The transportation system $TS$ is a structure representing the traffic infrastru
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Transportation system parameters}
 	\centering
-	\begin{tabular}{lll}
+	\begin{tabularx}{\columnwidth}{llX}
 		\hline
 		\textbf{Parameter}     & \textbf{$TS_{A}$}         & \textbf{Description} \\ \hline
 		TN\_Graph              & $...$    & Traffic network (Graph)    \\
 		Car\_Number            & $240$    & Number of cars (\#)      \\ 
 		Car\_Frequency      & $\{C_{A},C_{B},C_{C}\}:0.\overline{3}$    & Frequency of different car types (\%)       \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 In terms of behavior, the transportation system specifies a cost function which aggregates the costs of the individual car components it contains. For this, the costs of cars are multiplied by the individual priority specified for each car. These costs are aggregated to a single cost function. To ensure valid behavior, the transportation system implements a constraint on the car components which tests if cars overlap on their respective positions on the traffic network.
@@ -58,7 +58,7 @@ Cars $C$ represent entities within the transportation system, which are are defi
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Car parameters}
 	\centering
-	\begin{tabular}{lllll}
+	\begin{tabularx}{\columnwidth}{llllX}
 		\hline
 		\textbf{Parameter}          & \textbf{$C_{A}$} & \textbf{$C_{B}$}  & \textbf{$C_{C}$}           & \textbf{Description} \\ \hline
 		Origin                      & $var$     & $var$ & $var$    & Origin Position (Edge)      \\
@@ -76,25 +76,24 @@ Cars $C$ represent entities within the transportation system, which are are defi
 		Range\_Anxiety         & $0.2$ & $0.2$ & $0.2$ & Affinity to charge (\%)                     \\
 		CS\_Selection		   & $0.5$ & $0.5$ & $0.5$ & Charging station randomness (\%)                    \\ 
 		Departure\_Time 	& $0$ & $0$ & $0$ & Offset to start traveling (Minutes)                   \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 The behavior of cars is described as follows: When the departure time of a car is reached, it begins to travel from origin to destination. Origins, destinations and current position of a car are represented by edges on the traffic network.  When beginning to travel, a car's position is equivalent to the origin, while subsequent positions are selected from a determined route. Specifically, route selection is based on a specified number of alternatives of shortest paths from the current position to the destination or the nearest charging station. Of these alternatives, one route is randomly selected. If the state of charge falls below a specified percentage described by it's range anxiety, the car route selection probability shifts the percentage specified by it's charging station selection randomness. While traveling on the traffic network, cars consume energy based on traveled elevation profile, the car's mass and chosen speed. Within the car, energy consumption or production occurs based on the car's battery from which energy can be subtracted or can be added to. Energy consumption occurs while driving or while discharging the car's battery at a charging station. Energy production occurs through energy recuperation while driving or while charging the car's battery at a charging station. To ensure valid behavior, a constraint tests whether the battery's state of charge lies within a constant minimum and maximum level. When connected to a charging station through a dynamic channel, charging occurs based on a probabilistic selection of states, which are uniformly distributed in terms of their probability. If the car chooses to charge, a defined power load is transferred from the charging station to the car's battery. If the car chooses to discharge, a defined power load (charge rate) is transferred from the car's battery to the charging station. Furthermore, the car can choose a zero state, in which no power load is transferred between car and charging station.
 
-The objectives of a car's behavior are represented through multiple cost functions. Generally, costs of a car can only incur when it's departure time has been reached and are aggregated over time. %Subsequently, we describe the underlying cost functions in detail. 
-Firstly, a cost function for the car's convenience measures the cars state of charge in relation to the car's maximum state of charge. Secondly, a cost function for shortest traveling time aggregates the time needed for a car to reach it's destination. Thirdly, a cost function for the car's energy efficiency measures it's energy consumption in relation to the cars maximum energy consumption. The cost functions are aggregated and weighted by the impact of the different objectives by applying specific weights to the given cost functions.
+The objectives of a car's behavior are represented through multiple cost functions. Generally, costs of a car can only incur when it's departure time has been reached and are aggregated over time. Firstly, a cost function for the car's convenience measures the cars state of charge in relation to the car's maximum state of charge. Secondly, a cost function for shortest traveling time aggregates the time needed for a car to reach it's destination. Thirdly, a cost function for the car's energy efficiency measures it's energy consumption in relation to the cars maximum energy consumption. The cost functions are aggregated and weighted by the impact of the different objectives by applying specific weights to the given cost functions.
 
 \subsection{Power system}
 
-The electric network $EN$ is a structure representing the overall power system with the electric devices and infrastructure it contains.
+The power system $PS$ component represents the overall power electric network including each individual electric device as well as the supporting infrastructure (i.e.\ low- and medium-voltage networks).
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Power system parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
-		\textbf{Parameter}     & \textbf{$EN_{A}$} & \textbf{$EN_{B}$}       & \textbf{Description} \\ \hline
+		\textbf{Parameter}     & \textbf{$PS_{A}$} & \textbf{$PS_{B}$}       & \textbf{Description} \\ \hline
 		TN\_Graph              & $...$ & $...$    	  & Traffic network (Graph)     \\
 		LV\_Number             & $4$ & $4$            & Number of LV (\#)      \\
 		LV\_Frequency          & $LV_{A}:1.0$ & $LV_{A}:1.0$                & Freq. of LV types (\%)      \\
@@ -110,29 +109,29 @@ The electric network $EN$ is a structure representing the overall power system w
 		PB\_Frequency          & $PB_{A}:1.0$ & $PB_{B}:1.0$              & Freq. of PB types (\%)       \\ 
 		SL\_Number          & $10$ & $10$              & Number of SL (\#)      \\
 		SL\_Frequency          & $SL_{A}:1.0$ & $SL_{B}:1.0$              & Freq. of SL types (\%)       \\  \hline  
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
-When looking at behavior, the electric network specifies a cost function, which aggregates the costs of contained batteries, solar panels, charging stations as well as low and medium power nets. Furthermore, it aggregates the power loads of all medium voltage nets it contains to a single power load.
+When looking at its behavior, the power system specifies a cost function that aggregates the costs of contained batteries, solar panels, charging stations as well as low- and medium-voltage networks. In principle, different aggregation schemes can be used. Furthermore, it forwards the load of the medium-voltage network representing the final load balance.
 
-\subsection{Low/medium voltage net}
+\subsection{Low/medium-voltage networks}
 
-Low- and medium voltage nets $LV$, $MV$ represent part of the electricity infrastructure. Low- and medium voltage nets hold the power loads of different electric devices, but are limited in this ability through their capacity.
+Low- and medium-voltage networks $LV$, $MV$ represent one part of the electric infrastructure. In our model, low- and medium-voltage networks receive the loads of all connected electric devices and provide an aggregate load to the upper voltage level.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Low/medium voltage net parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}   & \textbf{$LV_{A}$} & \textbf{$MV_{A}$}  & Description \\ \hline
 		Weight\_Balance       & $0.0$ & $1.0$ & Weight of balance costs (\%) \\  
 %		Size                  	  & $9$ & $19$ & Number of devices per net  (\#)    \\
 		Capacity          & $20.0$ & $200.0$ & Power load capacity (kW/h)     \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
-In terms of behavior, the low voltage net aggregates the power loads of all batteries, solar panels, charging stations it is assigned to a single power load. The medium voltage net aggregates the power loads of low voltage nets it is assigned to a single power load. Based on this aggregation, a cost function over the total power load balance is specified. The cost function is weighted by the impact of the balance objective by multiplying an according weight.
+In terms of behavior, the low-voltage network aggregates the loads of all connected static load, power batteries, solar panels, charging stations to a single power load. The medium voltage net aggregates the power loads of low voltage nets it is assigned to a single power load. Based on this aggregation, a cost function over the total power load balance is specified. The cost function is weighted by the impact of the balance objective by multiplying an according weight.
 
 \subsection{Static load}
 
@@ -142,15 +141,15 @@ Static loads $SL$ are aggregations of energy devices, which produce intermittent
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Static load parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}              & \textbf{$SL_{A}$}  & \textbf{$SL_{B}$}   & \textbf{Description} \\ \hline
 		Power\_Scale                   	  & $10.0$ & $5.0$ & Maximum power output multiplier (kW/h) \\
 		Profile                       	  	   & $var$ & $var$ & Load profile over time  (kW/h)\\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
-When looking at behavior, based on their power scale, static load components implement an energy profile for a given time.
+Based on the parameters $Power\_Scale$ and $Profile$ static load components output a predefined energy profile for any given time. Both parameters allow one to vary static (i.e.\ non-controllable) load in different scenarios easily.
 
 \subsection{Power battery}
 
@@ -161,7 +160,7 @@ This is attributed to their ability to consume and store or release energy given
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Power battery parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}     & \textbf{$PB_{A}$} & \textbf{$PB_{B}$} & \textbf{Description} \\ \hline
 		SOC                     & $0.0$ & $0.0$ & Battery state of charge (kW/h)                   \\
@@ -170,7 +169,7 @@ This is attributed to their ability to consume and store or release energy given
 		Charge\_Rate            & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)     \\ 
 		Battery\_Loss           & $0.05$ & $0.05$ & Loss of charge over time (\%)\\
 		Battery\_Efficiency      & $0.99$ & $0.99$ &Efficiency of (dis-)charging (\%)     \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 In terms of behavior, based on probabilistic selection, the power battery chooses from different states determining energy consumption, production or zero load. In terms of probability, states are uniformly distributed. Energy consumption or production occurs based on the battery from which energy can be subtracted or can be added to. Energy consumption is caused by storing energy in the battery. Energy production is caused by releasing energy from the battery. To ensure valid behavior, a constraint tests whether the battery's state of charge lies within a constant minimum and maximum level.
@@ -183,13 +182,13 @@ Solar panels $SP$ are electric devices, which act as producers of renewable ener
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Solar panel parameters}
 	\centering
-	\begin{tabular}{llll}
+	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}                     & \textbf{$SP_{A}$} & \textbf{$SP_{B}$} & \textbf{Description} \\ \hline
 		Power\_Scale                       	   & $2.5$ & $10.0$ & Maximum power output (kW/h) \\
 		Mean                       	  		  & $15$ & $15$ & Mean for maximum power output (\#) \\
 		Variance                       	       & $5$ & $5$ & Variance for maximum power output (\#) \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 In terms of behavior, based on it's specific power scale, the solar panel produces an power load determined by mean and variance. Based on a probabilistic selection, the solar panel can choose to partially, fully or not dampen it's power load. The probability of these options is uniformly distributed.
@@ -202,12 +201,12 @@ Charging stations $CS$ are electric devices which act as power consumers or prod
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Charging station parameters}
 	\centering
-	\begin{tabular}{lll}
+	\begin{tabularx}{\columnwidth}{llX}
 		\hline
 		\textbf{Parameter}      & \textbf{$CS_{A}$} & \textbf{Description} \\ \hline
 		Position      			& $var$ & Position on the traffic network (Edge) \\  
 		Charge\_Rate        	& $5.0$ & (Dis-)charge rate exposed to cars (kW/h)     \\ \hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 Looking at their behavior, charging stations can exhibit zero, negative or positive power load. Based on connection to a car, the charging station's behavior is determined by the selected charging state of the connected car. They act as energy consumers, when power load is transferred from the charging station to the connected car. Furthermore, they act as energy producers, when power load is transferred from the connected car to the charging station.

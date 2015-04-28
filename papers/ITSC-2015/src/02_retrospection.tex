@@ -13,17 +13,15 @@ In summary, we found that existing approaches cover only a limited set of featur
 	\renewcommand{\arraystretch}{1.3}
 	\centering
 	\label{table:evaluation}
-	\begin{tabular}{| r | c | c | c | c |}
+	\begin{tabularx}{\columnwidth}{Y c c c c}
 		\hline
-		& \multicolumn{2}{c |}{\textbf{Models}} & \multicolumn{2}{c |}{\textbf{Objectives}} \\
-		\cline{2-5}
+		\multirow{2}{*}{\textbf{Field of research}}  & \multicolumn{2}{c }{\textbf{Model coverage}} & \multicolumn{2}{c }{\textbf{Objective coverage}} \\
 		& \textit{Transportation} & \textit{Power} & \textit{Transportation} & \textit{Power} \\
 		\hline
-		\textit{Modeling and simulation} & + & 0 & - & - \\
+		Modeling / simulation & + & 0 & - & - \\
+		Optimal control & + & 0 & - & + \\
 		\hline
-		\textit{Optimal control} & + & 0 & - & + \\
-		\hline
-	\end{tabular}
+	\end{tabularx}
 \end{table}
 
 Both modeling/simualtion and optimal control models provide sufficient representation of the transportation system while lacking detail about the power system (in particular electric devices). Additionally, the wide variety of transportation and power objectives as well as their relative importance and arising impacts are not addressed sufficiently.
