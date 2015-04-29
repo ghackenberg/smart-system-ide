@@ -18,14 +18,14 @@ The intelligent transportation and power system $IS$ is a structure which contai
 	\renewcommand{\arraystretch}{1.3}
 	%\caption{Intelligent transportation and power system parameters}
 	\centering
-	\begin{tabularx}{\columnwidth}{lllX}
+	\begin{tabularx}{\columnwidth}{lllllX}
 		\hline
-		\textbf{Parameter}     & \textbf{$IS_{A}$} & \textbf{$IS_{B}$}       & \textbf{Description} \\ \hline
-		TN\_Graph               & $...$ & $...$  	  & Traffic network (Graph)     \\
-		TS     & $var$   & $var$ 	  & Contained transportation system     \\
-		PS               & $var$ 	 & $var$ & Contained power system    \\
-		Weight\_TS               & $0.75$  & $0.25$ & Weight of transportation system costs (\%)       \\ 
-		Weight\_PS               & $0.25$  & $0.75$  		  & Weight of power system costs (\%)   \\ \hline
+		\textbf{Parameter}      & \textbf{$IS_{A}$} & \textbf{$IS_{B}$}  & \textbf{$IS_{C}$} & \textbf{$IS_{D}$}      & \textbf{Description} \\ \hline
+		TN               & $...$ 	& $...$ & $...$ & $...$ 	  	& Traffic network (Graph)     					\\
+		TS     					& $TS_{A}$   	& $TS_{A}$ & $TS_{A}$ & $TS_{A}$	 	& Transportation system     			\\
+		PS               		& $PS_{A}$ 	& $PS_{A}$ & $PS_{B}$ & $PS_{B}$		& Power system   						\\
+		w\_TS              & $0.75$  	& $0.25$ & $0.25$ & $0.25$		& Weight of transportation system costs (\%)	\\ 
+		w\_PS              & $0.25$  	& $0.75$ & $0.75$ & $0.75$  		& Weight of power system costs (\%)   			\\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -33,7 +33,7 @@ In terms of behavior, the intelligent transportation and power system specifies 
 
 \subsection{Transportation system}
 
-The transportation system $TS$ is a structure representing the traffic infrastructure with it's cars. Specifically, the transportation system is consisted of cars of different types, modeled as a distribution over multiple car types. The traffic infrastructure is modeled as a directed graph, whereby nodes represent reference points in the environment such as intersections, while edges in the graph represent road segments between these reference points. Nodes are defined by absolute position based on real-world coordinates, i.e. latitude, longitude, and elevation. Edges, i.e. road segments are defined through source and target node. Furthermore, edges are defined through an assigned number of lanes and a possessed road type, such as residential streets or stations.
+The transportation system $TS$ is a structure representing the traffic infrastructure with it's cars. Specifically, the transportation system is consisted of cars of different types, modeled as a distribution over multiple car types. The traffic infrastructure is modeled as a directed graph $G = (V,E)$, an ordered pair consisting of a finite set of nodes $V$ and edges $E \subseteq V \times V$, i.e. directed connections between nodes. Here, nodes $V$ represent reference points in the environment such as intersections. Nodes are defined by absolute position based on real-world coordinates, i.e. latitude, longitude, and elevation. Edges $E \subseteq V \times V$ represent road segments between these reference points with source $v$ and target $w$ nodes and $(v,w) \in E$. Furthermore, edges are defined through an assigned number of lanes and a possessed road type, such as residential streets or stations.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -42,7 +42,7 @@ The transportation system $TS$ is a structure representing the traffic infrastru
 	\begin{tabularx}{\columnwidth}{llX}
 		\hline
 		\textbf{Parameter}     & \textbf{$TS_{A}$}         & \textbf{Description} \\ \hline
-		TN\_Graph              & $...$    & Traffic network (Graph)    \\
+		TN              & $G$    & Traffic network (Graph)    \\
 		Car\_Number            & $240$    & Number of cars (\#)      \\ 
 		Car\_Frequency      & $\{C_{A},C_{B},C_{C}\}:0.\overline{3}$    & Frequency of different car types (\%)       \\ \hline
 	\end{tabularx}
@@ -61,15 +61,15 @@ Cars $C$ represent entities within the transportation system, which are are defi
 	\begin{tabularx}{\columnwidth}{llllX}
 		\hline
 		\textbf{Parameter}          & \textbf{$C_{A}$} & \textbf{$C_{B}$}  & \textbf{$C_{C}$}           & \textbf{Description} \\ \hline
-		Origin                      & $var$     & $var$ & $var$    & Origin Position (Edge)      \\
-		Destination                 & $var$    & $var$  & $var$     & Destination Position (Edge) \\
+		Origin                      & $E$     & $E$ & $E$    & Origin Position (Edge)      \\
+		Destination                 & $E$    & $E$  & $E$     & Destination Position (Edge) \\
 		Weight\_SOC              & $0.\overline{3}$  & $0.\overline{3}$ & $0.\overline{3}$ & Weight of state of charge costs (\%)                   \\
 		Weight\_Time              & $0.\overline{3}$ & $0.\overline{3}$ & $0.\overline{3}$ & Weight of time costs (\%)                     \\
 		Weight\_Power             & $0.\overline{3}$ & $0.\overline{3}$ & $0.\overline{3}$ & Weight of power costs (\%)                      \\
 		Priority                  & $1.0$ & $1.0$ & $1.0$ & Priority of the car in traffic (\%)                  \\
 		Length                    & $4.0$ & $4.0$ & $4.0$ & Car length (Meters)            \\
 		Weight                   & $2.0$ & $2.0$ & $2.0$ & Car weight  (Tonnes)                 \\
-		SOC                      & $30.0$ & $60.0$ & $90.0$ & Battery state of charge (kW/h)                   \\
+		SOC                      & $30.0$ & $60.0$ & $90.0$ & Initial state of charge (kW/h)                   \\
 		SOC\_Min               & $0.0$ & $0.0$ & $0.0$ & Min. state of charge (kW/h)                     \\
 		SOC\_Max              & $90.0$ & $90.0$ & $90.0$ & Max state of charge (kW/h)                      \\
 		Charge\_Rate          & $5.0$ & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)                    \\
@@ -94,7 +94,7 @@ The power system $PS$ component represents the overall power electric network in
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}     & \textbf{$PS_{A}$} & \textbf{$PS_{B}$}       & \textbf{Description} \\ \hline
-		TN\_Graph              & $...$ & $...$    	  & Traffic network (Graph)     \\
+		TN              & $G$ & $G$    	  & Traffic network (Graph)     \\
 		LV\_Number             & $4$ & $4$            & Number of LV (\#)      \\
 		LV\_Frequency          & $LV_{A}:1.0$ & $LV_{A}:1.0$                & Freq. of LV types (\%)      \\
 		LV\_Allocation         & $9$ & $19$                 & Electric devices per LV (\#)      \\   
@@ -135,7 +135,7 @@ In terms of behavior, the low-voltage network aggregates the loads of all connec
 
 \subsection{Static load}
 
-Static loads $SL$ are aggregations of energy devices, which produce intermittent energy load balances. They represent an abstraction in terms of aggregating power loads of different energy devices, i.e. producers and consumers. The result of this aggregation is a energy load profile.
+Static loads $SL$ are aggregations of energy devices, which produce intermittent energy load balances. They represent an abstraction in terms of aggregating power loads of different energy devices, i.e. producers and consumers. The result of this aggregation is a energy load profile $P = (T, L)$ describing the energy load $L$ over time $T$ for values $L = \{l_i, l_{i+1}, ..., l_n\}$ and $T = \{t_i, t_{i+1},..., t_n\}$.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -145,11 +145,11 @@ Static loads $SL$ are aggregations of energy devices, which produce intermittent
 		\hline
 		\textbf{Parameter}              & \textbf{$SL_{A}$}  & \textbf{$SL_{B}$}   & \textbf{Description} \\ \hline
 		Power\_Scale                   	  & $10.0$ & $5.0$ & Maximum power output multiplier (kW/h) \\
-		Profile                       	  	   & $var$ & $var$ & Load profile over time  (kW/h)\\ \hline
+		Profile                       	  	   & $P_A$ & $P_B$ & Load profile over time  (kW/h)\\ \hline
 	\end{tabularx}
 \end{table}
 
-Based on the parameters $Power\_Scale$ and $Profile$ static load components output a predefined energy profile for any given time. Both parameters allow one to vary static (i.e.\ non-controllable) load in different scenarios easily.
+In their behavior, based on the parameters $Power\_Scale$ and $Profile$ static load components produce a predefined energy profile for a given time. Both parameters allow one to vary static (i.e.\ non-controllable) load in different scenarios easily.
 
 \subsection{Power battery}
 
@@ -163,7 +163,7 @@ This is attributed to their ability to consume and store or release energy given
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}     & \textbf{$PB_{A}$} & \textbf{$PB_{B}$} & \textbf{Description} \\ \hline
-		SOC                     & $0.0$ & $0.0$ & Battery state of charge (kW/h)                   \\
+		SOC                     & $0.0$ & $0.0$ & Initial state of charge (kW/h)                   \\
 		SOC\_Min                & $0.0$ & $0.0$ & Min. state of charge (kW/h)                   \\
 		SOC\_Max               & $20.0$ & $80.0$ &  Max. state of charge (kW/h)                    \\
 		Charge\_Rate            & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)     \\ 
@@ -204,7 +204,7 @@ Charging stations $CS$ are electric devices which act as power consumers or prod
 	\begin{tabularx}{\columnwidth}{llX}
 		\hline
 		\textbf{Parameter}      & \textbf{$CS_{A}$} & \textbf{Description} \\ \hline
-		Position      			& $var$ & Position on the traffic network (Edge) \\  
+		Position      			& $E$ & Position on the traffic network (Edge) \\  
 		Charge\_Rate        	& $5.0$ & (Dis-)charge rate exposed to cars (kW/h)     \\ \hline
 	\end{tabularx}
 \end{table}
