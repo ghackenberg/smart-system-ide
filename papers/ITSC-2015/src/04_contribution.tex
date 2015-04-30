@@ -16,7 +16,6 @@ The intelligent transportation and power system $IS$ component contains the tran
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Intelligent transportation and power system parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllllX}
 		\hline
@@ -36,7 +35,6 @@ The transportation system component $TS$ comprises the traffic infrastructure $T
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Transportation system parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{llX}
 		\hline
@@ -56,7 +54,6 @@ Cars $C$ represent atomic components in our system model and are defined in term
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Car parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{llllX}
 		\hline
@@ -89,7 +86,6 @@ The power system component $PS$ represents the overall electric infrastructure i
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Power system parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
@@ -116,11 +112,10 @@ At its interface the power system specifies a cost output that aggregates the co
 
 \subsection{Low/medium-voltage nets ($LV$/$MV$)}
 
-Low- and medium-voltage nets $LV$, $MV$ represent one part of the electric infrastructure. In our model, low- and medium-voltage nets receive the loads of all connected electric devices and provide an aggregate load to the upper voltage level.
+In our model, low- and medium-voltage nets $LV$/$MV$ are modeled in terms of atomic components receiving loads from all connected electric devices and providing an aggregate load output to the upper voltage level. Note that connected electric devices can be lower voltage net components as well. The following table summarized the parameters used for configuring net components.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Low/medium voltage net parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
@@ -131,34 +126,31 @@ Low- and medium-voltage nets $LV$, $MV$ represent one part of the electric infra
 	\end{tabularx}
 \end{table}
 
-In terms of behavior, the low-voltage net aggregates the loads of all connected static load, power batteries, solar panels, charging stations to a single power load. The medium voltage net aggregates the power loads of low voltage nets it is assigned to a single power load. Based on this aggregation, a cost function over the total power load balance is specified. The cost function is multiplied by the impact of the balance objective through an according weight, specified by parameter $w\_Balance$. To ensure valid behavior, a constraint tests whether the net's total power load balance lies within the net' total capacity, described by parameter $Capacity$.
+As introduced initially in~\cite{Hackenberg2012}, low-voltage nets sum up the loads of all connected static loads, power batteries, solar panels, and charging stations to yield the load output. The medium-voltage net aggregates the loads of all low-voltage nets instead. Based on the aggregated load, a net's cost output is specified relative to the total net capacity $Capacity$ (i.e.\ the closer to the capacity, the worse). Then, each net's cost output is dampened by the weight parameter $w\_Balance$. Finally, to ensure valid behavior a constraint tests whether a net's aggregated load as well as all connected loads lie within the net's total capacity $Capacity$.
 
 \subsection{Static load ($SL$)}
 
-Static loads $SL$ are aggregations of energy devices, which produce intermittent energy load balances. They represent an abstraction in terms of aggregating power loads of different energy devices, i.e. producers and consumers. The result of this aggregation is a energy load profile $P = (T, L)$ describing the energy load $L$ over time $T$ for values $L = \{l_i, l_{i+1}, ..., l_n\}$ and $T = \{t_i, t_{i+1},..., t_n\}$.
+Static loads $SL$ (see following table) aggregate electric devices, which produce non-controllable loads (such as conventional light bulbs, washing machines or dish washers). Consequently, they abstract from specific details about different electric devices, i.e. producers and consumers, reducing the available information to their load only. The result of this aggregation can be defined in terms of a load profile $L = (l_t)_{0 \leq t \leq n}$ with $t,n \in \mathbb{N}$ representing current and maximum time points and $l_t \in \mathbb{R}$ representing positive or negative loads with unit kW/h.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Static load parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}              & \textbf{$SL_{A}$}  & \textbf{$SL_{B}$}   & \textbf{Description} \\ \hline
-		Power\_Scale                   	  & $10.0$ & $5.0$ & Maximum power output (kW/h) \\
-		Profile                       	  	   & $P_A$ & $P_B$ & Load profile over time  (kW/h)\\ \hline
+		Power\_Scale                   	  & $10.0$ & $5.0$ & Maximum power output ($\mathbb{R}$) \\
+		Profile                       	  	   & $L_A$ & $L_B$ & Load profile over time  (kW/h)\\ \hline
 	\end{tabularx}
 \end{table}
 
-In their behavior, based on the parameters $Power\_Scale$ and $Profile$ static load components produce a predefined energy profile for a given time. Both parameters allow one to vary static (i.e.\ non-controllable) load in different scenarios easily.
+Based on the parameters $Power\_Scale$ and $Profile$ static load components generate a predefined load profile. Both parameters allow one to vary static (i.e.\ non-controllable) load in different scenarios easily. In particular, the scale factor serves to dampen the static profile.
 
 \subsection{Power battery ($PB$)}
 
-Power batteries $PB$ represent electric devices which act as energy producers or energy consumers within the electric network.
-This is key to their ability to store or release energy over time.
+Power batteries $PB$ represent electric devices acting both as producers and as consumers within the electric infrastructure. The following table shows the parameters that can be used to configure batteries.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Power battery parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
@@ -172,8 +164,7 @@ This is key to their ability to store or release energy over time.
 	\end{tabularx}
 \end{table}
 
-In terms of behavior, based on probabilistic selection, the power battery chooses from different states determining energy consumption, production or zero load. In terms of probability, states are uniformly distributed. Energy consumption or production occurs by storing or releasing energy based the state of charge, which is initially specified by parameter $SOC$. This ability is subject to loss of charge over time and to the battery's efficiency, respectively described by parameters $Battery\_Loss$ and $Battery\_Efficiency$.
-Energy consumption occurs by storing energy in the battery, while energy production occurs by releasing energy from the battery. Both actions are subject to a limited charge and discharge rate, specified by parameter $Charge\_Rate$. To ensure valid behavior, a constraint tests whether the battery's state of charge lies within a constant minimum and maximum level expressed through parameters $SOC\_Min$ and $SOC\_Max$.
+Based on random selection each power battery chooses from different states determining energy consumption, production or idle load. In terms of their probability these states are distributed uniformly. Energy consumption or production occurs when storing or releasing energy with respect to the state of charge, which is initially specified by the parameter $SOC$. This ability is subject to loss of charge over time and to the battery's efficiency, respectively described by parameters $Battery\_Loss$ and $Battery\_Efficiency$. Energy consumption occurs by storing energy in the battery, while energy production occurs by releasing energy from the battery. Both actions are subject to a limited charge and discharge rate, specified by parameter $Charge\_Rate$. To ensure valid behavior, a constraint tests whether the battery's state of charge lies within a constant minimum and maximum level expressed through parameters $SOC\_Min$ and $SOC\_Max$.
 
 \subsection{Solar panel ($SP$)}
 
@@ -181,7 +172,6 @@ Solar panels $SP$ are electric devices, which act as producers of renewable ener
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Solar panel parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
@@ -201,7 +191,6 @@ Charging stations $CS$ are electric devices which act as power consumers or prod
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
-	%\caption{Charging station parameters}
 	\centering
 	\begin{tabularx}{\columnwidth}{llX}
 		\hline
