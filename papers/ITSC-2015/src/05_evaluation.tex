@@ -6,50 +6,60 @@
 	\renewcommand{\arraystretch}{1.3}
 	\begin{tabularx}{\textwidth}{|Y|Y|Y|Y|}
 		\hline
-
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E1_003.png}  &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E2_003.png}  &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E3_003.png} &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E4_003.png} \\ \hline
 		
- 		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E1_001.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E2_001.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E3_001.png}  &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E4_001.png} \\ \hline
+		\textbf{Scenario} 1 & \textbf{Scenario 2} & \textbf{Scenario 3} & \textbf{Scenario 4} \\
 		
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E1_002.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E2_002.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E3_002.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E4_002.png} \\ \hline
+		\hline
+		
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E1_003.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E2_003.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E3_003.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E4_003.png} \\
+		
+		\hline
+		
+ 		\includegraphics[width=0.23\textwidth]{../gfx/data/E1_001.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E2_001.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E3_001.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E4_001.png} \\
+		
+		\hline
+		
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E1_002.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E2_002.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E3_002.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E4_002.png} \\
+		
+		\hline
 		
 		\begin{tabulary}{4cm}{L|L}
-		\textbf{Computation Time} & 229s \\
-		\textbf{Memory Usage} & 6.03GB \\
-		\textbf{Lines of Code (LOC)} & 350 \\
+			\textit{Computation time} & 229s \\
+			\textit{Memory usage} & 6.03GB \\
+			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
-			\textbf{Computation Time} & 250s \\
-			\textbf{Memory Usage} & 5.27GB \\
-			\textbf{Lines of Code (LOC)} & 350 \\
+			\textit{Computation time} & 250s \\
+			\textit{Memory usage} & 5.27GB \\
+			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
-			\textbf{Computation Time} & 218s \\
-			\textbf{Memory Usage} & 6.41GB \\
-			\textbf{Lines of Code (LOC)} & 350 \\
+			\textit{Computation time} & 218s \\
+			\textit{Memory usage} & 6.41GB \\
+			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
-			\textbf{Computation Time} & 227s \\
-			\textbf{Memory Usage} & 6.75GB \\
-			\textbf{Lines of Code (LOC)} & 350 \\
+			\textit{Computation time} & 227s \\
+			\textit{Memory usage} & 6.75GB \\
+			\textit{Lines of code} & 350 \\
 		\end{tabulary}
-		\\ \hline						
+		\\
 		
-		\end{tabularx} 
-	
-	\caption{Estimated system behavior for all four scenarios illustrated by energy and cost charts and aggregated traffic graphs.}
+		\hline
+	\end{tabularx}
+	\caption{Traffic flow graph, power chart, statistics, computation time, memory usage, and lines of code for each scenario.}
 	\label{figure:examples}
 \end{table*}
 
@@ -61,33 +71,33 @@ Furthermore, levels of smart and renewable energy penetration are varied within 
 
 In terms of the transportation system, examples feature a total number of 440 cars. Cars are divided in equal numbers between configurations $C_{A}$, $C_{B}$ and $C_{C}$ differing in state of charge levels at 33\%, 66\% or 100\% of maximum levels. In terms of positioning on the traffic network, origin positions of individual cars is randomly drawn from all edges present within the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
 
-Specific differences between the scenarios for the transportation system and its subcomponents are described in the following table. 
+%Specific differences between the scenarios for the transportation system and its subcomponents are described in the following table. 
 
-\begin{table}[h]
-	\renewcommand{\arraystretch}{1.3}
-	%\caption{Example Overview}
-	\label{tab:example1}
-	\centering
-	\begin{tabularx}{\columnwidth}{Xlllll}
-		\hline
-		\textbf{Parameter}                    & \textbf{Scenario 1}    & \textbf{Scenario 2} & \textbf{Scenario 3} & \textbf{Scenario 4}\\ \hline
-		Weight trans.\ system 			& 0.9	      & 0.1  	& 0.9	& 0.1\\
-		Weight power system 			& 0.1	      & 0.9  	& 0.1	& 0.9\\
-		N.\ charging stations              & 16         & 16 		& 56	& 56\\
-		Capacity batteries          & 100 kW/h         & 100 kW/h 		& 400 kW/h		& 400 kW/h\\
-		Capacity solar panels               & 25 kW/h         & 25 kW/h 		& 50 kW/h		& 50 kW/h	\\ \hline
-		Intelligent TS and EN                 & $IS_{A}$         & $IS_{B}$ 		& $IS_{A}$		& $IS_{B}$	\\ 
-		Transportation system                 & $TS_{A}$         & $TS_{A}$ 		& $TS_{A}$		& $TS_{A}$	\\ 
-		Power system                & $EN_{A}$         & $EN_{A}$ 		& $EN_{B}$		& $EN_{B}$	\\ 
-		Cars                  & $C_{A,B,C}$          & $C_{A,B,C}$		& $C_{A,B,C}$		& $C_{A,B,C}$	\\ 
-		Low-voltage nets                 & $LV_{A}$         & $LV_{A}$ 		& $LV_{A}$		& $LV_{A}$	\\ 
-		Medium-voltage nets                 & $MV_{A}$         & $MV_{A}$ 		& $MV_{A}$		& $MV_{A}$	\\ 
-		Charging stations                 & $CS_{A}$         & $CS_{A}$ 		& $CS_{A}$		& $CS_{A}$	\\ 
-		Power batteries                & $PB_{A}$         & $PB_{A}$ 		& $PB_{B}$		& $PB_{B}$	\\ 
-		Solar panels                 & $SP_{A}$         & $SP_{A}$ 		& $SP_{B}$		& $SP_{B}$	\\ 
-		Static loads                 & $SL_{A}$         & $SL_{A}$ 		& $SL_{B}$		& $SL_{B}$	\\ \hline
-	\end{tabularx}
-\end{table}
+%\begin{table}[h]
+%	\renewcommand{\arraystretch}{1.3}
+%	%\caption{Example Overview}
+%	\label{tab:example1}
+%	\centering
+%	\begin{tabularx}{\columnwidth}{Xlllll}
+%		\hline
+%		\textbf{Parameter}                    & \textbf{Scenario 1}    & \textbf{Scenario 2} & \textbf{Scenario 3} & \textbf{Scenario 4}\\ \hline
+%		Weight trans.\ system 			& 0.9	      & 0.1  	& 0.9	& 0.1\\
+%		Weight power system 			& 0.1	      & 0.9  	& 0.1	& 0.9\\
+%		N.\ charging stations              & 16         & 16 		& 56	& 56\\
+%		Capacity batteries          & 100 kW/h         & 100 kW/h 		& 400 kW/h		& 400 kW/h\\
+%		Capacity solar panels               & 25 kW/h         & 25 kW/h 		& 50 kW/h		& 50 kW/h	\\ \hline
+%		Intelligent TS and EN                 & $IS_{A}$         & $IS_{B}$ 		& $IS_{A}$		& $IS_{B}$	\\ 
+%		Transportation system                 & $TS_{A}$         & $TS_{A}$ 		& $TS_{A}$		& $TS_{A}$	\\ 
+%		Power system                & $EN_{A}$         & $EN_{A}$ 		& $EN_{B}$		& $EN_{B}$	\\ 
+%		Cars                  & $C_{A,B,C}$          & $C_{A,B,C}$		& $C_{A,B,C}$		& $C_{A,B,C}$	\\ 
+%		Low-voltage nets                 & $LV_{A}$         & $LV_{A}$ 		& $LV_{A}$		& $LV_{A}$	\\ 
+%		Medium-voltage nets                 & $MV_{A}$         & $MV_{A}$ 		& $MV_{A}$		& $MV_{A}$	\\ 
+%		Charging stations                 & $CS_{A}$         & $CS_{A}$ 		& $CS_{A}$		& $CS_{A}$	\\ 
+%		Power batteries                & $PB_{A}$         & $PB_{A}$ 		& $PB_{B}$		& $PB_{B}$	\\ 
+%		Solar panels                 & $SP_{A}$         & $SP_{A}$ 		& $SP_{B}$		& $SP_{B}$	\\ 
+%		Static loads                 & $SL_{A}$         & $SL_{A}$ 		& $SL_{B}$		& $SL_{B}$	\\ \hline
+%	\end{tabularx}
+%\end{table}
 
 \subsection*{Scenario 1: Prefer trans.\ system, few charging stations}
 Scenario 1 describes an example with a low number and low capacities of smart and renewable energy devices. That is, solar panel and power battery capacity available within the power system is low, while static profiles within the power system have high impact in terms of intermittent power loads. Furthermore, only a low number of charging stations is available within the transportation system. In terms of costs, in benefit of achieving the objectives of the transportation system, more weight is assigned to the costs incurred by the transportation instead of the power system. Behavior estimation results show high frequency of routes using shortest paths to destinations. Power balance is prone to high and sudden fluctuations in load. Little equalization of net balances is made by cars charging or discharging at charging stations.
