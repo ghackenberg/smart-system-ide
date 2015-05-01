@@ -23,8 +23,8 @@ The intelligent transportation and power system $IS$ component contains the tran
 		\textbf{Parameter}      & \textbf{$IS_{A}$} & \textbf{$IS_{B}$}  & \textbf{$IS_{C}$} & \textbf{$IS_{D}$}      & \textbf{Description} \\ \hline
 		TS     					& $TS_{A}$   	& $TS_{A}$ & $TS_{A}$ & $TS_{A}$	 	& Transportation system     			\\
 		PS               		& $PS_{A}$ 	& $PS_{A}$ & $PS_{B}$ & $PS_{B}$		& Power system   						\\
-		w\_TS              & $0.75$  	& $0.25$ & $0.25$ & $0.25$		& Weight of $TS$ cost (\%)	\\ 
-		w\_PS              & $0.25$  	& $0.75$ & $0.75$ & $0.75$  		& Weight of $PS$ cost (\%)   			\\ \hline
+		w\_TS              & $0.9$  	& $0.1$ & $0.9$ & $0.1$		& Weight of $TS$ cost (\%)	\\ 
+		w\_PS              & $0.1$  	& $0.9$ & $0.1$ & $0.9$  		& Weight of $PS$ cost (\%)   			\\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -41,7 +41,7 @@ The transportation system component $TS$ comprises the traffic infrastructure $T
 		\hline
 		\textbf{Parameter}     & \textbf{$TS_{A}$}         & \textbf{Description} \\ \hline
 		TN              & $G = (V, E)$    & Traffic network (Graph)    \\
-		Car\_Number            & $240$    & Number of $C$s (\#)      \\ 
+		Car\_Number            & $440$    & Number of $C$s (\#)      \\ 
 		Car\_Frequency      & $P(C_{A,B,C}) = 0.\overline{3}$    & Frequency of $C$ types (\%)       \\ \hline
 	\end{tabularx}
 \end{table}
@@ -51,7 +51,7 @@ Finally, the transportation system $TS$ defines a cost output which aggregates t
 \subsection{Car ($C$)}
 \label{section:car}
 
-Cars $C$ represent atomic components in our system model and are defined in terms of a range of parameters shown in the following table. Key physical parameters are their $Length$ and $Mass$. Moreover, they contain a battery with predefined state of charge $SOC$. For battery charging and discharging they specify the parameter $Charge\_Rate$.
+Cars $C$ represent atomic components in our system model and are defined in terms of a range of parameters shown in the following table. Key physical parameters are their $Length$ and $Weight$. Moreover, they contain a battery with predefined state of charge $SOC$. For battery charging and discharging they specify the parameter $Charge\_Rate$.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -63,15 +63,15 @@ Cars $C$ represent atomic components in our system model and are defined in term
 		Destination                 & $d_A$    & $d_B$  & $d_C$     & Destination position (Edge $E$) \\
 		Priority                  & $1.0$ & $1.0$ & $1.0$ & Priority of the car in traffic (\%)                  \\
 		Length                    & $4.0$ & $4.0$ & $4.0$ & Car length (Meters)            \\
-		Mass                   & $2.0$ & $2.0$ & $2.0$ & Car mass  (Tonnes)                 \\
-		Energy\_Economy				& $0.4$ & $0.4$ & $0.4$ & Energy consumption (kW/h/km) \\
-		Speed\_Max				& $50.0$ & $50.0$ & $50.0$ & Max. driving speed (km/h) \\
+		Weight                  & $2.0$ & $2.0$ & $2.0$ & Car weight  (Tonnes)                 \\
+		Economy				& $0.4$ & $0.4$ & $0.4$ & Energy consumption (kW/h/km) \\
+		Speed\_Max				& $100.0$ & $100.0$ & $100.0$ & Max. driving speed (km/h) \\
 		SOC                      & $30.0$ & $60.0$ & $90.0$ & Initial state of charge (kW/h)                   \\
 		SOC\_Min               & $0.0$ & $0.0$ & $0.0$ & Min. state of charge (kW/h)                     \\
 		SOC\_Max              & $90.0$ & $90.0$ & $90.0$ & Max. state of charge (kW/h)                      \\
 		Charge\_Rate          & $5.0$ & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)                    \\
 		Range\_Anxiety         & $0.2$ & $0.2$ & $0.2$ & Affinity to charge (\%)                     \\
-		CS\_Selection		   & $0.5$ & $0.5$ & $0.5$ & Charging station randomness (\%)                    \\ 
+		CS\_Selection		   & $0.5$ & $0.5$ & $0.5$ & $CS$ selection randomness (\%)                    \\ 
 		Departure\_Time 	& $0$ & $0$ & $0$ & Offset to start traveling (Minutes)                   \\
 		w\_SOC              & $0.\overline{3}$  & $0.\overline{3}$ & $0.\overline{3}$ & Weight of state of charge cost (\%)                   \\
 		w\_Time              & $0.\overline{3}$ & $0.\overline{3}$ & $0.\overline{3}$ & Weight of time cost (\%)                     \\
@@ -79,7 +79,7 @@ Cars $C$ represent atomic components in our system model and are defined in term
 	\end{tabularx}
 \end{table}
 
-During simulation, when the time point $Departure\_Time$ is passed the car starts traveling from origin $Origin$ to destination $Destination$. Origins, destinations and current position of cars are edges $v \in V$ of the traffic infrastructure $TN$. When starting to travel, the car position equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals to the $k \in \mathbb{N}$ shortest paths from the current position to the destination or the nearest charging station. Of these alternatives one route is selected randomly depending on the parameter $CS\_Selection$. If the state of charge falls below a specified percentage described by the parameter $Range\_Anxiety$, the route selection probability shifts towards preferring the nearest charging station. While driving along the traffic infrastructure, cars consume energy. The energy consumption is based on the energy economy parameter $Energy\_Economy$, the traveled elevation profile, the mass as well as the randomly selected speed. Hereby, the speed is limited by the parameter $Speed\_Max$. Both energy consumption and possibly production are applied to the state of charge. Consumption occurs during driving or during discharge at charging stations. Production occurs during driving (i.e.\ energy recuperation) or during charging at charging stations instead. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum $SOC\_Min$ and maximum $SOC\_Max$. When connected to a charging station, the (dis-)charging decision is taken randomly with uniform distribution. If the car charges, a predefined load is transferred from the charging station to the car. If the car discharges, a predefined load (i.e.\ charge rate) is transferred from the car to the charging station instead. Furthermore, the car can choose an idle state, in which case no load is transferred between car and charging station. Finally, the car objective includes multiple cost factors. Generally, car cost only accumulate after its departure time $Departure\_Time$ has passed. The fist cost factor evaluates the car's state of charge with respect to the car's maximum state of charge. The second cost factor aggregates the time needed to reach the destination $Destination$. And the third cost factor measures the energy consumption in relation to the maximum energy consumption. The cost factors are aggregated and weighted using the parameters $w\_SOC$, $w\_Time$ and $w\_Power$.
+During simulation, when the time point $Departure\_Time$ is passed the car starts traveling from origin $Origin$ to destination $Destination$. Origins, destinations and current position of cars are edges $v \in V$ of the traffic infrastructure $TN$. When starting to travel, the car position equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals to the $k \in \mathbb{N}$ shortest paths from the current position to the destination or the nearest charging station. Of these alternatives one route is selected randomly depending on the parameter $CS\_Selection$. If the state of charge falls below a specified percentage described by the parameter $Range\_Anxiety$, the route selection probability shifts towards preferring the nearest charging station. While driving along the traffic infrastructure, cars consume energy. The energy consumption is based on the energy economy parameter $Economy$, the traveled elevation profile, car weight as well as the randomly selected speed. Hereby, the speed is limited by the parameter $Speed\_Max$. Both energy consumption and possibly production are applied to the state of charge. Consumption occurs during driving or during discharge at charging stations. Production occurs during driving (i.e.\ energy recuperation) or during charging at charging stations instead. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum $SOC\_Min$ and maximum $SOC\_Max$. When connected to a charging station, the (dis-)charging decision is taken randomly with uniform distribution. If the car charges, a predefined load (i.e.\ charge rate) is transferred from the charging station to the car. If the car discharges, a predefined load is transferred from the car to the charging station instead. Furthermore, the car can choose an idle state, in which case no load is transferred between car and charging station. Finally, the car objective includes multiple cost factors. Generally, car cost only accumulate after its departure time $Departure\_Time$ has passed. The first cost factor evaluates the car's state of charge with respect to the car's maximum state of charge. The second cost factor aggregates the time needed to reach the destination $Destination$. And the third cost factor measures the energy consumption in relation to the maximum energy consumption. The cost factors are aggregated and weighted using the parameters $w\_SOC$, $w\_Time$ and $w\_Power$.
 
 \subsection{Power system ($PS$)}
 
@@ -139,7 +139,7 @@ Static loads $SL$ (see following table) aggregate a wide range of electric devic
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}              & \textbf{$SL_{A}$}  & \textbf{$SL_{B}$}   & \textbf{Description} \\ \hline
-		Power\_Scale                   	  & $10.0$ & $5.0$ & Maximum power output ($\mathbb{R}$) \\
+		Power\_Scale                   	  & $3.0$ & $2.5$ & Maximum power output ($\mathbb{R}$) \\
 		Profile                       	  	   & $L_A$ & $L_B$ & Load profile over time  (kW/h)\\ \hline
 	\end{tabularx}
 \end{table}
@@ -165,7 +165,7 @@ Power battery components $PB$ represent stationary devices acting as both produc
 	\end{tabularx}
 \end{table}
 
-In each simulation step, power batteries choose randomly between charing, discharging or idle mode. In terms of their probability these modes are distributed uniformly. Depending on the selected mode energy consumption (i.e.\ negative load) or production (i.e.\ positive load) can be observed on the low-voltage net side. Furthermore, production and consumption takes effect on the internal state of charge, which is initialized with the $SOC$ parameter. The speed of charging and discharging is configured by means of the $Charge\_Rate$ parameter. Consequently, our model assumes constant charge and discharge speed. While charging, only a limited amount of energy is transfered to the state of charge. This amount can be configured using the $Battery\_Efficiency$ parameter. Finally, the state of charge is subject to loss over time configured with the $Battery\_Loss$ parameter. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum and maximum expressed through the parameters $SOC\_Min$ and $SOC\_Max$. Detailed information about the battery model can be found in~\cite{hackenberg2014rapid}.
+In each simulation step, power batteries choose randomly between charging, discharging or idle mode. In terms of their probability these modes are distributed uniformly. Depending on the selected mode, energy consumption (i.e.\ negative load) or production (i.e.\ positive load) can be observed on the low-voltage net side. Furthermore, production and consumption takes effect on the internal state of charge, which is initialized with the $SOC$ parameter. The speed of charging and discharging is configured by means of the $Charge\_Rate$ parameter. Consequently, our model assumes constant charge and discharge speed. While charging, only a limited amount of energy is transferred to the state of charge. This amount can be configured using the $Battery\_Efficiency$ parameter. Finally, the state of charge is subject to loss over time configured with the $Battery\_Loss$ parameter. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum and maximum expressed through the parameters $SOC\_Min$ and $SOC\_Max$. Detailed information about the battery model can be found in~\cite{hackenberg2014rapid}.
 
 \subsection{Solar panel ($SP$)}
 
@@ -201,4 +201,4 @@ Finally, charging station components $CS$ represent electric devices acting as c
 	\end{tabularx}
 \end{table}
 
-In terms of behavior, charging stations $CS$ can exhibit zero, negative or positive load to the low-voltage net. Based on dynamic connection to cars (see Sec.~\ref{section:intelligent_system}), a charging station's behavior is determined by the selected charging mode of the car $C$. Charging stations may act as consumers, when energy is transferred from the charging station to the car. In contrast, the stations also may act as producers, when energy is transferred from the car to the charging station. The respective energy transfer rate can be specified by means of the $Charge\_Rate$ parameter.
+In terms of behavior, charging stations $CS$ can exhibit zero, negative or positive load to the low-voltage net. Based on dynamic connection to cars (see Sec.~\ref{section:intelligent_system}), a charging station's behavior is determined by the selected charging mode of the car $C$. Charging stations may act as consumers, when energy is transferred from the charging station to the car. In contrast, the stations also may act as producers, when energy is transferred from the car to the charging station. The respective energy transfer rate is specified by means of the $Charge\_Rate$ parameter.
