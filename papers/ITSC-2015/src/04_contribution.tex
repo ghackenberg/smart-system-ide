@@ -8,7 +8,7 @@
 \section{Transportation and power systems modeling}
 \label{section:contribution}
 
-Based on the underlying systems modeling technique (see Sec.~\ref{section:foundation}), we propose an integrated transportation and power system model as shown in Figure~\ref{fig:model}. At its root, the model defines an intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component comprises the individual car components traveling along the traffic infrastructure. Similarly, the power system component includes the individual electric components, such as static loads, solar panels, power batteries and charging stations. Furthermore, the power system component contains the electric infrastructure consisting of low-voltage and medium-voltage net components. Parametrization allows one to instantiate all components using reference configurations, i.e. predefined parameter valuations. Subsequently we describe the different components of the model in terms of their parameters, ports, channels and behavior. Furthermore, for each parameter we provide a description as well as reference configurations.
+Based on the underlying systems modeling technique (see Sec.~\ref{section:foundation}), we propose an integrated transportation and power system model as shown in Figure~\ref{fig:model}. At its root, the model defines an intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component comprises the individual car components traveling along the traffic infrastructure. Similarly, the power system component includes the individual electric components, such as static loads, solar panels, power batteries and charging stations. Furthermore, the power system component contains the electric infrastructure consisting of low-voltage and medium-voltage net components. Parametrization allows one to instantiate all components using reference configurations/types, i.e. predefined parameter valuations. Subsequently we describe the different components of the model in terms of their parameters, ports, channels and behavior. Furthermore, for each parameter we provide a description as well as reference configurations.
 
 \subsection{Intelligent transportation and power system ($IS$)}
 \label{section:intelligent_system}
@@ -72,8 +72,8 @@ Cars $C$ represent atomic components in our system model and are defined in term
 		Charge\_Rate          & $5.0$ & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)                    \\
 		Range\_Anxiety         & $0.2$ & $0.2$ & $0.2$ & Affinity to charge (\%)                     \\
 		CS\_Selection		   & $0.5$ & $0.5$ & $0.5$ & $CS$ selection randomness (\%)                    \\ 
-		Departure\_Time 	& $0$ & $0$ & $0$ & Offset to start traveling (Minutes)                   \\
-		w\_SOC              & $0.\overline{3}$  & $0.\overline{3}$ & $0.\overline{3}$ & Weight of state of charge cost (\%)                   \\
+		Departure\_Time 	& $0$ & $0$ & $0$ & Time to start traveling (Minutes)                   \\
+		w\_SOC              & $0.\overline{3}$  & $0.\overline{3}$ & $0.\overline{3}$ & Weight of SOC cost (\%)                   \\
 		w\_Time              & $0.\overline{3}$ & $0.\overline{3}$ & $0.\overline{3}$ & Weight of time cost (\%)                     \\
 		w\_Power             & $0.\overline{3}$ & $0.\overline{3}$ & $0.\overline{3}$ & Weight of power cost (\%)                      \\ \hline
 	\end{tabularx}
