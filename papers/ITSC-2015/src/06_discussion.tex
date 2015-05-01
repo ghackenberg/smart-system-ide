@@ -13,50 +13,14 @@ In terms of the power system and electric infrastructure, only a basic net archi
 
 In the results obtained from the examples, it has been shown that total load balance equalization was achieved to a higher degree, when the weight of the power system cost function was higher. In contrast, when more weight was put on the transportation system cost function, findings showed total load balance equalization to a lower degree. In this context, it remains an issue, whether such an objective distinction between different systems and according objective parameter variation can be applied to real world scenarios when considering a very high number of potentially involved objectives. Furthermore, to reduce complexity, several objectives of EVs which are of main interest to drivers such as battery degradation and energy price have been neglected in our model, but are important issues of the V2G concept which have to be addressed in the future.
 
-%\begin{itemize}
-%	\item Add: How valid are employed parameters?
-%\end{itemize}
-
 \subsection{Novelty}
 
-%In contrast to existing approaches, we proposed an approach which allows for holistic modeling of transportation systems and electric networks, allowing for detailed analysis of objectives, constraints and interactions of both systems. Previous approaches have especially shown limitations in scope towards detailed modeling of the electric network and it's individual electric devices and/or infrastructure. In contrast, our approach allows for detailed representation of electric devices and electricity infrastructure. In this context, the modeling technique allows to explore and evaluate the interactions between power and transportation systems. The modeling technique allows to evaluate the interactions between power and transportation systems through charging stations. For this, a novelty mapping via dynamic channels has been used. Compared to previous work on the modeling technique which employs static channels between components, our approach expanded on this through the addition of dynamic channels mapping connections between different systems dynamically.
-
-%Firstly, holistic parametrization of both transportation and power systems allows to consider diverse sets of parameters in different configurations. Secondly, our approach utilizes cost functions in terms of achieving intended system behavior - behavior of both systems can be observed and directly traced to objectives. The objective based approach provides the possibilities for systematically adjusting objectives, i.e. cost functions of individual components resulting in different outcomes, as seen in presented examples. With regard to behavior estimation results, examples showed the feasibility of our approach for modeling V2G interactions. Furthermore, detailed modeling of electric devices enables traceability of energy flows to traffic flows.
-
-%\begin{itemize}
-%	\item NOT an objective-based approach
-%	\item Modeling of breadth in terms of involved systems (e.g. power/transportation systems) with diverse electric devices and infrastructure, cars
-%	\item Development (Ausbau, i.e. renewable energy)
-%	\item Different configurations (Parametrization)
-%	\item Parametrization, Parameter-based approach
-%	\item Easy to modify/change parameters
-%	\item Vs. existing approaches (Which approaches for parametrization exist?)
-%	\item Model Situations in Traffic Network
-%\end{itemize}
-
-We employ a parameter-based approach allowing for rapid modeling and evaluation of multi-objective transportation and power system scenarios. Compared to existing approaches outlined in Section ~\ref{section:retrospection}, model formulation and adjustment can be rapidly achieved in terms of individual composition of involved systems, independently of underlying objectives. Fundamentally, our approach allows one to concisely assess situations within transportation and power systems. As demonstrated in Section ~\ref{section:evaluation}, this enables one to rapidly evaluate novel scenarios concerning different systems, e.g. different expansion levels of renewable and smart energy penetration. 
+We employ a parameter-based approach allowing for rapid modeling and evaluation of multi-objective transportation and power system scenarios. Compared to existing approaches outlined in Sec.~\ref{section:retrospection}, model formulation and adjustment can be rapidly achieved in terms of individual composition of involved systems, independently of underlying objectives. Fundamentally, our approach allows one to concisely assess situations within transportation and power systems. As demonstrated in Sec.~\ref{section:evaluation}, this enables one to rapidly evaluate novel scenarios concerning different systems, e.g. different expansion levels of renewable and smart energy penetration. 
 
 \subsection{Efficiency}
 
-%\begin{itemize}
-%	\item Reference to "Rapid Prototyping Approach"
-%	\item Iterative and incremental refinement
-%	\item How efficient is the employed approach for parametrization? How much effort is involved for creating configurations?
-%	\item Measure: LOC (Caveat: multiple iterations)
-%\end{itemize}
-
-At it's core, our approach represents a rapid prototyping technique, enabling to formulate, estimate and evaluate scenarios concerning multiple systems. For this, we employ incremental techniques which allow model refinement through multiple iterations. Here, the efficiency of our approach can be measured in terms of lines of code (LOC) necessary to establish a given scenario. Avoiding time and resource intensive modeling, our approach has shown to allow quickly establishing medium complexity scenarios within 350 lines of code. However, multiple iterations when establishing scenarios have to be factored in, as LOC do not represent an accurate measure for effort, but rather for ease of modeling. 
-
-%Furthermore, important measures are system performance in terms of computation time and memory used.
+At its core, our approach represents a rapid prototyping technique, enabling to formulate, estimate and evaluate scenarios concerning multiple systems. For this, we employ incremental techniques which allow model refinement through multiple iterations. Here, the efficiency of our approach can be measured in terms of lines of code (LOC) necessary to establish a given scenario. Avoiding time and resource intensive modeling, our approach has shown to allow quickly establishing medium complexity scenarios within 350 LOC. However, multiple iterations when establishing scenarios have to be factored in, as LOC do not represent an accurate measure for effort, but rather for ease of modeling.
 
 \subsection{Applicability}
 
-%\begin{itemize}
-%	\item Use proposed approach to plan ahead in/regarding Transportation and Power Systems
-%	\item Practicality? Can our approach prove itself in practice/in the field?
-%	\item Factors: Involved people/domains talking to each other, systems in place, etc.
-%\end{itemize}
-
-Planning transportation and power systems, for our approach it remains an issue of applicability allowing to rapidly evaluate scenarios. The applicability of the approach is strongly dependent on involved domain knowledge, providing insight into involved systems. However, a major issue represents the fragmentation into different domains and involved goals with transportation systems being regulated by government bodies and electric networks being regulated by private entities. Therefore, practical applicability of transportation and power system modeling and evaluation depends on separated domains collaborating. 
-
-%Furthermore, already existing systems allow to simulate single domain scenario, i.e. transportation or electric network scenarios.
+Planning transportation and power systems, for our approach it remains an issue of applicability allowing to rapidly evaluate scenarios. The applicability of the approach is strongly dependent on involved domain knowledge, providing insight into involved systems. However, a major issue represents the fragmentation into different domains and involved goals with transportation systems being regulated by government bodies and electric networks being regulated by private entities. Therefore, practical applicability of transportation and power system modeling and evaluation depends on separated domains collaborating.

@@ -1,6 +1,3 @@
-\section{Demonstration by examples}
-\label{section:evaluation}
-
 \begin{table*}[b]
 	\centering
 	\renewcommand{\arraystretch}{1.3}
@@ -18,7 +15,7 @@
 		
 		\hline
 		
- 		\includegraphics[width=0.23\textwidth]{../gfx/data/E1_001.png} &
+		\includegraphics[width=0.23\textwidth]{../gfx/data/E1_001.png} &
 		\includegraphics[width=0.23\textwidth]{../gfx/data/E2_001.png} &
 		\includegraphics[width=0.23\textwidth]{../gfx/data/E3_001.png} &
 		\includegraphics[width=0.23\textwidth]{../gfx/data/E4_001.png} \\
@@ -63,53 +60,29 @@
 	\label{figure:examples}
 \end{table*}
 
+\section{Demonstration}
+\label{section:evaluation}
 
-To demonstrate the presented approach, we present a set of different examples with specific scenario configurations. Generally, among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. The presented examples evaluate the effects of varying weight balances between the objectives of the transportation and the power system. For this, the weights of the individual cost functions for power and transportation systems are alternated within the intelligent transportation and power system.
+To demonstrate the presented approach, we provide four examples with specific scenario configurations. Generally, all examples are simulated with a time resolution of 60 seconds per simulation step and 30 simulation steps in total, aggregating to a total duration of 30 minutes. The examples evaluate the effects of varying the weights $w\_TS$ and $w\_PS$ between the transportation system cost and the power system cost as well as the state of expansion of the power system.
 
-Furthermore, levels of smart and renewable energy penetration are varied within the example scenarios. In terms of the power system and it's electric devices and infrastructure, between scenarios 1-2 and scenarios 3-4 power system parameters are varied in terms of the number of charging stations as well as in terms of solar panel and battery capacities. Therefore, all scenarios include 10 static load components, 5 solar panels and 5 batteries represented through their configurations $SL_{A}$, $SP_{A}$ and $PB_{A}$ or their respective expansion stages $SL_{B}$, $SP_{B}$ and $PB_{B}$. From scenarios 1-2 to scenarios 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. Furthermore, in scenarios 1-2 16 charging stations are employed, while scenarios 3-4 utilize 56 charging stations. For all scenarios, charging stations of configuration $CS_{A}$ are used. In terms of the electricity infrastructure, 4 low voltage nets of configuration $LV_{A}$ and 1 medium voltage net of configuration $MV_{A}$ are employed for all scenarios. 
+To model the stage of expansion of the power system, between Scenarios 1-2 and Scenarios 3-4 the parameters of power system $PS$ are varied in terms of the number of charging stations $CS\_Number$ as well as in terms of solar panel capacities $Power\_Scale$ and power battery capacities $SOC\_Max$. Moreover, all scenarios include ten static load components, five solar panel components and five power battery components represented through their configurations $SL_{A}$, $SP_{A}$ and $PB_{A}$ or their respective stages of expansion $SL_{B}$, $SP_{B}$ and $PB_{B}$. From Scenarios 1-2 to Scenarios 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. Furthermore, in Scenarios 1-2 16 charging stations are employed, while Scenarios 3-4 utilize 56 charging stations. In all scenarios charging stations with reference configuration $CS_{A}$ are used. In terms of the electricity infrastructure, for low-voltage nets with configuration $LV_{A}$ and one medium-voltage net with configuration $MV_{A}$ are employed in all scenarios. 
 
+In terms of the transportation system $TS$, the examples feature a total number of 440 cars $C$. The cars are distributed equally among the reference configurations $C_{A}$, $C_{B}$ and $C_{C}$. There reference configurations mainly differ in the initial state of charge $SOC$ with 33\%, 66\% and 100\% of the maximum state of charge $SOC\_Max$ respectively. In terms of positioning on the traffic network $TN$, the origin positions $Origin$ of cars are drawn randomly from all edges $E$ present within the traffic network. Instead, the destination positions $Destination$ are drawn randomly from the set of the eight most outward edges of the traffic network. Finally, for origins we prefer the lower left sector of $TN$, while for destinations we prefer the upper right sector of $TN$.
 
-In terms of the transportation system, examples feature a total number of 440 cars. Cars are divided in equal numbers between configurations $C_{A}$, $C_{B}$ and $C_{C}$ differing in state of charge levels at 33\%, 66\% or 100\% of maximum levels. In terms of positioning on the traffic network, origin positions of individual cars is randomly drawn from all edges present within the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
+The results of control optimization are shown in Tab.~\ref{figure:examples}. For each scenario, a traffic flow graph and power chart is provided as well as general statistics and performance characteristics.
 
-%Specific differences between the scenarios for the transportation system and its subcomponents are described in the following table. 
+\subsection*{Scenario 1: Prefer trans.\ system, low stage of expansion}
 
-%\begin{table}[h]
-%	\renewcommand{\arraystretch}{1.3}
-%	%\caption{Example Overview}
-%	\label{tab:example1}
-%	\centering
-%	\begin{tabularx}{\columnwidth}{Xlllll}
-%		\hline
-%		\textbf{Parameter}                    & \textbf{Scenario 1}    & \textbf{Scenario 2} & \textbf{Scenario 3} & \textbf{Scenario 4}\\ \hline
-%		Weight trans.\ system 			& 0.9	      & 0.1  	& 0.9	& 0.1\\
-%		Weight power system 			& 0.1	      & 0.9  	& 0.1	& 0.9\\
-%		N.\ charging stations              & 16         & 16 		& 56	& 56\\
-%		Capacity batteries          & 100 kW/h         & 100 kW/h 		& 400 kW/h		& 400 kW/h\\
-%		Capacity solar panels               & 25 kW/h         & 25 kW/h 		& 50 kW/h		& 50 kW/h	\\ \hline
-%		Intelligent TS and EN                 & $IS_{A}$         & $IS_{B}$ 		& $IS_{A}$		& $IS_{B}$	\\ 
-%		Transportation system                 & $TS_{A}$         & $TS_{A}$ 		& $TS_{A}$		& $TS_{A}$	\\ 
-%		Power system                & $EN_{A}$         & $EN_{A}$ 		& $EN_{B}$		& $EN_{B}$	\\ 
-%		Cars                  & $C_{A,B,C}$          & $C_{A,B,C}$		& $C_{A,B,C}$		& $C_{A,B,C}$	\\ 
-%		Low-voltage nets                 & $LV_{A}$         & $LV_{A}$ 		& $LV_{A}$		& $LV_{A}$	\\ 
-%		Medium-voltage nets                 & $MV_{A}$         & $MV_{A}$ 		& $MV_{A}$		& $MV_{A}$	\\ 
-%		Charging stations                 & $CS_{A}$         & $CS_{A}$ 		& $CS_{A}$		& $CS_{A}$	\\ 
-%		Power batteries                & $PB_{A}$         & $PB_{A}$ 		& $PB_{B}$		& $PB_{B}$	\\ 
-%		Solar panels                 & $SP_{A}$         & $SP_{A}$ 		& $SP_{B}$		& $SP_{B}$	\\ 
-%		Static loads                 & $SL_{A}$         & $SL_{A}$ 		& $SL_{B}$		& $SL_{B}$	\\ \hline
-%	\end{tabularx}
-%\end{table}
+Scenario~1 describes an example with a low number and low capacities of smart and renewable energy devices. That is, solar panel and power battery capacity available within the power system is low, while static profiles within the power system have high impact in terms of intermittent power loads. Furthermore, only a low number of charging stations is available within the transportation system. In terms of costs, in benefit of achieving the objectives of the transportation system, more weight is assigned to the costs incurred by the transportation instead of the power system. Behavior estimation results show high frequency of routes using shortest paths to destinations. Power balance is prone to high and sudden fluctuations in load. Little equalization of net balances is made by cars charging or discharging at charging stations.
 
-\subsection*{Scenario 1: Prefer trans.\ system, few charging stations}
-Scenario 1 describes an example with a low number and low capacities of smart and renewable energy devices. That is, solar panel and power battery capacity available within the power system is low, while static profiles within the power system have high impact in terms of intermittent power loads. Furthermore, only a low number of charging stations is available within the transportation system. In terms of costs, in benefit of achieving the objectives of the transportation system, more weight is assigned to the costs incurred by the transportation instead of the power system. Behavior estimation results show high frequency of routes using shortest paths to destinations. Power balance is prone to high and sudden fluctuations in load. Little equalization of net balances is made by cars charging or discharging at charging stations.
+\subsection*{Scenario 2: Prefer power system, low stage of expansion}
 
-\subsection*{Scenario 2: Prefer power system, few charging stations}
+Different to Scenario~1, in benefit of achieving the objectives of the power system, more weight is assigned to the costs incurred by power system instead of the transportation system. Behavior estimation results show higher frequency of edges around and on charging stations. Furthermore, compared to Scenario~1, cars utilize shortest path routes less frequently, which results in marginally higher distance traveled by cars. Also in contrast to Scenario~1, negative power balances are equalized to a higher level, traceable to cars discharging at charging stations and therefore supporting equalized net balance.
 
-Different to scenario 1, in benefit of achieving the objectives of the power system, more weight is assigned to the costs incurred by power system instead of the transportation system. Behavior estimation results show higher frequency of edges around and on charging stations. Furthermore, compared to scenario 1, cars utilize shortest path routes less frequently, which results in marginally higher distance traveled by cars. Also in contrast to scenario 1, negative power balances are equalized to a higher level, traceable to cars discharging at charging stations and therefore supporting equalized net balance.
+\subsection*{Scenario 3: Prefer trans.\ system, high stage of expansion}
 
-\subsection*{Scenario 3: Prefer trans.\ system, many charging stations}
+In Scenario~3 additional solar panel and power battery capacity as well as a higher number of charging stations are employed. As the power grid and it's electric devices get smarter, the profiles of static loads are more evened out, as less intermittent power load peaks occur. In benefit of achieving the objectives of the transportation system, more weight is assigned to the costs incurred by transportation system instead of the power system. Similar to Scenario~1, behavior estimation results show high frequency of routes using shortest paths to destinations. Overall distance traveled by cars is decreased, while final distance to destination is increased. Compared to Scenario~2, a higher level of equalization of power balance can be observed, due to higher energy device count and capacities.
 
-In scenario 3 additional solar panel and power battery capacity as well as a higher number of charging stations are employed. As the power grid and it's electric devices get smarter, the profiles of static loads are more evened out, as less intermittent power load peaks occur. In benefit of achieving the objectives of the transportation system, more weight is assigned to the costs incurred by transportation system instead of the power system. Similar to scenario 1, behavior estimation results show high frequency of routes using shortest paths to destinations. Overall distance traveled by cars is decreased, while final distance to destination is increased. Compared to scenario 2, a higher level of equalization of power balance can be observed, due to higher energy device count and capacities.
+\subsection*{Scenario 4: Prefer power system, high stage of expansion}
 
-\subsection*{Scenario 4: Prefer power system, many charging stations}
-
-In scenario 4 more weight is assigned to the costs incurred by power system instead of the transportation system. Similar to results observed in scenario 2, behavior estimation results show that cars utilize shortest path routes less frequently compared to scenarios 1 and 3, which results in marginally higher distance traveled and final distance to destination. However, compared to scenario 2, frequency is distributed more evenly across the traffic network, resulting in higher frequency of edges around and on charging stations compared to scenario 3. Furthermore, due to higher utilization of charging stations, in contrast to scenario 3, net balances are equalized to a higher degree.
+In Scenario 4 more weight is assigned to the costs incurred by power system instead of the transportation system. Similar to results observed in Scenario~2, behavior estimation results show that cars utilize shortest path routes less frequently compared to Scenarios~1 and~3, which results in marginally higher distance traveled and final distance to destination. However, compared to Scenario~2, frequency is distributed more evenly across the traffic network, resulting in higher frequency of edges around and on charging stations compared to Scenario~3. Furthermore, due to higher utilization of charging stations, in contrast to Scenario~3, net balances are equalized to a higher degree.
