@@ -54,14 +54,12 @@
 \end{table*}
 
 
-To demonstrate the presented approach, we show a set of different examples with diverse scenario configurations and employed model parameters. Specifically, the proposed examples evaluate the effects of different weight balances between the objectives of the transportation and the power system. 
-Furthermore, in the examples, different levels of smart and renewable energy penetration are considered. Specifically, among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. 
-In terms of aggregated costs, weights of the individual cost functions of power and transportation systems are alternated in the intelligent transportation and power system.
+To demonstrate the presented approach, we present a set of different examples with specific scenario configurations. Generally, among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. The presented examples evaluate the effects of varying weight balances between the objectives of the transportation and the power system. For this, the weights of the individual cost functions for power and transportation systems are alternated within the intelligent transportation and power system.
 
-In terms of the power system and it's electric devices, examples include 10 static load components of type $SL_{A}$ or $SL_{B}$, 5 solar panels of type $SP_{A}$ or $SP_{B}$, 5 batteries of type $PB_{A}$ or $PB_{B}$ and depending on example, 16 or 56 charging stations of type $CS_{A}$. In terms of electricity infrastructure, 4 low voltage nets of type $LV_{A}$ and 1 medium voltage net of type $MV_{A}$ are employed. 
-Between examples 1-2 and examples 3-4 power system parameters are varied in terms of the number of charging stations as well as in terms of solar panel and battery capacities. Specifically, the number of charging stations from examples 1 and 2 is increased to the total number of nodes on the traffic network, i.e. 56, in examples 3 and 4. Additionally, from examples 1-2 to examples 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. 
+Furthermore, levels of smart and renewable energy penetration are varied within the example scenarios. In terms of the power system and it's electric devices and infrastructure, between scenarios 1-2 and scenarios 3-4 power system parameters are varied in terms of the number of charging stations as well as in terms of solar panel and battery capacities. Therefore, all scenarios include 10 static load components, 5 solar panels and 5 batteries represented through their configurations $SL_{A}$, $SP_{A}$ and $PB_{A}$ or their respective expansion stages $SL_{B}$, $SP_{B}$ and $PB_{B}$. From scenarios 1-2 to scenarios 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. Furthermore, in scenarios 1-2 16 charging stations are employed, while scenarios 3-4 utilize 56 charging stations. For all scenarios, charging stations of configuration $CS_{A}$ are used. In terms of the electricity infrastructure, 4 low voltage nets of configuration $LV_{A}$ and 1 medium voltage net of configuration $MV_{A}$ are employed for all scenarios. 
 
-For the transportation system, examples feature a total number of 440 cars. Cars are divided in equal numbers between reference types $C_{A}$, $C_{B}$ and $C_{C}$ with the difference between reference types respectively being state of charge levels at 33\%, 66\% or 99\% of maximum levels. In terms of positioning on the traffic network, origin position of individual cars is randomly drawn from all edges present in the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
+
+In terms of the transportation system, examples feature a total number of 440 cars. Cars are divided in equal numbers between reference types $C_{A}$, $C_{B}$ and $C_{C}$ differing in state of charge levels at 33\%, 66\% or 100\% of maximum levels. In terms of positioning on the traffic network, origin positions of individual cars is randomly drawn from all edges present within the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
 
 Specific differences between the scenarios for the transportation system and its subcomponents are described in the following table. 
 
@@ -73,8 +71,8 @@ Specific differences between the scenarios for the transportation system and its
 	\begin{tabularx}{\columnwidth}{Xlllll}
 		\hline
 		\textbf{Parameter}                    & \textbf{Scenario 1}    & \textbf{Scenario 2} & \textbf{Scenario 3} & \textbf{Scenario 4}\\ \hline
-		Weight trans.\ system 			& 0.75	      & 0.25  	& 0.75	& 0.25\\
-		Weight power system 			& 0.25	      & 0.75  	& 0.25	& 0.75\\
+		Weight trans.\ system 			& 0.9	      & 0.1  	& 0.9	& 0.1\\
+		Weight power system 			& 0.1	      & 0.9  	& 0.1	& 0.9\\
 		N.\ charging stations              & 16         & 16 		& 56	& 56\\
 		Capacity batteries          & 100 kW/h         & 100 kW/h 		& 400 kW/h		& 400 kW/h\\
 		Capacity solar panels               & 25 kW/h         & 25 kW/h 		& 50 kW/h		& 50 kW/h	\\ \hline
