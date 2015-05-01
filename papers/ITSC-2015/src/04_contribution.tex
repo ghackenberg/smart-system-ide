@@ -11,6 +11,7 @@
 Based on the underlying systems modeling technique (see Section~\ref{section:foundation}), we propose an integrated transportation and power system model as shown in Figure~\ref{fig:model}. At its root, the model defines an intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component comprises the individual car components traveling along the traffic infrastructure. Similarly, the power system component includes the individual electric components, such as static loads, solar panels, power batteries and charging stations. Furthermore, the power system component contains the electric infrastructure consisting of low-voltage and medium-voltage net components. Parametrization allows one to instantiate all components using reference configurations, i.e. predefined parameter valuations. Subsequently we describe the different components of the model in terms of their parameters, ports, channels and behavior. Furthermore, for each parameter we provide a description as well as a reference configuration.
 
 \subsection{Intelligent transportation and power system ($IS$)}
+\label{section:intelligent_system}
 
 The intelligent transportation and power system $IS$ component contains the transportation system $TS$ and the power system $PS$ (see following table). Furthermore, the $IS$ defines dynamic channels between the car load outputs of $TS$ and the charging station load inputs of $PS$. Consequently, each car is connected to each charging station statically, but loads are forwarded only to the connected charging station dynamically. Therefore, the dynamic channel conditions test whether the car position (i.e.\ the edge output, see Sec.~\ref{section:car}) matches the charging station position (i.e.\ some constant edge, see Sec.~\ref{section:charging_station}).
 
@@ -126,11 +127,11 @@ In our model, low- and medium-voltage nets $LV$/$MV$ are modeled in terms of ato
 	\end{tabularx}
 \end{table}
 
-As introduced initially in~\cite{Hackenberg2012}, low-voltage nets sum up the loads of all connected static loads, power batteries, solar panels, and charging stations to yield the load output. The medium-voltage net aggregates the loads of all low-voltage nets instead. Based on the aggregated load, a net's cost output is specified relative to the total net capacity $Capacity$ (i.e.\ the closer to the capacity, the worse). Then, each net's cost output is dampened by the weight parameter $w\_Balance$. Finally, to ensure valid behavior a constraint tests whether a net's aggregated load as well as all connected loads lie within the net's total capacity $Capacity$.
+During simulation, low-voltage nets sum up the loads of all connected static loads, power batteries, solar panels, and charging stations to yield the load output. The medium-voltage net aggregates the loads of all low-voltage nets instead. Based on the aggregated load, a net's cost output is specified relative to the total net capacity $Capacity$ (i.e.\ the closer to the capacity, the worse). Then, each net's cost output is dampened by the weight parameter $w\_Balance$. Finally, to ensure valid behavior a constraint tests if a net's aggregated load as well as all connected loads lie within the net's total capacity $Capacity$. More information on the model can be found in~\cite{hackenberg2012applying}.
 
 \subsection{Static load ($SL$)}
 
-Static loads $SL$ (see following table) aggregate electric devices, which produce non-controllable loads (such as conventional light bulbs, washing machines or dish washers). Consequently, they abstract from specific details about different electric devices, i.e. producers and consumers, reducing the available information to their load only. The result of this aggregation can be defined in terms of a load profile $L = (l_t)_{0 \leq t \leq n}$ with $t,n \in \mathbb{N}$ representing current and maximum time points and $l_t \in \mathbb{R}$ representing positive or negative loads with unit kW/h.
+Static loads $SL$ (see following table) aggregate a wide range of electric devices, which cause non-controllable loads (such as conventional light bulbs, washing machines or dish washers). Consequently, they abstract from specific details about different electric devices, i.e. producers and consumers, reducing the available information to their load per time instant only. The result of this aggregation can be defined in terms of a load profile $L = (l_t)_{0 \leq t \leq n}$ with $t,n \in \mathbb{N}$ representing current and maximum time points and $l_t \in \mathbb{R}$ representing positive or negative loads with unit kW/h.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -147,7 +148,7 @@ Based on the parameters $Power\_Scale$ and $Profile$ static load components gene
 
 \subsection{Power battery ($PB$)}
 
-Power batteries $PB$ represent electric devices acting both as producers and as consumers within the electric infrastructure. The following table shows the parameters that can be used to configure batteries.
+Power battery components $PB$ represent stationary devices acting as both producers and consumers within the electric infrastructure (e.g.\ lead-acid batteries). The following table shows the parameters that can be used to configure batteries.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -164,11 +165,11 @@ Power batteries $PB$ represent electric devices acting both as producers and as 
 	\end{tabularx}
 \end{table}
 
-Based on random selection each power battery chooses from different states determining energy consumption, production or idle load. In terms of their probability these states are distributed uniformly. Energy consumption or production occurs when storing or releasing energy with respect to the state of charge, which is initially specified by the parameter $SOC$. This ability is subject to loss of charge over time and to the battery's efficiency, respectively described by parameters $Battery\_Loss$ and $Battery\_Efficiency$. Energy consumption occurs by storing energy in the battery, while energy production occurs by releasing energy from the battery. Both actions are subject to a limited charge and discharge rate, specified by parameter $Charge\_Rate$. To ensure valid behavior, a constraint tests whether the battery's state of charge lies within a constant minimum and maximum level expressed through parameters $SOC\_Min$ and $SOC\_Max$.
+In each simulation step, power batteries choose randomly between charing, discharging or idle mode. In terms of their probability these modes are distributed uniformly. Depending on the selected mode energy consumption (i.e.\ negative load) or production (i.e.\ positive load) can be observed on the low-voltage net side. Furthermore, production and consumption takes effect on the internal state of charge, which is initialized with the $SOC$ parameter. The speed of charging and discharging is configured by means of the $Charge\_Rate$ parameter. Consequently, our model assumes constant charge and discharge speed. While charging, only a limited amount of energy is transfered to the state of charge. This amount can be configured using the $Battery\_Efficiency$ parameter. Finally, the state of charge is subject to loss over time configured with the $Battery\_Loss$ parameter. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum and maximum expressed through the parameters $SOC\_Min$ and $SOC\_Max$. Detailed information about the battery model can be found in~\cite{hackenberg2014rapid}.
 
 \subsection{Solar panel ($SP$)}
 
-Solar panels $SP$ are electric devices, which act as producers of renewable energy with a defined yield within the electric network. They are characterized by their situation related power production capabilities. 
+Solar panel components $SP$ are electric devices, which represent one class of renewable energy producers with a defined yield within the electric network. They are characterized by the three parameters listed in the following table.
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -177,17 +178,17 @@ Solar panels $SP$ are electric devices, which act as producers of renewable ener
 		\hline
 		\textbf{Parameter}                     & \textbf{$SP_{A}$} & \textbf{$SP_{B}$} & \textbf{Description} \\ \hline
 		Power\_Scale                       	   & $2.5$ & $10.0$ & Maximum power output (kW/h) \\
-		Mean                       	  		  & $15$ & $15$ & Mean for maximum power output (\#) \\
-		Variance                       	       & $5$ & $5$ & Variance for maximum power output (\#) \\ \hline
+		Mean                       	  		  & $15$ & $15$ & Mean for maximum power output (Minutes) \\
+		Variance                       	       & $5$ & $5$ & Variance for maximum power output (Minutes) \\ \hline
 	\end{tabularx}
 \end{table}
 
-In terms of behavior, based on it's specific power scale, the solar panel produces an power load determined by given mean of and variance of maximum power output within a given time, respectively described by parameters $Power\_Scale$, $Mean$ and $Variance$. Based on a probabilistic selection, the solar panel can choose to partially, fully or not dampen it's power load, representing a property of a smart energy producer. The probability of these options is uniformly distributed.
+Based on their specific power scale $Power\_Scale$, solar panels produce a positive load peaking at the mean time point $Mean$ with a variance $Variance$. Moreover, based on probabilistic selection solar panels can choose to dampen their production (known as maximum power point tracking). The probability of the choices is uniformly distributed. Detailed information about the model can be found in~\cite{hackenberg2014rapid}.
 
 \subsection{Charging station ($CS$)}
 \label{section:charging_station}
 
-Charging stations $CS$ are electric devices which act as power consumers or producers within the electric network and facilitate the charging process of the cars of the transportation system. They are assigned a physical location, i.e. specific position on the traffic network. 
+Finally, charging station components $CS$ represent electric devices acting as consumers or producers within the electric network, while facilitating the charging process of the cars $C$ of the transportation system $TS$. They are assigned a physical location, i.e.\ an edge $(v,v) \in E$ of the traffic infrastructure $TN$ with zero length (i.e.\ same source and target node $v \in V$). 
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -195,9 +196,9 @@ Charging stations $CS$ are electric devices which act as power consumers or prod
 	\begin{tabularx}{\columnwidth}{llX}
 		\hline
 		\textbf{Parameter}      & \textbf{$CS_{A}$} & \textbf{Description} \\ \hline
-		Position      			& $E$ & Position on the traffic network (Edge $E$) \\  
+		Position      			& $p_A$ & Position on the traffic network (Edge $E$) \\  
 		Charge\_Rate        	& $5.0$ & (Dis-)charge rate exposed to cars (kW/h)     \\ \hline
 	\end{tabularx}
 \end{table}
 
-In terms of their behavior, charging stations can exhibit zero, negative or positive power load. Based on connection to a car, the charging station's behavior is determined by the selected charging state of the connected car being located at the charging stations position, specified by parameter $Position$. They act as energy consumers, when a power load is transferred from the charging station to the connected car. Furthermore, they act as energy producers, when a power load is transferred from the connected car to the charging station. The rate to which power loads can be transferred is described as parameter $Charge\_Rate$.
+In terms of behavior, charging stations $CS$ can exhibit zero, negative or positive load to the low-voltage net. Based on dynamic connection to cars (see Sec.~\ref{section:intelligent_system}), a charging station's behavior is determined by the selected charging mode of the car $C$. Charging stations may act as consumers, when energy is transferred from the charging station to the car. In contrast, the stations also may act as producers, when energy is transferred from the car to the charging station. The respective energy transfer rate can be specified by means of the $Charge\_Rate$ parameter.
