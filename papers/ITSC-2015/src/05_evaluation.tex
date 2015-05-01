@@ -7,38 +7,61 @@
 	\begin{tabularx}{\textwidth}{|Y|Y|Y|Y|}
 		\hline
 
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/AggrMobilityGraph1.png}  &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/AggrMobilityGraph2.png}  &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/AggrMobilityGraph3.png} &
-		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/AggrMobilityGraph3.png} \\ \hline
+		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E1_003.png}  &
+		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E2_003.png}  &
+		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E3_003.png} &
+		\includegraphics[trim=0 0 0 -4,scale=0.155]{../gfx/data/E4_003.png} \\ \hline
 		
- 		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image002.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image002.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image002.png}  &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image002.png} \\ \hline
+ 		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E1_001.png} &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E2_001.png} &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E3_001.png}  &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E4_001.png} \\ \hline
 		
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image001.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image001.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image001.png} &
-		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/image001.png} \\ \hline
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E1_002.png} &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E2_002.png} &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E3_002.png} &
+		\includegraphics[trim=0 0 0 -3,scale=0.285]{../gfx/data/E4_002.png} \\ \hline
 		
-	\end{tabularx}
+		\begin{tabulary}{4cm}{L|L}
+		\textbf{Computation Time} & 229s \\
+		\textbf{Memory Usage} & 6.03GB \\
+		\textbf{Lines of Code (LOC)} & 350 \\
+		\end{tabulary}
+		&
+		\begin{tabulary}{4cm}{L|L}
+			\textbf{Computation Time} & 250s \\
+			\textbf{Memory Usage} & 5.27GB \\
+			\textbf{Lines of Code (LOC)} & 350 \\
+		\end{tabulary}
+		&
+		\begin{tabulary}{4cm}{L|L}
+			\textbf{Computation Time} & 218s \\
+			\textbf{Memory Usage} & 6.41GB \\
+			\textbf{Lines of Code (LOC)} & 350 \\
+		\end{tabulary}
+		&
+		\begin{tabulary}{4cm}{L|L}
+			\textbf{Computation Time} & 227s \\
+			\textbf{Memory Usage} & 6.75GB \\
+			\textbf{Lines of Code (LOC)} & 350 \\
+		\end{tabulary}
+		\\ \hline						
+		
+		\end{tabularx} 
+	
 	\caption{Estimated system behavior for all four scenarios illustrated by energy and cost charts and aggregated traffic graphs.}
 	\label{figure:examples}
 \end{table*}
 
 
 To demonstrate the presented approach, we show a set of different examples with diverse scenario configurations and employed model parameters. Specifically, the proposed examples evaluate the effects of different weight balances between the objectives of the transportation and the power system. 
-Furthermore, in the examples, different levels of smart and renewable energy penetration are considered. 
-
-Among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. 
+Furthermore, in the examples, different levels of smart and renewable energy penetration are considered. Specifically, among all examples, model state is evaluated every 60 seconds to a total of 30 times. This represents a time resolution of 60 seconds with a total observed duration of 30 minutes. 
 In terms of aggregated costs, weights of the individual cost functions of power and transportation systems are alternated in the intelligent transportation and power system.
 
 In terms of the power system and it's electric devices, examples include 10 static load components of type $SL_{A}$ or $SL_{B}$, 5 solar panels of type $SP_{A}$ or $SP_{B}$, 5 batteries of type $PB_{A}$ or $PB_{B}$ and depending on example, 16 or 56 charging stations of type $CS_{A}$. In terms of electricity infrastructure, 4 low voltage nets of type $LV_{A}$ and 1 medium voltage net of type $MV_{A}$ are employed. 
-
 Between examples 1-2 and examples 3-4 power system parameters are varied in terms of the number of charging stations as well as in terms of solar panel and battery capacities. Specifically, the number of charging stations from examples 1 and 2 is increased to the total number of nodes on the traffic network, i.e. 56, in examples 3 and 4. Additionally, from examples 1-2 to examples 3-4, solar panel capacities are increased twofold, while battery capacities are increased fourfold. 
 
-For the transportation system, examples feature a total number of 240 cars. Cars are divided in equal numbers between reference types $C_{A}$, $C_{B}$ and $C_{C}$ with the difference between reference types respectively being state of charge levels at 33\%, 66\% or 99\% of maximum levels. In terms of positioning on the traffic network, origin position of individual cars is randomly drawn from all edges present in the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
+For the transportation system, examples feature a total number of 440 cars. Cars are divided in equal numbers between reference types $C_{A}$, $C_{B}$ and $C_{C}$ with the difference between reference types respectively being state of charge levels at 33\%, 66\% or 99\% of maximum levels. In terms of positioning on the traffic network, origin position of individual cars is randomly drawn from all edges present in the traffic network. Destination positions are randomly drawn from a set of 8 edges of most outward edges of the traffic network. For both origin and destination selection, we employ uniform probabilistic distribution on available options. 
 
 Specific differences between the scenarios for the transportation system and its subcomponents are described in the following table. 
 
