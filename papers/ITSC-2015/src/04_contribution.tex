@@ -8,7 +8,7 @@
 \section{Transportation and power systems modeling}
 \label{section:contribution}
 
-Based on the underlying systems modeling technique (see Sec.~\ref{section:foundation}), we propose an integrated transportation and power system model as shown in Figure~\ref{fig:model}. At its root, the model defines an intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component comprises the individual car components traveling along the traffic infrastructure. Similarly, the power system component includes the individual electric components, such as static loads, solar panels, power batteries and charging stations. Furthermore, the power system component contains the electric infrastructure consisting of low-voltage and medium-voltage net components. Parametrization allows one to instantiate all components using reference configurations/types, i.e. predefined parameter valuations. Subsequently we describe the different components of the model in terms of their parameters, ports, channels and behavior. Furthermore, for each parameter we provide a description as well as reference configurations.
+Based on the underlying systems modeling technique (see Sec.~\ref{section:foundation}), we propose an integrated transportation and power system model as shown in Figure~\ref{fig:model}. At its root, the model defines an intelligent transportation and power system component, which contains separate components for the transportation and the power system. The transportation system component comprises the individual car components traveling along the traffic infrastructure. Similarly, the power system component includes the individual electric components, such as static loads, solar panels, power batteries and charging stations. Furthermore, the power system component contains the electric infrastructure consisting of low-voltage and medium-voltage net components. Parametrization allows one to instantiate all components using reference configurations, i.e. predefined parameter valuations. Subsequently we describe the different components of the model in terms of their parameters, ports, channels and behavior. Furthermore, for each parameter we provide a description as well as reference configurations.
 
 \subsection{Intelligent transportation and power system ($IS$)}
 \label{section:intelligent_system}
@@ -32,7 +32,7 @@ Furthermore, the intelligent transportation and power system $IS$ specifies a co
 
 \subsection{Transportation system ($TS$)}
 
-The transportation system component $TS$ comprises the traffic infrastructure $TN$ as well as the car components $C$ (see following table). The traffic infrastructure $TN$ is modeled as directed graph $G = (V,E)$ with nodes $V$ and edges $E \subseteq V \times V$. Here, nodes $v,w \in V$ represent reference points in the traffic infrastructure such as intersections. Moreover, nodes define an absolute position in real-world coordinates (i.e. latitude, longitude, and elevation). In contrast, edges $(v,w) \in E$ represent road segments between source nodes $v$ and target nodes $w$. Furthermore, edges define their number of lanes as well as their road type (e.g.\ residential streets or stations). The cars $C$, on the other hand, can be configured by means of the parameters $Car\_Number$ and $Car\_Frequency$. While the former defines the total number of cars, the latter models a distribution over available car types. 
+The transportation system component $TS$ comprises the traffic infrastructure $TN$ as well as the car components $C$ (see following table). The traffic infrastructure $TN$ is modeled as directed graph $G = (V,E)$ with nodes $V$ and edges $E \subseteq V \times V$. Here, nodes $v,w \in V$ represent reference points in the traffic infrastructure such as intersections. Moreover, nodes define an absolute position in real-world coordinates (i.e. latitude, longitude, and elevation). In contrast, edges $(v,w) \in E$ represent road segments between source nodes $v$ and target nodes $w$. Furthermore, edges define their number of lanes as well as their road type (e.g.\ residential streets or stations). The cars $C$, on the other hand, can be configured by means of the parameters $Car\_Number$ and $Car\_Frequency$. While the former defines the total number of cars, the latter models a distribution over available car reference configurations. 
 
 \begin{table}[h]
 	\renewcommand{\arraystretch}{1.3}
@@ -42,7 +42,7 @@ The transportation system component $TS$ comprises the traffic infrastructure $T
 		\textbf{Parameter}     & \textbf{$TS_{A}$}         & \textbf{Description} \\ \hline
 		TN              & $G = (V, E)$    & Traffic network (Graph)    \\
 		Car\_Number            & $440$    & Number of $C$s (\#)      \\ 
-		Car\_Frequency      & $P(C_{A,B,C}) = 0.\overline{3}$    & Frequency of $C$ types (\%)       \\ \hline
+		Car\_Frequency      & $P(C_{A,B,C}) = 0.\overline{3}$    & Frequency of $C$ ref. configurations (\%)       \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -64,12 +64,12 @@ Cars $C$ represent atomic components in our system model and are defined in term
 		Priority                  & $1.0$ & $1.0$ & $1.0$ & Priority of the car in traffic (\%)                  \\
 		Length                    & $4.0$ & $4.0$ & $4.0$ & Car length (Meters)            \\
 		Weight                  & $2.0$ & $2.0$ & $2.0$ & Car weight  (Tonnes)                 \\
-		Economy				& $0.4$ & $0.4$ & $0.4$ & Energy consumption (kW/h/km) \\
+		Efficiency				& $0.3$ & $0.3$ & $0.3$ & Energy consumption (kW/h/km) \\
 		Speed\_Max				& $100.0$ & $100.0$ & $100.0$ & Max. driving speed (km/h) \\
 		SOC                      & $30.0$ & $60.0$ & $90.0$ & Initial state of charge (kW/h)                   \\
 		SOC\_Min               & $0.0$ & $0.0$ & $0.0$ & Min. state of charge (kW/h)                     \\
 		SOC\_Max              & $90.0$ & $90.0$ & $90.0$ & Max. state of charge (kW/h)                      \\
-		Charge\_Rate          & $5.0$ & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)                    \\
+		Charge\_Rate          & $5.0$ & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW)                    \\
 		Range\_Anxiety         & $0.2$ & $0.2$ & $0.2$ & Affinity to charge (\%)                     \\
 		CS\_Selection		   & $0.5$ & $0.5$ & $0.5$ & $CS$ selection randomness (\%)                    \\ 
 		Departure\_Time 	& $0$ & $0$ & $0$ & Time to start traveling (Minutes)                   \\
@@ -79,7 +79,7 @@ Cars $C$ represent atomic components in our system model and are defined in term
 	\end{tabularx}
 \end{table}
 
-During simulation, when the time point $Departure\_Time$ is passed the car starts traveling from origin $Origin$ to destination $Destination$. Origins, destinations and current position of cars are edges $v \in V$ of the traffic infrastructure $TN$. When starting to travel, the car position equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals to the $k \in \mathbb{N}$ shortest paths from the current position to the destination or the nearest charging station. Of these alternatives one route is selected randomly depending on the parameter $CS\_Selection$. If the state of charge falls below a specified percentage described by the parameter $Range\_Anxiety$, the route selection probability shifts towards preferring the nearest charging station. While driving along the traffic infrastructure, cars consume energy. The energy consumption is based on the energy economy parameter $Economy$, the traveled elevation profile, car weight as well as the randomly selected speed. Hereby, the speed is limited by the parameter $Speed\_Max$. Both energy consumption and possibly production are applied to the state of charge. Consumption occurs during driving or during discharge at charging stations. Production occurs during driving (i.e.\ energy recuperation) or during charging at charging stations instead. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum $SOC\_Min$ and maximum $SOC\_Max$. When connected to a charging station, the (dis-)charging decision is taken randomly with uniform distribution. If the car charges, a predefined load (i.e.\ charge rate) is transferred from the charging station to the car. If the car discharges, a predefined load is transferred from the car to the charging station instead. Furthermore, the car can choose an idle state, in which case no load is transferred between car and charging station. Finally, the car objective includes multiple cost factors. Generally, car cost only accumulate after its departure time $Departure\_Time$ has passed. The first cost factor evaluates the car's state of charge with respect to the car's maximum state of charge. The second cost factor aggregates the time needed to reach the destination $Destination$. And the third cost factor measures the energy consumption in relation to the maximum energy consumption. The cost factors are aggregated and weighted using the parameters $w\_SOC$, $w\_Time$ and $w\_Power$.
+During simulation, when the time point $Departure\_Time$ is passed the car starts traveling from origin $Origin$ to destination $Destination$. Origins, destinations and current position of cars are edges $v \in V$ of the traffic infrastructure $TN$. When starting to travel, the car position equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals to the $k \in \mathbb{N}$ shortest paths from the current position to the destination or the nearest charging station. Of these alternatives one route is selected randomly depending on the parameter $CS\_Selection$. If the state of charge falls below a specified percentage described by the parameter $Range\_Anxiety$, the route selection probability shifts towards preferring the nearest charging station. While driving along the traffic infrastructure, cars consume energy. The energy consumption is based on the energy efficiency parameter $Efficiency$, the traveled elevation profile, car weight as well as the randomly selected speed. Hereby, the speed is limited by the parameter $Speed\_Max$. Both energy consumption and possibly production are applied to the state of charge. Consumption occurs during driving or during discharge at charging stations. Production occurs during driving (i.e.\ energy recuperation) or during charging at charging stations instead. To ensure valid behavior, a constraint tests whether the state of charge lies within a constant minimum $SOC\_Min$ and maximum $SOC\_Max$. When connected to a charging station, the (dis-)charging decision is taken randomly with uniform distribution. If the car charges, a predefined load (i.e.\ charge rate) is transferred from the charging station to the car. If the car discharges, a predefined load is transferred from the car to the charging station instead. Furthermore, the car can choose an idle state, in which case no load is transferred between car and charging station. Finally, the car objective includes multiple cost factors. Generally, car cost only accumulate after its departure time $Departure\_Time$ has passed. The first cost factor evaluates the car's state of charge with respect to the car's maximum state of charge. The second cost factor aggregates the time needed to reach the destination $Destination$. And the third cost factor measures the energy consumption in relation to the maximum energy consumption. The cost factors are aggregated and weighted using the parameters $w\_SOC$, $w\_Time$ and $w\_Power$.
 
 \subsection{Power system ($PS$)}
 
@@ -93,19 +93,19 @@ The power system component $PS$ represents the overall electric infrastructure i
 		\textbf{Parameter}     & \textbf{$PS_{A}$} & \textbf{$PS_{B}$}       & \textbf{Description} \\ \hline
 		TN              	   & $G=(E,V)$ & $G=(E,V)$    	  & Traffic network (Graph)     \\
 		LV\_Number             & $4$ & $4$            & Number of $LV$s (\#)      \\
-		LV\_Frequency          & $P(LV_{A})=1$ & $P(LV_{A})=1$                & Freq. of $LV$ types (\%)      \\
+		LV\_Frequency          & $P(LV_{A})=1$ & $P(LV_{A})=1$                & Freq. of $LV$ conf. (\%)      \\
 		LV\_Allocation         & $9$ & $19$                 & Elec.\ dev.\ per $LV$ (\#)      \\   
 		MV\_Number             & $1$ & $1$        & Number of $MV$s (\#)      \\ 
-		MV\_Frequency          & $P(MV_{A})=1$ & $P(MV_{A})=1$                & Freq.\ of $MV$ types (\%)      \\
+		MV\_Frequency          & $P(MV_{A})=1$ & $P(MV_{A})=1$                & Freq.\ of $MV$ conf. (\%)      \\
 		MV\_Allocation         & $4$ & $4$                     & $LV$s per $MV$ (\#)      \\   
 		SL\_Number             & $10$ & $10$              & Number of $SL$s (\#)      \\
-		SL\_Frequency          & $P(SL_{A})=1$ & $P(SL_{B})=1$              & Freq.\ of $SL$ types (\%)       \\
+		SL\_Frequency          & $P(SL_{A})=1$ & $P(SL_{B})=1$              & Freq.\ of $SL$ conf. (\%)       \\
 		SP\_Number             & $5$ & $5$         & Number of $SP$s (\#)      \\ 
-		SP\_Frequency          & $P(SP_{A})=1$ & $P(SP_{B})=1$                & Freq.\ of $SP$ types (\%)       \\  
+		SP\_Frequency          & $P(SP_{A})=1$ & $P(SP_{B})=1$                & Freq.\ of $SP$ conf. (\%)       \\  
 		CS\_Number             & $16$  & $56$           & Number of $CS$s (\#)      \\
-		CS\_Frequency          & $P(CS_{A})=1$  & $P(CS_{B})=1$               & Freq.\ of $CS$ types (\%)       \\   
+		CS\_Frequency          & $P(CS_{A})=1$  & $P(CS_{B})=1$               & Freq.\ of $CS$ conf. (\%)       \\   
 		PB\_Number             & $5$  & $5$              & Number of $PB$s (\#)      \\
-		PB\_Frequency          & $P(PB_{A})=1$ & $P(PB_{B})=1$              & Freq.\ of $PB$ types (\%)       \\   \hline  
+		PB\_Frequency          & $P(PB_{A})=1$ & $P(PB_{B})=1$              & Freq.\ of $PB$ conf. (\%)       \\   \hline  
 	\end{tabularx}
 \end{table}
 
@@ -123,7 +123,7 @@ In our model, low- and medium-voltage nets $LV$/$MV$ are modeled in terms of ato
 		\textbf{Parameter}   & \textbf{$LV_{A}$} & \textbf{$MV_{A}$}  & Description \\ \hline
 		w\_Balance       & $0.0$ & $1.0$ & Weight of balance costs (\%) \\  
 %		Size                  	  & $9$ & $19$ & Number of devices per net  (\#)    \\
-		Capacity          & $20.0$ & $200.0$ & Power load capacity (kW/h)     \\ \hline
+		Capacity          & $20.0$ & $200.0$ & Power load capacity (kW)     \\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -140,7 +140,7 @@ Static loads $SL$ (see following table) aggregate a wide range of electric devic
 		\hline
 		\textbf{Parameter}              & \textbf{$SL_{A}$}  & \textbf{$SL_{B}$}   & \textbf{Description} \\ \hline
 		Power\_Scale                   	  & $3.0$ & $2.5$ & Maximum power output ($\mathbb{R}$) \\
-		Profile                       	  	   & $L_A$ & $L_B$ & Load profile over time  (kW/h)\\ \hline
+		Profile                       	  	   & $L_A$ & $L_B$ & Load profile over time  (kW)\\ \hline
 	\end{tabularx}
 \end{table}
 
@@ -159,7 +159,7 @@ Power battery components $PB$ represent stationary devices acting as both produc
 		SOC                     & $0.0$ & $0.0$ & Initial state of charge (kW/h)                   \\
 		SOC\_Min                & $0.0$ & $0.0$ & Min. state of charge (kW/h)                   \\
 		SOC\_Max               & $20.0$ & $80.0$ &  Max. state of charge (kW/h)                    \\
-		Charge\_Rate            & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW/h)     \\ 
+		Charge\_Rate            & $5.0$ & $5.0$ & Battery (dis-)charge rate (kW)     \\ 
 		Battery\_Loss           & $0.05$ & $0.05$ & Loss of charge over time (\%)\\
 		Battery\_Efficiency      & $0.99$ & $0.99$ &Efficiency of (dis-)charging (\%)     \\ \hline
 	\end{tabularx}
@@ -177,7 +177,7 @@ Solar panel components $SP$ are electric devices, which represent one class of r
 	\begin{tabularx}{\columnwidth}{lllX}
 		\hline
 		\textbf{Parameter}                     & \textbf{$SP_{A}$} & \textbf{$SP_{B}$} & \textbf{Description} \\ \hline
-		Power\_Scale                       	   & $2.5$ & $10.0$ & Maximum power output (kW/h) \\
+		Power\_Scale                       	   & $2.5$ & $10.0$ & Maximum power output (kW) \\
 		Mean                       	  		  & $15$ & $15$ & Mean for maximum power output (Minutes) \\
 		Variance                       	       & $5$ & $5$ & Variance for maximum power output (Minutes) \\ \hline
 	\end{tabularx}
@@ -197,7 +197,7 @@ Finally, charging station components $CS$ represent electric devices acting as c
 		\hline
 		\textbf{Parameter}      & \textbf{$CS_{A}$} & \textbf{Description} \\ \hline
 		Position      			& $p_A$ & Position on the traffic network (Edge $E$) \\  
-		Charge\_Rate        	& $5.0$ & (Dis-)charge rate exposed to cars (kW/h)     \\ \hline
+		Charge\_Rate        	& $5.0$ & (Dis-)charge rate exposed to cars (kW)     \\ \hline
 	\end{tabularx}
 \end{table}
 
