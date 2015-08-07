@@ -32,25 +32,21 @@
 		\begin{tabulary}{4cm}{L|L}
 			\textit{Computation time} & 229s \\
 			\textit{Memory usage} & 6.03GB \\
-			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
 			\textit{Computation time} & 250s \\
 			\textit{Memory usage} & 5.27GB \\
-			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
 			\textit{Computation time} & 218s \\
 			\textit{Memory usage} & 6.41GB \\
-			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		&
 		\begin{tabulary}{4cm}{L|L}
 			\textit{Computation time} & 227s \\
 			\textit{Memory usage} & 6.75GB \\
-			\textit{Lines of code} & 350 \\
 		\end{tabulary}
 		\\
 		
@@ -71,18 +67,18 @@ In terms of the transportation system $TS$, the examples feature a total number 
 
 The results of control optimization are shown in Tab.~\ref{figure:examples}. For each scenario, a traffic flow graph and power chart is provided as well as general statistics and performance characteristics.
 
-\subsection*{Scenario 1: Prefer trans.\ system, low stage of expansion}
+\subsubsection*{Scenario 1}
 
 In Scenario~1, solar panel and power battery capacities available within the power system are low, while static profiles within the power system have high impact in terms of intermittent power loads. Furthermore, only a low number of charging stations is available. In benefit of achieving the objectives of the transportation system, higher weight is assigned to the costs incurred by the transportation system instead of the power system. In terms of traffic flows, behavior estimation results show high frequency of routes representing shortest paths to destinations. Net balance is prone to high and sudden fluctuations in load as little equalization of net balances is performed by cars charging or discharging at charging stations.
 
-\subsection*{Scenario 2: Prefer power system, low stage of expansion}
+\subsubsection*{Scenario 2}
 
 In contrast to Scenario~1, in benefit of achieving the objectives of the power system, higher weight is assigned to the costs incurred by the power system instead of the transportation system. In terms of traffic flows, behavior estimation results show higher frequency of edges around and on charging stations. Furthermore, compared to Scenario~1, cars utilize shortest path routes to destinations less frequently, which results in marginally higher total distance traveled by cars. Also in contrast to Scenario~1, net balance is more equalized, traceable to cars intermittently discharging at a low number of charging stations.
 
-\subsection*{Scenario 3: Prefer trans.\ system, high stage of expansion}
+\subsubsection*{Scenario 3}
 
 In Scenario~3 a stage of expansion of the power system is modeled. For this, higher solar panel and power battery capacities as well as a higher number of charging stations are employed. As electric devices get smarter, the profiles of static loads are more evened out as less intermittent power load peaks occur. In benefit of achieving the objectives of the transportation system, higher weight is assigned to the costs incurred by the transportation system instead of the power system. Similar to Scenario~1, when considering traffic flows, behavior estimation results show high frequency of routes utilizing shortest paths to destinations. Overall distance traveled by cars is decreased, while final distance to destination is increased. Compared to Scenario~2, a higher level of equalization of net balance can be observed, due to a higher number of charging stations enabling cars to charge/discharge and higher capacities of solar panels and power batteries.
 
-\subsection*{Scenario 4: Prefer power system, high stage of expansion}
+\subsubsection*{Scenario 4}
 
 In Scenario 4 higher weight is assigned to the costs incurred by the power system instead of the transportation system. Similar to traffic flows observed in Scenario~2, behavior estimation results show that cars utilize shortest path routes less frequently compared to Scenarios~1 and~3, which results in marginally higher distance traveled and final distance to destination. However, compared to Scenario~2, frequency is distributed more evenly across the traffic network, resulting in higher frequency of edges around and on charging stations compared to Scenario~3. Furthermore, due to cars charging and discharging at a high number of charging stations, in contrast to Scenario~3, net balances are equalized to a higher degree.
