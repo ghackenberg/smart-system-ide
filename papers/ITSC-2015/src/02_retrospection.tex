@@ -7,24 +7,4 @@ In the field of \textit{modeling and simulation} SUMO~\cite{behrisch2011sumo} ha
 
 In the field of \textit{optimal control} one can observe a strong focus on achieving optimal charging decisions for EVs with regard to the power system. Sundstrom et al.~\cite{sundstrom2010planning} consider the capacity of the electric network during charging of EVs, thereby avoiding network overload. Schlote et al.~\cite{schlote2012balanced} implement load-balancing strategies for charging demand at charging points into the routing decisions of EVs. Results showed reduced travel times and congestion within the employed traffic network. Deliami et al.~\cite{deilami2011real} propose a real-time smart load management, which considers random plug-in of plug-in EVs (PEVs) within smart grids, considering scenarios with intermittent charging of PEVs. Alonso et al.~\cite{alonso2014optimal} examine optimal charging scheduling for EVs in smart grids, achieving optimal behavior for charging EVs in an electric network based on a representative low-voltage network topology. Their objective is to obtain daily optimal scheduling of EV demand on transformer substations. Zakariazadeh et al.~\cite{zakariazadeh2014multi} propose a multi-objective scheduling approach for EVs in smart distribution networks, which considers economic and environmental objectives as well as technical constraints of distribution networks.
 
-In summary, we found that existing approaches cover only a limited set of features required to achieve our objective (i.e.\ rapid multi-objective transportation and power system scenario modeling and evaluation) as shown in the following table.
-
-\begin{table}[h]
-	\renewcommand{\arraystretch}{1.3}
-	\centering
-	\label{table:evaluation}
-	\begin{tabularx}{\columnwidth}{Y c c c c}
-		\hline
-		\multirow{2}{*}{\textbf{Field of research}}  & \multicolumn{2}{c }{\textbf{Model coverage}} & \multicolumn{2}{c }{\textbf{Objective coverage}} \\
-		& \textit{Transportation} & \textit{Power} & \textit{Transportation} & \textit{Power} \\
-		\hline
-		Modeling / simulation & + & 0 & - & - \\
-		Optimal control & + & 0 & - & + \\
-		\hline
-	\end{tabularx}
-\end{table}
-
-Both modeling/simulation and optimal control models provide sufficient representation of the transportation system while lacking detail about the power system (in particular electric devices). Additionally, the wide variety of transportation and power objectives as well as their relative importance and arising impacts are not addressed sufficiently.
-
-%In summary, the presented approaches propose possibilities for parameter variation and modeling of traffic scenarios for EVs. However, for one they microscopically consider the transportation system with its EVs, but lack possibilities to explore the behavior of the underlying power system or specific electric devices in detail. Consequently, in scenarios they do not offer possibilities for detailed parameter variation of the power system and its individual devices. Therefore, holistic transportation scenarios considering the behavior of transportation as well as power systems cannot be explored and evaluated.
-%In summary, for representation of a underlying power system, proposed approaches do not model electric devices in detail or only rely on representative electric net topologies or total charging demand. Furthermore, a problem of the presented approaches represents the missing capability to explore holistic scenarios for the transportation and the power system. Considered approaches foremost aim to address the objectives and constraints of the power system, while objectives and constraints of the transportation system are not sufficiently considered.
+In summary, we found that existing approaches cover only a limited set of features required to achieve our objective (i.e.\ rapid multi-objective transportation and power system scenario modeling and evaluation). Both modeling/simulation and optimal control models provide sufficient representation of the transportation system while lacking detail about the power system (in particular electric devices). Additionally, the wide variety of transportation and power objectives as well as their relative importance and arising impacts are not addressed sufficiently.
