@@ -20,11 +20,11 @@ The $IS$ contains the transportation system $TS$ and the power system $PS$. The 
 
 \subsubsection*{Transportation system (TS)}
 
-The $TS$ comprises the traffic infrastructure $TN$ as well as the car components $C$. The $TN$ is modeled as directed graph $G = (V,E)$ with nodes $V$ and edges $E \subseteq V \times V$. Here, nodes $v,w \in V$ represent reference points in $TN$ such as intersections. Nodes define an absolute position in real-world coordinates (latitude, longitude and elevation): 
+The $TS$ comprises the traffic infrastructure $TN$ as well as the car components $C$. The $TN$ is modeled as directed graph $G = (V,E)$ with nodes $V$ and edges $E \subseteq V \times V$. Here, nodes $v,w \in V$ represent reference points in $TN$ such as intersections. Nodes define an absolute position in real-world coordinates with 
 %(i.e. latitude,longitude, and elevation):
-$$\mathit{latitude}: V \to \mathbb{R}_0^+$$ 
-$$\mathit{longitude}: V \to \mathbb{R}_0^+$$ 
-$$\mathit{elevation}: V \to \mathbb{R}_0^+$$ 
+$\mathit{latitude}: V \to \mathbb{R}_0^+$,
+$\mathit{longitude}: V \to \mathbb{R}_0^+$ and
+$\mathit{elevation}: V \to \mathbb{R}_0^+$.
 In contrast, edges $(v,w) \in E$ represent road segments between source nodes $v$ and target nodes $w$ with a defined number of lanes as well as road type (e.g.\ residential streets or stations). Finally, the $TS$ defines a cost output which aggregates the cost of the individual cars $C$. To ensure valid behavior, the $TS$ implements a constraint over the car positions which calculates the largest number of pair-wise overlapping cars per segment $(v,w) \in E$ and compares it to the available number of lanes.
 
 \subsubsection*{Car (C)}
@@ -34,15 +34,14 @@ In contrast, edges $(v,w) \in E$ represent road segments between source nodes $v
 $C$ represent entities on the traffic infrastructure, whose basic physical properties are length and weight.
 %$$\mathit{length}: C \to \mathbb{R}_0^+$$ 
 %$$\mathit{weight}: C \to \mathbb{R}_0^+$$ 
-When it's departure time (a specific time point) has passed during simulation, the $C$ starts traveling from its origin to a specified destination position. Origin, destination and position of $C$ are edges $(v,w) \in E$ of the traffic infrastructure $TN$. The length of an edge is defined as the distance between two nodes.
-$$\mathit{distance}: V \times V \to\mathbb{R}_0^+$$ 
-When starting to travel, the position of a $C$ equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals the $k \in \mathbb{N}$ shortest paths from the position to the destination position or the nearest charging station. Of these alternatives one route is selected randomly. The current position consists of the current edge and traveled distance on this edge.
-$$\mathit{position} = \{(e,d): E \times \mathbb{R}_0^+ \}$$ 
+When it's departure time (a specific time point) has passed during simulation, the $C$ starts traveling from its origin to a specified destination position. Origin, destination and position of $C$ are edges $(v,w) \in E$ of the traffic infrastructure $TN$. The length of an edge is defined as $\mathit{distance}: V \times V \to\mathbb{R}_0^+$ between two nodes.
+When starting to travel, the position of a $C$ equals the origin, while subsequent positions are selected from a set of possible routes. The set of possible routes equals the $k \in \mathbb{N}$ shortest paths from the position to the destination position or the nearest charging station. Of these alternatives one route is selected randomly. The current position consists of the current edge $e$ and traveled distance $d$ on this edge as
+$\mathit{position} = \{(e,d): E \times \mathbb{R}_0^+ \}$ 
 with $e = (v,w)$ such that $d \leq distance(v,w)$.
 %depending on a selection probability parameter. If the state of charge falls below a specified percentage, route selection probability shifts towards preferring the nearest charging station. 
 $C$ contain a battery with a state of charge (SOC) and a defined capacity to which the $C$'s energy consumption and production are applied to.
-Energy consumption occurs during driving along the $TN$ or during discharge at charging stations. While driving, energy consumption is based on the $C$'s energy efficiency, traveled elevation profile, weight as well as the randomly selected speed (limited to a maximum) in each simulation step. The traveled elevation profile is defined as:
-$$\mathit{slope} : V \times V \to \mathbb{R}_0$$ 
+Energy consumption occurs during driving along the $TN$ or during discharge at charging stations. While driving, energy consumption is based on the $C$'s energy efficiency, traveled elevation profile, weight as well as the randomly selected speed (limited to a maximum) in each simulation step. The traveled elevation profile is defined as
+$\mathit{slope} : V \times V \to \mathbb{R}_0$. 
 %$$\mathit{slope(v,w)} = \frac{distance(v,w)}{elevation(w)-elevation(v)}$$ 
 Energy production occurs during driving (i.e.\ energy recuperation) or during charging at charging stations. To ensure valid behavior, a constraint tests whether the SOC lies within a constant minimum and maximum. When connected to a charging station, a charging mode is chosen randomly. If the $C$ chooses charging, a load is transferred from the charging station to the $C$. If the $C$ chooses discharging, a load is transferred from the $C$ to the charging station instead. Furthermore, the $C$ can choose an idle state.
 % mode transferring no power load. The speed of charging and discharging is subject to a defined charge rate. 
@@ -85,8 +84,8 @@ $SP$ are electric devices which represent one class of renewable energy producer
 \subsubsection*{Charging station (CS)}
 \label{section:charging_station}
 
-$CS$ represent electric devices acting as consumers or producers and interacting with the cars $C$ of the transportation system $TS$. They are assigned a physical location, i.e.\ an edge $(v,v) \in E$ of the traffic network $TN$ with zero length (i.e.\ same source and target node $v \in V$):
-$$\mathit{position}: CS \to E$$ 
+$CS$ represent electric devices acting as consumers or producers and interacting with the cars $C$ of the transportation system $TS$. They are assigned a physical location, i.e.\ an edge $(v,v) \in E$ of the traffic network $TN$ with zero length (i.e.\ same source and target node $v \in V$), representing the
+$\mathit{position}: CS \to E$. 
  Based on dynamic connection to the cars, $CS$ behavior is determined by the selected charging mode of the currently connected car $C$. 
  %Here, a $CS$ can exhibit zero, negative or positive load on the low-voltage net side. 
  When a load is transferred from the $CS$ to the car, energy consumption can be observed on the low-voltage net side. In contrast, when a load is transferred from the car to the $CS$, energy production can be observed. Transfer rates are subject to a specific charge rate.
