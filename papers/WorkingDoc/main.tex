@@ -117,13 +117,17 @@
 	\subsection{Contributions}
 	\label{contributions}
 	
-	In this work, we extend our previous work and present a more extensive and detailed formulation of our model for integrated transportation and power systems. 
+	In this work, we extend our previous work and present a more extensive and detailed formulation of our model for integrated transportation and power systems. For this, we present and formally detail the individual components of our model.
+	
+	Substantially, in our given model, transportation and power systems are subject to a set of different demands imposed on them. 
 	
 	Within the transportation system mobility demands are expressed by passengers, who impose (1)~position preferences including origin and destination of travel as well as (2)~time preferences, which include departure and arrival times. Different modes of transportation (pedestrian, electric vehicle, public transportation) can be used by passengers to satisfy the mobility demands. 
 	
 	\todo{Multi-modal passenger transport.}
 	
-	Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. For being able to satisfy power demands, the power system can employ different energy sources (renewable, conventional), which require resources (coal, gas) and cause emissions resulting from the employed resources.
+	Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. To satisfy power demands, the power system can employ different energy sources (renewable, conventional), which require resources (coal, gas) and cause emissions resulting from the employed resources.
+	Hence, depending on utilized energy source, the use of specific resources such as coal or gas may be required for power generation. 
+	In return, when a resource is employed by the energy source for generating power, this may result in released emissions. 
 	
 	\todo{Formalization (not done before).}
 	
@@ -141,14 +145,14 @@
 		\label{illustration}
 	\end{figure}
 	
-	Section~\ref{modalities} introduces are model of transport modalities. Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{passengers} explains our passenger model. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{power_batteries} explaing our model of power batteries. Section~\ref{solar_panels} defines our model of solar panels (i.e.\ power generators). Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
+	Section~\ref{modalities} introduces a model of transport modalities. Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{passengers} explains our passenger model. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{energy_storages} explains our model of energy storages. Section~\ref{power_generators} defines our model of power generators. Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
 	
 	\todo{How to structure this section? E.g.\ static vs.\ dynamic aspects? Transportation vs.\ power system? Contraints, objectives, ...? States, actions, ...?}
 	
 	\subsection{Transport modalities}
 	\label{modalities}
 	
-	Transport modality identifiers $TM$ (finite set)
+	The transport modality refers to the mode of transportation, i.e. pedestrian, bicycle, electric vehicle, metro, short and long distance train as well as airplane. Hence, transport modality is defined by an identifier $TM$, where
 	\[
 		 \exists n \in \mathbb{N} : |TM| < n
 	\]
@@ -156,38 +160,46 @@
 	
 	\subsection{Transport infrastructures}
 	\label{transport}
+	Road intersections are defined by an identifier $RI$ so that
+	\[
+	\exists n \in \mathbb{N} : |RI| < n \mathrm{.}
+	\]
+	Here, intersections are made up of a given set of connectable road segments $RS$, where
+	\[
+	RS \subseteq RI \times RI \mathrm{.}
+	\]
 	
-	Road intersection identifiers $RI$ (finite set)
+	Here, the road segment modality describes the mode of transport with
 	\[
-		\exists n \in \mathbb{N} : |RI| < n
+	RSM : RS \to TM \mathrm{.}
 	\]
-	Road segments $RS$ (connectivity)
+	
+	The road segment capacity describes the number of lanes of a road segment such that
 	\[
-		RS \subseteq RI \times RI
+	RSL : RS \rightarrow \mathbb{N} \mathrm{,}
 	\]
-	Road segment modality $RSM$ \todo{Use!}
+	while the road segment distance is defined as 
+	
 	\[
-		RSC : RS \rightarrow TM
+	RSD : RS \rightarrow \mathbb{R}^+ \mathrm{,}
 	\]
-	Road segment lanes $RSL$ (capacity)
+	
+	where road segment distance can be equal to zero when considering self-segments such that
 	\[
-		RSL : RS \rightarrow \mathbb{N}
+	(ri, ri) \in RS \Rightarrow  RSD(ri, ri) = 0 \mathrm{.}
 	\]
-	Road segment distance $RSD : RS \rightarrow \mathbb{R}^+$ (zero-distance self-segments)
+	Furthermore, road segments are defined by relative coordinates $RSC \subseteq RS \times \mathbb{R}^+ \mathrm{,}$ where, based on the segment distance
 	\[
-		(ri, ri) \in RS \Rightarrow  RSD(ri, ri) = 0
+	RSC = \{(\cdot, rd) \in RS \times \mathbb{R} \mid 0 \leq rd \leq RSD(s) \} \mathrm{.}
 	\]
-	Road segment coordinates $RSC \subseteq RS \times \mathbb{R}^+$ (respect segment distance)
+	Then, world coordinates $WC$ describe the general geography of road segment coordinates $RSC$, defining absolute latitude, longitude as well as elevation such that
 	\[
-		RSC = \{(\cdot, rd) \in RS \times \mathbb{R} \mid 0 \leq rd \leq RSD(s) \}
+	WC : RSC \rightarrow \mathbb{R}^3 \mathrm{.}
 	\]
-	World coordinates $WC$ (geography, latitude, longitude, elevation) \todo{Do we really need that in the presentation? Can we simplify the model using world coordinates of road intersections only?}
+ \todo{Do we really need that in the presentation? Can we simplify the model using world coordinates of road intersections only?}
+	Finally, the traffic infrastructure $TI$ can be described as a topology such that 
 	\[
-		WC : RSC \rightarrow \mathbb{R}^3
-	\]
-	Transport infrastructure $TI$ (topology)
-	\[
-		TI = (RI, RS, RSL, RSD, WC)
+	TI = (RI, RS, RSL, RSD, WC) \mathrm{.}
 	\]
 	
 	\subsection{Passengers}
@@ -293,86 +305,124 @@
 	\subsection{Power infrastructures}
 	\label{power}
 	
-	Voltage net identifiers $VN$ \todo{Rename to region!}
+	Power regions represent an aggregated representation of a set of voltage nets. For example, they can define a region based on specific low, medium or high voltage nets in a given area. However, they abstract from a detailed representation of the underlying physical net structure.  
+	
+	Hence, the identifier of a power region $PR$ is defined as
 	\[
-		\exists n \in \mathbb{N} : |VN| < n
+	\exists n \in \mathbb{N} : |PR| < n \mathrm{.}
 	\]
-	Voltage net parent $VNP$ \todo{Require acyclic parent relationship with distinct root.}
+	Power regions aggregate the loads of their subregions and connected electric devices. In return, they provide the aggregated load to their upper region.
+	Hence, the acyclic parent relationship with their distinct roots $PRP$ is defined by 
 	\[
-		VNP : VN \rightarrow VN
+	PRP : PR \to PR \mathrm{.}
 	\]
-	Voltage net capacity $VNC$ \todo{The maximum energy flow through this region.}
+	\todo{Require acyclic parent relationship with distinct root.}
+	Power regions are subject to given capacity $PRC$, which describes the total load a power region can aggregate.
+	The power region capacity $PRC$ is then
 	\[
-		VNC : VN \rightarrow \mathbb{R}^+
+	PRC : PR \rightarrow \mathbb{R}^+ \mathrm{.}
 	\]
-	Voltage net state $VNS$ \todo{The current energy balance in each region. Calculate the balance from all connected regions and devices!}
+	\todo{The maximum energy flow through this region.}
+	 
+	The current energy balance of a power region
+	$PRS : PR \rightarrow \mathbb{R}_0^+$ with $cc$ describing the current capacity of an according power region is then
 	\[
-		VNS : VN \rightarrow \mathbb{R}
+	PRS(pr) \in \{ cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq PRC(pr) \} \mathrm{.}
 	\]
+	
 	\todo{Maybe we should introduce electric components here already. Then, electric components can be regions or end-points. Regions are the net identifiers introduced above. End-points are the concepts introduced in the following.}
 	
 	\subsection{Charging stations}
 	\label{charging_stations}
-		
-	Charging station identifiers $CS$
+	Charging stations are electric devices acting as consumers or producers within the power system. Consumption or production is based on connection to electric vehicles.
+	They are defined by a identifier $CS$, where
 	\[
-		\exists n \in \mathbb{N} : |CS| < n
+	\exists n \in \mathbb{N} |CS| < n \mathrm{.}
 	\]
-	Charging station position $CSP : CS \rightarrow RS$
+	Furthermore, they have a physical coordinates on a specific road segment
+	$CSP : CS \rightarrow RS$, where
 	\[
-		CSP(cs) = (ri_1, ri_2) \Rightarrow ri_1 = ri_2
+	CSP(cs) = (ri_1, ri_2) \Rightarrow ri_1 = ri_2 \mathrm{.}
 	\]
 	\todo{Map charging station to regions.}
-		
-	\subsection{Power batteries}
-	\label{power_batteries}
 	
-	Power battery identifiers $PB$	
+	\subsection{Energy storages}
+	\label{energy_storages}
+	Energy storages can store and release energy at given times.
+	They are defined by an identifier $ES$, where 
 	\[
-		\exists n \in \mathbb{N} : |PB| < n
+	\exists n \in \mathbb{N} |ES| < n \mathrm{.}
 	\]
-	Power battery capacity $PBC$
+	Here, energy storages are mapped to a specific region, e.g. determining their currently mapped voltage net.
+	
+	They have a fixed capacity $ESC$, which defines the total amount of energy they can store, where
+	\[	
+	ESC : ES \rightarrow \mathbb{R}_0^+ \mathrm{.}
+	\]
+	When $cc$ defines the current capacity of a energy storage, their individual state $ESS : ES \rightarrow \mathbb{R}_0^+$ is then
+	
 	\[
-		PBC : PB \rightarrow \mathbb{R}^+
+	ESS(es) \in \{cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq ESC(es)\} \mathrm{.}
 	\]
-	Power battery state $PBS : PB \rightarrow \mathbb{R}_0^+$ (current capacity)
-	\[
-		PBS(pb) \in \{ cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq PBC(pb) \}
-	\]
+	
 	\todo{Use energy storages instead of power batteries (because they are more general).}
 	\\
 	\todo{Map power batteries to regions.}
 	
-	\subsection{Solar panels}
-	\label{solar_panels}
+	\subsection{Power generators}
+	\label{power_generators}
 	
-	Solar panel identifiers $SP$
+	Power generators represent a class of electric devices which produce load. For example, they can represent conventional energy sources such as fossil-fuel power stations as well as renewable energy sources such as solar panels or wind turbines. For producing energy they take a resource such as coal, gas or sunlight or wind as input. Based on the input, i.e. resource employed, they produce an according output, i.e. positive load and emissions. 
+	
+	They are defined by an identifier $PG$, where 
 	\[
-		\exists n \in \mathbb{N} : |SP| < n
+	\exists n \in \mathbb{N} |PG| < n \mathrm{.}
 	\]
-	Solar panel power scale $SPS$ 
+	Power generators are mapped to specific region, e.g. determining their currently mapped voltage net.
+	Concerning environmental factors, power generator emissions $PGE$ define the total emissions which occur during power production in a time instant.
 	\[
-		SPS : SP \rightarrow \mathbb{R}^+
+	PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
 	\]
-	Solar panel power $SPP$ 
-	\[
-		SPP : SP \times \mathbb{R}^+ \rightarrow \mathbb{R}^+
+	
+	Power production is based on their individual power efficiency $SPS$, which defines the total amount of energy they can produce as an output, given a specific resource they utilize.
+	\[	
+	PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
 	\]
+%	
+%	Solar panel identifiers $SP$
+%	\[
+%		\exists n \in \mathbb{N} : |SP| < n
+%	\]
+%	Solar panel power scale $SPS$ 
+%	\[
+%		SPS : SP \rightarrow \mathbb{R}^+
+%	\]
+%	Solar panel power $SPP$ 
+%	\[
+%		SPP : SP \times \mathbb{R}^+ \rightarrow \mathbb{R}^+
+%	\]
+%	
+	
 	\todo{Use power generators instead of solar panels (because they are more general). Then we have to model the emissions (CO2, noise, etc.) also! Solar panels do not cause any emissions (only during production and maintenance).}
 	\\
 	\todo{Map power generators to regions.}
 	
 	\subsection{Static (i.e.\ non-controllable) loads}
 	\label{static_loads}
-	
-	Static load identifiers $SL$ \todo{Represent non-controllable energy production and consumption. For example, activities such as cooking or watching television are non-controllable in our model. In general, the loads can be selected according to the use case.}
+	\todo{Represent non-controllable energy production and consumption. For example, activities such as cooking or watching television are non-controllable in our model. In general, the loads can be selected according to the use case.}
+	Static loads represent an aggregation of devices within the power system with non-controllable loads, i.e. energy production or consumption. 
+	They are defined by an identifier $SL$, where 
 	\[
-		\exists n \in \mathbb{N} : |SL| < n
+	\exists n \in \mathbb{N} |SL| < n \mathrm{.}
 	\]
-	Static load profile $SLP$ (active/reactive power)
+		
+	They abstract from details regarding specific behavior of specific electric devices.
+	For example, static loads can represent an aggregation of activities with non-controllable loads with human interaction such as cooking or watching television. Based on their selected profile for the given use case, static loads exert different behavior.
+	Hence, a given static load profile $SLP$ describes the according load per time instant only, where
 	\[
-		SLP : SL \times \mathbb{R}_0^+ \rightarrow \mathbb{R} \times \mathbb{R}
+	SLP : SL \times \mathbb{R}_0^+ \rightarrow \mathbb{R} \times \mathbb{R} \mathrm{.}
 	\]
+	Here, static loads are mapped to a specific region, e.g. determining their currently mapped voltage net.
 	\todo{Map static loads to regions.}
 	
 	\subsection{Contraints}
