@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.8.7)  17 MAY 2016 13:57
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.8.7)  17 MAY 2016 14:59
 entering extended mode
 **main.tex
-("C:\xtream2\papers\WorkingDoc - Copy\main.tex"
+(C:\xtream2\papers\ITSC-2016\main.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -344,7 +344,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip47
 )
-("C:\xtream2\papers\WorkingDoc - Copy\main.aux")
+(C:\xtream2\papers\ITSC-2016\main.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
 LaTeX Font Info:    ... okay on input line 11.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
@@ -389,29 +389,29 @@ LaTeX Info: Redefining \ref on input line 11.
 LaTeX Info: Redefining \pageref on input line 11.
 LaTeX Info: Redefining \nameref on input line 11.
 
-("C:\xtream2\papers\WorkingDoc - Copy\main.out")
-("C:\xtream2\papers\WorkingDoc - Copy\main.out")
+(C:\xtream2\papers\ITSC-2016\main.out) (C:\xtream2\papers\ITSC-2016\main.out)
 \@outlinefile=\write3
- [1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+[1{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}
 
 
 ] [2]
 
-LaTeX Warning: Reference `illustration' on page 3 undefined on input line 135.
+LaTeX Warning: Reference `illustration' on page 3 undefined on input line 161.
 
 
-LaTeX Warning: Reference `modalities' on page 3 undefined on input line 144.
+LaTeX Warning: Reference `passengers' on page 3 undefined on input line 170.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 150.
+LaTeX Font Info:    Try loading font information for U+msa on input line 176.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 150.
+LaTeX Font Info:    Try loading font information for U+msb on input line 176.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [3] [4]
-("C:\xtream2\papers\WorkingDoc - Copy\main.bbl" [5])
+(C:\xtream2\papers\ITSC-2016\main.bbl [5])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -423,27 +423,27 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 431.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 470.
 [6
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 431.
- ("C:\xtream2\papers\WorkingDoc - Copy\main.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 431.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 431.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 470.
+ (C:\xtream2\papers\ITSC-2016\main.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 470.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 470.
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7B27C8AC222B6C86ADC0996FD67AEACC;1395.
+(rerunfilecheck)             Checksum: 6ADAD69E5BE16CBC16A8204B43431D9C;1336.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 431.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 470.
  ) 
 Here is how much of TeX's memory you used:
- 6781 strings out of 493921
- 102669 string characters out of 3144871
- 193692 words of memory out of 3000000
- 9975 multiletter control sequences out of 15000+200000
+ 6779 strings out of 493921
+ 102527 string characters out of 3144871
+ 192682 words of memory out of 3000000
+ 9974 multiletter control sequences out of 15000+200000
  36949 words of font info for 72 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  29i,8n,28p,931b,458s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -458,9 +458,9 @@ MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb><C:/Program Files (x8
 .9/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
 ype1/urw/times/utmr8a.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/urw/ti
 mes/utmri8a.pfb>
-Output written on main.pdf (6 pages, 159930 bytes).
+Output written on main.pdf (6 pages, 160196 bytes).
 PDF statistics:
- 237 PDF objects out of 1000 (max. 8388607)
- 48 named destinations out of 1000 (max. 500000)
- 185 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 233 PDF objects out of 1000 (max. 8388607)
+ 47 named destinations out of 1000 (max. 500000)
+ 177 words of extra memory for PDF output out of 10000 (max. 10000000)
 
