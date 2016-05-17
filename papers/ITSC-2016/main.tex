@@ -10,7 +10,7 @@
 
 \begin{document}
 	
-	\title{A model for multi-objective optimal multi-modal passenger transport and energy flow control}
+	\title{A model for multi-objective optimal passenger transport and energy flow control}
 	
 	\author{
 		\IEEEauthorblockN{Dominik Ascher}
@@ -46,24 +46,30 @@
 	\end{abstract}
 	
 	\section{Introduction}
+	\todo{Sustainability as motivation for EV and RES, but these alsolutely require strict sustainable or elaborate operation strategies to balance}. 
+	\todo{Smartness even needed? More line capacity.}. 
 	
 	Guaranteeing sustainability and minimizing negative environmental impacts are crucial challenges for future power and transportation systems. Widespread adoption of electric vehicles (EVs) as well as high penetration of renewable energy sources (RES) necessitate substantial changes within these systems. Here, within the power systems, intermittent power outputs require elaborate load balancing strategies while increasing adoption of autonomous electric vehicles requires addressing changing mobility demands in the transportation system. To comprehensively address constraints, objectives and design alternatives of both transportation and power systems, sustainable and integrated planning, operation and control strategies have to be established within integrated transportation and power systems.
+	
+	\todo{Vehicle-to-grid as one of major concepts adressing vehicle to grid effects and strategies of operation}. 
 	
 	According planning, operation and control strategies are frequently addressed within the concept of vehicle-to-grid (V2G). V2G describes a concept, where energy is released from EV batteries to the power system in times of increased power demand.  By facilitating interaction between power system and EVs, V2G possesses the potential to significantly reduce the amount of excess renewable energy produced within the power system \cite{richardson2013electric}. More generally, significant advantages as well as disadvantages can be argued for widespread V2G adoption. Here, both environmental and economic benefits have been shown in the past \cite{faria2012sustainability, richardson2013electric, mwasilu2014electric}. Furthermore, key benefits of V2G include reduction of emissions, increased efficiency as well as stability and reliability of the power system \cite{yilmaz2013review}.
 	
 	On the contrary, Mwasilu et al.~\cite{mwasilu2014electric} argue that for V2G adoption in a smart grid context central technological issues have to be addressed first such as coping with communication delays, establishing routing protocols and cyber security. Adding to that, the authors argue that frequent charging and discharging cycles causing rapid battery degradation for EV batteries as well as low penetration of electric vehicles with V2G functionality hinder more widespread V2G adoption.
 	
+	\todo{Potential of EV to balance RES in power system.}. 
+	
 	Nevertheless, previous work on plug-in electric vehicles (PEVs) has shown their ability to contribute to balancing the fluctuation of intermittent renewable energy sources \cite{dallinger2012grid}. Currently, V2G represents a supplementary strategy to address situations in the power system with increased power demand. Currently, available intermittent renewable energy sources have to be supplemented with conventional energy sources as well as energy storages within the power system. To achieve a continuous balance between energy supply and demands within power systems, prevalent control schemes rely on automatic control schemes which are supervised by human operators. Here, according control schemes are subject to challenges from increasing levels of fluctuating RES \cite{heussen2012unified}.
 	
-	Given these current and future challenges and the prospected impact of RES and EVs on such systems, effective integrated control strategies to handle future power and mobility demands still have a long way to go and are subject to ongoing research.
+	\todo{Integrated control strategies considering demands of transportation as well as power systems have to be established}. 
 	
-	\todo{Sustainability as motivation}
+	\todo{Multi-objective optimal control}
 	
-	\todo{Multi-objective optimal control?}
-	
+	Given these current and future challenges and the prospected impact of RES and EVs on such systems, effective integrated control strategies to handle future power and mobility demands still have a long way to go and are subject to ongoing research. Particular demands are constituted by the individual components of power and transportation systems which are subject to a diverse number of objectives and constraints. Hence, to satisfy demands within integrated transportation and power systems and guarantee sustainability elaborate multi-objective optimal control strategies for according integrated systems have to be established.
+		
 	\subsubsection*{Outline}
 	
-	The remainder of the article is structured as follows: Section~\ref{related_work} summarizes related work in the field. Section~\ref{proposed_work} summarizes the contributions of this article. Section~\ref{proposed_model} describes the proposed modeling technique. Section~\ref{discussion} discusses the proposed technique with respect to various quality criteria. Finally, Section~\ref{conclusion} draws a conclusion from our current state of work.
+	The remainder of the article is structured as follows: Section~\ref{related_work} summarizes related work in the field. Section~\ref{proposed_work} summarizes the contributions of this article. Section~\ref{proposed_model} describes the proposed modeling technique. Based on the proposed modeling technique and introduced model, Section~\ref{case} visits a case study which introduces multiple vehicle-to-grid scenarios. Section~\ref{discussion} discusses the proposed technique with respect to various quality criteria. Finally, Section~\ref{conclusion} draws a conclusion from our current state of work.
 	
 	\section{Related work}
 	\label{related_work}
@@ -72,6 +78,8 @@
 	
 	\subsection{Approaches}
 	\label{approaches}
+	
+	\todo{Charge scheduling approaches for EV, focus on power systems, less focus on routes}
 		
 	Previous studies have shown that, given a high penetration of EVs, uncontrolled charging can impose increased peak loads within the distribution network \cite{lopes2009identifying}. Intelligent scheduling methods are widely discussed as key approaches to integrate electric vehicles into the power grid \cite{yang2015computational}. According approaches often focus on minimizing single or multiple objectives within given power system models, while restricting valid behavior in terms of a set of constraints. For instance, typical objectives are minimizing cost (or maximizing welfare), power losses, emissions, power deviations or optimizing battery performance of EVs within power systems \cite{yang2015computational}. Here, the power systems are consisted of a number of electric devices such as conventional or renewable energy sources, energy consumers as well as electric infrastructure.
 	
@@ -83,15 +91,17 @@
 	
 	Here, approaches often restrict the impact of electric vehicles to decisions on charging or discharging their batteries at charging stations. However, in subsequence, individual EV objectives describing routing preferences such as shortest traveling time or energy-efficiency for EVs cannot be sufficiently taken into account. Instead, emphasis is put on the power system side, while the transportation system including traffic participants isn't represented microscopically. 
 	
+	\todo{Vehicle routing approaches for EV, focus on transportation systems and focus on routes, less focus on power system implications}
+	
 	Another highly relevant direction for efficiently integrating electric vehicles into the power grid and reduce negative impacts is are approaches utilizing Vehicle Routing Problems (VRPs). Methods for vehicle routing typically focus on optimizing route selection for single or multiple traffic participants towards single or multiple objectives and a given set of constraints. Addressing objectives of energy-efficiency in terms of routing problems, Eco-Routing approaches target energy-efficient route selection. In contrast, Eco-Driving approaches target energy-efficient intermediate driving behavior ~\cite{ericsson2006optimizing}.
 	
 	Felipe et al.~\cite{felipe2014heuristic} propose multiple heuristics for routing electric vehicles which consider different partial recharge strategies and recharge technologies while traveling along routes. However, approaches does not take the effects of recharging within the power system into account for general cost evaluation. 
 	
+	\todo{Integration of these directions?}
+	
 	Integrating both scheduling and routing approaches for EV, Barco et al.~\cite{barco2013optimal} present an approach for minimizing operation cost for battery electric vehicle (BEV) fleets. While the authors propose a methodology which focuses on optimal routing and scheduling of charge for EV fleets, the approach does not consider effects on the power system when making routing and charging decisions in EVs.
 
 	\todo{Multi-objective optimal control?}
-	
-	\todo{Subsubsections?}
 	
 	\subsection{Problems}
 	\label{problems}
@@ -100,38 +110,54 @@
 	
 	\todo{Multi-objective optimal control?}
 	
-	\section{Proposed work}
+	\section{Proposed approach}
 	\label{proposed_work}
 	
 	In the following we first describe the theoretical backgrounds of our work in Section~\ref{backgrounds} before summarizing the contributions of this article in Section~\ref{contributions}
 	
-	\subsection{Backgrounds}
+	\subsection{Background}
 	\label{backgrounds}
 	
+	 \todo{Background revisits previous work, i.e. applying software engineering techniques to smart grids, early estimation of multi-objective traffic flows, integrated transportation and power modeling}. 
+	 
+	 \todo{Existing, previously established systems modeling technique.}. 
+
+ \todo{Existing, previously established model, but not sufficiently detailed}. 
+
+ \todo{Existing, previously established technique for evaluating multiple scenarios, but focus on technique rather than results}. 
+ 
 	In \cite{Hackenberg2012} we presented a model of the electric power system suitable for large-scale computation. The model divides the power system into regions and subregions. In each time step for each region the power balance is calculated as the sum of all subregion power balances.
 	
 	Then, in \cite{ascher2014early} we presented a model that captures the mobility demands of individual vehicles within transportation systems. For this, the technique employs a representation which formulates multi-objective traffic flows as optimal control problems. Furthermore, the transportation infrastructure is represented as directed graph, where the edges and the distances traveled on edges represent the positions of electric vehicles.
 	
-	Finally, in \cite{ascher2015integrated} we presented a component-based model which allows one to express static interaction (e.g. between vehicle and controller) as well as dynamic interaction between components (e.g. vehicle and charging station). Here, the presented modeling approach allows one to microscopically model power systems based on individual electric devices and transportation systems based on individual cars in terms of components. We then proposed a integrated transportation and power system model, which allows to capture the respective demands of both transportation and power systems.
+	Finally, in \cite{ascher2015integrated} we presented a component-based model which allows one to express static interaction (e.g. between vehicle and controller) as well as dynamic interaction between components (e.g. vehicle and charging station). Here, the presented modeling approach allows one to microscopically model power systems based on individual electric devices and transportation systems based on individual cars in terms of components. We then proposed an integrated transportation and power system model, which allows to capture the respective demands of both transportation and power systems microscopically.
 	
 	\subsection{Contributions}
 	\label{contributions}
 	
+	\todo{Formalization and detailed presentation of model: Integrated transportation and power system. Known from previous work.}.
+
+	
 	In this work, we extend our previous work and present a more extensive and detailed formulation of our model for integrated transportation and power systems. For this, we present and formally detail the individual components of our model.
 	
+	\todo{Introduce scope of model in terms of demands as concept in preparation for future work.}.
+	
 	Substantially, in our given model, transportation and power systems are subject to a set of different demands imposed on them. 
-	
 	Within the transportation system mobility demands are expressed by passengers, who impose (1)~position preferences including origin and destination of travel as well as (2)~time preferences, which include departure and arrival times. Currently, we restrict transportation modes to electric vehicles to satisfy the mobility demands of passengers.
-	
 	Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. To satisfy power demands, the power system employs power generators representing different renewable energy sources.
 	
-	\todo{Formalization (not done before).}
+	\todo{Computation: Case Study Example, varying renewable energy scenarios, different phases of renewable energy in the system}.
 	
-	\todo{Computation (i.e.\ some example)?}
-	
+	\todo{Effect of EVS on indivudal systems, stabilization of power system demands}.
+		
+	\todo{Discussion of model validity? Are we there yet?}.
+
 	\section{Proposed model}
 	\label{proposed_model}
 	
+	 \todo{New model picture: Components and connection their dependencies between power and transportation systems}
+	 
+	 
 	In the following we describe our model for integrated multi-objective optimal passenger transport and energy flow control. Our model is illustrated in Figure~\ref{illustration}. The transportation system is modeled using a directed graph, where the nodes represent intersections and the edges represent transport segments, which can be utilized by electric vehicles. In contrast, the power system is modeled using a tree, where the nodes represent regions and the edges represent a containment relationship.
 	
 %	\begin{figure}
@@ -141,7 +167,7 @@
 %		\label{illustration}
 %	\end{figure}
 	
-	Section~\ref{modalities} introduces a model of transport. Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{passengers} explains our passenger model. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{energy_storages} explains our model of energy storages. Section~\ref{power_generators} defines our model of power generators. Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
+	Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{passengers} explains our passenger model. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{energy_storages} explains our model of energy storages. Section~\ref{power_generators} defines our model of power generators. Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
 	
 	\todo{How to structure this section? E.g.\ static vs.\ dynamic aspects? Transportation vs.\ power system? Contraints, objectives, ...? States, actions, ...?}
 	
@@ -178,29 +204,31 @@
 	\[
 	WC : RSC \rightarrow \mathbb{R}^3 \mathrm{.}
 	\]
+	
  \todo{Do we really need that in the presentation? Can we simplify the model using world coordinates of road intersections only?}
+ 
 	Finally, the traffic infrastructure $TI$ can be described as a topology such that 
 	\[
 	TI = (RI, RS, RSL, RSD, WC) \mathrm{.}
 	\]
 	
-	\subsection{Passengers}
-	\label{passengers}
-	
-	Passenger identifiers $P$ (finite set)
-	\[
-	\exists n \in \mathbb{N} : |P| < n
-	\]
-	Passenger mobility demand $PMD$ (origin position, destination position, departure time, arrival time)
-	\[
-		PMD \subseteq RSC \times RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+
-	\]
-	Passenger state $PS$ (road segment coordinates, passenger mobility demand)
-	\[
-		PS : P \rightarrow RSC \times PMD
-	\]
-	\todo{What about passenger weight and size? Should we use those parameters? Do we need to integrate the bin-packing problem then? Is that necessary at the current stage?}
-	
+%	\subsection{Passengers}
+%	\label{passengers}
+%	
+%	Passenger identifiers $P$ (finite set)
+%	\[
+%	\exists n \in \mathbb{N} : |P| < n
+%	\]
+%	Passenger mobility demand $PMD$ (origin position, destination position, departure time, arrival time)
+%	\[
+%		PMD \subseteq RSC \times RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+
+%	\]
+%	Passenger state $PS$ (road segment coordinates, passenger mobility demand)
+%	\[
+%		PS : P \rightarrow RSC \times PMD
+%	\]
+%	\todo{What about passenger weight and size? Should we use those parameters? Do we need to integrate the bin-packing problem then? Is that necessary at the current stage?}
+%	
 	\subsection{Vehicles (i.e.\ electric vehicles)}
 	\label{vehicles}
 	
@@ -236,7 +264,9 @@
 %	\[
 %		VG : V \rightarrow \mathbb{R}^+
 %	\]
-	Vehicle state $VS : V \rightarrow RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+$ (road segment position, charge state) \todo{Integrate passenger assignment. Not all passengers have to be assigned. Unassigned passengers must use the pedestrian modality.}
+	Vehicle state $VS : V \rightarrow RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+$ (road segment position, charge state) 
+	
+	\todo{Integrate passenger assignment?}
 	\[
 		VS(v) \in \{ (\cdot, cs, ps) \in RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+ \mid
 	\]
@@ -412,18 +442,27 @@
 	\todo{What are the objectives in our model? Derivation from departure time, derivation from arrival time, derivation from departure road segment, derivation from arrival road segment, emissions, ...}
 	
 	\section{Case Study}
+	\label{case}
 	
 	\todo{Previous results shown in ICCVE-2015.}
+	
+	\todo{Demonstration of results, given current model}
 	
 	\section{Discussion}
 	\label{discussion}
 	
 	\todo{Write discussion. What does the model capture? How well does the model capture this information? What does the model not capture? When do we need the information that is not captured? When don't we need the information that is not captured?}
 	
+	\todo{Multi-modal passenger transport, focus on wider means of transportation}.
+		
+	
 	\section{Conclusion}
 	\label{conclusion}
 	
 	\todo{Write conclusion. How far are we in modeling the problem? When can we use the model for real-world scenarios? How far are we in solving the problem?}
+	
+	\todo{Effect of EVS on indivudal systems, stabilization of power system demands}.
+		
 	
 	\bibliographystyle{bst/IEEEtran}
 	\bibliography{references}
