@@ -1,18 +1,5 @@
-\section{Proposed approach}
-\label{proposed_work}
-
-In the following we first describe the theoretical backgrounds of our work in Section~\ref{backgrounds} before summarizing the contributions of this article in Section~\ref{contributions}
-
-\subsection{Background}
+\subsection{Authors' background}
 \label{backgrounds}
-
-%\todo{Background revisits previous work, i.e. applying software engineering techniques to smart grids, early estimation of multi-objective traffic flows, integrated transportation and power modeling}. 
-
-% \todo{Existing, previously established systems modeling technique.}. 
-
-%\todo{Existing, previously established model, but not sufficiently detailed}. 
-
-%\todo{Existing, previously established technique for evaluating multiple scenarios, but focus on technique rather than results}. 
 
 In \cite{Hackenberg2012} we presented a model of the electric power system suitable for large-scale computation. The model divides the power system into regions and subregions. In each time step for each region the power balance is calculated as the sum of all subregion power balances.
 
@@ -20,21 +7,11 @@ Then, in \cite{ascher2014early} we presented a model that captures the mobility 
 
 Finally, in \cite{ascher2015integrated} we presented a component-based model which allows one to express static interaction (e.g. between vehicle and controller) as well as dynamic interaction between components (e.g. vehicle and charging station). Here, the presented modeling approach allows one to microscopically model power systems based on individual electric devices and transportation systems based on individual cars in terms of components. We then proposed an integrated transportation and power system model, which allows to capture the respective demands of both transportation and power systems microscopically.
 
-\subsection{Contributions}
+\subsection{Claimed contributions}
 \label{contributions}
 
 In this work, we extend our previous work and formally describe our model for integrated transportation and power systems. For this, we present and detail the individual components of our model within transportation and power systems. Here, we focus on describing the microscopic behavior of individual components of the transportation and power system, i.e. individual cars and electric devices.
 
-%\todo{Introduce scope of model in terms of demands as concept in preparation for future work.}.
-
-Substantially, in our given model, transportation and power systems are subject to a set of different demands imposed on them. 
-Within the transportation system mobility demands are expressed by passengers, who impose (1)~position preferences including origin and destination of travel as well as (2)~time preferences, which include departure and arrival times. Currently, we restrict the considered transportation modes within our model to electric vehicles.
-Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. To satisfy power demands, the power system employs power generators representing different renewable energy sources.
+Substantially, in our given model, transportation and power systems are subject to a set of different demands imposed on them. Within the transportation system mobility demands are expressed by passengers, who impose (1)~position preferences including origin and destination of travel as well as (2)~time preferences, which include departure and arrival times. Currently, we restrict the considered transportation modes within our model to electric vehicles. Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. To satisfy power demands, the power system employs power generators representing different renewable energy sources.
 
 We then demonstrate our approach and employed model in a case study, where we show various scenarios for commuter traffic, which vary in terms of their traffic network structure, voltage net structure as well as employed objective weights through a number of different configurations.
-
-%\todo{Computation: Case Study Example, varying renewable energy scenarios, different phases of renewable energy in the system}.
-
-%\todo{Effect of EVS on indivudal systems, stabilization of power system demands}.
-
-%\todo{Discussion of model validity? Are we there yet?}.
