@@ -346,4 +346,9 @@ The objective function in our model is made up from multiple cost factors, which
 	\label{figure:objectives}
 \end{table}
 
-The first cost factor evaluates the $C$'s state of charge with respect to the $C$'s maximum state of charge. The second cost factor aggregates the time needed to reach its specified destination position. The third cost factor measures the energy consumption in relation to the maximum energy consumption. Then, the cost factors are aggregated and weighted using the weights of the individual cost factors.
+Costs are aggregated hierarchically within the given component structure by the root component from each contained sub component. Our methodology allows for each component to implement it's own set of cost functions and constraints. 
+
+\todo{Move into the model or the demonstration?}
+
+The objective function for individual traffic participants in our model is made up from multiple cost factors, which we describe subsequently:
+
