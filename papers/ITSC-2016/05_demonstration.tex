@@ -27,7 +27,16 @@ TODO
 \subsection{Exemplary system designs}
 \label{examples}
 
-In this case study we propose a simple scenario for commuter traffic where ten traffic participants travel from home to work locations. In each time step traffic participants actions consist in selecting driving speed, time of charging, time of departure as well as route selection when driving towards their respective destination positions. The selected traffic infrastructure is consisted of a traffic network of 20 by 5 kilometers with two possible origins and two possible destinations of travel for individual traffic participants. 
+To demonstrate the proposed approach and underlying model, we propose several scenarios for commuter traffic. In each scenario, in order to reach their location of work, ten traffic participants travel between home to work locations. Travel is subject to specified time windows, which are imposed on arrival and leaving times at the specific locations, i.e. home and work. The demonstration then evaluates the behavior of typical work commute on transportation and power systems within small scale scenarios, which vary the structure of the underlying infrastructure as well as the employed objectives and constraints.
+
+Subsequently, we evaluate our systematic approach using different traffic scenarios with different configurations varying in their respective parameters and structure of cost functions. Note that at this point we do not consider varying constraints. 
+
+
+%Hence, in each time step traffic participants actions consist in selecting driving speed, time of charging, time of departure as well as route selection when driving towards their respective destination positions. 
+
+For all scenarios in general, we employ a traffic infrastructure which is consisted of a traffic network of 20 by 5 kilometers with two possible origins and two possible destinations of travel for individual traffic participants. At its most basic level, the traffic infrastructure is consisted of a basic structure, where two origin-destination pairs are connected. We then introduce an extended traffic infrastructure, which features additional pathways, which can possibly allow for more energy-efficient or less congested routes between respective origin and destinations.
+
+Furthermore, we employ a electric network structure, featuring a single voltage net for all consumers and producers. Then, we introduce another structure of the electric network, which distinguishes two voltage nets for each home and work consumers and producers.
 
 \begin{figure}
 	\centering
@@ -36,20 +45,19 @@ In this case study we propose a simple scenario for commuter traffic where ten t
 	\label{profiles}
 \end{figure}
 
-Subsequently, we evaluate traffic scenarios in terms of different configurations varying in their respective parameters. 
+We vary scenario configuration with regard to the objective function, voltage net and traffic network structure. Subsequently we describe the according measures of variation.
 
-\subsubsection{Configuration 1: Objective function structure}
+\subsubsection{Objective function structure}
 
-We consider three different scenarios when varying objective weight configuration: (1) focus on achieving energy-efficiency with regard to driving and power system balance, (2) focus on achieving shortest traveling time while driving as well as (3) an intermediate configuration of both energy-efficiency and shortest traveling time.
+The objective function structure concerns the weighting and structure of individually employed objective functions. In the presented example scenarios, we vary cost functions with regard to vehicle energy-efficiency and vehicle shortest-traveling time objectives and the respective weighting of these cost functions. 
 
-\subsubsection{Configuration 2: Voltage net structure}
+\subsubsection{Voltage net structure}
+Voltage net structure is expressed by the underlying tree-like overall electric net infrastructure. More specifically, it concerns the number of employed low voltage nets for a given model excerpt. In the presented example scenarios, we alternate between assigning one or multiple distinct voltage nets to a group of consumers or producers based on their locality.
 
-We consider a changing voltage net structure within two configurations: (1) single voltage nets aggregating both the consumers and producers of home and workplaces as well as (2) allocation of two distinct voltage nets for the consumers and producers of home and workplaces. 
+\subsubsection{Traffic network structure}
+Traffic network structure concerns the number of available intersections as well as their connected segments making up the traffic infrastructure. In general, the traffic infrastructure can be changed by adding additional interactions or segments, allowing for a wider variety of resulting routes to be chosen by the traffic participants, e.g. enabling more energy-efficient or shorter routes.
 
-\subsubsection{Configuration 3: Traffic network structure}
-
-Finally, we evaluate scenarios with regard to variation of the structure of the employed traffic network. Here, we vary the number of possible paths for traffic participants to travel from home to workplace destinations and vice versa.  
-
+\subsubsection{Results}
 The results are pictured in Figure \ref{figure:examples}. 
 
 \begin{table*}[b]
