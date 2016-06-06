@@ -1,0 +1,322 @@
+\section{Proposed model}
+\label{proposed_model}
+
+%\todo{New model picture: Components and connection their dependencies between power and transportation systems}
+
+
+In the following we describe our model for integrated multi-objective optimal passenger transport and energy flow control. 
+%Our model is illustrated in Figure~\ref{illustration}. 
+The transportation system is modeled using a directed graph, where the nodes represent intersections and the edges represent transport segments, which can be utilized by electric vehicles. In contrast, the power system is modeled using a tree, where the nodes represent regions and the edges represent a containment relationship.
+
+\todo{Replace figure}.
+
+Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{energy_storages} explains our model of energy storages. Section~\ref{power_generators} defines our model of power generators. Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
+
+%\todo{How to structure this section? E.g.\ static vs.\ dynamic aspects? Transportation vs.\ power system? Contraints, objectives, ...? States, actions, ...?}
+
+\subsection{Transport infrastructures}
+\label{transport}
+Road intersections are defined by an identifier $RI$ so that
+\[
+\exists n \in \mathbb{N} : |RI| < n \mathrm{.}
+\]
+Here, intersections are made up of a given set of connected road segments $RS$, where
+\[
+RS \subseteq RI \times RI \mathrm{.}
+\]
+
+The road segment capacity describes the number of lanes of a road segment such that
+\[
+RSL : RS \rightarrow \mathbb{N} \mathrm{,}
+\]
+while the road segment distance is defined as 
+
+\[
+RSD : RS \rightarrow \mathbb{R}^+ \mathrm{,}
+\]
+
+where road segment distance can be equal to zero when considering self-segments such that
+\[
+(ri, ri) \in RS \Rightarrow  RSD(ri, ri) = 0 \mathrm{.}
+\]
+Furthermore, road segments are defined by relative coordinates $RSC \subseteq RS \times \mathbb{R}^+ \mathrm{,}$ where, based on the segment distance
+\[
+RSC = \{(\cdot, rd) \in RS \times \mathbb{R} \mid 0 \leq rd \leq RSD(s) \} \mathrm{.}
+\]
+Then, world coordinates $WC$ describe the general geography of road segment coordinates $RSC$, defining absolute latitude, longitude as well as elevation such that
+\[
+WC : RSC \rightarrow \mathbb{R}^3 \mathrm{.}
+\]
+
+%\todo{Do we really need that in the presentation? Can we simplify the model using world coordinates of road intersections only?}
+
+Finally, the traffic infrastructure $TI$ can be described as a topology such that 
+\[
+TI = (RI, RS, RSL, RSD, WC) \mathrm{.}
+\]
+
+%	\subsection{Passengers}
+%	\label{passengers}
+%	
+%	Passenger identifiers $P$ (finite set)
+%	\[
+%	\exists n \in \mathbb{N} : |P| < n
+%	\]
+%	Passenger mobility demand $PMD$ (origin position, destination position, departure time, arrival time)
+%	\[
+%		PMD \subseteq RSC \times RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+
+%	\]
+%	Passenger state $PS$ (road segment coordinates, passenger mobility demand)
+%	\[
+%		PS : P \rightarrow RSC \times PMD
+%	\]
+%	\todo{What about passenger weight and size? Should we use those parameters? Do we need to integrate the bin-packing problem then? Is that necessary at the current stage?}
+%	
+\subsection{Vehicles (i.e.\ electric vehicles)}
+\label{vehicles}
+\noindent The following constants apply for electric vehicles: 
+
+Vehicles $V$ (finite set)
+\[
+\exists n \in \mathbb{N} : |V| < n
+\]
+The vehicle length $VL$ describes the measured length of an individual vehicle. 
+\[
+VL : V \rightarrow \mathbb{R}^+
+\]
+Vehicle energy capacity $VC$ describes the capacity or size of a vehicle battery.
+\[
+VC : V \rightarrow \mathbb{R}^+
+\]
+Vehicle weight $VW$ describes the measured weight of an individual vehicle.
+\[
+VW : V \rightarrow \mathbb{R}^+
+\]
+The vehicle energy-efficiency $VE$ describes a constant measuring a vehicles ability for power conversion.
+\[
+VE : V \rightarrow \mathbb{R}^+
+\]
+The Vehicle charge rate $VR$ refers to a vehicle's performance when charging or discharging at charging stations.
+\[
+VR : V \rightarrow \mathbb{R}^+
+\]
+%	Vehicle goods capacity $VG$
+%	\[
+%		VG : V \rightarrow \mathbb{R}^+
+%	\]
+The vehicle state $VS : V \rightarrow RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+$ is then made up of current vehicle road segment position as well as the charge state. 
+
+\[
+VS(v) \in \{ (\cdot, cs, ps) \in RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+ \mid
+\]
+\[
+(0 \leq cs \leq VC(v)) \wedge (0 \leq ps \leq VP(v)) \}
+\]
+Vehicles states $\mathbb{VS}$ 
+\[
+\mathbb{VS} = \{VS : V \rightarrow RSC \times \mathbb{R}_0^+ \mid VS \text{ is vehicle state}\}
+\]
+%\todo{Do we really need all these vehicle parameters? Maybe we can reduce the model to a few parameters only? What do we loose then?}
+
+\subsection{Collisions}
+\label{collisions}
+
+Overlapping vehicle pairs $OVP : \mathbb{VS} \rightarrow V \times V$
+\[
+OVP(VS) = \{(v_1, v_2) \in V \times V \mid
+\]
+\[
+((rs_1,rd_1),\cdot) \in VS(v_1), ((rs_2,rd_2),\cdot) \in VS(v_2) :
+\]
+\[
+rs_1 = rs_2 \wedge (|rd_1 - rd_2| < VL(v_1) / 2
+\]
+\[
+\vee
+\]
+\[
+|rd_1 - rd_2| < VL(v_2) / 2)\}
+\]
+Overlapping vehicle sets $OVS : \mathbb{VS} \times V \rightarrow \mathcal{P}(V)$
+\[
+OVS(VS,v) = \{v' \in V \mid (v, v') \in OVP(VS)\}
+\]
+Collision property $CV : \mathbb{VS} \rightarrow \mathbb{B}$
+\[
+CV(VS) \Leftrightarrow \exists v \in V :
+\]
+\[
+|OVS(VS, v)| > RSL(rs) \text{ with } ((rs,\cdot),\cdot) = VS(v)
+\]
+
+\subsection{Power infrastructures}
+\label{power}
+
+Power regions represent an aggregated representation of a set of voltage nets. For example, they can define a region based on specific low, medium or high voltage nets in a given area. However, they abstract from a detailed representation of the underlying physical net structure.  
+
+Hence, the identifier of a power region $PR$ is defined as
+\[
+\exists n \in \mathbb{N} : |PR| < n \mathrm{.}
+\]
+Power regions aggregate the loads of their subregions and connected electric devices. In return, they provide the aggregated load to their upper region.
+Hence, the acyclic parent relationship with their distinct roots $PRP$ is defined by 
+\[
+PRP : PR \to PR \mathrm{.}
+\]
+Power regions are subject to given capacity $PRC$, which describes the total load a power region can aggregate.
+The power region capacity $PRC$ is then
+\[
+PRC : PR \rightarrow \mathbb{R}^+ \mathrm{.}
+\]
+%\todo{The maximum energy flow through this region.}
+
+The current energy balance of a power region
+$PRS : PR \rightarrow \mathbb{R}_0^+$ with $cc$ describing the current capacity of an according power region is then
+\[
+PRS(pr) \in \{ cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq PRC(pr) \} \mathrm{.}
+\]
+
+%\todo{Maybe we should introduce electric components here already. Then, electric components can be regions or end-points. Regions are the net identifiers introduced above. End-points are the concepts introduced in the following.}
+
+\subsection{Charging stations}
+\label{charging_stations}
+Charging stations are electric devices acting as consumers or producers within the power system. Consumption or production is based on connection to electric vehicles.
+They are defined by a identifier $CS$, where
+\[
+\exists n \in \mathbb{N} |CS| < n \mathrm{.}
+\]
+Furthermore, they have a physical coordinates on a specific road segment
+$CSP : CS \rightarrow RS$, where
+\[
+CSP(cs) = (ri_1, ri_2) \Rightarrow ri_1 = ri_2 \mathrm{.}
+\]
+%	\todo{Map charging station to regions.}
+
+\subsection{Energy storages}
+\label{energy_storages}
+Energy storages can store and release energy at given times.
+They are defined by an identifier $ES$, where 
+\[
+\exists n \in \mathbb{N} |ES| < n \mathrm{.}
+\]
+Here, energy storages are mapped to a specific region, e.g. determining their currently mapped voltage net.
+
+They have a fixed capacity $ESC$, which defines the total amount of energy they can store, where
+\[	
+ESC : ES \rightarrow \mathbb{R}_0^+ \mathrm{.}
+\]
+When $cc$ defines the current capacity of a energy storage, their individual state $ESS : ES \rightarrow \mathbb{R}_0^+$ is then
+
+\[
+ESS(es) \in \{cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq ESC(es)\} \mathrm{.}
+\]
+
+%	\todo{Use energy storages instead of power batteries (because they are more general).}
+
+%	\todo{Map power batteries to regions.}
+
+\subsection{Power generators}
+\label{power_generators}
+
+Power generators represent a class of electric devices which produce load. For example, they can represent conventional energy sources such as fossil-fuel power stations as well as renewable energy sources such as solar panels or wind turbines. For producing energy they take a resource such as coal, gas or sunlight or wind as input. Based on the input, i.e. resource employed, they produce an according output, i.e. positive load and emissions. 
+
+They are defined by an identifier $PG$, where 
+\[
+\exists n \in \mathbb{N} |PG| < n \mathrm{.}
+\]
+Power generators are mapped to specific region, e.g. determining their currently mapped voltage net.
+Concerning environmental factors, power generator emissions $PGE$ define the total emissions which occur during power production in a time instant.
+\[
+PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
+\]
+
+Power production is based on their individual power efficiency $SPS$, which defines the total amount of energy they can produce as an output, given a specific resource they utilize.
+\[	
+PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
+\]
+%	
+%	Solar panel identifiers $SP$
+%	\[
+%		\exists n \in \mathbb{N} : |SP| < n
+%	\]
+%	Solar panel power scale $SPS$ 
+%	\[
+%		SPS : SP \rightarrow \mathbb{R}^+
+%	\]
+%	Solar panel power $SPP$ 
+%	\[
+%		SPP : SP \times \mathbb{R}^+ \rightarrow \mathbb{R}^+
+%	\]
+%	
+
+%\todo{Use power generators instead of solar panels (because they are more general). Then we have to model the emissions (CO2, noise, etc.) also! Solar panels do not cause any emissions (only during production and maintenance).}
+
+%\todo{Map power generators to regions.}
+
+\subsection{Static (i.e.\ non-controllable) loads}
+\label{static_loads}
+Static loads represent an aggregation of devices within the power system with non-controllable loads, i.e. energy production or consumption. 
+They are defined by an identifier $SL$, where 
+\[
+\exists n \in \mathbb{N} |SL| < n \mathrm{.}
+\]
+
+Static loads abstract from details regarding specific behavior of specific electric devices.
+For example, static loads can represent an aggregation of activities with non-controllable loads with human interaction such as cooking or watching television. Based on their selected profile for the given use case, static loads exert different load profiles. Here we consider static loads to be similar to standardized load profiles, which are often utilized by distribution grid operators for different areas of operation such as modeling the load behavior of households, workplaces or agricultural businesses.
+A given static load profile $SLP$ describes the according load per time instant only, where
+\[
+SLP : SL \times \mathbb{R}_0^+ \rightarrow \mathbb{R} \times \mathbb{R} \mathrm{.}
+\]
+Here, static loads are mapped to a specific region, e.g. determining their currently mapped voltage net.
+%\todo{Map static loads to regions.}
+
+\subsection{Constraints}
+
+%\todo{What are the constraints in our model? Vehicle collision, vehicle overloading, electric net capacity overloading, ...}
+
+\subsection{Objectives}
+
+%	\todo{What are the objective functions in our model? Derivation from departure time, derivation from arrival time, derivation from departure road segment, derivation from arrival road segment, emissions, ...}
+
+The objective function in our model is made up from multiple cost factors, which we describe subsequently:
+
+\begin{table}[h!]
+	\centering
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabularx}{\columnwidth}{|Y|Y|}
+		\hline
+		
+		\textbf{Objective} & \textbf{Behavior} \\
+		
+		\hline
+		
+		Energy-efficiency &
+		The energy-efficiency cost function measures a vehicle's current state of charge in relation to it's maximum state of charge. \\
+		
+		\hline
+		
+		Time &
+		The time cost function counts the number of steps for a vehicle to reach it's destination, when a driving decision has been made. \\
+		
+		\hline
+		
+		SoC &
+		Measures the current state of charge of a traffic participants battery. Increases when a traffic participants departure time nears. \\
+		
+		\hline
+		
+		Derivation from arrival time &
+		Measures the derivation from a traffic participants planned arrival time. \\
+		
+		\hline
+		
+		Derivation from destination &
+		Measures the derivation from the position of the destination road segment. \\
+		
+		\hline			
+	\end{tabularx}
+	\caption{Individual vehicle objectives and description.}
+	\label{figure:objectives}
+\end{table}
+
+The first cost factor evaluates the $C$'s state of charge with respect to the $C$'s maximum state of charge. The second cost factor aggregates the time needed to reach its specified destination position. The third cost factor measures the energy consumption in relation to the maximum energy consumption. Then, the cost factors are aggregated and weighted using the weights of the individual cost factors.
