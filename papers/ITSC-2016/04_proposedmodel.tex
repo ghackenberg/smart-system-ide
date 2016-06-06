@@ -1,124 +1,277 @@
-\section{Proposed model}
+\section{The \textbf{TransP-0} integrated design abstraction}
 \label{proposed_model}
 
-%\todo{New model picture: Components and connection their dependencies between power and transportation systems}
+The \textsc{TransP-0} design abstraction is intended to support both transportation and power system engineers during early project phases in formulating and evaluating different design options quickly. Therefore, transportation and power system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and a power respectively energy subsystem parameters as well as subsystem-specific and -spanning constraints and objectives.
 
+\begin{figure}[h!]
+	\includegraphics[width=\columnwidth]{./gfx/system_design.png}
+	\caption{\textsc{TransP-0} integrated design abstraction comprising various transportation subsystem and power subsystem parameters as well as subsystem-specific and -spanning constraints and objectives.}
+	\label{system_design}
+\end{figure}
 
-In the following we describe our model for integrated multi-objective optimal passenger transport and energy flow control. 
-%Our model is illustrated in Figure~\ref{illustration}. 
-The transportation system is modeled using a directed graph, where the nodes represent intersections and the edges represent transport segments, which can be utilized by electric vehicles. In contrast, the power system is modeled using a tree, where the nodes represent regions and the edges represent a containment relationship.
+In the following, we first describe the design abstraction for the transportation subsystem in Section~\ref{transport} and the power respectively energy subsystem in Section~\ref{energy_system}. Then, we explain the subsystem-specific and -spanning constraints in Section~\ref{constraints} as well as the objectives in Section~\ref{objectives}. 
 
-\todo{Replace figure}.
-
-Section~\ref{transport} describes our model of the transport infrastructure. Section~\ref{vehicles} highlights our vehicle model. Section~\ref{collisions} defines our collision criteria. Section~\ref{power} summarizes our model of the power infrastructure. Section~\ref{charging_stations} describes our model of charging stations. Section~\ref{energy_storages} explains our model of energy storages. Section~\ref{power_generators} defines our model of power generators. Finally, Section~\ref{static_loads} summarizes our model of static loads (i.e.\ non-controllable loads).
-
-%\todo{How to structure this section? E.g.\ static vs.\ dynamic aspects? Transportation vs.\ power system? Contraints, objectives, ...? States, actions, ...?}
-
-\subsection{Transport infrastructures}
+\subsection{Transportation subsystem}
 \label{transport}
-Road intersections are defined by an identifier $RI$ so that
-\[
-\exists n \in \mathbb{N} : |RI| < n \mathrm{.}
-\]
-Here, intersections are made up of a given set of connected road segments $RS$, where
-\[
-RS \subseteq RI \times RI \mathrm{.}
-\]
 
-The road segment capacity describes the number of lanes of a road segment such that
+The transportation subsystem $TS$ of the integrated design abstraction is modeled as a tuple
 \[
-RSL : RS \rightarrow \mathbb{N} \mathrm{,}
+	TS = (TSI, TSP) \textrm{,}
 \]
-while the road segment distance is defined as 
+where $TSI$ represents the transportation infrastructure (i.e.\ roads and their intersections) and $TSP$ represents the individual traffic participants (i.e.\ passenger cars and goods vehicles). In the following, we describe the the infrastructure design abstraction in Section~\ref{transport_infrastructure} before explaining the participant design abstraction in Section~\ref{participants}.
 
-\[
-RSD : RS \rightarrow \mathbb{R}^+ \mathrm{,}
-\]
+\subsubsection{Infrastructure}
+\label{transport_infrastructure}
 
-where road segment distance can be equal to zero when considering self-segments such that
+The transportation subsystem infrastructure $TSI$ of the transportation subsystem $TS$ is modeled as a tuple
 \[
-(ri, ri) \in RS \Rightarrow  RSD(ri, ri) = 0 \mathrm{.}
+	TSI = (RI, RS) \textrm{,}
 \]
-Furthermore, road segments are defined by relative coordinates $RSC \subseteq RS \times \mathbb{R}^+ \mathrm{,}$ where, based on the segment distance
-\[
-RSC = \{(\cdot, rd) \in RS \times \mathbb{R} \mid 0 \leq rd \leq RSD(s) \} \mathrm{.}
-\]
-Then, world coordinates $WC$ describe the general geography of road segment coordinates $RSC$, defining absolute latitude, longitude as well as elevation such that
-\[
-WC : RSC \rightarrow \mathbb{R}^3 \mathrm{.}
-\]
+where $RI$ represents road intersections and $RS$ represent road segments. Subsequently, we first describe the road intersections in Section~\ref{intersections} before explaining the road segments in Section~\ref{segments}.
 
-%\todo{Do we really need that in the presentation? Can we simplify the model using world coordinates of road intersections only?}
+\paragraph{Intersections}
+\label{intersections}
 
-Finally, the traffic infrastructure $TI$ can be described as a topology such that 
+The road intersections $RI$ of the transportation subsystem infrastructure $TSI$ are modeled - again - as a tuple
 \[
-TI = (RI, RS, RSL, RSD, WC) \mathrm{.}
+	RI = (RIL, RIC) \textrm{,}
 \]
+where $RIL$ represents a finite set of road intersection labels and $RIC$ represents a mapping from road intersection labels $RIL$ to geometric coordinates
+\[
+	RIC: RIL \rightarrow \mathbb{R}^3 \mathrm{.}
+\]
+Note that typically the coordinates are expressed in terms of latitude, longitude, and elevation. However, for simplicity in this work we use Cartesian coordinates instead. Consequently, distances can be computed more easily using the Euclidean metric. Moreover, transformations exist to switch between polar and Cartesian coordinates.
 
-%	\subsection{Passengers}
-%	\label{passengers}
-%	
-%	Passenger identifiers $P$ (finite set)
-%	\[
-%	\exists n \in \mathbb{N} : |P| < n
-%	\]
-%	Passenger mobility demand $PMD$ (origin position, destination position, departure time, arrival time)
-%	\[
-%		PMD \subseteq RSC \times RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+
-%	\]
-%	Passenger state $PS$ (road segment coordinates, passenger mobility demand)
-%	\[
-%		PS : P \rightarrow RSC \times PMD
-%	\]
-%	\todo{What about passenger weight and size? Should we use those parameters? Do we need to integrate the bin-packing problem then? Is that necessary at the current stage?}
-%	
-\subsection{Vehicles (i.e.\ electric vehicles)}
+\paragraph{Segments}
+\label{segments}
+
+In contrast, the road segments $RS$ of the transportation subsystem infrastructure $TSI$ are modeled as a five-tuple
+\[
+	RS = (RSL, RSS, RST, RSC, RSE) \textrm{,}
+\]
+where $RSL$ represents a finite set of road segment labels, $RSS$ and $RST$ represent mappings from road segment labels $RSL$ to their respective source and target road intersection labels $RIL$
+\[
+	RSS/RST: RSL \rightarrow RIL \textrm{,}
+\]
+$RSC$ represents a mapping from road segment labels $RSL$ to the number of lanes (i.e.\ the \textit{capacity} of the road segment)
+\[
+	RSC: RSL \rightarrow \mathbb{N} \textrm{,}
+\]
+and $RSE$ represents a mapping from road segment labels $RSL$ to their surface material (i.e.\ the \textit{efficiency} of the road segment)
+\[
+	RSE: RSL \rightarrow \mathbb{R}^+ \textrm{.}
+\]
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered such as \todo{...}.
+
+Furthermore, we derive the road segment distance $RSD$ as a mapping from road segment labels $RSL$ to distances
+\[
+	RSD: RSL \rightarrow \mathbb{R}_0^+
+\]
+and we use the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ to compute the road segment distance $RSD$ as
+\[
+	RSD(rsl) = E(RIC(RSS(rsl)), RIC(RST(rsl))) \textrm{.}
+\]
+Finally, we define road segment positions $RSP$ as tuples of road segment labels $RSL$ and traveled distances
+\[
+	RSP = \{(rsl, d) \in RSL \times \mathbb{R}_0^+ \mid d \leq RSD(rsl)\} \textrm{.}
+\]
+We use the road segment positions $RSP$ to locate traffic participants (i.e.\ vehicles) on the transportation subsystem infrastructure $TSI$ as explained in Section~\ref{participants}.
+
+\subsubsection{Participants}
+\label{participants}
+
+The transportation subsystem participants $TSP$ of the transportation subsystem $TS$ are modeled - again - as a tuple
+\[
+	TSP = (V, D) \textrm{,}
+\]
+where $V$ represents the vehicles and $D$ represents the demands. In the following, we first describe the vehicle design abstraction in Section~\ref{vehicles} before explaining the demand design abstraction in Section~\ref{demands}.
+
+\paragraph{Vehicles}
 \label{vehicles}
-\noindent The following constants apply for electric vehicles: 
 
-Vehicles $V$ (finite set)
+The vehicles $V$ of the transportation subsystem participants $TSP$ are modeled as seven-tuple
 \[
-\exists n \in \mathbb{N} : |V| < n
+	V = (VL, VS, VME, VP, VC, VEE, VSOC) \textrm{,}
 \]
-The vehicle length $VL$ describes the measured length of an individual vehicle. 
+where $VL$ represents a finite set of vehicle labels, $VS$ represents a mapping from vehicle labels $VL$ to their length (i.e.\ the \textit{size} of the vehicle in road segment direction)
 \[
-VL : V \rightarrow \mathbb{R}^+
+	VS : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-Vehicle energy capacity $VC$ describes the capacity or size of a vehicle battery.
+$VME$ represents a mapping from vehicle labels $VL$ to their mechanical efficiency (i.e.\ a constant ratio for the conversion between electrical and mechanical energy)
 \[
-VC : V \rightarrow \mathbb{R}^+
+	VME : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-Vehicle weight $VW$ describes the measured weight of an individual vehicle.
+$VP$ represents a mapping from vehicle labels $VL$ to their initial road segment positions $RSP$ (see Section~\ref{segments})
 \[
-VW : V \rightarrow \mathbb{R}^+
+	VP : VL \rightarrow RSP
 \]
-The vehicle energy-efficiency $VE$ describes a constant measuring a vehicles ability for power conversion.
+$VC$ represents a mapping from vehicle labels $VL$ to their battery capacities (i.e.\ the maximum amount of energy that can be stored by the vehicle)
 \[
-VE : V \rightarrow \mathbb{R}^+
+	VC : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-The Vehicle charge rate $VR$ refers to a vehicle's performance when charging or discharging at charging stations.
+$VEE$ represents a mapping from vehicle labels $VL$ to their electrical efficiency (i.e.\ a constant ratio for conversion between electrical energy and stored energy)
 \[
-VR : V \rightarrow \mathbb{R}^+
+	VEE : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-%	Vehicle goods capacity $VG$
+and $VSOC$ represents a mapping from vehicle labels $VL$ to their initial state of charge (i.e.\ the amount of energy stored by the vehicle initially)
+\[
+	VSOC : VL \rightarrow \mathbb{R}^+ \textrm{ such that } VSOC(vl) \leq VC(vl) \textrm{.}
+\]
+Note that again we abstract from many parameters typically considered such as \todo{...}. In particular, we approximate mechanical and electrical efficiencies with constants only.
+
+\paragraph{Demands}
+\label{demands}
+
+Finally, the demands $D$ of the transportation subsystem participants $TSP$ are modeled as four-tuple
+\[
+	D = (DL, DV, DP, DT) \textrm{,}
+\]
+where $DL$ represents a finite set of demand labels, $DV$ represents a mapping from demand labels $DL$ to vehicle labels $VL$ (i.e.\ the concerned vehicle)
+\[
+	DV: DL \rightarrow VL \textrm{,}
+\]
+$DP$ represents a mapping from demand labels $DL$ to road segment positions $RSP$ (i.e.\ where the concerned vehicle is expected to be)
+\[
+	DP: DL \rightarrow RSP \textrm{,}
+\]
+and $DT$ represents a mapping from demand labels $DL$ to time points (i.e.\ when the concerned vehicle is expected to be there)
+\[
+	DT: DL \rightarrow \mathbb{N}^+ \textrm{.}
+\]
+Note that our abstraction is based on discrete time. However, we do not prescribe the time step resolution.
+
+\subsection{Power / energy subsystem}
+\label{energy_system}
+
+The energy subsystem $ES$ of the integrated design abstraction is modeled as a tuple
+\[
+	ES = (ESI, ESC) \textrm{,}
+\]
+where $ESI$ represents the energy subsystem infrastructure (determined by the transmission and distribution network) and $ESC$ represents energy subsystem components (i.e.\ the actual producers and consumers). In the following, we first explain the infrastructure in Section~\ref{regions} before describing the components in Section~\ref{components}.
+
+\subsubsection{Infrastructure}
+\label{energy_infrastructure}
+
+The energy subsystem infrastructure $ESI$ of the energy subsystem $ES$ is modeled as a one-tuple
+\[
+	ES = (R) \textrm{,}
+\]
+where $R$ represents the regions of the energy subsystem infrastructure, which are determined by the voltage levels and transformers of the network. Note that we selected a region model~\cite{Hackenberg2012} over a power flow model~\todo{?} to reduce modeling effort and increase computational efficiency. In the following, we describe the regions in Section~\ref{regions}.
+
+\paragraph{Regions}
+\label{regions}
+
+Power regions represent an aggregated representation of a set of voltage nets. For example, they can define a region based on specific low, medium or high voltage nets in a given area. However, they abstract from a detailed representation of the underlying physical net structure.  
+
+Hence, the identifier of a power region $PR$ is defined as
+\[
+\exists n \in \mathbb{N} : |PR| < n \mathrm{.}
+\]
+Power regions aggregate the loads of their subregions and connected electric devices. In return, they provide the aggregated load to their upper region.
+Hence, the acyclic parent relationship with their distinct roots $PRP$ is defined by 
+\[
+PRP : PR \to PR \mathrm{.}
+\]
+Power regions are subject to given capacity $PRC$, which describes the total load a power region can aggregate.
+The power region capacity $PRC$ is then
+\[
+PRC : PR \rightarrow \mathbb{R}^+ \mathrm{.}
+\]
+The current energy balance of a power region
+$PRS : PR \rightarrow \mathbb{R}_0^+$ with $cc$ describing the current capacity of an according power region is then
+\[
+PRS(pr) \in \{ cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq PRC(pr) \} \mathrm{.}
+\]
+
+\subsubsection{Components}
+\label{components}
+
+TODO
+
+\paragraph{Static loads}
+\label{static_loads}
+
+Static loads represent an aggregation of devices within the power system with non-controllable loads, i.e. energy production or consumption. They are defined by an identifier $SL$, where 
+\[
+\exists n \in \mathbb{N} |SL| < n \mathrm{.}
+\]
+
+Static loads abstract from details regarding specific behavior of specific electric devices. For example, static loads can represent an aggregation of activities with non-controllable loads with human interaction such as cooking or watching television. Based on their selected profile for the given use case, static loads exert different load profiles. Here we consider static loads to be similar to standardized load profiles, which are often utilized by distribution grid operators for different areas of operation such as modeling the load behavior of households, workplaces or agricultural businesses. A given static load profile $SLP$ describes the according load per time instant only, where
+\[
+SLP : SL \times \mathbb{R}_0^+ \rightarrow \mathbb{R} \times \mathbb{R} \mathrm{.}
+\]
+Here, static loads are mapped to a specific region, e.g. determining their currently mapped voltage net.
+
+%\paragraph{Energy generators}
+%\label{energy_generators}
+%
+%Power generators represent a class of electric devices which produce load. For example, they can represent conventional energy sources such as fossil-fuel power stations as well as renewable energy sources such as solar panels or wind turbines. For producing energy they take a resource such as coal, gas or sunlight or wind as input. Based on the input, i.e. resource employed, they produce an according output, i.e. positive load and emissions. 
+%
+%They are defined by an identifier $PG$, where 
+%\[
+%\exists n \in \mathbb{N} |PG| < n \mathrm{.}
+%\]
+%Power generators are mapped to specific region, e.g. determining their currently mapped voltage net. Concerning environmental factors, power generator emissions $PGE$ define the total emissions which occur during power production in a time instant.
+%\[
+%PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
+%\]
+%
+%Power production is based on their individual power efficiency $SPS$, which defines the total amount of energy they can produce as an output, given a specific resource they utilize.
+%\[	
+%PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
+%\]
+%	
+%	Solar panel identifiers $SP$
 %	\[
-%		VG : V \rightarrow \mathbb{R}^+
+%		\exists n \in \mathbb{N} : |SP| < n
 %	\]
-The vehicle state $VS : V \rightarrow RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+$ is then made up of current vehicle road segment position as well as the charge state. 
+%	Solar panel power scale $SPS$ 
+%	\[
+%		SPS : SP \rightarrow \mathbb{R}^+
+%	\]
+%	Solar panel power $SPP$ 
+%	\[
+%		SPP : SP \times \mathbb{R}^+ \rightarrow \mathbb{R}^+
+%	\]
+%
+
+\paragraph{Energy storages}
+\label{energy_storages}
+
+Energy storages can store and release energy at given times. They are defined by an identifier $ES$, where 
+\[
+\exists n \in \mathbb{N} |ES| < n \mathrm{.}
+\]
+Here, energy storages are mapped to a specific region, e.g. determining their currently mapped voltage net.
+
+They have a fixed capacity $ESC$, which defines the total amount of energy they can store, where
+\[	
+ESC : ES \rightarrow \mathbb{R}_0^+ \mathrm{.}
+\]
+When $cc$ defines the current capacity of a energy storage, their individual state $ESS : ES \rightarrow \mathbb{R}_0^+$ is then
 
 \[
-VS(v) \in \{ (\cdot, cs, ps) \in RSC \times \mathbb{R}_0^+ \times \mathbb{R}_0^+ \mid
+ESS(es) \in \{cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq ESC(es)\} \mathrm{.}
 \]
-\[
-(0 \leq cs \leq VC(v)) \wedge (0 \leq ps \leq VP(v)) \}
-\]
-Vehicles states $\mathbb{VS}$ 
-\[
-\mathbb{VS} = \{VS : V \rightarrow RSC \times \mathbb{R}_0^+ \mid VS \text{ is vehicle state}\}
-\]
-%\todo{Do we really need all these vehicle parameters? Maybe we can reduce the model to a few parameters only? What do we loose then?}
 
-\subsection{Collisions}
+\paragraph{Charging stations}
+\label{charging_stations}
+
+Charging stations are electric devices acting as consumers or producers within the power system. Consumption or production is based on connection to electric vehicles. They are defined by a identifier $CS$, where
+\[
+\exists n \in \mathbb{N} |CS| < n \mathrm{.}
+\]
+Furthermore, they have a physical coordinates on a specific road segment $CSP : CS \rightarrow RS$, where
+\[
+CSP(cs) = (ri_1, ri_2) \Rightarrow ri_1 = ri_2 \mathrm{.}
+\]
+
+\subsection{Constraints}
+\label{constraints}
+
+TODO
+
+\subsubsection{Collision avoidance}
 \label{collisions}
 
 Overlapping vehicle pairs $OVP : \mathbb{VS} \rightarrow V \times V$
@@ -149,134 +302,8 @@ CV(VS) \Leftrightarrow \exists v \in V :
 |OVS(VS, v)| > RSL(rs) \text{ with } ((rs,\cdot),\cdot) = VS(v)
 \]
 
-\subsection{Power infrastructures}
-\label{power}
-
-Power regions represent an aggregated representation of a set of voltage nets. For example, they can define a region based on specific low, medium or high voltage nets in a given area. However, they abstract from a detailed representation of the underlying physical net structure.  
-
-Hence, the identifier of a power region $PR$ is defined as
-\[
-\exists n \in \mathbb{N} : |PR| < n \mathrm{.}
-\]
-Power regions aggregate the loads of their subregions and connected electric devices. In return, they provide the aggregated load to their upper region.
-Hence, the acyclic parent relationship with their distinct roots $PRP$ is defined by 
-\[
-PRP : PR \to PR \mathrm{.}
-\]
-Power regions are subject to given capacity $PRC$, which describes the total load a power region can aggregate.
-The power region capacity $PRC$ is then
-\[
-PRC : PR \rightarrow \mathbb{R}^+ \mathrm{.}
-\]
-%\todo{The maximum energy flow through this region.}
-
-The current energy balance of a power region
-$PRS : PR \rightarrow \mathbb{R}_0^+$ with $cc$ describing the current capacity of an according power region is then
-\[
-PRS(pr) \in \{ cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq PRC(pr) \} \mathrm{.}
-\]
-
-%\todo{Maybe we should introduce electric components here already. Then, electric components can be regions or end-points. Regions are the net identifiers introduced above. End-points are the concepts introduced in the following.}
-
-\subsection{Charging stations}
-\label{charging_stations}
-Charging stations are electric devices acting as consumers or producers within the power system. Consumption or production is based on connection to electric vehicles.
-They are defined by a identifier $CS$, where
-\[
-\exists n \in \mathbb{N} |CS| < n \mathrm{.}
-\]
-Furthermore, they have a physical coordinates on a specific road segment
-$CSP : CS \rightarrow RS$, where
-\[
-CSP(cs) = (ri_1, ri_2) \Rightarrow ri_1 = ri_2 \mathrm{.}
-\]
-%	\todo{Map charging station to regions.}
-
-\subsection{Energy storages}
-\label{energy_storages}
-Energy storages can store and release energy at given times.
-They are defined by an identifier $ES$, where 
-\[
-\exists n \in \mathbb{N} |ES| < n \mathrm{.}
-\]
-Here, energy storages are mapped to a specific region, e.g. determining their currently mapped voltage net.
-
-They have a fixed capacity $ESC$, which defines the total amount of energy they can store, where
-\[	
-ESC : ES \rightarrow \mathbb{R}_0^+ \mathrm{.}
-\]
-When $cc$ defines the current capacity of a energy storage, their individual state $ESS : ES \rightarrow \mathbb{R}_0^+$ is then
-
-\[
-ESS(es) \in \{cc \in \mathbb{R}_0^+ \mid 0 \leq cc \leq ESC(es)\} \mathrm{.}
-\]
-
-%	\todo{Use energy storages instead of power batteries (because they are more general).}
-
-%	\todo{Map power batteries to regions.}
-
-\subsection{Power generators}
-\label{power_generators}
-
-Power generators represent a class of electric devices which produce load. For example, they can represent conventional energy sources such as fossil-fuel power stations as well as renewable energy sources such as solar panels or wind turbines. For producing energy they take a resource such as coal, gas or sunlight or wind as input. Based on the input, i.e. resource employed, they produce an according output, i.e. positive load and emissions. 
-
-They are defined by an identifier $PG$, where 
-\[
-\exists n \in \mathbb{N} |PG| < n \mathrm{.}
-\]
-Power generators are mapped to specific region, e.g. determining their currently mapped voltage net.
-Concerning environmental factors, power generator emissions $PGE$ define the total emissions which occur during power production in a time instant.
-\[
-PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
-\]
-
-Power production is based on their individual power efficiency $SPS$, which defines the total amount of energy they can produce as an output, given a specific resource they utilize.
-\[	
-PGP : PG \rightarrow \mathbb{R}_0^+ \mathrm{.}
-\]
-%	
-%	Solar panel identifiers $SP$
-%	\[
-%		\exists n \in \mathbb{N} : |SP| < n
-%	\]
-%	Solar panel power scale $SPS$ 
-%	\[
-%		SPS : SP \rightarrow \mathbb{R}^+
-%	\]
-%	Solar panel power $SPP$ 
-%	\[
-%		SPP : SP \times \mathbb{R}^+ \rightarrow \mathbb{R}^+
-%	\]
-%	
-
-%\todo{Use power generators instead of solar panels (because they are more general). Then we have to model the emissions (CO2, noise, etc.) also! Solar panels do not cause any emissions (only during production and maintenance).}
-
-%\todo{Map power generators to regions.}
-
-\subsection{Static (i.e.\ non-controllable) loads}
-\label{static_loads}
-Static loads represent an aggregation of devices within the power system with non-controllable loads, i.e. energy production or consumption. 
-They are defined by an identifier $SL$, where 
-\[
-\exists n \in \mathbb{N} |SL| < n \mathrm{.}
-\]
-
-Static loads abstract from details regarding specific behavior of specific electric devices.
-For example, static loads can represent an aggregation of activities with non-controllable loads with human interaction such as cooking or watching television. Based on their selected profile for the given use case, static loads exert different load profiles. Here we consider static loads to be similar to standardized load profiles, which are often utilized by distribution grid operators for different areas of operation such as modeling the load behavior of households, workplaces or agricultural businesses.
-A given static load profile $SLP$ describes the according load per time instant only, where
-\[
-SLP : SL \times \mathbb{R}_0^+ \rightarrow \mathbb{R} \times \mathbb{R} \mathrm{.}
-\]
-Here, static loads are mapped to a specific region, e.g. determining their currently mapped voltage net.
-%\todo{Map static loads to regions.}
-
-\subsection{Constraints}
-
-%\todo{What are the constraints in our model? Vehicle collision, vehicle overloading, electric net capacity overloading, ...}
-
 \subsection{Objectives}
-
-%	\todo{What are the objective functions in our model? Derivation from departure time, derivation from arrival time, derivation from departure road segment, derivation from arrival road segment, emissions, ...}
+\label{objectives}
 
 The objective function in our model is made up from multiple cost factors, which we describe subsequently:
 
