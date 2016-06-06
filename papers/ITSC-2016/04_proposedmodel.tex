@@ -91,7 +91,7 @@ where $V$ represents the vehicles and $D$ represents the demands. In the followi
 
 The vehicles $V$ of the transportation subsystem participants $TSP$ are modeled as seven-tuple
 \[
-	V = (VL, VS, VME, VP, VC, VEE, VSOC) \textrm{,}
+	V = (VL, VS, VME, VP_0, VC, VEE, VSOC_0) \textrm{,}
 \]
 where $VL$ represents a finite set of vehicle labels, $VS$ represents a mapping from vehicle labels $VL$ to their length (i.e.\ the \textit{size} of the vehicle in road segment direction)
 \[
@@ -101,9 +101,9 @@ $VME$ represents a mapping from vehicle labels $VL$ to their mechanical efficien
 \[
 	VME : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-$VP$ represents a mapping from vehicle labels $VL$ to their initial road segment positions $RSP$ (see Section~\ref{segments})
+$VP_0$ represents a mapping from vehicle labels $VL$ to their initial road segment positions $RSP$ (see Section~\ref{segments})
 \[
-	VP : VL \rightarrow RSP \textrm{,}
+	VP_0 : VL \rightarrow RSP \textrm{,}
 \]
 $VC$ represents a mapping from vehicle labels $VL$ to their battery capacities (i.e.\ the maximum amount of energy that can be stored by the vehicle)
 \[
@@ -113,11 +113,13 @@ $VEE$ represents a mapping from vehicle labels $VL$ to their electrical efficien
 \[
 	VEE : VL \rightarrow \mathbb{R}^+ \textrm{,}
 \]
-and $VSOC$ represents a mapping from vehicle labels $VL$ to their initial state of charge (i.e.\ the amount of energy stored by the vehicle initially)
+and $VSOC_0$ represents a mapping from vehicle labels $VL$ to their initial state of charge (i.e.\ the amount of energy stored by the vehicle initially)
 \[
-	VSOC : VL \rightarrow \mathbb{R}^+ \textrm{ such that } VSOC(vl) \leq VC(vl) \textrm{.}
+	VSOC_0 : VL \rightarrow \mathbb{R}^+ \textrm{ such that } VSOC_0(vl) \leq VC(vl) \textrm{.}
 \]
 Note that again we abstract from many parameters typically considered such as \todo{...}. In particular, we approximate mechanical and electrical efficiencies with constants only.
+
+\todo{$RSL^* \Rightarrow VP_{t+1} \wedge VSOC_{t+1}$}
 
 \paragraph{Demands}
 \label{demands}
