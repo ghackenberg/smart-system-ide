@@ -1,13 +1,13 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465231632249">
+<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465289729686">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p style="text-align: center">
-      Aspects
+      Properties
     </p>
     <p style="text-align: center">
       of the
@@ -80,6 +80,7 @@
 <node CREATED="1465211691099" ID="ID_1618293927" MODIFIED="1465211924887" TEXT="State of charge (initial)"/>
 </node>
 <node CREATED="1465211409748" ID="ID_766392871" MODIFIED="1465211419825" TEXT="Charging stations">
+<node CREATED="1465288804802" ID="ID_1741137267" MODIFIED="1465288806015" TEXT="Position"/>
 <node CREATED="1465211639619" ID="ID_1559070427" MODIFIED="1465211646416" TEXT="Efficiency"/>
 </node>
 </node>
