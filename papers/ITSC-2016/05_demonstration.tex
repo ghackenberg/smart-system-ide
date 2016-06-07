@@ -1,12 +1,12 @@
 \section{Using the \textbf{TransP-0} design abstraction}
 \label{demonstration}
 
-In the following, we evaluate \textsc{TransP-0}. Therefore, we first present prototypical tool support in Section~\ref{tool}, which we have used for coding the actual system designs and optimizing their behavior. Then, we describe the sample system design in Section~\ref{examples}, which are intended to show the capabilities of the design abstraction. Finally, we discuss the results of and experiences made during the experiments in Section~\ref{discussion}. In particular, we are interested in the suitability of the design abstraction with respect to rapid and iterative design formulation as well as evaluation.
+In the following, we evaluate the \textsc{TransP-0} design abstraction. Therefore, we first present prototypical tool support in Section~\ref{tool}, which we have used for coding the actual system designs and optimizing their behavior. Then, we describe the sample system design in Section~\ref{examples}, which are intended to show the capabilities of the design abstraction. Finally, we discuss the results of and experiences made during the experiments in Section~\ref{discussion}. In particular, we are interested in the suitability of the design abstraction with respect to rapid and iterative design formulation as well as evaluation.
 
 \subsection{Prototypical tool support}
 \label{tool}
 
-TODO
+For the purpose of demonstration we decided to implement our own prototype in the Java programming language~\cite{Gosling2000}. The prototype allows one to compose a system design from interacting components, which contain the static and dynamic properties presented in Section~\ref{proposed_model}. For components an abstract \texttt{Component} base class is provided. Then, each concrete component class contains data members representing the properties. Note that the prototype also supports inheritance between the different component classes. Consequently, properties shared between different component classes (e.g.\ vehicles and energy storages) can be moved to a common component superclass. An example component specification is shown in Figure~\ref{figure:modeling}.
 
 \begin{figure}[h]
 	\includegraphics[width=\columnwidth]{./gfx/modeling.png}
@@ -14,15 +14,15 @@ TODO
 	\label{figure:modeling}
 \end{figure}
 
-TODO
+For design evaluation, the prototype provides an approximate dynamic programming algorithm~\cite{Bertsekas1995} and comprehensive visualization techniques. The approximate dynamic programming algorithm explores the state space of the system design for a predefined number of discrete time steps and delivers the best final state. Hereby, the states are pruned with respect to the constraints (see Section~\ref{constraints}) and compared with respect to the objectives (see Section~\ref{objectives}). We use an approximate technique due to the complexity of the state space. The algorithm selects successor states randomly and clusters successor states based on predefined cluster criteria. Then, only the best states of each cluster survive.
 
 \begin{figure}[h]
 	\includegraphics[width=\columnwidth]{./gfx/analysis.png}
-	\caption{Model analysis using a basic approximate dynamic programming algorithm and comprehensive visualization techniques.}
+	\caption{Model analysis using a basic approximate dynamic programming algorithm~\cite{Bertsekas1995} and comprehensive visualization techniques.}
 	\label{figure:analysis}
 \end{figure}
 
-TODO
+Finally, the visualizations for an evaluation run are shown in Figure~\ref{figure:analysis}. The visualizations help the engineer to understand dynamic programming algorithm internals. Interesting internals are for example the number of constraints violated in each time step (e.g.\ due to road segment capacities or region capacities), the distribution of states among the clusters in each time step, or the statistics (i.e.\ minimum, average, maximum) over the cumulative objective output in each time step. We use the visualizations to tune various algorithm parameters and compare the respective performances. Consequently, we are able to improve the results returned by the approximate dynamic programming algorithm iteratively.
 
 \subsection{Exemplary system designs}
 \label{examples}
