@@ -5,7 +5,7 @@ The \textsc{TransP-0} design abstraction is intended to support both transportat
 
 \begin{figure}[h!]
 	\includegraphics[width=\columnwidth]{./gfx/system_design.png}
-	\caption{\textsc{TransP-0} integrated design abstraction comprising various transportation subsystem and power subsystem properties as well as subsystem-specific and -spanning constraints and objectives.}
+	\caption{The \textsc{TransP-0} integrated design abstraction comprising various transportation subsystem and power subsystem properties as well as subsystem-specific and -spanning constraints and objectives.}
 	\label{system_design}
 \end{figure}
 
@@ -51,21 +51,17 @@ In contrast, the road segments $RS$ of the transportation subsystem infrastructu
 	\item[-] $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
 	\item[-] $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ the surface material of the road segment).
 \end{itemize}
-Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered such as \todo{...}.
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered such as the continuous elevation profile~\cite{?} or surface friction coefficients~\cite{?}.
 
-Furthermore, we derive the road segment distance $RSD$ as a mapping from road segment labels to distances
-\[
-	RSD: RSL \rightarrow \mathbb{R}_0^+
-\]
-and we use the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ to compute the road segment distance as
+Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances and we use the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ to compute the road segment distance as
 \[
 	RSD(rsl) = E(RIC(RSS(rsl)), RIC(RST(rsl))) \textrm{.}
 \]
-Finally, we define road segment positions $RSP$ as tuples of road segment labels and traveled distances
+Finally, we define road segment positions $RSP \subseteq RSL \times \mathbb{R}_0^+$ as tuples of road segment labels and traveled distances
 \[
 	RSP = \{(rsl, d) \in RSL \times \mathbb{R}_0^+ \mid d \leq RSD(rsl)\} \textrm{.}
 \]
-We use the road segment positions $RSP$ to locate traffic participants (i.e.\ vehicles) on the transportation subsystem infrastructure $TSI$ as explained in Section~\ref{participants}.
+We use the road segment positions $RSP$ to locate traffic participants (i.e.\ vehicles) on the transportation subsystem infrastructure $TSI$ as explained in Section~\ref{participants}. Note that the world coordinates can be obtained by a respective coordinate transformation.
 
 \subsubsection{Participants}
 \label{participants}
@@ -75,7 +71,7 @@ The transportation subsystem participants $TSP$ of the transportation subsystem 
 	\item[-] $V$ represents the vehicles (i.e.\ the physical objects using the transportation subsystem infrastructure) and
 	\item[-] $D$ represents the demands (i.e.\ the logical objects that cause the movement of the physical objects).
 \end{itemize}
-In the following, we first describe the vehicle design abstraction in Section~\ref{vehicles} before explaining the demand design abstraction in Section~\ref{demands}.
+Consequently, we - again - distinguish between the static (i.e.\ the vehicles) and the dynamic (i.e.\ the demands) parts of the model. In the following, we first describe the vehicle design abstraction in Section~\ref{vehicles} before explaining the demand design abstraction in Section~\ref{demands}.
 
 \paragraph{Vehicles}
 \label{vehicles}
@@ -93,7 +89,7 @@ The vehicles $V$ of the transportation subsystem participants $TSP$ are modeled 
 		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
 	\]
 \end{itemize}
-Note that again we abstract from many parameters typically considered such as \todo{...}. In particular, we approximate mechanical and electrical efficiencies with constants only.
+Note that again we abstract from many parameters typically considered such as the vehicle weight~\cite{?} or the vehicle geometry~\cite{?}. In particular, we approximate mechanical and electrical efficiencies with constants only.
 
 \todo{State / actions? $RSL^* \times \mathbb{R}_0^+ \Rightarrow VP_{t+1} \times VSOC_{t+1}$}
 
@@ -117,7 +113,7 @@ The energy subsystem $ES$ of the integrated design abstraction is modeled as a t
 	\item[-] $ESI$ represents the energy subsystem infrastructure (i.e.\ the transmission and distribution network) and
 	\item[-] $ESC$ represents energy subsystem components (i.e.\ the actual producers and consumers).
 \end{itemize}
-In the following, we first explain the infrastructure in Section~\ref{regions} before describing the components in Section~\ref{components}.
+Hence, we essentially separate the network characteristics and the network usage. In the following, we first explain the infrastructure in Section~\ref{regions} before describing the components in Section~\ref{components}.
 
 \subsubsection{Infrastructure}
 \label{energy_infrastructure}
@@ -131,7 +127,7 @@ Note that we selected a region model~\cite{Hackenberg2012} over a power flow mod
 \paragraph{Regions}
 \label{regions}
 
-The regions $R$ of the energy subsystem infrastructure $ESI$ are modeled as a five-tuple $(RL, RC, RE, RSR, RSC)$, where
+The network regions $R$ of the energy subsystem infrastructure $ESI$ are modeled as a five-tuple $(RL, RC, RE, RSR, RSC)$, where
 \begin{itemize}
 	\item[-] $RL$ represents a finite set of region labels (or region identifiers),
 	\item[-] $RC: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to region \textit{capacities} (i.e.\ the maximum amount of energy that can flow through that region in a predefined time interval),
@@ -179,7 +175,7 @@ Then, the energy storages $ES$ of the energy subsystem components $ESC$ are mode
 		ESS_0 \textrm{ such that } ESS_0(esl) \leq ESCA(esl)
 	\]
 \end{itemize}
-Note that the energy storage model is analogous to the electric vehicle model present in Section~\ref{vehicles}. Only, electric vehicles also include mechanical properties.
+Note that the energy storage model is analogous to the electric vehicle model present in Section~\ref{vehicles}. Only, electric vehicles also include mechanical properties. Further, we currently target small batteries rather than large storage facilities. Larger facilities might require more parameters.
 
 \todo{State? Action? $ESLO_{t+1} \rightarrow ESS_{t+1}$}
 
@@ -189,13 +185,13 @@ Note that the energy storage model is analogous to the electric vehicle model pr
 Finally, the charging stations $CS$ of the energy subsystem components $ESC$ are modeled as a three-tuple $(CSL, CSP, CSE)$, where
 \begin{itemize}
 	\item[-] $CSL$ represents a finite set of charging station \textit{labels} (or charging station identifiers),
-	\item[-] $CSP: CSL \rightarrow RSL$ represents a mapping from charging station labels $CSL$ to road segment labels $RSL$ with zero road segment distance, i.e.\
+	\item[-] $CSE: CSL \rightarrow \mathbb{R}^+$ represents a mapping from charging station labels to charging station \textit{efficiencies} (i.e.\ a loss factor for respective energy flows), and
+	\item[-] $CSP: CSL \rightarrow RSL$ represents a mapping from charging station labels to road segment labels with zero road segment distance, i.e.\
 	\[
-		CSP \textrm{ such that } RSD(CSP(csl)) = 0 \textrm{, and}
+		CSP \textrm{ such that } RSD(CSP(csl)) = 0 \textrm{.}
 	\]
-	\item[-] $CSE: CSL \rightarrow \mathbb{R}^+$ represents a mapping from charging station labels $CSL$ to charging station efficiencies (i.e.\ the energy lost while flowing through the charging station).
 \end{itemize}
-Note that in particular the charging station position mapping $CSP$ defines the connections between the transportation subsystem and the power subsystem.
+Note that the charging station position mapping $CSP$ defines the static connections between the transportation subsystem and the energy subsystem. Consequently, vehicles are able to interact with the energy subsystem at predefined segments.
 
 \todo{State?}
 
