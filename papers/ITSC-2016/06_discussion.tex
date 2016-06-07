@@ -1,17 +1,24 @@
 \subsection{Design abstraction evaluation}
 \label{discussion}
-In previous work \cite{ascher2015integrated} we evaluated our approach with regard to it's validity, novelty, efficiency and applicability. 
+Subsequently, we discuss the suitability of the design abstraction with respect to rapid and iterative design formulation as well as evaluation.
+
+The proposed systematic approach and design abstraction offers a tool for rapid and iterative design formulation and evaluation. 
+
+This allows one to quickly assess emergent scenarios for transportation and power systems. We consider the approach to be a explorative method to be employed during system design. While the explorative method doesn't guarantee optimal optimization results, it represents a method to rapidlz evaluate different configuration without needing to adjust optimization algorithms. 
+
+However, while the proposed approach doesn't guarantee optimality in terms of obtained results, the robust approach allows for rapidly adapting system design formulation in terms of parameters and employed cost and constraint functions without influencing the quality of results. 
+
+We demonstrated the feasibility of our systematic approach in terms of varying parameters as well as cost functions and constraints using a set of example scenarios.
+
+However, we only demonstrated our model using a set of simple scenarios. 
+
+% MODEL RELATED
+More importantly, the employed scenarios do not reflect large-scale traffic scenarios typical for commuting traffic, i.e. traffic congestions in the early morning or evening (rush-hour) exerted by commuting traffic.
 
 Demonstration results obtained with the conducted case study show the feasibility of our approach to adapt to changing scenario configurations and varying scenario parameters.
 
-The proposed systematic approach offers a tool for rapid and iterative design formulation and evaluation. This allows one to quickly assess emergent scenarios for transportation and power systems. We consider the approach to be a explorative method used during systems design. However, while the proposed approach doesn't guarantee optimality in terms of obtained results, the robust approach allows for rapidly adapting system design formulation in terms of parameters and employed cost and constraint functions without influencing the quality of results. 
-
 The case study employs static profiles based on distribution operator load profiles for home and workplace locations. We demonstrated a set of future scenarios, where electric vehicles are prevalent and are employed heavily within the transportation system. 
 
-
-We demonstrated the feasibility of our systematic approach in terms of varying parameters as well as cost functions and constraints using a set of example scenarios.
-However, we only demonstrated our model using a set of simple scenarios. More importantly, the employed scenarios do not reflect large-scale traffic scenarios typical for commuting traffic, i.e. traffic congestions in the early morning or evening (rush-hour) exerted by commuting traffic.
-
-Currently, the model only captures only one mode of transportation, i.e. electric vehicles. To comprehensively evaluate integrated planning strategies, further modes of transportation have to be considered such as public transport, i.e. buses, subway or airplane. Furthermore, the model currently only addresses the transportation demands of passengers, i.e. in the form of traffic participants. However, to comprehensively address the broad demands imposed on the transportation system, we have to incorporate logistics planning to address the impact of both person and goods transportation. 
+Currently, the model only captures one mode of transportation, i.e. electric vehicles. To comprehensively evaluate integrated planning strategies, further modes of transportation have to be considered such as public transport, i.e. buses, subway or airplane. Furthermore, the model currently only addresses the transportation demands of passengers, i.e. in the form of traffic participants. However, to comprehensively address the broad demands imposed on the transportation system, we have to incorporate logistics planning to address the impact of both person and goods transportation. 
 
 Nevertheless, when addressing the question of modes of transportation, a question remains how our approach addresses size and scalability. Currently, we only employed small scale scenarios featuring a small number of traffic participants, i.e. electric vehicles within the transportation transportation system. However, when establishing integrated transportation and power system control strategies, we have to consider adaptive-size, i.e. incremental or progressive planning strategies.
