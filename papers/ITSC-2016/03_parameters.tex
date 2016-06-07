@@ -1,0 +1,187 @@
+\section{Configuration Parameters}
+%\section{The \textbf{TransP-0} integrated design abstraction}
+\label{proposed_model}
+
+The \textsc{TransP-0} design abstraction is intended to support both transportation and power system engineers during early project phases in formulating and evaluating different design options quickly. Therefore, transportation and power system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and a power respectively energy subsystem properties as well as subsystem-specific and -spanning constraints and objectives.
+
+\begin{figure}[h!]
+	\includegraphics[width=\columnwidth]{./gfx/system_design.png}
+	\caption{The \textsc{TransP-0} integrated design abstraction comprising various transportation subsystem and power subsystem properties as well as subsystem-specific and -spanning constraints and objectives.}
+	\label{system_design}
+\end{figure}
+
+In the following, we first describe the design abstraction for the transportation subsystem in Section~\ref{transport} and the power respectively energy subsystem in Section~\ref{energy_system}. Then, we explain the subsystem-specific and -spanning constraints in Section~\ref{constraints} as well as the objectives in Section~\ref{objectives}. 
+
+\subsection{Transportation subsystem}
+\label{transport}
+
+The transportation subsystem $TS$ of the integrated design abstraction is modeled as a tuple $(TSI, TSP)$, where
+\begin{itemize}
+	\item[-] $TSI$ represents the transportation infrastructure (i.e.\ roads and their intersections) and
+	\item[-] $TSP$ represents the individual traffic participants (i.e.\ passenger cars and goods vehicles).
+\end{itemize}
+Essentially, we distinguish between the static (i.e.\ the infrastructure) and the dynamic (i.e.\ the participants) parts of the transportation subsystem. In the following, we describe the the infrastructure design abstraction in Section~\ref{transport_infrastructure} before explaining the participant design abstraction in Section~\ref{participants}.
+
+\subsubsection{Infrastructure}
+\label{transport_infrastructure}
+
+The transportation subsystem infrastructure $TSI$ of the transportation subsystem $TS$ is modeled as a tuple $(RI, RS)$, where
+\begin{itemize}
+	\item[-] $RI$ represents road intersections (i.e.\ the points in geometric space where roads intersect) and
+	\item[-] $RS$ represent road segments (i.e.\ the actual roads leading from intersection to intersection).
+\end{itemize}
+Hence, we use a directed graph to describe the transportation subsystem infrastructure. Subsequently, we first describe the road intersections in Section~\ref{intersections} before explaining the road segments in Section~\ref{segments}.
+
+\paragraph{Intersections}
+\label{intersections}
+
+The road intersections $RI$ of the transportation subsystem infrastructure $TSI$ are modeled - again - as a tuple $(RIL, RIC)$, where
+\begin{itemize}
+	\item[-] $RIL$ represents a finite set of road intersection \textit{labels} (or road intersection identifiers) and
+	\item[-] $RIC: RIL \rightarrow \mathbb{R}^3$ represents a mapping from road intersection labels to geometric coordinates.
+\end{itemize}
+Note that typically the coordinates are expressed in terms of latitude, longitude, and elevation. However, for simplicity in this work we use Cartesian coordinates instead. Consequently, distances can be computed more easily using the Euclidean metric. Moreover, transformations exist to switch between polar and Cartesian coordinates.
+
+\paragraph{Segments}
+\label{segments}
+
+In contrast, the road segments $RS$ of the transportation subsystem infrastructure $TSI$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
+\begin{itemize}
+	\item[-] $RSL$ represents a finite set of road segment \textit{labels} (or road segment identifiers),
+	\item[-] $RSS/RST: RSL \rightarrow RIL$ represent mappings from road segment labels to their respective \textit{source} and \textit{target} road intersection labels,
+	\item[-] $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
+	\item[-] $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ the surface material of the road segment).
+\end{itemize}
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered such as the continuous elevation profile~\cite{?} or surface friction coefficients~\cite{?}.
+
+Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances and we use the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ to compute the road segment distance as
+\[
+	RSD(rsl) = E(RIC(RSS(rsl)), RIC(RST(rsl))) \textrm{.}
+\]
+Finally, we define road segment positions $RSP \subseteq RSL \times \mathbb{R}_0^+$ as tuples of road segment labels and traveled distances
+\[
+	RSP = \{(rsl, d) \in RSL \times \mathbb{R}_0^+ \mid d \leq RSD(rsl)\} \textrm{.}
+\]
+We use the road segment positions $RSP$ to locate traffic participants (i.e.\ vehicles) on the transportation subsystem infrastructure $TSI$ as explained in Section~\ref{participants}. Note that the world coordinates can be obtained by a respective coordinate transformation.
+
+\subsubsection{Participants}
+\label{participants}
+
+The transportation subsystem participants $TSP$ of the transportation subsystem $TS$ are modeled - again - as a tuple $(V, D)$, where
+\begin{itemize}
+	\item[-] $V$ represents the vehicles (i.e.\ the physical objects using the transportation subsystem infrastructure) and
+	\item[-] $D$ represents the demands (i.e.\ the logical objects that cause the movement of the physical objects).
+\end{itemize}
+Consequently, we - again - distinguish between the static (i.e.\ the vehicles) and the dynamic (i.e.\ the demands) parts of the model. In the following, we first describe the vehicle design abstraction in Section~\ref{vehicles} before explaining the demand design abstraction in Section~\ref{demands}.
+
+\paragraph{Vehicles}
+\label{vehicles}
+
+The vehicles $V$ of the transportation subsystem participants $TSP$ are modeled as seven-tuple $(VL, VS, VME, VP_0, VC, VEE, VSOC_0)$, where
+\begin{itemize}
+	\item[-] $VL$ represents a finite set of vehicle \textit{labels} (or vehicle identifiers),
+	\item[-] $VS: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{size} (i.e.\ the length of the vehicle in road segment direction),
+	\item[-] $VME: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{mechanical efficiency} (i.e.\ a constant ratio for the conversion between electrical and mechanical energy),
+	\item[-] $VP_0: VL \rightarrow RSP$ represents a mapping from vehicle labels to their initial road segment \textit{positions} (see Section~\ref{segments}),
+	\item[-] $VC: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their battery \textit{capacities} (i.e.\ the maximum amount of energy that can be stored by the vehicle),
+	\item[-] $VEE: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{electrical efficiency} (i.e.\ a constant ratio for conversion between electrical energy and stored energy), and
+	\item[-] $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their initial \textit{state of charge} (i.e.\ the amount of energy stored by the vehicle initially) such that
+	\[
+		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
+	\]
+\end{itemize}
+Note that again we abstract from many parameters typically considered such as the vehicle weight~\cite{?} or the vehicle geometry~\cite{?}. In particular, we approximate mechanical and electrical efficiencies with constants only.
+
+\paragraph{Demands}
+\label{demands}
+
+Finally, the demands $D$ of the transportation subsystem participants $TSP$ are modeled as four-tuple $(DL, DV, DP, DT)$, where
+\begin{itemize}
+	\item[-] $DL$ represents a finite set of demand \textit{labels} (or demand identifiers),
+	\item[-] $DV: DL \rightarrow VL$ represents a mapping from demand labels to \textit{vehicle} labels (i.e.\ the concerned vehicle),
+	\item[-] $DP: DL \rightarrow RSP$ represents a mapping from demand labels to road segment \textit{positions} (i.e.\ where the concerned vehicle is expected to be), and
+	\item[-] $DT: DL \rightarrow \mathbb{N}^+$ represents a mapping from demand labels to \textit{time} points (i.e.\ when the concerned vehicle is expected to be there)
+\end{itemize}
+Note that our abstraction is based on discrete time. However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, for shorted distances and durations more fine-grained resolutions are needed typically.
+
+\subsection{Power / energy subsystem}
+\label{energy_system}
+
+The energy subsystem $ES$ of the integrated design abstraction is modeled as a tuple $(ESI, ESC)$, where
+\begin{itemize}
+	\item[-] $ESI$ represents the energy subsystem infrastructure (i.e.\ the transmission and distribution network) and
+	\item[-] $ESC$ represents energy subsystem components (i.e.\ the actual producers and consumers).
+\end{itemize}
+Hence, we essentially separate the network characteristics and the network usage. In the following, we first explain the infrastructure in Section~\ref{regions} before describing the components in Section~\ref{components}.
+
+\subsubsection{Infrastructure}
+\label{energy_infrastructure}
+
+The energy subsystem infrastructure $ESI$ of the energy subsystem $ES$ is modeled as a one-tuple $(R)$, where
+\begin{itemize}
+	\item[-] $R$ represents the regions of the energy subsystem infrastructure, which are determined by the voltage levels and transformers of the network.
+\end{itemize}
+Note that we selected a region model~\cite{Hackenberg2012} over a power flow model~\cite{Dommel1968} to reduce modeling effort and increase computational efficiency. In the following, we describe the regions in Section~\ref{regions}.
+
+\paragraph{Regions}
+\label{regions}
+
+The network regions $R$ of the energy subsystem infrastructure $ESI$ are modeled as a five-tuple $(RL, RC, RE, RSR, RSC)$, where
+\begin{itemize}
+	\item[-] $RL$ represents a finite set of region labels (or region identifiers),
+	\item[-] $RC: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to region \textit{capacities} (i.e.\ the maximum amount of energy that can flow through that region in a predefined time interval),
+	\item[-] $RE: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to region \textit{efficiencies} (i.e.\ a constant factor determining the energy that is lost while flowing through that region),
+	\item[-] $RSR: RL \rightarrow \mathcal{P}(RL)$ represents a mapping from region labels their respective \textit{subregion} labels (i.e.\ the lower-voltage regions connected by a transformer), and
+	\item[-] $RSC: RL \rightarrow \mathcal{P}(CL)$ represents a mapping from region labels their respective \textit{subcomponent} labels (i.e.\ the producers and consumers directly attached to that region; Section~\ref{components}).
+\end{itemize}
+Note that regions and components must be assigned to at most one parent region. Consequently, our region model represents the energy system as a tree structure. The nodes of the tree represent \textit{subnetworks} with distinct voltage levels. The edges of the tree represent \textit{transformers} connecting the subnetworks instead. The region model can be derived easily from existing network topologies.
+
+\subsubsection{Components}
+\label{components}
+
+The energy subsystem components $ESC$ of the energy subsystem $ES$ is modeled as a three-tuple $(SL, ES, CS)$, where
+\begin{itemize}
+	\item[-] $SL$ represents the \textit{static loads} (i.e.\ loads assumed to be uncontrollable in our approach),
+	\item[-] $ES$ represents the stationary \textit{energy storages} (i.e.\ variable producers and consumers), and
+	\item[-] $CS$ represents the \textit{charging stations} for the electric vehicles (see Section~\ref{vehicles}).
+\end{itemize}
+In the following, we first explain the static load design abstraction in Section~\ref{static_loads}, before describing the energy storage design abstraction in Section~\ref{energy_storages} and presenting the charging station design abstraction in Section~\ref{charging_stations}.
+
+\paragraph{Static loads}
+\label{static_loads}
+
+The static loads $SL$ of the energy subsystem components $ESC$ are modeled as tuple $(SLL, SLP)$, where
+\begin{itemize}
+	\item[-] $SLL$ represents a finite set of static load \textit{labels} (or static load identifiers), and
+	\item[-] $SLP: SLL \rightarrow (\mathbb{N} \rightarrow \mathbb{R})$ represents a mapping from static load labels $SLL$ to static load \textit{profiles}.
+\end{itemize}
+Note that a static load profile associates a numeric load to each discrete time step. Hereby positive numbers represent energy production and negative loads represent energy consumption. Consequently, static loads can be used to model everything from home appliances to solar panels to conventional power generators. In particular, we assume such loads to be uncontrollable in our design abstraction.
+
+\paragraph{Energy storages}
+\label{energy_storages}
+
+Then, the energy storages $ES$ of the energy subsystem components $ESC$ are modeled as a four-tuple $(ESL, ESCA, ESE, ESS_0)$, where
+\begin{itemize}
+	\item[-] $ESL$ represent a finite set of energy storage \textit{labels} (or energy storage identifiers),
+	\item[-] $ESCA: ESL \rightarrow \mathbb{R}^+$ represents a mapping from energy storage labels to energy storage \textit{capacities} (i.e.\ the maximum amount of energy that can be stored),
+	\item[-] $ESE: ESL \rightarrow \mathbb{R}^+$ represents a mapping from energy storage labels to energy storage \textit{efficiencies} (i.e.\ a constant factor between inflow energy and stored energy), and
+	\item[-] $ESS_0: ESL \rightarrow \mathbb{R}_0^+$ represents a mapping from energy storage labels to initial \textit{state of charges} (i.e.\ the amount of energy stored initially) such that
+	\[
+		ESS_0 \textrm{ such that } ESS_0(esl) \leq ESCA(esl)
+	\]
+\end{itemize}
+Note that the energy storage model is analogous to the electric vehicle model present in Section~\ref{vehicles}. Only, electric vehicles also include mechanical properties. Further, we currently target small batteries rather than large storage facilities. Larger facilities might require more parameters.
+
+\paragraph{Charging stations}
+\label{charging_stations}
+
+Finally, the charging stations $CS$ of the energy subsystem components $ESC$ are modeled as a three-tuple $(CSL, CSP, CSE)$, where
+\begin{itemize}
+	\item[-] $CSL$ represents a finite set of charging station \textit{labels} (or charging station identifiers),
+	\item[-] $CSE: CSL \rightarrow \mathbb{R}^+$ represents a mapping from charging station labels to charging station \textit{efficiencies} (i.e.\ a loss factor for respective energy flows), and
+	\item[-] $CSP: CSL \rightarrow RSL$ represents a mapping from charging station labels to road segment labels with zero road segment distance, i.e.\
+	\[
+		CSP \textrm{ such that } RSD(CSP(csl)) = 0 \textrm{.}
+	\]
+\end{itemize}
+Note that the charging station position mapping $CSP$ defines the static connections between the transportation subsystem and the energy subsystem. Consequently, vehicles are able to interact with the energy subsystem at predefined segments.
