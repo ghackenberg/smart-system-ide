@@ -1,0 +1,147 @@
+\section{States, actions and transition function}
+
+\subsection{States}
+
+\[
+	S_t = (VS_t, ESS_t, CSS_t, RS_t)
+\]
+
+\subsubsection{Vehicles}
+
+\[
+	VS_t = (VP_t, VSOC_t)
+\]
+
+\[
+	VP_t: VL \rightarrow RSP
+\]
+
+\[
+	VSOC_t: VL \rightarrow \mathbb{R}_0^+
+\]
+
+\subsubsection{Energy storages}
+
+\[
+	ESS_t = (ESOC_t)
+\]
+
+\[
+	ESOC_t: ES \rightarrow \mathbb{R}_0^+
+\]
+
+\subsubsection{Charging stations}
+
+\[
+	CSS_t = (CSB_t)
+\]
+
+\[
+	CSB_t: CSL \rightarrow \mathbb{R}
+\]
+
+\subsubsection{Regions}
+
+\[
+	RS_t = (RB_t)
+\]
+
+\[
+	RB_t: RL \rightarrow \mathbb{R}
+\]
+
+\subsection{Actions}
+
+\[
+	A_t = (VA_t, ESA_t)
+\]
+
+\subsubsection{Vehicles}
+
+\[
+	VA_t = (VR_t, VS_t, VB_t)
+\]
+
+\[
+	VR_t: VL \rightarrow (\mathbb{N} \rightarrow RSL)
+\]
+
+\[
+	VS_t: VL \rightarrow \mathbb{R}_0^+
+\]
+
+\[
+	VB_t: VL \rightarrow \mathbb{R}
+\]
+
+\subsubsection{Energy storages}
+
+\[
+	ESA_t = (ESB_t)
+\]
+
+\[
+	ESB_t: ESL \rightarrow \mathbb{R}
+\]
+
+\subsection{Transition function}
+
+\[
+	T: \mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}
+\]
+
+\[
+	T(S_t, A_t) = S_{t+1}
+\]
+
+\[
+	T((VS_t, RS_t, ESS_t, CSS_t), (VA_t, ESA_t)) = 
+\]
+\[
+	(VS_{t+1}, RS_{t+1}, ESS_{t+1}, CSS_{t+1})
+\]
+
+\[
+	VS_{t+1} = f(VS_t, VA_t)
+\]
+
+\[
+	ESS_{t+1} = g(ESS_t, ESA_t)	
+\]
+
+\[
+	CSS_{t+1} = h(VS_{t+1}, VA_t)
+\]
+
+\[
+	RS_{t+1} = i(CSS_{t+1}, ESA_t)
+\]
+
+\subsubsection{Vehicles}
+
+\[
+	(VP_{t+1}, VSOC_{t+1}) =
+\]
+\[
+	f((VP_t, VSOC_t), (VR_t, VS_t, VB_t))
+\]
+
+\[
+	VP_{t+1} = f_1(VP_t, VR_t, VS_t)
+\]
+
+\[
+	VSOC_{t+1} = f_2(VP_t, VSOC_t, VR_t, VS_t, VB_t)
+\]
+
+\subsubsection{Energy storages}
+
+TODO
+
+\subsubsection{Charging stations}
+
+TODO
+
+\subsubsection{Regions}
+
+TODO

@@ -1,0 +1,49 @@
+
+\section{Objectives and Constraints}
+\subsection{Constraints}
+\label{constraints}
+
+In principle, one can define arbitrary constraints over the static and dynamic system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we provide two basic constraints which we believe to be part of any integrated system design. The first constraint makes sure that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation subsystem infrastructure $TSI$ are not exceeded (see Section~\ref{collisions}). The second constraint makes sure that the region capacities $RC$ of the energy subsystem infrastructure $ESI$ are not exceeded (see Section~\ref{capacities}).
+
+\subsubsection{Segment capacities}
+\label{collisions}
+
+TODO
+
+%Overlapping vehicle pairs $OVP : \mathbb{VS} \rightarrow V \times V$
+%\[
+%OVP(VS) = \{(v_1, v_2) \in V \times V \mid
+%\]
+%\[
+%((rs_1,rd_1),\cdot) \in VS(v_1), ((rs_2,rd_2),\cdot) \in VS(v_2) :
+%\]
+%\[
+%rs_1 = rs_2 \wedge (|rd_1 - rd_2| < VL(v_1) / 2
+%\]
+%\[
+%\vee
+%\]
+%\[
+%|rd_1 - rd_2| < VL(v_2) / 2)\}
+%\]
+%Overlapping vehicle sets $OVS : \mathbb{VS} \times V \rightarrow \mathcal{P}(V)$
+%\[
+%OVS(VS,v) = \{v' \in V \mid (v, v') \in OVP(VS)\}
+%\]
+%Collision property $CV : \mathbb{VS} \rightarrow \mathbb{B}$
+%\[
+%CV(VS) \Leftrightarrow \exists v \in V :
+%\]
+%\[
+%|OVS(VS, v)| > RSL(rs) \text{ with } ((rs,\cdot),\cdot) = VS(v)
+%\]
+
+\subsubsection{Region capacities}
+\label{capacities}
+
+TODO
+
+\subsection{Objectives}
+\label{objectives}
+
+In addition to constraints (see Section~\ref{constraints}), our approach supports arbitrary objectives over the static and dynamic properties of the transportation system (see Section~\ref{transport}) and the energy system (see Section~\ref{energy_system}). In particular, we do not want to prescribe any particular objectives. Rather, we believe that it is the designers task to formulate different objectives and explore their effect on the system structure and dynamics. For demonstration (see Section~\ref{demonstration}) we selected objective that we have used also in previous work. Among these objective we consider minimizing traveling times, minimizing energy consumption during driving, and minimizing the energy disbalance of the energy subsystem. Other objectives might include for example minimizing the free road segment space or minimizing the energy storage usage.
