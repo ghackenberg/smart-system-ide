@@ -1,4 +1,4 @@
-\section{Configuration Parameters}
+\section{Design space parameters}
 %\section{The \textbf{TransP-0} integrated design abstraction}
 \label{proposed_model}
 
@@ -6,7 +6,7 @@ The \textsc{TransP-0} design abstraction is intended to support both transportat
 
 \begin{figure}[h!]
 	\includegraphics[width=\columnwidth]{./gfx/system_design.png}
-	\caption{The \textsc{TransP-0} integrated design abstraction comprising various transportation subsystem and power subsystem properties as well as subsystem-specific and -spanning constraints and objectives.}
+	\caption{Overview over the design space parameters supported by \textsc{TransP-0} comprising the transportation and the energy subsystem.}
 	\label{system_design}
 \end{figure}
 
@@ -14,6 +14,11 @@ In the following, we first describe the design abstraction for the transportatio
 
 \subsection{Transportation subsystem}
 \label{transport}
+
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{./gfx/transportation_system.jpg}
+	\caption{Illustration of the transportation subsystem model including an infrastructure (composed of road intersections and segment) and participants.}
+\end{figure}
 
 The transportation subsystem $TS$ of the integrated design abstraction is modeled as a tuple $(TSI, TSP)$, where
 \begin{itemize}
@@ -106,6 +111,11 @@ Note that our abstraction is based on discrete time. However, we do not prescrib
 
 \subsection{Power / energy subsystem}
 \label{energy_system}
+
+\begin{figure}[h]
+	\includegraphics[width=\columnwidth]{./gfx/energy_system.jpg}
+	\caption{Illustration of the energy subsystem model including an infrastructure (composed of regions) and components (i.e.\ producers and consumers).}
+\end{figure}
 
 The energy subsystem $ES$ of the integrated design abstraction is modeled as a tuple $(ESI, ESC)$, where
 \begin{itemize}
