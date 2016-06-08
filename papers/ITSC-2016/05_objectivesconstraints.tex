@@ -1,42 +1,35 @@
+\section{Requirements on \textbf{TransP-0} dynamics}
+\label{requirements}
 
-\section{Objectives and constraints}
+While the previous section outlined the state space of \textsc{TransP-0} system designs, a concrete control strategy has not been proposed. In fact, we do not want to prescribe any specific control strategy. Rather, we want to highlight requirements that control strategies must satisfy in general. We assume that such requirements are expressed in terms of the constraints and objectives of the optimal control problem introduced in Section~\ref{dynamics}. Subsequently, we first discuss the constraints in Section~\ref{constraints} before elaborating on potential objectives in Section~\ref{objectives}. Note that constraints and objectives could be defined over the static design space parameters (see Section~\ref{proposed_model}) as well. Examples include maximizing the average mechanical and electrical vehicle efficiency or constraining the number of road segments per area unit. However, we did not focus these ''static'' requirements in our work yet.
+
 \subsection{Constraints}
 \label{constraints}
 
-In principle, one can define arbitrary constraints over the static and dynamic system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we provide two basic constraints which we believe to be part of any integrated system design. The first constraint makes sure that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation subsystem infrastructure $TSI$ are not exceeded (see Section~\ref{collisions}). The second constraint makes sure that the region capacities $RC$ of the energy subsystem infrastructure $ESI$ are not exceeded (see Section~\ref{capacities}).
+In principle, one can define arbitrary constraints over the dynamic (and static) system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we provide two basic constraints which we believe to be part of any integrated system design. The first constraint makes sure that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation subsystem infrastructure $TSI$ are not exceeded (see Section~\ref{collisions}). The second constraint makes sure that the region capacities $RC$ of the energy subsystem infrastructure $ESI$ are not exceeded (see Section~\ref{capacities}).
 
 \subsubsection{Segment capacities}
 \label{collisions}
 
-TODO
-
-%Overlapping vehicle pairs $OVP : \mathbb{VS} \rightarrow V \times V$
-%\[
-%OVP(VS) = \{(v_1, v_2) \in V \times V \mid
-%\]
-%\[
-%((rs_1,rd_1),\cdot) \in VS(v_1), ((rs_2,rd_2),\cdot) \in VS(v_2) :
-%\]
-%\[
-%rs_1 = rs_2 \wedge (|rd_1 - rd_2| < VL(v_1) / 2
-%\]
-%\[
-%\vee
-%\]
-%\[
-%|rd_1 - rd_2| < VL(v_2) / 2)\}
-%\]
-%Overlapping vehicle sets $OVS : \mathbb{VS} \times V \rightarrow \mathcal{P}(V)$
-%\[
-%OVS(VS,v) = \{v' \in V \mid (v, v') \in OVP(VS)\}
-%\]
-%Collision property $CV : \mathbb{VS} \rightarrow \mathbb{B}$
-%\[
-%CV(VS) \Leftrightarrow \exists v \in V :
-%\]
-%\[
-%|OVS(VS, v)| > RSL(rs) \text{ with } ((rs,\cdot),\cdot) = VS(v)
-%\]
+The road segment capacity constraint makes sure, that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
+\[
+	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
+\]
+\[
+	VP_t(vl_1) = (rsl, d_1) \wedge VP_t(vl_2) = (rsl, d_2) \wedge
+\]
+\[
+	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}
+\]
+Note that the definitions says that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, from the overlapping vehicle pairs we can calcualte the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with the power set operator $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping pairs such that $\forall rsl \in RSL, vl \in VL:$
+\[
+	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
+\]
+Note that the overlapping pairs are ordered such that duplicates are avoided by the previous definition. Finally, we can derive the \textit{collision property} mapping $CP_t : RSL \rightarrow \mathbb{B}$ with the boolean set $\mathbb{B} = \{true, false\}$, which calculates for each road segment whether a collision occurred in state $S_t$ or not such that $\forall rsl \in RSL:$
+\[
+	CP_t(rsl) \Leftrightarrow \exists vl \in VL : |OVS_t(rsl, vl)| > RSC(rsl) \textrm{.}
+\]
+Consequently, a state is collision-free if for all road segments the collision property is $false$. Note that our constraint definition operates on the state information only. However, collisions might occur in between two states, e.g.\ when one vehicle is overtaking another vehicle on a single-lane road segment within one time step. An advanced constraint definition is required to capture these cases also, but might be more difficult to compute. Alternatively, one might reduce the time resolution such that these cases do not occur.
 
 \subsubsection{Region capacities}
 \label{capacities}
@@ -46,6 +39,4 @@ TODO
 \subsection{Objectives}
 \label{objectives}
 
-In addition to constraints (see Section~\ref{constraints}), our approach supports arbitrary objectives over the static and dynamic properties of the transportation system (see Section~\ref{transport}) and the energy system (see Section~\ref{energy_system}). In particular, we do not want to prescribe any particular objectives. Rather, we believe that it is the designers task to formulate different objectives and explore their effect on the system structure and dynamics. 
-%For demonstration (see Section~\ref{demonstration}) we selected objective that we have used also in previous work. 
-Among objectives we consider minimizing traveling times, minimizing energy consumption during driving, and minimizing the energy disbalance of the energy subsystem. Other objectives might include for example minimizing the free road segment space or minimizing energy storage usage.
+In addition to constraints (see Section~\ref{constraints}), our approach supports arbitrary objectives over the dynamic (and static) properties of the transportation subsystem (see Section~\ref{transport}) and the energy subsystem (see Section~\ref{energy_system}). In particular, we do not want to prescribe any particular objectives. Rather, we believe that it is the designers task to formulate different objectives and explore their effect on the system structure and dynamics. Among potential objectives of the system dynamics we consider minimizing traveling times, minimizing energy consumption during driving, and minimizing the energy disbalance of individual energy subsystem infrastructure regions. Other objectives might include for example minimizing the free road segment space or minimizing energy storage usage. The ''static'' objectives might include - for example - minimizing the number of road segments, minimizing the average slope of the road segments, or maximizing the number of energy subsystem infrastructure regions.
