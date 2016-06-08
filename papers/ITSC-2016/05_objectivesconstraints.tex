@@ -11,7 +11,7 @@ In principle, one can define arbitrary constraints over the dynamic (and static)
 \subsubsection{Segment capacities}
 \label{collisions}
 
-The road segment capacity constraint makes sure, that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
+The road segment capacity constraint makes sure that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
 \[
 	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
 \]
@@ -34,7 +34,20 @@ Consequently, a state is collision-free if for all road segments the collision p
 \subsubsection{Region capacities}
 \label{capacities}
 
-TODO
+In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. To derive the constraint, we first define the \textit{absolute energy flow} mapping $ASF_t: RL \rightarrow \mathbb{R}$ such that $\forall rl \in RL:$
+\[
+	ASF_t(rl) = (\sum_{sll \in SLL: SLR(sll) = rl} |SLP(sll)(t+1)| +
+\]
+\[
+	\sum_{esl \in ESL: ESR(esl) = rl} |ESB_{t+1}(esl)| +
+\]
+\[
+	\sum_{csl \in CSL: CSR(csl) = rl} |CSB_{t+1}(csl)| +
+\]
+\[
+	\sum_{rl' \in RL: RP(rl') = rl} |RB_{t+1}(rl')|) * RE(rl) \textrm{.}
+\]
+Note that in contrast to the region balance definition (see Section~\ref{transitions_regions}) the absolute energy flow uses the absolute balances of the subcomponents and subregions multiplied by the region efficiency. Consequently, the absolute energy flow is an indicator for the amount of energy that has to be transported through the region in each time step. Finally, we require the absolute energy flow for each region to be smaller or equal than the respective region capacity.
 
 \subsection{Objectives}
 \label{objectives}
