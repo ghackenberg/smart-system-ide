@@ -1,52 +1,56 @@
-\section{Differentiation from related work}
-\label{related_work}
-
-In the following we first review related approaches in Section~\ref{approaches} before deriving remaining issues in Section~\ref{problems}. Then, we describe the authors' background in Section~\ref{backgrounds} before summarizing the claimed contributions in Section~\ref{contributions}.
+%\section{Differentiation from related work}
+%\label{related_work}
+%
+%In the following we first review related approaches in Section~\ref{approaches} before deriving remaining issues in Section~\ref{problems}. Then, we describe the authors' background in Section~\ref{backgrounds} before summarizing the claimed contributions in Section~\ref{contributions}.
 
 \subsection{Related approaches}
 \label{approaches}
 
-Previous studies have shown that, given a high penetration of EVs, uncontrolled charging can impose increased peak loads within the distribution network \cite{lopes2009identifying}. Intelligent scheduling methods are widely discussed as key approaches to integrate electric vehicles into the power grid \cite{yang2015computational}. According approaches often focus on minimizing single or multiple objectives within given power system models, while restricting valid behavior in terms of a set of constraints. For instance, typical objectives are minimizing cost (or maximizing welfare), power losses, emissions, power deviations or optimizing battery performance of EVs within power systems \cite{yang2015computational}. Here, the power systems are consisted of a number of electric devices such as conventional or renewable energy sources, energy consumers as well as electric infrastructure.
-
-In this context, Andreotti et al.~\cite{andreotti2012review} compare single-objective optimization methods within a smart grid context under the presence of EVs to evaluate model effectiveness in terms of operational limits and used objective functions. In this context, to sufficiently address technical and economic objectives for PEVs, the authors argue higher suitability of multi-objective optimization methods. 
-
-Zakariazadeh et al.~\cite{zakariazadeh2014multi} propose a multi-objective scheduling method for electric vehicles within a smart distribution network addressing economic and environmental objectives as well as technical constraints. Here, the approach manages to reduce operational costs and emissions, achieving Pareto-optimal solutions.
-
+Intelligent scheduling methods are widely discussed as key approaches to integrate electric vehicles into the power grid and focus on minimizing single or multiple objectives within given power system models such as minimizing cost (or maximizing welfare), power losses, emissions, power deviations or optimizing battery performance of EVs within power systems \cite{yang2015computational}. 
+%Here, power systems are consisted of a number of electric devices such as conventional or renewable energy sources, energy consumers as well as electric infrastructure. 
+To sufficiently address technical and economic objectives for PEVs, Andreotti et al.~\cite{andreotti2012review} argue higher suitability of multi-objective optimization methods over single-objective optimization methods to evaluate model effectiveness in terms of operational limits and used objective functions. 
+Zakariazadeh et al.~\cite{zakariazadeh2014multi} propose a multi-objective scheduling method for electric vehicles within a smart distribution network addressing economic and environmental objectives as well as technical constraints which manages to reduce operational costs and emissions and achieve Pareto-optimal solutions.
 To achieve optimal charging decisions for EVs, Ota et al.~\cite{ota2012autonomous} propose a decentralized V2G control scheme to address the intermittency of RES energy production using electric vehicles. However, the authors focus on the effects of an according charging control scheme within an isolated power system only.
 
-Here, approaches often restrict the impact of electric vehicles to decisions on charging or discharging their batteries at charging stations. However, in subsequence, individual EV objectives describing routing preferences such as shortest traveling time or energy-efficiency for EVs cannot be sufficiently taken into account. Instead, emphasis is put on the power system side, while the transportation system including traffic participants isn't represented microscopically.
-
-Another highly relevant direction for efficiently integrating electric vehicles into the power grid and reduce negative impacts is are approaches utilizing Vehicle Routing Problems (VRPs). Methods for vehicle routing typically focus on optimizing route selection for single or multiple traffic participants towards single or multiple objectives and a given set of constraints. Addressing objectives of energy-efficiency in terms of routing problems, Eco-Routing approaches target energy-efficient route selection. In contrast, Eco-Driving approaches target energy-efficient intermediate driving behavior ~\cite{ericsson2006optimizing}.
-
-Felipe et al.~\cite{felipe2014heuristic} propose multiple heuristics for routing electric vehicles which consider different partial recharge strategies and recharge technologies while traveling along routes. However, approaches does not take the effects of recharging within the power system into account for general cost evaluation. 
-
-Integrating both scheduling and routing approaches for EV, Barco et al.~\cite{barco2013optimal} present an approach for minimizing operation cost for battery electric vehicle (BEV) fleets. While the authors propose a methodology which focuses on optimal routing and scheduling of charge for EV fleets, the approach does not consider effects on the power system when making routing and charging decisions in EVs.
+%Another highly relevant direction for efficiently integrating electric vehicles into the power grid and reduce negative impacts is are approaches utilizing Vehicle Routing Problems (VRPs). Methods for vehicle routing typically focus on optimizing route selection for single or multiple traffic participants towards single or multiple objectives and a given set of constraints. Addressing objectives of energy-efficiency in terms of routing problems, Eco-Routing approaches target energy-efficient route selection. In contrast, Eco-Driving approaches target energy-efficient intermediate driving behavior ~\cite{ericsson2006optimizing}.
+Felipe et al.~\cite{felipe2014heuristic} propose multiple heuristics for routing electric vehicles which consider different partial recharge strategies and recharge technologies while traveling along routes. 
+Integrating both scheduling and routing approaches for EV, Barco et al.~\cite{barco2013optimal} present an approach for minimizing operation cost for battery electric vehicle (BEV) fleets. While the authors propose a methodology which focuses on optimal routing and scheduling of charge for EV fleets, the approach does not consider microscopic effects on the power system when making routing and charging decisions in EVs.
 
 \subsection{Remaining issues}
 \label{problems}
 
 In summary, we found that current approaches do not sufficiently address the objectives and constraints of both transportation and power systems to holistically estimate the effects of future power and transportation system scenarios. While approaches for scheduling EVs heavily address the effects of EVs within the power system, they neglect their effects on the transportation system. In contrast, routing approaches for EVs heavily address the effects of single or multiple EVs within the transportation system, in which routes are optimized, but neglect a detailed representation of the power system and it's underlying objectives. Furthermore rapid adjustment of control strategies has to be considered, when considering rapidly changing control parameters.
 
-More importantly, addressing multiple objectives when considering interfacing transportation and power systems remains a central issue for stakeholders involved when planning those systems. Assessing the balance of the interests of transportation systems contra the power system is a challenge, which has to be tackled in the future.
+%Here, approaches often restrict the impact of electric vehicles to decisions on charging or discharging their batteries at charging stations. However, in subsequence, individual EV objectives describing routing preferences such as shortest traveling time or energy-efficiency for EVs cannot be sufficiently taken into account. Instead, emphasis is put on the power system side, while the transportation system including traffic participants isn't represented microscopically.
 
-\subsection{Authors' background}
-\label{backgrounds}
+%VRP
+%However, approaches does not take the effects of recharging within the power system into account for general cost evaluation. 
 
-In \cite{Hackenberg2012} we presented a model of the electric power system suitable for large-scale computation. The model divides the power system into regions and subregions. In each time step for each region the power balance is calculated as the sum of all subregion power balances.
+More importantly, addressing multiple objectives when considering interfacing transportation and power systems remains a central issue for stakeholders involved when planning those systems. 
 
-Then, in \cite{ascher2014early} we presented a model that captures the mobility demands of individual vehicles within transportation systems. For this, the technique employs a representation which formulates multi-objective traffic flows as optimal control problems. Furthermore, the transportation infrastructure is represented as directed graph, where the edges and the distances traveled on edges represent the positions of electric vehicles.
-
-Finally, in \cite{ascher2015integrated} we presented a component-based systems modeling technique which allows one to express static interaction (e.g. between vehicle and controller) as well as dynamic interaction between components (e.g. vehicle and charging station). Here, the presented modeling approach allows one to microscopically model power systems based on individual electric devices and transportation systems based on individual cars in terms of components. We then proposed an integrated transportation and power system model, which allows to capture the respective demands of both transportation and power systems microscopically.
+%Assessing the balance of the interests of transportation systems contra the power system is a challenge, which has to be tackled in the future.
 
 \subsection{Claimed contributions}
 \label{contributions}
+%\subsection{Authors' background}
+%\label{backgrounds}
 
-In this work, we describe our approach to system design for modeling parameters, objectives and constraints. The proposed design abstraction allows to rapidly vary parameter configurations to adapt to different scenarios.
+In \cite{Hackenberg2012} we presented a model of the electric power system suitable for large-scale computation, which divides the power system into regions and subregions.
+%, where in each time step for each region the power balance is calculated as the sum of all subregion power balances.
+Then, in \cite{ascher2014early} we proposed a model which represents multi-objective traffic flows as an optimal control problem and microscopically captures the mobility demands of individual vehicles within transportation systems.
+%Furthermore, the transportation infrastructure is represented as directed graph, where the edges and the distances traveled on edges represent the positions of electric vehicles.
+Finally, in \cite{ascher2015integrated} we presented a systems modeling technique which allows one to microscopically model and express static and dynamic interaction between components of both power systems and transportation systems.
+%which allows one to express static and dynamic interaction between components. The presented modeling approach
+ %based on individual electric devices and based on individual cars in terms of components.
+%We then proposed an integrated transportation and power system model, which allows to capture the respective demands of both transportation and power systems microscopically.
 
-Then, we formally describe our model for integrated transportation and power systems. For this, we present and detail the individual components of our model within transportation and power systems. Here, we focus on describing the microscopic behavior of individual components of the transportation and power system, i.e. individual cars and electric devices.
+%\subsection{Claimed contributions}
+%\label{contributions}
+
+In this work, we describe an approach to system design for rapidly varying and evaluating parameters, objective and constraint configurations within integrated transportation and power system scenarios. 
+For this, we formally describe our model for integrated transportation and power systems in terms of the microscopic behavior of individual components.
+%of the transportation and power system, i.e. individual cars and electric devices.
 
 %Substantially, in our given model, transportation and power systems are subject to a set of different demands imposed on them. 
 %Within the transportation system mobility demands are expressed by passengers, who impose (1)~position preferences including origin and destination of travel as well as (2)~time preferences, which include departure and arrival times. Currently, we restrict the considered transportation modes within our model to electric vehicles.
 %Within the power system, power demands are expressed by electric devices in terms of electric power loads (or energy flows) within specific times and durations. To satisfy power demands, the power system employs power generators representing different renewable energy sources.
-
-Finally, we demonstrate our approach and the employed model within a number of example scenarios. Here we show various scenarios for commuter traffic, which vary in terms of their traffic network structure, voltage net structure as well as employed objective weights through a number of different configurations.
