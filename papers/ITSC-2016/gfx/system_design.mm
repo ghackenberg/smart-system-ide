@@ -1,28 +1,23 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465289729686">
+<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465373549423">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p style="text-align: center">
-      Properties
+      Design
     </p>
     <p style="text-align: center">
-      of the
+      space
     </p>
     <p style="text-align: center">
-      <i>TransP-0</i>
-    </p>
-    <p style="text-align: center">
-      design
-    </p>
-    <p style="text-align: center">
-      abstraction
+      parameters
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font BOLD="true" NAME="SansSerif" SIZE="16"/>
 <node CREATED="1465211008304" ID="ID_1610327320" MODIFIED="1465212431869" POSITION="right" TEXT="Transportation">
 <edge COLOR="#ff0000"/>
@@ -64,29 +59,27 @@
 <node CREATED="1465211360548" ID="ID_1879722437" MODIFIED="1465211363937" TEXT="Regions">
 <node CREATED="1465211385709" ID="ID_1334019984" MODIFIED="1465211387697" TEXT="Capacity"/>
 <node CREATED="1465211460596" ID="ID_781794636" MODIFIED="1465211462153" TEXT="Efficiency"/>
-<node CREATED="1465211481788" ID="ID_1435027765" MODIFIED="1465211608864" TEXT="Subregions"/>
-<node CREATED="1465211486060" ID="ID_1993339903" MODIFIED="1465211879687" TEXT="Components"/>
+<node CREATED="1465373562809" ID="ID_1320957715" MODIFIED="1465373566668" TEXT="Parent region"/>
 </node>
 </node>
 <node CREATED="1465211049174" ID="ID_501545721" MODIFIED="1465212420038" TEXT="Components">
 <font NAME="SansSerif" SIZE="14"/>
 <node CREATED="1465211401781" ID="ID_1248262973" MODIFIED="1465211409377" TEXT="Static loads">
 <node CREATED="1465211470860" ID="ID_692950692" MODIFIED="1465211472433" TEXT="Profile"/>
+<node CREATED="1465373574656" ID="ID_1017351186" MODIFIED="1465373578492" TEXT="Parent region"/>
 </node>
 <node CREATED="1465211433381" ID="ID_1743851641" MODIFIED="1465212027095" TEXT="Energy storages">
 <node CREATED="1465211500012" ID="ID_715051073" MODIFIED="1465211502713" TEXT="Capacity"/>
 <node CREATED="1465211503148" ID="ID_1379623573" MODIFIED="1465211504640" TEXT="Efficiency"/>
 <node CREATED="1465211691099" ID="ID_1618293927" MODIFIED="1465211924887" TEXT="State of charge (initial)"/>
+<node CREATED="1465373579752" ID="ID_629231125" MODIFIED="1465373582404" TEXT="Parent region"/>
 </node>
 <node CREATED="1465211409748" ID="ID_766392871" MODIFIED="1465211419825" TEXT="Charging stations">
 <node CREATED="1465288804802" ID="ID_1741137267" MODIFIED="1465288806015" TEXT="Position"/>
 <node CREATED="1465211639619" ID="ID_1559070427" MODIFIED="1465211646416" TEXT="Efficiency"/>
+<node CREATED="1465373583281" ID="ID_138346599" MODIFIED="1465373585428" TEXT="Parent region"/>
 </node>
 </node>
-</node>
-<node CREATED="1465214204171" ID="ID_1153600132" MODIFIED="1465222726571" POSITION="right" TEXT="Constraints &amp; objectives">
-<edge COLOR="#00ff00"/>
-<font BOLD="true" NAME="SansSerif" SIZE="14"/>
 </node>
 </node>
 </map>
