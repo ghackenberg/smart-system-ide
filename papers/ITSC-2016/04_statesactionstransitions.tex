@@ -1,106 +1,104 @@
 \section{States, actions and transition function}
+Subsequently we describe the states, actions and transition function of the underlying optimal control problem as tuple $(S_t, A_t, T(S_t, A_t))$ in terms of their individual decomposition.
 
 \subsection{States}
-
-\[
+States $S_t$ are modeled as a four tuple $
 	S_t = (VS_t, ESS_t, CSS_t, RS_t)
-\]
+$, consisted of vehicle states $VS_t$, energy storage states $ESS_t$, charging station states $CSS_t$ as well as region states $RS_t$.
 
 \subsubsection{Vehicles}
-
-\[
+The vehicle state $
 	VS_t = (VP_t, VSOC_t)
-\]
-
-\[
-	VP_t: VL \rightarrow RSP
-\]
-
-\[
-	VSOC_t: VL \rightarrow \mathbb{R}_0^+
-\]
+$ is represented as a tuple, where
+\begin{itemize}
+	\item[-] $VP_t: VL \rightarrow RSP$ represents a mapping from vehicle labels to region power,
+	\item[-] $VSOC_t: VL \rightarrow \mathbb{R}_0^+$ represents a mapping from vehicle labels to their state of charge (i.e. the amount of currently stored energy).
+\end{itemize}
 
 \subsubsection{Energy storages}
-
-\[
+Energy storage state
+$
 	ESS_t = (ESOC_t)
-\]
+$ is represented as a single, where
 
-\[
-	ESOC_t: ES \rightarrow \mathbb{R}_0^+
-\]
+$ESOC_t: ESL \rightarrow \mathbb{R}_0^+$ represents a mapping from energy storage labels to their current state of charge. 
 
 \subsubsection{Charging stations}
-
-\[
+Charging stations state
+$
 	CSS_t = (CSB_t)
-\]
+$ is represented as a single, where
 
-\[
+$
 	CSB_t: CSL \rightarrow \mathbb{R}
-\]
+$ describes a mapping from charging station labels to the current charging station balance (i.e. the amount of energy sent or received from a connected vehicle).
 
 \subsubsection{Regions}
-
-\[
+Region state
+$
 	RS_t = (RB_t)
-\]
+$
+is represented as a single, where
 
-\[
+$
 	RB_t: RL \rightarrow \mathbb{R}
-\]
+$ describes a mapping from region labels to the current region balance (i.e. the aggregated loads of connected electric devices).
 
 \subsection{Actions}
-
-\[
+Actions $A_t$ are modeled as a tuple 
+$
 	A_t = (VA_t, ESA_t)
-\]
+$, consisted of vehicle actions $VA_t$ as well as energy storage actions $ESA_t$.
 
 \subsubsection{Vehicles}
-
-\[
+Vehicle actions
+$
 	VA_t = (VR_t, VS_t, VB_t)
-\]
-
-\[
+$ are represented as a three tuple, where
+\begin{itemize}
+	\item[-]
+$
 	VR_t: VL \rightarrow (\mathbb{N} \rightarrow RSL)
-\]
-
-\[
+$ represents a mapping from vehicle labels to a finite number of road segment labels (i.e. route which is followed by a vehicle),
+	\item[-]
+$
 	VS_t: VL \rightarrow \mathbb{R}_0^+
-\]
-
-\[
+$ describes a mapping from vehicle labels to the current vehicle speeds (i.e. the selected speed the vehicle travels),
+	\item[-]
+$
 	VB_t: VL \rightarrow \mathbb{R}
-\]
+$ represents a mapping from vehicle labels to vehicle balances (i.e. the amount of energy the vehicle sends or receives from a charging station).
+\end{itemize}
 
 \subsubsection{Energy storages}
-
-\[
+Energy storage actions 
+$
 	ESA_t = (ESB_t)
-\]
+$ are represented as a single, where
 
-\[
+$
 	ESB_t: ESL \rightarrow \mathbb{R}
-\]
+$ defines a mapping from energy storage labels to energy storage balances (i.e. the amount of energy which is released from or stored in energy storages).
 
 \subsection{Transition function}
-
-\[
+The transition function is a mapping
+$
 	T: \mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}
-\]
-
+$ describing the transition from a state, given an action to a new state.
+Stepping forward in time, the transition function is then defined as a function
 \[
-	T(S_t, A_t) = S_{t+1}
-\]
+	T(S_t, A_t) = S_{t+1} \mathrm{,}
+\]where $S_{t+1}$ describes the state following $S_t$ after choosing action $A_t$. Accordingly, the transition function $T$ is then
 
 \[
 	T((VS_t, RS_t, ESS_t, CSS_t), (VA_t, ESA_t)) = 
 \]
 \[
-	(VS_{t+1}, RS_{t+1}, ESS_{t+1}, CSS_{t+1})
+	(VS_{t+1}, RS_{t+1}, ESS_{t+1}, CSS_{t+1}) \mathrm{,}
 \]
+and contains individual states $S_t$ and actions $A_t$.
 
+The individual vehicle state
 \[
 	VS_{t+1} = f(VS_t, VA_t)
 \]
