@@ -1,6 +1,6 @@
 <map version="1.0.1">
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
-<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465373549423">
+<node CREATED="1465210981507" ID="ID_395023258" MODIFIED="1465404481257">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -11,9 +11,6 @@
     </p>
     <p style="text-align: center">
       space
-    </p>
-    <p style="text-align: center">
-      parameters
     </p>
   </body>
 </html>
