@@ -18,7 +18,7 @@ In the following, we first describe the design space parameters for the transpor
 We decided to model the transportation subsystem in a mesoscopic fashion~\cite{?}. In particular, our model includes a representation of the road network and each individual vehicle. The road network is modeled as a directed graph, where the nodes represent intersections and the edges represent the actual roads. Hereby, the edge weight defines the number of lanes and the edge direction indicates the prescribed driving direction. Consequently, two edges have to be used to describe bidirectional traffic flows. Then, the vehicles represent ''particles'' that are traveling along the road network. In particular, vehicles are assigned to points on the edges of the road network. Hence, vehicles are able to move along one edge and jump between edges at intersections. Finally, the \textsc{TransP-0} abstraction of the transportation subsystem is illustrated in Figure~\ref{transport_illustration}.
 
 \begin{figure}[h]
-	\includegraphics[height=100pt, width=\columnwidth]{./gfx/transportation_system.jpg}
+	\includegraphics[width=\columnwidth]{./gfx/transportation_system.png}
 	\caption{Illustration of a transportation subsystem design including an infrastructure (composed of road intersections and segment) and participants.}
 	\label{transport_illustration}
 \end{figure}
