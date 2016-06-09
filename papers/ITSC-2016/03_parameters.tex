@@ -5,9 +5,11 @@
 The \textsc{TransP-0} design abstraction is intended to support both transportation and power system engineers during early project phases in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and energy subsystem parameters. Note that we have tried to reduce the number of parameters to a minimum. Hereby, we also accept potential losses in physical accuracy.
 
 \begin{figure}[h!]
-	\includegraphics[width=\columnwidth]{./gfx/system_design.png}
+	\begin{center}
+	\includegraphics[trim=0 10 0 0, width=0.875\columnwidth]{./gfx/system_design.png}
 	\caption{Overview over the \textsc{TransP-0} design space parameters comprising the transportation and the energy subsystem.}
 	\label{system_design}
+	\end{center}
 \end{figure}
 
 In the following, we first describe the design space parameters for the transportation subsystem in Section~\ref{transport} and the energy subsystem in Section~\ref{energy_system}.
@@ -18,9 +20,11 @@ In the following, we first describe the design space parameters for the transpor
 We decided to model the transportation subsystem in a mesoscopic fashion~\cite{?}. In particular, our model includes a representation of the road network and each individual vehicle. The road network is modeled as a directed graph, where the nodes represent intersections and the edges represent the actual roads. Hereby, the edge weight defines the number of lanes and the edge direction indicates the prescribed driving direction. Consequently, two edges have to be used to describe bidirectional traffic flows. Then, the vehicles represent ''particles'' that are traveling along the road network. In particular, vehicles are assigned to points on the edges of the road network. Hence, vehicles are able to move along one edge and jump between edges at intersections. Finally, the \textsc{TransP-0} abstraction of the transportation subsystem is illustrated in Figure~\ref{transport_illustration}.
 
 \begin{figure}[h]
-	\includegraphics[width=\columnwidth]{./gfx/transportation_system.png}
+	\begin{center}
+	\includegraphics[trim=0 6 0 21, width=.825\columnwidth]{./gfx/transportation_system2.png}
 	\caption{Illustration of a transportation subsystem design including an infrastructure (composed of road intersections and segment) and participants.}
 	\label{transport_illustration}
+	\end{center}
 \end{figure}
 
 Formally, the transportation subsystem $TS$ of the integrated design abstraction is modeled as a tuple $(TSI, TSP)$, where
@@ -118,9 +122,11 @@ Note that our abstraction is based on discrete time. However, we do not prescrib
 Similar to the transportation subsystem (see Section~\ref{transport}), we decided to model the energy subsystem in a mesoscopic fashion~\cite{Hackenberg2012}. Note that microscopic models represent the individual power lines and their physical characteristics~\cite{Dommel1968}, while macroscopic models aggregate the entire energy subsystem into a single market place without critical power line characteristics~\cite{Castronuovo2004}. Our mesoscopic model takes an intermediate approach, where only selected characteristics of the energy subsystem topology are represented. In particular, we limit our representation to subnetworks of equal voltage level (i.e.\ the network regions) and their hierarchical connectivity. Consequently, balances can be computed also for single regions rather than the entire electricity market. Finally, the \textsc{TransP-0} abstraction of the energy subsystem is illustrated in Figure~\ref{energy_illustration}.
 
 \begin{figure}[h]
-	\includegraphics[width=\columnwidth]{./gfx/energy_system.png}
+	\begin{center}
+	\includegraphics[trim=0 10 0 15, width=0.95\columnwidth]{./gfx/energy_system.png}
 	\caption{Illustration of a energy subsystem design including an infrastructure (composed of regions) and components (i.e.\ producers and consumers).}
 	\label{energy_illustration}
+	\end{center}
 \end{figure}
 
 Formally, the energy subsystem $ES$ of the integrated design abstraction is modeled as a tuple $(ESI, ESC)$, where
