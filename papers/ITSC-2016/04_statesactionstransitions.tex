@@ -46,11 +46,10 @@ In an advanced version of the design abstraction one could also consider failure
 \subsubsection{Region states}
 \label{states_regions}
 
-Finally, the region states $R_t$ are modeled as a three-tuple $(RP_t, RC_t, RB_t)$, where
+Finally, the region states $R_t$ are modeled as a three-tuple $(RE_t^<, RE_t^>, RB_t)$, where
 \begin{itemize}
-	\item $RP_t: RL \rightarrow \mathbb{R}_0^+$ represents ...
-	\item $RC_t: RL \rightarrow \mathbb{R}_0^-$ represents ...
-	\item $RB_t: RL \rightarrow \mathbb{R}$ represents a mapping from region labels to their current \textit{balance} (i.e.\ the aggregated loads of subregions and subcomponents).
+	\item $RE_t^\sim: RL \rightarrow \mathbb{R}, \sim \in \{<,>\}$ represent mappings from region labels to their current aggregate \textit{energy} production (i.e.\ $\sim = >$) and consumption (i.e.\ $\sim = <$) values (obtained form the subregions and subcomponents) and
+	\item $RB_t: RL \rightarrow \mathbb{R}$ represents a mapping from region labels to their current \textit{balances} (i.e.\ the aggregated loads).
 \end{itemize}
 Again, we neglect physical state parameters such as power line temperatures or failure modes (e.g.\ due to exceeded temperature limits or due to environmental influences). Consequently, we assume that the energy subsystem infrastructure is available during the entire system operation. In an advanced version of the design abstraction one might also consider failure modes and respective repair actions ~\cite{?} as well as additional topological and physical characteristics.
 
@@ -160,20 +159,35 @@ Consequently, the charging station balance equals to the vehicle balance multipl
 \subsubsection{Region transition function}
 \label{transitions_regions}
 
-Finally, we decompose the region transition function $RTF$ into one partial transition function $RBTF$, where
+Finally, we decompose the region transition function $RTF$ into three partial transition functions $RETF^<,RETF^>,RBTF$, where
 \begin{itemize}
-	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represent the \textit{region balance transition function} mapping the static load profiles, energy storage balances, charging station balances, and subregion balances to region balances such that $\forall rl \in RL:$
+	\item $RE_{t+1}^\sim = RETF^\sim(ESB_{t+1}, CSB_{t+1})$ with $\sim \in \{<,>\}$ represent the \textit{region energy transition functions} aggregating the associated static load profiles, energy storage balances, charging station balances, and subregion balances such that $\forall rl \in RL:$
 	\[
-		RB_{t+1}(rl) = (\sum_{sll \in SLL: SLR(sll) = rl} SLP(sll)(t+1) +
+		RE_{t+1}^\sim = \sum_{sll \in SLL: SLR(sll) = rl} F_\sim(SLP(sll)(t+1)) +
+		\]
+		\[
+		\sum_{esl \in ESL: ESR(esl) = rl} F_\sim(ESB_{t+1}(esl)) +
+		\]
+		\[
+		\sum_{csl \in CSL: CSR(csl) = rl} F_\sim(CSB_{t+1}(csl)) +
+		\]
+		\[
+		\sum_{rl' \in RL: RP(rl') = rl} F_\sim(RB_{t+1}(rl')) \textrm{, where}
+	\]
+	the function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ with $\sim \in \{<,>\}$ filters the production and consumption values respectively such that
+	\[
+		F_\sim(x) = \begin{cases}
+			x & \quad \textrm{if } x \sim 0 \\
+			0 & \quad \textrm{otherwise}
+		\end{cases}
+		\textrm{, and}
+	\]
+	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represent the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall rl \in RL:$
+	\[
+		RB_{t+1}(rl) = RE_{t+1}^< * (1 + RE(rl)) +
 	\]
 	\[
-		\sum_{esl \in ESL: ESR(esl) = rl} ESB_{t+1}(esl) +
-	\]
-	\[
-		\sum_{csl \in CSL: CSR(csl) = rl} CSB_{t+1}(csl) +
-	\]
-	\[
-		\sum_{rl' \in RL: RP(rl') = rl} RB_{t+1}(rl')) * RE(rl) \textrm{.}
+		RE_{t+1}^> * (1 - RE(rl)) \textrm{.}
 	\]
 \end{itemize}
-Note that the region balance transition function is defined recursively. Consequently, first the lowest-level region balances have to be computed (i.e.\ the regions without subregions). Then, the upper levels can be computed. Furthermore, note that the sum of sub-balances is multiplied by the region efficiency $RE$ to account for losses over the power lines.
+Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
