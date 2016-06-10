@@ -23,7 +23,7 @@ The vehicle states $VS_t$ of the system state $S_t$ are modeled as a tuple $(VP_
 	\item $VP_t: VL \rightarrow RSP$ represents a mapping from vehicle labels to road segment \textit{positions} (see Section~\ref{segments}) and
 	\item $VSOC_t: VL \rightarrow \mathbb{R}_0^+$ represents a mapping from vehicle labels to their \textit{state of charge} (i.e. the amount of currently stored energy).
 \end{itemize}
-Consequently, our design abstraction neglects effects such as changing vehicle weights~\cite{?} due to passenger load or changing friction coefficients due to wheel temperatures~\cite{?}. We omitted such effects to ease design formulation primarily and replaced them with mechanical efficiency coefficients $VME$ (see Section~\ref{vehicles}), which have to be selected carefully to achieve desired statistical effects.
+Consequently, our design abstraction neglects effects such as changing vehicle weights~\cite{?} due to passenger load or changing friction coefficients due to wheel temperatures~\cite{?}. We omitted such effects to ease design formulation primarily and replaced them with mechanical efficiency coefficients $VME$ (see Section~\ref{vehicles}), which have to be selected carefully to achieve desired effects.
 
 \subsubsection{Energy storage states}
 \label{states_storages}
@@ -50,17 +50,17 @@ The region states $R_t$ of the system state $S_t$ are modeled as a one-tuple $(R
 \begin{itemize}
 	\item $RB_t: RL \rightarrow \mathbb{R}$ represents a mapping from region labels to the current region \textit{balance} (i.e. the aggregated loads of connected energy subsystem regions and components).
 \end{itemize}
-Again, we neglect physical state parameters such as power line temperatures or failure modes (e.g.\ due to exceeded temperature limits or due to environmental influences). Consequently, we assume that the energy subsystem infrastructure is available during system operation. In an advanced version of the design abstraction one might also consider failure modes and respective repair actions~\cite{?}.
+Again, we neglect physical state parameters such as power line temperatures or failure modes (e.g.\ due to exceeded temperature limits or due to environmental influences). Consequently, we assume that the energy subsystem infrastructure is available during entire system operation. In an advanced version of the design abstraction one might also consider failure modes and respective repair actions ~\cite{?} as well as additional topological and physical characteristics.
 
 \subsection{Actions}
 \label{actions}
 
 The actions $A_t \in \mathbb{A}$ with time point $t \in \mathbb{N}$ of the optimal control problem are modeled as a tuple $(VA_t, ESA_t)$, where
 \begin{itemize}
-	\item $VA_t$ represents the actions of the \textit{vehicles} introduced in Section~\ref{vehicles} and
-	\item $ESA_t$ represents the actions of the \textit{energy storages} introduced in Section~\ref{energy_storages}.
+	\item $VA_t$ represents the actions of the \textit{vehicles} and
+	\item $ESA_t$ represents the actions of the \textit{energy storages}.
 \end{itemize}
-Note that the vehicles and the energy storages are the only system components comprising actions. The states of the other components is influenced directly or indirectly by these actions. In the following, we describe the vehicle actions in Section~\ref{actions_vehicles} before explaining the energy storage actions in Section~\ref{actions_storages}.
+Note that vehicles and energy storages are the only system components comprising actions. The states of the other components is influenced directly or indirectly by these actions. In the following, we describe the vehicle actions in Section~\ref{actions_vehicles} before explaining the energy storage actions in Section~\ref{actions_storages}.
 
 \subsubsection{Vehicle actions}
 \label{actions_vehicles}
@@ -75,7 +75,7 @@ The vehicle actions $VA_t$ of the system action $A_t$ are modeled as a three-tup
 	\[
 		VR_t(vl)(0) = rsl \textrm{,}
 	\]
-	\item $VS_t: VL \rightarrow \mathbb{R}_0^+$ represents a mapping from vehicle labels to the current vehicle \textit{speed} (i.e.\ the velocity of the vehicle along the road segments), and
+	\item $VS_t: VL \rightarrow \mathbb{R}_0^+$ represents a mapping from vehicle labels to the current vehicle \textit{speed}, and
 	\item $VB_t: VL \rightarrow \mathbb{R}$ represents a mapping from vehicle labels to vehicle \textit{balances} (i.e.\ the amount of energy sent to or received from a charging station) such that
 	\[
 		\forall vl \in VL: VB_t(vl) \neq 0 \textrm{ only if }
@@ -89,7 +89,7 @@ The vehicle actions $VA_t$ of the system action $A_t$ are modeled as a three-tup
 		\exists csl \in CSL: VP_t(vl) = (CSP(csl), 0) \textrm{.}
 	\]
 \end{itemize}
-Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the previous road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{?}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase design.
+Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the previous road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{?}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design and evaluation.
 
 \subsubsection{Energy storage actions}
 \label{actions_storages}
@@ -103,7 +103,7 @@ Note that physically one cannot control the (positive or negative) energy balanc
 \subsection{Transition function}
 \label{transitions}
 
-Finally, the transition function $T$ of the optimal control problem is modeled as a deterministic mapping $\mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}$ with concrete transitions $T(S_t, A_t) = S_{t+1}$ and time point $t \in \mathbb{N}$, where
+Finally, the transition function $T$ of the optimal control problem is modeled as a deterministic mapping $\mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}$ with transitions $T(S_t, A_t) = S_{t+1}$ and time point $t \in \mathbb{N}$, where
 \begin{itemize}
 	\item $S_t$ represent the \textit{state} of the system at time point $t$ (i.e.\ the source state of the transition),
 	\item $A_t$ represents the \textit{action} applied to the system at time point $t$, and
@@ -118,7 +118,8 @@ Having in mind that $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ and $A_t = (VA_t, ESA_t)$
 	\item $CSS_{t+1} = CSTF(VS_{t+1}, VA_t)$ represents the \textit{charging station transition function}, and
 	\item $RS_{t+1} = RTF(CSS_{t+1}, ESS_{t+1})$ represents the \textit{region transition function}.
 \end{itemize}
-Subsequently, we describe the vehicle transition function in Section~\ref{transitions_vehicles}, the energy storage transition function in Section~\ref{transitions_storages}, the charging station transition function in Section~\ref{transitions_stations}, and the region transition function in Section~\ref{transitions_regions}.
+Subsequently, we describe the transitions functions for vehicles, energy storages, charging stations as well as regions.  
+%vehicle transition function in Section~\ref{transitions_vehicles}, the energy storage transition function in Section~\ref{transitions_storages}, the charging station transition function in Section~\ref{transitions_stations}, and the region transition function in Section~\ref{transitions_regions}.
 
 \subsubsection{Vehicle transition function}
 \label{transitions_vehicles}
@@ -135,7 +136,7 @@ Note that the position transition function requires the road segment distances $
 
 In contrast, we decompose the energy storage transition function $ESTF$ into one partial transition function $ESSTF$, where
 \begin{itemize}
-	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
+	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance actions to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
 	\[
 		ESS_{t+1}(esl) = ESS_t(esl) - ESE(esl) * ESB_t(esl) \textrm{.}
 	\]
@@ -147,7 +148,7 @@ Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_st
 
 Then, we decompose the charging station transition function $CSTF$ into one partial transition function $CSBTF$, where
 \begin{itemize}
-	\item $CSB_{t+1} = CSBTF(VP_{t+1}, VB_t)$ represent the \textit{charging station balance transition function} mapping the vehicle positions and balances to the charging station balances such that $\forall csl \in CSL$ with $\exists vl \in VL: VP_{t+1}(vl) = (csl, 0):$
+	\item $CSB_{t+1} = CSBTF(VP_{t+1}, VB_t)$ represent the \textit{charging station balance transition function} mapping the vehicle positions and balances to the charging station balance actions such that $\forall csl \in CSL$ with $\exists vl \in VL: VP_{t+1}(vl) = (csl, 0):$
 	\[
 		CSB_{t+1}(csl) = CSE(csl) * VB_{t+1}(vl) \textrm{.}
 	\]
@@ -173,4 +174,4 @@ Finally, we decompose the region transition function $RTF$ into one partial tran
 		\sum_{rl' \in RL: RP(rl') = rl} RB_{t+1}(rl')) * RE(rl) \textrm{.}
 	\]
 \end{itemize}
-Note that the region balance transition function is defined recursively. Consequently, first the lowest-level region balances have to be computed (i.e.\ the regions without subregions). Then, the following levels can be computed successively. Furthermore, note that the sum of sub-balances is multiplied by the region efficiency $RE$ to account for losses over the power lines.
+Note that the region balance transition function is defined recursively. Consequently, first the lowest-level region balances have to be computed (i.e.\ the regions without subregions). Then, the levels can be computed successively. Furthermore, note that the sum of sub-balances is multiplied by the region efficiency $RE$ to account for losses over the power lines.
