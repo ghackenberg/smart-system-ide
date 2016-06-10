@@ -35,31 +35,15 @@ Consequently, a state is collision-free if for all road segments the collision p
 \subsubsection{Region capacities}
 \label{capacities}
 
-In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. To derive the constraint, we first define the \textit{aggregate energy flow} mappings $AEF_{\sim,f}: RL \rightarrow \mathbb{R}$ with filter operator $\sim \in \{<,>\}$ and efficiency factor $f \in \{0,1\}$ such that $\forall rl \in RL:$
+In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. Hereby, we have to consider the production and the consumption values separately. In the first case, we require that the aggregate production does not exceed the region capacity, i.e.\ $\forall rl \in RL:$
 \[
-	AEF_{\sim,f}(rl) = (\sum_{sll \in SLL: SLR(sll) = rl} F_\sim(SLP(sll)(t+1)) +
+	RE_t^>(rl) \leq RC(rl)
 \]
+In the second case, we require that the aggregate consumption including the losses over the power lines does not exceed the region capacity, i.e.\ $\forall rl \in RL:$
 \[
-	\sum_{esl \in ESL: ESR(esl) = rl} F_\sim(ESB_{t+1}(esl)) +
+	- RE_t^<(rl) * (1 + RE(rl)) \leq RC(rl)
 \]
-\[
-	\sum_{csl \in CSL: CSR(csl) = rl} F_\sim(CSB_{t+1}(csl)) +
-\]
-\[
-	\sum_{rl' \in RL: RP(rl') = rl} F_\sim(RB_{t+1}(rl'))) * (1 - f + f * RE(rl)) \textrm{.}
-\]
-Hereby, we filter the raw energy production and consumption values using the \textit{filter} function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ such that
-\[
-	F_\sim(x) = \begin{cases}
-		x & \quad \textrm{if } x \sim 0 \\
-		0 & \quad \textrm{otherwise.}
-	\end{cases}
-\]
-Finally, we require that the absolute energy flows do net exceed the region capacities, i.e.\ $\forall rl \in RL:$
-\[
-	|AEF_{<,1}(rl)| < RC(rl) \textrm{ and } |AEF_{>,0}| < RC(rl) \textrm{.}
-\]
-Note that the aggregate consumption considers the energy losses, while the aggregate production does not consider the losses. The reason is that the aggregate consumption has to be served by energy transfer through the region, which is subject to energy loss. Consequently, more energy has to be provided than is consumed eventually. The aggregate production, on the other hand, is subject to energy loss directly.
+We consider the losses for consumption because additional energy has to be transported through the region to cover the demand. In contrast, for the production values not additional energy has to be transported through the region, rather energy is lost while transporting it.
 
 \subsection{Objectives}
 \label{objectives}
