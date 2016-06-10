@@ -11,7 +11,7 @@ In principle, one can define arbitrary constraints over the dynamic (and static)
 \subsubsection{Segment capacities}
 \label{collisions}
 
-The road segment capacity constraint makes sure that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
+The road segment capacity constraint makes sure that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle state $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
 \[
 	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
 \]
@@ -21,7 +21,7 @@ The road segment capacity constraint makes sure that no collisions occur in the 
 \[
 	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}
 \]
-Note that the definitions says that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, from the overlapping vehicle pairs we can calcualte the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with the power set operator $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping pairs such that $\forall rsl \in RSL, vl \in VL:$
+Note that the definition says that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, from the overlapping vehicle pairs we can calcualte the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with the power set operator $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping pairs such that $\forall rsl \in RSL, vl \in VL:$
 \[
 	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
 \]
