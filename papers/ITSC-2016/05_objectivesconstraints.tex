@@ -1,18 +1,18 @@
 \section{Requirements on \textbf{TransP-0} dynamics}
 \label{requirements}
 
-While the previous section outlined the state space of \textsc{TransP-0} system designs, a concrete control strategy has not been proposed. In fact, we do not want to prescribe any specific control strategy. Rather, we want to highlight requirements that control strategies must satisfy in general. Note that additional requirements might be added by the transportation and power engineers while exploring the design space. We assume that such requirements are expressed in terms of the constraints and objectives of the optimal control problem introduced in Section~\ref{dynamics}. Subsequently, we first discuss the constraints in Section~\ref{constraints} before elaborating on potential objectives in Section~\ref{objectives}. Note that constraints and objectives could be defined over the static design space parameters (see Section~\ref{proposed_model}) as well. Examples include maximizing the average mechanical and electrical vehicle efficiency or constraining the number of road segments per area unit. However, we did not focus on these ''static'' requirements in our work yet.
+While the previous section outlined the state space of \textsc{TransP-0} system designs, a specific control strategy has not been proposed. In fact, we do not want to prescribe any specific control strategy. Rather, we want to highlight requirements that control strategies must satisfy in general. Note that additional requirements might be added by transportation and power engineers while exploring the design space. We assume that such requirements are expressed in terms of the constraints and objectives of the optimal control problem introduced in Section~\ref{dynamics}. Subsequently, we first discuss the constraints in Section~\ref{constraints} before elaborating on potential objectives in Section~\ref{objectives}. Note that constraints and objectives could be defined over the static design space parameters (see Section~\ref{proposed_model}) as well. Examples include maximizing the average mechanical and electrical vehicle efficiency or constraining the number of road segments per area unit. However, we did not focus on according static requirements in our work yet.
 
 \subsection{Constraints}
 \label{constraints}
 
 %In principle, one can define arbitrary constraints over the dynamic system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we
-We provide two basic constraints, which should be to be part of any reasonable system design. The first constraint makes sure that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint makes sure that the region capacities $RC$ of the energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
+We provide two basic constraints, which should be part of any reasonable system design. The first constraint makes sure that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint makes sure that the region capacities $RC$ of the energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
 
 \subsubsection{Segment capacities}
 \label{collisions}
 
-The road segment capacity constraint essentially guarantees that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle state $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
+The road segment capacity constraint ensures that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle state $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
 \[
 	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
 \]
@@ -22,7 +22,7 @@ The road segment capacity constraint essentially guarantees that no collisions o
 \[
 	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}
 \]
-The definition says that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with the power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
+The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with the power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
 \[
 	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
 \]
@@ -43,9 +43,10 @@ In the second case, we require that the aggregate consumption including the loss
 \[
 	- RE_t^<(rl) * (1 + RE(rl)) \leq RC(rl)
 \]
-We consider the losses for consumption because additional energy has to be transported through the region to cover the demand. In contrast, for the production values not additional energy has to be transported through the region, rather energy is lost while transporting it.
+We consider losses for consumption because additional energy has to be transported through the region to cover the demand. In contrast, for the production values not additional energy has to be transported through the region, rather energy is lost while transporting it.
 
 \subsection{Objectives}
 \label{objectives}
-
-In addition to constraints (see Section~\ref{constraints}), our approach supports arbitrary objectives over the dynamic (and static) properties of the transportation subsystem (see Section~\ref{transport}) and the energy subsystem (see Section~\ref{energy_system}). In particular, we do not want to prescribe any particular objectives. Rather, we believe that it is the designers task to formulate different objectives and explore their effect on the system structure and dynamics. Among potential objectives of the system dynamics we consider minimizing traveling times, minimizing energy consumption during driving, and operating the individual energy subsystem infrastructure regions far from their capacity limits. Other potential objectives might include minimizing the free road segment space or minimizing energy storage usage. Objectives concerning static properties might include - for example - minimizing the number of road segments, minimizing the average slope of the road segments, or maximizing the number of energy subsystem infrastructure regions.
+In addition to constraints (see Section~\ref{constraints}), our approach supports arbitrary objectives over dynamic (and static) properties of the transportation subsystem (see Section~\ref{transport}) and the energy subsystem (see Section~\ref{energy_system}). In particular, we do not want to prescribe any particular objectives, but believe it is the designers task to formulate objectives and explore their effect on system structure and dynamics. Among potential objectives of the system dynamics we consider minimizing traveling times, minimizing energy consumption during driving, and operating the energy subsystem infrastructure regions far from their capacity limits. 
+%Other potential objectives might include minimizing the free road segment space or minimizing energy storage usage. 
+Objectives concerning static properties might include minimizing the number of road segments, minimizing the average slope of the road segments, or maximizing the number of energy subsystem infrastructure regions.
