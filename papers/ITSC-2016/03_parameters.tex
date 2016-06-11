@@ -19,7 +19,8 @@ Subsequently we describe the design space parameters for the transportation subs
 \subsection{Transportation subsystem}
 \label{transport}
 
-We decided to model the transportation subsystem in a mesoscopic fashion~\cite{?}. In particular, our model includes a representation of the road network and the individual vehicles. The road network is modeled as a directed graph, where nodes represent intersections and edges represent road segments. Hereby, the edge weight defines the number of lanes and the edge direction indicates the intended driving direction.
+%why is it mesoscopic?
+We decided to model the transportation subsystem in a mesoscopic fashion. In particular, our model includes a representation of the road network and the individual vehicles. The road network is modeled as a directed graph, where nodes represent intersections and edges represent road segments. Hereby, the edge weight defines the number of lanes and the edge direction indicates the intended driving direction.
 %Consequently, two edges have to be used to describe bidirectional traffic flows. 
 %Here, the vehicles represent ''particles'' that are traveling along the road network. 
 Vehicles are assigned to points on the edges of the road network. Hence, vehicles are able to move along edges and jump between edges at intersections. The \textsc{TransP-0} abstraction of the transportation subsystem is illustrated in Figure~\ref{transport_illustration}.
@@ -70,7 +71,8 @@ Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC
 	\item $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
 	\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ the friction coefficient of the road segment).
 \end{itemize}
-Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered such as continuous elevation profiles~\cite{?}.
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles.
+%quelle
 
 Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances using the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ such that
 \[
@@ -109,7 +111,7 @@ The vehicles $V$ are modeled as a seven-tuple $(VL, VS, VME, VP_0, VC, VEE, VSOC
 		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
 	\]
 \end{itemize}
-Note that we again abstract from many parameters typically considered such as the vehicle weight~\cite{?} or the exact vehicle geometry~\cite{?}. In particular, we approximate mechanical and electrical efficiencies with constants only.
+Note that we again abstract from many parameters which can be considered in microscopic models such as vehicle weight or exact vehicle geometry. In particular, we approximate mechanical and electrical efficiencies with constants only.
 
 \paragraph{Demands}
 \label{demands}
@@ -121,12 +123,12 @@ Finally, the demands $D$ are modeled as a four-tuple $(DL, DV, DP, DT)$, where
 	\item $DP: DL \rightarrow RSP$ represents a mapping from demand labels to road segment \textit{positions} (i.e.\ where the concerned vehicle is expected to be), and
 	\item $DT: DL \rightarrow \mathbb{N}^+$ represents a mapping from demand labels to \textit{time} points (i.e.\ when the concerned vehicle is expected to be there)
 \end{itemize}
-Note that our abstraction is based on discrete time. However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, for shorted distances and durations more fine-grained resolutions are needed typically.
+Note that our abstraction is based on discrete time (see Section~\ref{dynamics}). However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, for shorted distances and durations more fine-grained resolutions are needed typically.
 
 \subsection{Power / energy subsystem}
 \label{energy_system}
 
-Similar to the transportation subsystem (see Section~\ref{transport}), we decided to model the energy subsystem in a mesoscopic fashion~\cite{Hackenberg2012}. Note that microscopic models represent the individual power lines and their physical characteristics~\cite{Dommel1968}, while macroscopic models aggregate the entire energy subsystem into a single marketplace without power line characteristics~\cite{Castronuovo2004}. Our mesoscopic model takes an intermediate approach, where only selected characteristics of the network topology are represented. In particular, we limit our representation to subnetworks of equal voltage level (i.e.\ the network \textit{regions}) and their hierarchical connectivity. Consequently, balances can be computed also for single regions rather than the entire electricity market. Finally, the \textsc{TransP-0} abstraction of the energy subsystem is illustrated in Figure~\ref{energy_illustration}.
+Similar to the transportation subsystem (see Section~\ref{transport}), we decided to model the energy subsystem in a mesoscopic fashion~\cite{Hackenberg2012}. Note that microscopic models represent the individual power lines and their physical characteristics~\cite{Dommel1968}, while macroscopic models aggregate the entire energy subsystem into a single marketplace without power line characteristics~\cite{Castronuovo2004}. Our mesoscopic model takes an intermediate approach, where only selected characteristics of the network topology are represented. In particular, we limit our representation to subnetworks of equal voltage level (i.e.\ the network \textit{regions}) and their hierarchical connectivity (i.e. connections at transformers). Consequently, balances can be computed also for single regions rather than the entire electricity market. Finally, the \textsc{TransP-0} abstraction of the energy subsystem is illustrated in Figure~\ref{energy_illustration}.
 
 \begin{figure}[h]
 	\begin{center}
@@ -200,7 +202,8 @@ Then, the energy storages $ES$ are modeled as a five-tuple $(ESL, ESCA, ESE, ESS
 	\]
 	\item $ESR: ESL \rightarrow RL$ represents a mapping from energy storage labels to parent \textit{region} labels (i.e.\ the region where the energy storage is attached).
 \end{itemize}
-Note that the energy storage model is analogous to the electric vehicle model present in Section~\ref{vehicles}. However, electric vehicles additionally define mechanical parameters, while energy storages are attached to regions statically. Furthermore, we currently target small batteries rather than large storage facilities. Larger facilities require additional parameters~\cite{?}.
+Note that the energy storage model is analogous to the electric vehicle model present in Section~\ref{vehicles}. However, electric vehicles additionally define mechanical parameters, while energy storages are attached to regions statically. Furthermore, we currently target small batteries rather than large storage facilities. 
+%Larger facilities require additional parameters~\cite{?}.
 
 \paragraph{Charging stations}
 \label{charging_stations}

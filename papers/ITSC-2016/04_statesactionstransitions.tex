@@ -1,7 +1,7 @@
 \section{Discrete-time \textbf{TransP-0} dynamics}
 \label{dynamics}
 
-While the previous section was concerned only with the static parameters of integrated transportation and energy system design, this section focuses on dynamic aspects instead. In effect, each system design defines an optimal control problem (or dynamic programming problem)~\cite{Bertsekas1995} over the transportation and energy subsystem dynamics. We decided to use a discrete-time model of the system dynamics due to the high problem complexity involved in its control. In the following, we describe the respective state space in Section~\ref{states}, the action space in Section~\ref{actions}, and the transition function in Section~\ref{transitions}. Note that the states, actions, and transitions do not have to be defined by the transportation and power system engineers. Rather, the definitions are the same for all system designs expressed in the \textsc{TransP-0} abstraction.
+While the previous section was only concerned with the static parameters of integrated transportation and energy system design, this section focuses on dynamic aspects instead. In effect, each system design defines an optimal control problem (or dynamic programming problem)~\cite{Bertsekas1995} over the transportation and energy subsystem dynamics. We decided to use a discrete-time model of the system dynamics due to the high problem complexity involved in its control. In the following, we describe the respective state space in Section~\ref{states}, the action space in Section~\ref{actions}, and the transition function in Section~\ref{transitions}. Note that the states, actions, and transition function do not have to be defined by the transportation and power system engineers. Rather, the definitions are equal for all system designs expressed with the \textsc{TransP-0} abstraction.
 
 \subsection{States}
 \label{states}
@@ -23,7 +23,9 @@ The vehicle states $VS_t$ are modeled as a tuple $(VP_t, VSOC_t)$, where
 	\item $VP_t: VL \rightarrow RSP$ represents a mapping from vehicle labels to their current road segment \textit{positions} and
 	\item $VSOC_t: VL \rightarrow \mathbb{R}_0^+$ represents a mapping from vehicle labels to their current \textit{state of charge}.
 \end{itemize}
-Consequently, our design abstraction neglects effects such as changing vehicle weights~\cite{?} due to passenger load or changing friction coefficients due to wheel temperatures~\cite{?}. We omitted such effects to ease design formulation primarily and replaced them with mechanical efficiency coefficients $VME$ (see Section~\ref{vehicles}), which have to be selected carefully to achieve desired effects.
+Consequently, our design abstraction neglects effects such as changing vehicle weights due to passenger load or changing tire and road friction coefficients~\cite{imine2006road}.
+%due to wheel temperatures
+Instead, we omitted such effects to ease design formulation~\cite{gao2007modeling} and employed mechanical efficiency coefficients $VME$ (see Section~\ref{vehicles}), which have to be selected carefully to achieve desired effects.
 
 \subsubsection{Energy storage states}
 \label{states_storages}
@@ -32,14 +34,14 @@ In contrast, the energy storage states $ESS_t$ are modeled as a one-tuple $(ESOC
 \begin{itemize}
 	\item $ESOC_t: ESL \rightarrow \mathbb{R}_0^+$ represents a mapping from energy storage labels to their current \textit{state of charge}. 
 \end{itemize}
-Note that we omitted advanced effects such as wear of equipment, which can cause degrading storage efficiency~\cite{?}. Again, we believe that such effects can be neglected during early phase system-level design. Furthermore, depending on the time step resolution additional state parameters are required to model - for example - ramp-up times of pumped storage hydro power plants~\cite{Garcia2008}.
+Note that we omitted advanced effects such as wear of equipment, which can cause degrading storage efficiency~\cite{chawla2010utility}. Again, we believe that such effects can be neglected during early phase system-level design. Furthermore, depending on the time step resolution additional state parameters are required to model - for example - ramp-up times of pumped storage hydro power plants~\cite{Garcia2008}.
 
 \subsubsection{Charging station states}
 \label{states_stations}
 
 Then, the charging stations states $CSS_t$ are modeled as a one-tuple $(CSB_t)$, where
 \begin{itemize}
-	\item $CSB_t: CSL \rightarrow \mathbb{R}$ represents a mapping from charging station labels to their current \textit{balance} (i.e.\ the amount of energy sent or received from a connected vehicle).
+	\item $CSB_t: CSL \rightarrow \mathbb{R}$ represents a mapping from charging station labels to their current \textit{balance} (i.e.\ the amount of energy transferred from or to a connected vehicle).
 \end{itemize}
 In an advanced version of the design abstraction one could also consider failure states or software control states of charging stations. For now we assume that all charging stations work properly. Furthermore, the control strategy is provided implicitly by the optimal control problem formulation.
 
@@ -48,10 +50,10 @@ In an advanced version of the design abstraction one could also consider failure
 
 Finally, the region states $R_t$ are modeled as a three-tuple $(RE_t^<, RE_t^>, RB_t)$, where
 \begin{itemize}
-	\item $RE_t^\sim: RL \rightarrow \mathbb{R}, \sim \in \{<,>\}$ represent mappings from region labels to their current aggregate \textit{energy} production (i.e.\ $\sim = >$) and consumption (i.e.\ $\sim = <$) values (obtained form the subregions and subcomponents) and
+	\item $RE_t^\sim: RL \rightarrow \mathbb{R}, \sim \in \{<,>\}$ represent mappings from region labels to their current aggregate \textit{energy} production (i.e.\ $\sim = >$) and consumption (i.e.\ $\sim = <$) values (obtained from the subregions and subcomponents) and
 	\item $RB_t: RL \rightarrow \mathbb{R}$ represents a mapping from region labels to their current \textit{balances} (i.e.\ the aggregated loads).
 \end{itemize}
-Again, we neglect physical state parameters such as power line temperatures or failure modes (e.g.\ due to exceeded temperature limits or due to environmental influences). Consequently, we assume that the energy subsystem infrastructure is available during the entire system operation. In an advanced version of the design abstraction one might also consider failure modes and respective repair actions ~\cite{?} as well as additional topological and physical characteristics.
+Again, we neglect physical state parameters such as power line temperatures or failure modes (e.g.\ due to exceeded temperature limits or due to environmental influences). Consequently, we assume that the energy subsystem infrastructure is available during entire system operation. In an advanced version of the design abstraction one might also consider failure modes and respective repair actions~\cite{anghel2007stochastic} as well as additional topological and physical characteristics.
 
 \subsection{Actions}
 \label{actions}
@@ -90,7 +92,7 @@ The vehicle actions $VA_t$ are modeled as a three-tuple $(VR_t, VS_t, VB_t)$, wh
 		\exists csl \in CSL: VP_t(vl) = (CSP(csl), 0) \textrm{.}
 	\]
 \end{itemize}
-Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{?}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation.
+Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation, which are able to achieve increased estimation accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage actions}
 \label{actions_storages}
