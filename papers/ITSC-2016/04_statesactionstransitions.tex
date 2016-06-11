@@ -34,7 +34,9 @@ In contrast, the energy storage states $ESS_t$ are modeled as a one-tuple $(ESOC
 \begin{itemize}
 	\item $ESOC_t: ESL \rightarrow \mathbb{R}_0^+$ represents a mapping from energy storage labels to their current \textit{state of charge}. 
 \end{itemize}
-Note that we omitted advanced effects such as wear of equipment, which can cause degrading storage efficiency~\cite{chawla2010utility}. Again, we believe that such effects can be neglected during early phase system-level design. Furthermore, depending on the time step resolution additional state parameters are required to model - for example - ramp-up times of pumped storage hydro power plants~\cite{Garcia2008}.
+Note that we omitted advanced effects such as wear of equipment, 
+%~\cite{chawla2010utility}
+which can cause degrading storage efficiency. Again, we believe that such effects can be neglected during early phase system-level design. Furthermore, depending on the time step resolution additional state parameters are required to model - for example - ramp-up times of pumped storage hydro power plants~\cite{Garcia2008}.
 
 \subsubsection{Charging station states}
 \label{states_stations}
@@ -92,7 +94,7 @@ The vehicle actions $VA_t$ are modeled as a three-tuple $(VR_t, VS_t, VB_t)$, wh
 		\exists csl \in CSL: VP_t(vl) = (CSP(csl), 0) \textrm{.}
 	\]
 \end{itemize}
-Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation, which are able to achieve increased estimation accuracy \cite{felipe2015energy}.
+Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage actions}
 \label{actions_storages}
