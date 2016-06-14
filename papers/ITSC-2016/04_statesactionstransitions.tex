@@ -43,7 +43,7 @@ which can cause degrading storage efficiency. Again, we believe that such effect
 
 Then, the charging stations states $CSS_t$ are modeled as a one-tuple $(CSB_t)$, where
 \begin{itemize}
-	\item $CSB_t: CSL \rightarrow \mathbb{R}$ represents a mapping from charging station labels to their current \textit{balance} (i.e.\ the amount of energy transferred from or to a connected vehicle).
+	\item $CSB_t: CSL \rightarrow \mathbb{R}$ represents a mapping from charging station labels to their current \textit{balance} (i.e.\ the energy transferred from or to a connected vehicle).
 \end{itemize}
 In an advanced version of the design abstraction one could also consider failure states or software control states of charging stations. For now we assume that all charging stations work properly. Furthermore, the control strategy is provided implicitly by the optimal control problem formulation.
 
@@ -94,7 +94,7 @@ The vehicle actions $VA_t$ are modeled as a three-tuple $(VR_t, VS_t, VB_t)$, wh
 		\exists csl \in CSL: VP_t(vl) = (CSP(csl), 0) \textrm{.}
 	\]
 \end{itemize}
-Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$ in each time step. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
+Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$ in each time step. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation.
 
 \subsubsection{Energy storage actions}
 \label{actions_storages}
@@ -134,7 +134,7 @@ We decompose the vehicle transition function $VTF$ into two partial transition f
 	\item $VP_{t+1} = VPTF(VP_t, VR_t, VS_t)$ represents the \textit{vehicle position transition function} mapping the current position, route, and speed to the next position and
 	\item $VSOC_{t+1} = VSOCTF(VSOC_t, VP_t, VR_t, VS_t, VB_t)$ represents the \textit{vehicle state of charge transition function} mapping the current state of charge, position, route, speed, and balance to the next state of charge.
 \end{itemize}
-Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge.
+Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage transition function}
 \label{transitions_storages}
