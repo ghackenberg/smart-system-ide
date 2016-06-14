@@ -94,7 +94,7 @@ The vehicle actions $VA_t$ are modeled as a three-tuple $(VR_t, VS_t, VB_t)$, wh
 		\exists csl \in CSL: VP_t(vl) = (CSP(csl), 0) \textrm{.}
 	\]
 \end{itemize}
-Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
+Note that the routes $VR_t$ have to cover the distances traveled by each vehicle with the respective vehicle speeds $VS_t$ in each time step. Hereby, the vehicle speed also can be zero such that the route only contains the current road segment. In particular, zero speed is required to park vehicles at charging stations for one time step. Consequently, the time step resolution also determines the time intervals for charging or discharging vehicle batteries. Furthermore, note that we neglect accelerations and decelerations in the model, which might have a considerable effect on energy consumption~\cite{gao2007modeling}. Instead, we assume ideal conditions, which we believe to be sufficient for early phase system design evaluation. However, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage actions}
 \label{actions_storages}
@@ -103,7 +103,7 @@ The energy storage actions $ESA_t$ are modeled as a one-tuple $(ESB_t)$, where
 \begin{itemize}
 	\item $ESB_t: ESL \rightarrow \mathbb{R}$ represents a mapping from energy storage labels to their current \textit{balances} (i.e.\ the amount of energy sent to or received from the parent region).
 \end{itemize}
-Note that physically one cannot control the (positive or negative) energy balance directly. Rather, for a pumped storage hydro power plant one might control a valve limiting the downhill water flow and an electric drive causing the uphill water flow~\cite{Castronuovo2004}. In fact, the actual control parameters depend on the concrete storage type. We believe that considering the energy balance directly represents the smallest common denominator and, hence, most suitable abstraction.
+Note that physically one cannot control the (positive or negative) energy balance directly. Rather, for a pumped storage hydro power plant one might control a valve limiting the downhill water flow and an electric drive causing the uphill water flow~\cite{Castronuovo2004}. In fact, the actual control parameters depend on the concrete storage type. We believe that considering the energy balance directly represents the smallest common denominator and, hence, most suitable abstraction in terms of its coverage.
 
 \subsection{Transition function}
 \label{transitions}
@@ -141,12 +141,28 @@ Note that the position transition function requires the road segment distances $
 
 In contrast, we decompose the energy storage transition function $ESTF$ into one partial transition function $ESSTF$, where
 \begin{itemize}
+%	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
+%	\[
+%		ESS_{t+1}(esl) = 
+%		\begin{cases}
+%		ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl) & \enspace \textrm{if } ESB_t \geq 0 \\
+%		ESS_t(esl) - (1-ESE(esl)) * ESB_t(esl) & \enspace \textrm{otherwise}
+%		\end{cases}
+%		\textrm{, and}
+%	\]
+%	
 	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
 	\[
-		ESS_{t+1}(esl) = ESS_t(esl) - ESE(esl) * ESB_t(esl) \textrm{.}
+	 ESS_{t+1}(esl) = ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl)
 	\]
+	and for $\forall esl \in ESL$ with $ESB_t(esl) \geq 0:$
+	\[
+	ESS_{t+1}(esl) = ESS_t(esl) - (1-ESE(esl)) * ESB_t(esl)
+	\]
+	
 \end{itemize}
-Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). In particular, the factor models the combined loss in both directions. Therefore, during discharging the factor is not used.
+Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). 
+%In particular, the factor models the combined loss in both directions. Therefore, during discharging the factor is not used.
 
 \subsubsection{Charging station transition function}
 \label{transitions_stations}
@@ -155,10 +171,10 @@ Then, we decompose the charging station transition function $CSTF$ into one part
 \begin{itemize}
 	\item $CSB_{t+1} = CSBTF(VP_{t+1}, VB_t)$ represent the \textit{charging station balance transition function} mapping the vehicle road segment positions and balances to the charging station balances such that $\forall csl \in CSL$ with $\exists vl \in VL: VP_{t+1}(vl) = (csl, 0):$
 	\[
-		CSB_{t+1}(csl) = CSE(csl) * VB_{t}(vl) \textrm{.}
+		CSB_{t+1}(csl) = VB_{t}(vl) \textrm{.}
 	\]
 \end{itemize}
-Consequently, the charging station balance equals to the vehicle balance multiplied with the charging station efficiency factor. Note that the charging station efficiency factor must be greater than $1$ to model energy loss.
+Consequently, the charging station balance equals the vehicle balance.
 
 \subsubsection{Region transition function}
 \label{transitions_regions}
@@ -166,19 +182,15 @@ Consequently, the charging station balance equals to the vehicle balance multipl
 Finally, we decompose the region transition function $RTF$ into three partial transition functions $RETF^<,RETF^>,RBTF$, where
 \begin{itemize}
 	\item $RE_{t+1}^\sim = RETF^\sim(ESB_{t+1}, CSB_{t+1})$ with $\sim \in \{<,>\}$ represent the \textit{region energy transition functions} aggregating the associated static load profiles, energy storage balances, charging station balances, and subregion balances such that $\forall rl \in RL:$
-	\[
-		RE_{t+1}^\sim = \sum_{sll \in SLL: SLR(sll) = rl} F_\sim(SLP(sll)(t+1)) +
-		\]
-		\[
-		\sum_{esl \in ESL: ESR(esl) = rl} F_\sim(ESB_{t+1}(esl)) +
-		\]
-		\[
-		\sum_{csl \in CSL: CSR(csl) = rl} F_\sim(CSB_{t+1}(csl)) +
-		\]
-		\[
-		\sum_{rl' \in RL: RP(rl') = rl} F_\sim(RB_{t+1}(rl')) \textrm{, where}
-	\]
-	the function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ with $\sim \in \{<,>\}$ filters the production and consumption values respectively such that
+		\begin{equation*}
+		\begin{split}
+		RE_{t+1}^\sim = & \sum_{sll \in SLL: SLR(sll) = rl} F_\sim(SLP(sll)(t+1)) + \\
+		& \sum_{esl \in ESL: ESR(esl) = rl} F_\sim(ESB_{t+1}(esl)) + \\
+		& \sum_{csl \in CSL: CSR(csl) = rl} F_\sim(CSB_{t+1}(csl)) + \\
+		& \sum_{rl' \in RL: RP(rl') = rl} F_\sim(RB_{t+1}(rl')) \textrm{, where} \\
+		\end{split}
+		\end{equation*}
+	the function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ with $\sim \in \{<,>\}$ filters the production and consumption values such that
 	\[
 		F_\sim(x) = \begin{cases}
 			x & \quad \textrm{if } x \sim 0 \\
@@ -186,12 +198,26 @@ Finally, we decompose the region transition function $RTF$ into three partial tr
 		\end{cases}
 		\textrm{, and}
 	\]
-	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represent the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall rl \in RL:$
+	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represents the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall rl \in RL:$
 	\[
 		RB_{t+1}(rl) = RE_{t+1}^< * (1 + RE(rl)) +
 	\]
 	\[
 		RE_{t+1}^> * (1 - RE(rl)) \textrm{.}
 	\]
+	
+	\[
+		RB_{t+1} = \begin{cases}
+		RB_{t+1} * (1 + RE(rl)) & \textrm{if } RB_{t+1} \sim 0 \\
+		RB_{t+1} & \textrm{otherwise}
+		\end{cases}
+	\]
+	
+	\[
+		RB_P =	RE_{t+1}^> * (1 + RE(rl)) + RE_{t+1}^< 
+	\]	
+	\[
+		RB_C =	RE_{t+1}^< * (1 - RE(rl)) + RE_{t+1}^> 
+	\]	
 \end{itemize}
 Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
