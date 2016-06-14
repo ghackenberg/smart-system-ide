@@ -19,9 +19,14 @@ The road segment capacity constraint essentially ensures that no collisions occu
 \[
 	VP_t(vl_1) = (rsl, d_1) \wedge VP_t(vl_2) = (rsl, d_2) \wedge
 \]
+%\[
+%	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}	
+%\]
 \[
-	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}
+(|d_1 - d_2| < \frac{(VS(vl_1)+VS(vl_2))}{2} ) \} \textrm{.}	
 \]
+
+
 The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
 \[
 	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
