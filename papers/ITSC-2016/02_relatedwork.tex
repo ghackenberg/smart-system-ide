@@ -6,23 +6,32 @@
 %\subsection{Related approaches}
 %\label{approaches}
 
-Intelligent \textit{scheduling} methods are widely discussed as key approaches to integrate EVs into the power grid by minimizing single or multiple objectives within power systems \cite{yang2015computational}.
+%Farid et al. \cite{amro2016need} motivate the need for holistic integrated assessment methods managing diversity of control solutions against many competing objectives.
+%Galus et al. \cite{galus2012integrating} combine power system models, agent based transport simulations and modeling to model transportation and power systems.
+
+
+In the context of V2G, methods for intelligent \textit{scheduling} of EV charging/discharging are widely discussed as key approaches to integrate EVs into the power grid 
+%by minimizing single or multiple objectives within power systems
+\cite{yang2015computational}.
 % such as minimizing cost (or maximizing welfare), power losses, emissions, power deviations or optimizing battery performance of EVs within power systems \cite{yang2015computational}. 
 %Here, power systems are consisted of a number of electric devices such as conventional or renewable energy sources, energy consumers as well as electric infrastructure. 
 To sufficiently address technical and economic objectives, Andreotti et al.~\cite{andreotti2012review} argue for better suitability of multi-objective optimization methods over single-objective optimization methods for plug-in vehicles operation in terms of model effectiveness.
 Zakariazadeh et al.~\cite{zakariazadeh2014multi} propose a multi-objective Pareto-optimal scheduling method for EVs within a smart distribution network addressing economic and environmental objectives as well as technical constraints managing to reduce operational costs and emissions.
 To achieve optimal charging decisions, Ota et al.~\cite{ota2012autonomous} propose a decentralized V2G control scheme addressing the intermittency of RES energy production using electric vehicles. 
 %However, the authors focus on the effects of an according charging control scheme within an isolated power system only.
-%Another highly relevant direction for efficiently integrating electric vehicles into the power grid and reduce negative impacts is are approaches utilizing Vehicle Routing Problems (VRPs). Methods for vehicle routing typically focus on optimizing route selection for single or multiple traffic participants towards single or multiple objectives and a given set of constraints. Addressing objectives of energy-efficiency in terms of routing problems, Eco-Routing approaches target energy-efficient route selection. In contrast, Eco-Driving approaches target energy-efficient intermediate driving behavior ~\cite{ericsson2006optimizing}.
-Vehicle routing problems (VRPs) describe optimizing route selection for single or multiple traffic participants towards single or multiple objectives and constraints. For example, Eco-Routing approaches target energy-efficient route selection for a number of traffic participants \cite{ericsson2006optimizing}.
+%Another highly relevant direction for efficiently integrating electric vehicles into the power grid and reduce negative impacts is are approaches utilizing Vehicle Routing Problems (VRPs). Methods for vehicle routing typically focus on optimizing route selection for single or multiple traffic participants towards single or multiple objectives and a given set of constraints. Addressing objectives of energy-efficiency in terms of routing problems, Eco-Routing approaches target energy-efficient route selection. In contrast, Eco-Driving approaches target energy-efficient intermediate driving behavior ~\cite{ericsson2006optimizing}. 
+%Apart from approaches for optimal scheduling of EV charging/discharging,
+In contrast, approaches for \textit{vehicle routing} describe optimizing route selection for single or multiple traffic participants. Hence, they focus on control strategies for route selection/driving instead of charging behavior. 
+% towards single or multiple objectives and constraints.
+For example, Eco-Routing approaches target energy-efficient route selection for a number of traffic participants \cite{ericsson2006optimizing}. 
 Felipe et al.~\cite{felipe2014heuristic} propose multiple heuristics for routing EVs, which consider different partial recharge strategies and technologies while traveling along routes. 
-Integrating both scheduling and routing approaches, Barco et al.~\cite{barco2013optimal} present an approach for minimizing operation cost for battery EV fleets, which achieves optimal routing and charge scheduling performance.
+Towards integrating both scheduling and routing approaches, Barco et al.~\cite{barco2013optimal} present an approach for minimizing operation cost for battery EV fleets, which achieves optimal routing and charge scheduling performance.
 %the approach does not consider microscopic effects on the power system when making routing and charging decisions in EVs.
 
 %\subsection{Remaining issues}
 %\label{problems}
 
-\textit{Problems:} While the presented scheduling methods heavily address control strategies for EVs within the power system, they neglect their effects on the transportation system. In contrast, routing approaches heavily address control strategies for optimally routing single or multiple EVs within the transportation system, but do not incorporate a more detailed representation of the power system and it's underlying objectives. However, the importance of integrated planning been shown in the past for integrating electric and transportation sectors \cite{mathiesen2008integrated}. In summary, we found that current approaches do not sufficiently support planning and control of integrated transportation and power systems, i.e. the formulation and evaluation of future transportation and power system design options and alternatives.
+\textit{Problems:} While the presented scheduling methods heavily address control strategies for EVs within the power system, they neglect their effects on the transportation system. In contrast, routing approaches heavily address control strategies for optimally routing single or multiple EVs within the transportation system, but do not incorporate a more detailed representation of the power system and it's underlying objectives. However, the importance of integrated planning for integrating electric and transportation sectors \cite{mathiesen2008integrated} has been shown in the past. In summary, we found that current approaches do not sufficiently support planning and control of integrated transportation and power systems, i.e. the formulation and evaluation of future transportation and power system design options and alternatives.
 
 %Here, approaches often restrict the impact of electric vehicles to decisions on charging or discharging their batteries at charging stations. However, in subsequence, individual EV objectives describing routing preferences such as shortest traveling time or energy-efficiency for EVs cannot be sufficiently taken into account. Instead, emphasis is put on the power system side, while the transportation system including traffic participants isn't represented microscopically.
 

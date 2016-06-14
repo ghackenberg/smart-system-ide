@@ -1,12 +1,9 @@
 \section{The \textbf{TransP-0} design space}
 %\section{The \textbf{TransP-0} integrated design abstraction}
 \label{proposed_model}
-
-To capture real-world environment 
-
 The \textsc{TransP-0} design framework is intended to support both transportation and power system engineers
 during early project phases 
-in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and energy subsystem parameters. Note that we focused on using a minimum number of parameters, considering potentially decreased physical accuracy.
+in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and energy subsystem parameters. Note that we focused on using a minimum number of parameters, considering potentially decreased physical accuracy. However, to capture the real-world environment and establish a well-founded terminology, it is important to establish formal definitions.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -16,7 +13,7 @@ in formulating and evaluating different design options quickly. Therefore, trans
 	\end{center}
 \end{figure}
 
-Subsequently we describe the design space parameters for the transportation subsystem in Section~\ref{transport} and the energy subsystem in Section~\ref{energy_system}.
+Subsequently we formally describe the design space parameters for the transportation subsystem in Section~\ref{transport} and the energy subsystem in Section~\ref{energy_system}.
 
 \subsection{Transportation subsystem}
 \label{transport}
@@ -72,7 +69,7 @@ Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC
 	\item $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
 	\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
 \end{itemize}
-Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles.
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
 %quelle
 
 Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances using the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ such that
@@ -103,16 +100,18 @@ The vehicles $V$ are modeled as a seven-tuple $(VL, VS, VME, VP_0, VC, VEE, VSOC
 \begin{itemize}
 	\item $VL$ represents a finite set of vehicle \textit{labels},
 	\item $VS: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{size} (i.e.\ the length of the vehicle in road segment direction),
-	\item $VME: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{mechanical efficiency} (i.e.\ a constant ratio for conversion between electrical and mechanical energy),
+	\item $VME: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{mechanical efficiency} (i.e. the conversion coefficient between employed energy and driven distance similar to \cite{gao2007modeling}),
+	%(i.e.\ a constant ratio for conversion between electrical and mechanical energy),
 	\item $VP_0: VL \rightarrow RSP$ represents a mapping from vehicle labels to their initial road segment \textit{positions} (see Section~\ref{segments}),
 	\item $VC: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their battery \textit{capacities} (i.e.\ the maximum amount of energy that can be stored by the vehicle),
-	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{electrical efficiency} (i.e.\ a constant ratio for conversion between electrical and stored energy), and
+	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{electrical efficiency} (i.e. the conversion coefficient between employed and stored energy),
+	%(i.e.\ a constant ratio for conversion between electrical and stored energy), and
 	\item $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their initial \textit{state of charge} (i.e.\ the amount of energy stored by the vehicle initially) such that
 	\[
 		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
 	\]
 \end{itemize}
-Note that we again abstract from many parameters which can be considered in microscopic models such as vehicle weight or exact vehicle geometry. In particular, we approximate mechanical and electrical efficiencies with constants only.
+Note that we again abstract from many parameters which can be considered in microscopic models \cite{gao2007modeling} such as vehicle weight or exact vehicle geometry. In particular, we approximate mechanical and electrical efficiencies with constants only.
 
 \paragraph{Demands}
 \label{demands}
@@ -124,7 +123,7 @@ Finally, the demands $D$ are modeled as a four-tuple $(DL, DV, DP, DT)$, where
 	\item $DP: DL \rightarrow RSP$ represents a mapping from demand labels to road segment \textit{positions} (i.e.\ where the concerned vehicle is expected to be), and
 	\item $DT: DL \rightarrow \mathbb{N}^+$ represents a mapping from demand labels to \textit{time} points (i.e.\ when the concerned vehicle is expected to be there).
 \end{itemize}
-Note that our abstraction is based on discrete time (see Section~\ref{dynamics}). However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, for shorted distances and durations more fine-grained resolutions are needed typically.
+Note that our abstraction is based on discrete time (see Section~\ref{dynamics}). However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, while for shorter distances and durations more fine-grained resolutions are typically needed.
 
 \subsection{Power / energy subsystem}
 \label{energy_system}
@@ -163,7 +162,7 @@ The network regions $R$ are modeled as a four-tuple $(RL, RC, RE, RP)$, where
 	\item $RL$ represents a finite set of region labels,
 	\item $RC: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to their \textit{capacities} (i.e.\ the maximum amount of energy that can flow through each region in a predefined time interval),
 	\item $RE: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to their \textit{efficiencies} (i.e.\ a constant factor determining the energy that is lost while flowing through that region), and
-	\item $RP: RL \rightarrow RP \cup \{\bot\}$ represents a mapping from region labels to their \textit{parent} regions (i.e.\ the superordinate voltage level or the start symbol $\bot$).
+	\item $RP: RL \rightarrow RP \cup \{\bot\}$ represents a mapping from region labels to their \textit{parent} regions (i.e.\ the superordinate voltage level or the start symbol $\bot$ for the root level).
 \end{itemize}
 Note that our region model represents the energy system as a tree structure. The nodes of the tree represent \textit{subnetworks} with distinct voltage levels. The edges of the tree represent \textit{transformers} connecting the subnetworks instead. The region model can be derived from existing network topologies easily.
 
