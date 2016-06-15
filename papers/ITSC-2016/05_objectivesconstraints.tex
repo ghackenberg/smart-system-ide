@@ -7,31 +7,31 @@ While the previous section outlined the state space of \textsc{TransP-0} system 
 \label{constraints}
 
 %In principle, one can define arbitrary constraints over the dynamic system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we
-We provide two basic constraints, which should be part of any reasonable system design. The first constraint ensures that the road segment capacities $rs_c$ (i.e.\ the number of lanes) within the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint ensures that the region capacities $r_c$ within the energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
+We provide two basic constraints, which should be part of any reasonable system design. The first constraint ensures that the road segment capacities $rs_c$ (i.e.\ the number of lanes) within the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint ensures that the region capacities $r_c$  energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
 
 \subsubsection{Segment capacities}
 \label{collisions}
 
-The road segment capacity constraint essentially ensures that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle state $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
+The road segment capacity constraint essentially ensures that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle states $vs_t \in VS_t$ and $vs_t = (v_p^t, v_{soc}^t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RS \rightarrow V \times V$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rs \in RS:$
 \[
-	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
+	OVP_t(rs) = \{(v_1, v_2) \in V \times V \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
 \]
 \[
-	VP_t(vl_1) = (rsl, d_1) \wedge VP_t(vl_2) = (rsl, d_2) \wedge
+	VP_t(v_1) = (rs, d_1) \wedge VP_t(v_2) = (rs, d_2) \wedge
 \]
 %\[
 %	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}	
 %\]
 \[
-(|d_1 - d_2| < \frac{(VS(vl_1)+VS(vl_2))}{2} ) \} \textrm{.}	
+(|d_1 - d_2| < \frac{({v_1}_s,+{v_2}_s)}{2} ) \} \textrm{.}	
 \]
 
 
-The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
+The definition expresses that vehicles must reside on the same road segment $rs$ and their half-sizes $v_s / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RS \times V \rightarrow \mathcal{P}(V)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rs \in RS, v \in V:$
 \[
-	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
+	OVS_t(rs,v) = \{v' \in V \mid (v, v') \in OVP_t(rs)\}
 \]
-Note that the overlapping vehicle pairs are ordered such that duplicates are avoided by the previous definition. Finally, we can derive the \textit{collision property} mapping $CP_t : RSL \rightarrow \mathbb{B}$ with boolean set $\mathbb{B} = \{true, false\}$, which calculates for each road segment whether a collision occurred in state $S_t$ or not such that $\forall rs \in RS:$
+Note that the overlapping vehicle pairs are ordered such that duplicates are avoided by the previous definition. Finally, we can derive the \textit{collision property} mapping $CP_t : RS \rightarrow \mathbb{B}$ with boolean set $\mathbb{B} = \{true, false\}$, which calculates for each road segment whether a collision occurred in state $S_t$ or not such that $\forall rs \in RS:$
 \[
 	CP_t(rs) \Leftrightarrow \exists v \in V : |OVS_t(rs, v)| > RSC(rs) \textrm{.}
 \]
