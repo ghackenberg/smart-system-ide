@@ -74,7 +74,7 @@ The vehicle actions $va_t \in VA_t$ are modeled as a three-tuple $(va_r^t, va_s^
 \begin{itemize}
 	\item $va_r^t \in (\mathbb{N} \rightarrow RS)$ represents their respective \textit{route}, i.e.\ a sequence of connected road segments with $\forall v \in V, n \in \mathbb{N}:$
 	\[
-		RST(va_{r,v,n}^t) = RSS(va_{r,v,n+1}^t)
+		RST(va_{r,n}^t) = RSS(va_{r,n+1}^t)
 	\]
 	starting at the previous vehicle road segment position with $\forall v \in V$ and $v_{p,v}^{t-1} = (rs, d):$
 	\[
@@ -108,12 +108,12 @@ Note that physically one cannot control the (positive or negative) energy balanc
 \subsection{Transition function}
 \label{transitions}
 
-Finally, the transition function $T$ of the optimal control problem is modeled as a deterministic mapping $\mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}$ with transitions $T(S_t, A_t) = S_{t+1}$ and time point $t \in \mathbb{N}$, where
+Finally, the transition function $T$ of the optimal control problem is modeled as a deterministic mapping $\mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}$ with transitions $T(S_t, A_t) = S_{t+1}$ and time point $t \in \mathbb{N}$, where \textcolor{red}{
 \begin{itemize}
 	\item $S_t$ represent the system \textit{state} at time point $t$,
 	\item $A_t$ represents the \textit{action} applied to state $S_t$, and
 	\item $S_{t+1}$ represents the system \textit{state} at time point $t+1$.
-\end{itemize}
+\end{itemize}}
 Note that we work with a deterministic transition function to reduce the complexity of the system dynamics. Consequently, one can solve the optimal control problem more easily in practice~\cite{Bertsekas1995}. However, to obtain higher physical accuracy one might need to introduce a non-deterministic or even probabilistic transition function instead. This transition function could encode the uncertainty about the physical process involved, which occurs due to various simplifications made (see Sections~\ref{proposed_model} and~\ref{dynamics}).
 
 Having in mind that $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ and $A_t = (VA_t, ESA_t)$ we decompose $T$ into partial transition functions $VTF,ESTF,CSTF,RTF$, where
@@ -131,8 +131,8 @@ Subsequently, we describe the transition functions for vehicles in Section~\ref{
 
 We decompose the vehicle transition function $VTF$ into two partial transition functions $VPTF,VSOCTF$, where
 \begin{itemize}
-	\item $VP_{t+1} = VPTF(VP_t, VR_t, VS_t)$ represents the \textit{vehicle position transition function} mapping the current position, route, and speed to the next position and
-	\item $VSOC_{t+1} = VSOCTF(VSOC_t, VP_t, VR_t, VS_t, VB_t)$ represents the \textit{vehicle state of charge transition function} mapping the current state of charge, position, route, speed, and balance to the next state of charge.
+	\item $v_p^{t+1} = VPTF(v_p^t, v_r^t, v_s^t)$ represents the \textit{vehicle position transition function} mapping the current position, route, and speed to the next position and
+	\item $v_{soc}^{t+1} = VSOCTF(v_{soc}^t, v_p^t, v_r^t, v_s^t, v_b^t)$ represents the \textit{vehicle state of charge transition function} mapping the current state of charge, position, route, speed, and balance to the next state of charge.
 \end{itemize}
 Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
 
@@ -151,17 +151,17 @@ In contrast, we decompose the energy storage transition function $ESTF$ into one
 %		\textrm{, and}
 %	\]
 %	
-	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
+	\item $es_{soc}^{t+1} = ESSTF(es_{soc}^t, es_b^t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall es \in ES$ with $es_b^t < 0:$
 	\[
-	 ESS_{t+1}(esl) = ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl)
+	 es_{soc}^{t+1} = es_{soc}^t - (1+es_e) * es_b^t
 	\]
-	and for $\forall esl \in ESL$ with $ESB_t(esl) \geq 0:$
+	and for $\forall es \in ES$ with $es_b^t \geq 0:$
 	\[
-	ESS_{t+1}(esl) = ESS_t(esl) - (1-ESE(esl)) * ESB_t(esl)
+	es_s^{t+1} = es_s^t - (1-es_e) * es_b^t
 	\]
 	
 \end{itemize}
-Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). 
+Note that we use the energy storage efficiency $es_e$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). 
 %In particular, the factor models the combined loss in both directions. Therefore, during discharging the factor is not used.
 
 \subsubsection{Charging station transition function}
@@ -169,9 +169,10 @@ Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_st
 
 Then, we decompose the charging station transition function $CSTF$ into one partial transition function $CSBTF$, where
 \begin{itemize}
-	\item $CSB_{t+1} = CSBTF(VP_{t+1}, VB_t)$ represent the \textit{charging station balance transition function} mapping the vehicle road segment positions and balances to the charging station balances such that $\forall csl \in CSL$ with $\exists vl \in VL: VP_{t+1}(vl) = (csl, 0):$
+	\item $cs_b^{t+1} = CSBTF(v_p^{t+1}, v_b^t)$ represent the \textit{charging station balance transition function} mapping the vehicle road segment positions and balances to the charging station balances such that $\forall cs \in CS$ 
+	\textcolor{red}{with $\exists v \in V: v_p^{t+1} = (cs, 0):$ }
 	\[
-		CSB_{t+1}(csl) = VB_{t}(vl) \textrm{.}
+		cs_b^{t+1} = v_b^{t} \textrm{.}
 	\]
 \end{itemize}
 Consequently, the charging station balance equals the vehicle balance.
@@ -181,16 +182,16 @@ Consequently, the charging station balance equals the vehicle balance.
 
 Finally, we decompose the region transition function $RTF$ into three partial transition functions $RETF^<,RETF^>,RBTF$, where
 \begin{itemize}
-	\item $RE_{t+1}^\sim = RETF^\sim(ESB_{t+1}, CSB_{t+1})$ with $\sim \in \{<,>\}$ represent the \textit{region energy transition functions} aggregating the associated static load profiles, energy storage balances, charging station balances, and subregion balances such that $\forall rl \in RL:$
+	\item $r_{e\sim}^{t+1} = RETF^\sim(es_b^{t+1}, cs_b^{t+1})$ with $\sim \in \{<,>\}$ represent the \textit{region energy transition functions} aggregating the associated static load profiles, energy storage balances, charging station balances, and subregion balances such that $\forall r \in R:$
 		\begin{equation*}
 		\begin{split}
-		RE_{t+1}^\sim = & \sum_{sll \in SLL: SLR(sll) = rl} F_\sim(SLP(sll)(t+1)) + \\
-		& \sum_{esl \in ESL: ESR(esl) = rl} F_\sim(ESB_{t+1}(esl)) + \\
-		& \sum_{csl \in CSL: CSR(csl) = rl} F_\sim(CSB_{t+1}(csl)) + \\
-		& \sum_{rl' \in RL: RP(rl') = rl} F_\sim(RB_{t+1}(rl')) \textrm{, where} \\
+		r_{e\sim}^{t+1} = & \sum_{sl \in SL: sl_r = r} F_\sim(sl_p^{t+1}) + 
+		 \sum_{es \in ES: es_r = r} F_\sim(es_b^{t+1}) + \\
+		& \sum_{cs \in CS: cs_r = r} F_\sim(cs_b^{t+1}) + 
+		 \sum_{r' \in R: r_p = r} F_\sim(r_b^{t+1})\textrm{,} \\
 		\end{split}
 		\end{equation*}
-	the function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ with $\sim \in \{<,>\}$ filters the production and consumption values such that
+	where the function $F_\sim: \mathbb{R} \rightarrow \mathbb{R}$ with $\sim \in \{<,>\}$ filters the production and consumption values such that
 	\[
 		F_\sim(x) = \begin{cases}
 			x & \quad \textrm{if } x \sim 0 \\
@@ -198,26 +199,26 @@ Finally, we decompose the region transition function $RTF$ into three partial tr
 		\end{cases}
 		\textrm{, and}
 	\]
-	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represents the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall rl \in RL:$
+	\item $r_b^{t+1} = RBTF(es_b^{t+1}, cs_b^{t+1})$ represents the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall r \in R:$
 	\[
-		RB_{t+1}(rl) = RE_{t+1}^< * (1 + RE(rl)) +
+		r_b^{t+1} = r_{e<}^{t+1} * (1 + r_e) +
 	\]
 	\[
-		RE_{t+1}^> * (1 - RE(rl)) \textrm{.}
+		r_{e>}^{t+1} * (1 - r_e) \textrm{.}
 	\]
 	
 	\[
-		RB_{t+1} = \begin{cases}
-		RB_{t+1} * (1 + RE(rl)) & \textrm{if } RB_{t+1} \sim 0 \\
-		RB_{t+1} & \textrm{otherwise}
+		r_b^{t+1} = \begin{cases}
+		r_b^{t+1} * (1 + r_e) & \textrm{if } r_b^{t+1} \sim 0 \\
+		r_b^{t+1} & \textrm{otherwise}
 		\end{cases}
 	\]
 	
 	\[
-		RB_P =	RE_{t+1}^> * (1 + RE(rl)) + RE_{t+1}^< 
+		r_{b,p} =	r_{e>}^{t+1} * (1 + r_e) + r_{e<}^{t+1} 
 	\]	
 	\[
-		RB_C =	RE_{t+1}^< * (1 - RE(rl)) + RE_{t+1}^> 
+		r_{b,c} =	r_{e<}^{t+1} * (1 - r_e) + r_{e>}^{t+1} 
 	\]	
 \end{itemize}
-Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
+Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $r_e$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
