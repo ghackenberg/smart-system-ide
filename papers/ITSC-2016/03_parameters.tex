@@ -62,6 +62,16 @@ The road intersections $RI$ are modeled as a tuple $(RIL, RIC)$, where
 \paragraph{Segments}
 \label{segments}
 
+\textcolor{blue}{
+	Instead, the road segments $rs \in RS$ are modeled as a five-tuple $(rs_s, rs_t, rs_c, rs_e)$, where
+	\begin{itemize}
+		\item $rs_{s/t} \in RI$ represent their \textit{source} and \textit{target} road intersections,
+		\item $rs_c \in \mathbb{N}$ represents their \textit{capacities} (i.e.\ the number of lanes), and
+		\item $rs_e \in \mathbb{R}^+$ represents their \textit{efficiency} (i.e.\ a friction coefficient).
+	\end{itemize}
+	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
+}
+
 Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
 \begin{itemize}
 	\item $RSL$ represents a finite set of road segment \textit{labels},
