@@ -72,15 +72,17 @@ The road intersections $RI$ are modeled as a tuple $(RIL, RIC)$, where
 	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
 }
 
-Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
-\begin{itemize}
-	\item $RSL$ represents a finite set of road segment \textit{labels},
-	\item $RSS/RST: RSL \rightarrow RIL$ represent mappings from road segment labels to their respective \textit{source} and \textit{target} road intersection labels and accounts for self-edges,
-	\item $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
-	\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
-\end{itemize}
-Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
-%quelle
+\textcolor{red}{
+	Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
+	\begin{itemize}
+		\item $RSL$ represents a finite set of road segment \textit{labels},
+		\item $RSS/RST: RSL \rightarrow RIL$ represent mappings from road segment labels to their respective \textit{source} and \textit{target} road intersection labels and accounts for self-edges,
+		\item $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
+		\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
+	\end{itemize}
+	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
+	%quelle
+}
 
 Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances using the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ such that
 \[
