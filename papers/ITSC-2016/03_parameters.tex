@@ -5,13 +5,13 @@ The \textsc{TransP-0} design framework is intended to support both transportatio
 during early project phases 
 in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which is summarized in Figure~\ref{system_design}. The abstraction comprises various transportation and energy subsystem parameters. Note that we focused on using a minimum number of parameters, considering potentially decreased physical accuracy. However, to capture the real-world environment and establish a well-founded terminology, it is important to establish formal definitions.
 
-\begin{figure}[h!]
-	\begin{center}
-	\includegraphics[trim=0 10 0 0, width=0.875\columnwidth]{./gfx/system_design.png}
-	\caption{Overview over the \textsc{TransP-0} design space parameters comprising the transportation and the energy subsystem.}
-	\label{system_design}
-	\end{center}
-\end{figure}
+%\begin{figure}[h!]
+%	\begin{center}
+%	\includegraphics[trim=0 10 0 0, width=0.875\columnwidth]{./gfx/system_design.png}
+%	\caption{Overview over the \textsc{TransP-0} design space parameters comprising the transportation and the energy subsystem.}
+%	\label{system_design}
+%	\end{center}
+%\end{figure}
 
 Subsequently we formally describe the design space parameters for the transportation subsystem in Section~\ref{transport} and the energy subsystem in Section~\ref{energy_system}.
 
@@ -19,7 +19,7 @@ Subsequently we formally describe the design space parameters for the transporta
 \label{transport}
 
 %why is it mesoscopic?
-We decided to model the transportation subsystem in a mesoscopic fashion. In particular, our model includes a representation of the road network and the individual vehicles. The road network is modeled as a directed graph, where nodes represent intersections and edges represent road segments. Hereby, the edge weight defines the number of lanes and the edge direction indicates the intended driving direction.
+We decided to model the transportation subsystem in a mesoscopic fashion \cite{burghout2005mesoscopic}. In particular, our model includes a representation of the road network and the individual vehicles. The road network is modeled as a directed graph, where nodes represent intersections and edges represent road segments. Hereby, the edge weight defines the number of lanes and the edge direction indicates the intended driving direction.
 %Consequently, two edges have to be used to describe bidirectional traffic flows. 
 %Here, the vehicles represent ''particles'' that are traveling along the road network. 
 Vehicles are assigned to points on the edges of the road network. Hence, vehicles are able to move along edges and switch between edges at intersections. The \textsc{TransP-0} abstraction of the transportation subsystem is illustrated in Figure~\ref{transport_illustration}.
@@ -55,34 +55,33 @@ Road intersections describe the nodes of the directed graph, while road segments
 The road intersections $RI$ are modeled as a tuple $(RIL, RIC)$, where
 \begin{itemize}
 	\item $RIL$ represents a finite set of road intersection \textit{labels} and
-	\item $RIC: RIL \rightarrow \mathbb{R}^3$ represents a mapping from road intersection labels to geometric \textit{coordinates}.
+	\item $RIC: RIL \rightarrow \mathbb{R}^3$ represents their geometric \textit{coordinates}.
 \end{itemize}
 %Note that typically the coordinates are expressed in terms of latitude, longitude, and elevation (see Figure~\ref{system_design}). However, for simplicity in this work we use Cartesian coordinates instead.
 
 \paragraph{Segments}
 \label{segments}
 
-\textcolor{blue}{
-	Instead, the road segments $rs \in RS$ are modeled as a five-tuple $(rs_s, rs_t, rs_c, rs_e)$, where
-	\begin{itemize}
-		\item $rs_{s/t} \in RI$ represent their \textit{source} and \textit{target} road intersections,
-		\item $rs_c \in \mathbb{N}$ represents their \textit{capacities} (i.e.\ the number of lanes), and
-		\item $rs_e \in \mathbb{R}^+$ represents their \textit{efficiency} (i.e.\ a friction coefficient).
-	\end{itemize}
-	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
-}
+%\textcolor{blue}{
+%	Instead, the road segments $rs \in RS$ are modeled as a five-tuple $(rs_s, rs_t, rs_c, rs_e)$, where
+%	\begin{itemize}
+%		\item $rs_{s/t} \in RI$ represent their \textit{source} and \textit{target} road intersections,
+%		\item $rs_c \in \mathbb{N}$ represents their \textit{capacities} (i.e.\ the number of lanes), and
+%		\item $rs_e \in \mathbb{R}^+$ represents their \textit{efficiency} (i.e.\ a friction coefficient).
+%	\end{itemize}
+%	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
+%}
 
-\textcolor{red}{
-	Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
-	\begin{itemize}
-		\item $RSL$ represents a finite set of road segment \textit{labels},
-		\item $RSS/RST: RSL \rightarrow RIL$ represent mappings from road segment labels to their respective \textit{source} and \textit{target} road intersection labels and accounts for self-edges,
-		\item $RSC: RSL \rightarrow \mathbb{N}$ represents a mapping from road segment labels to their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
-		\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents a mapping from road segment labels to their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
-	\end{itemize}
-	Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
-	%quelle
-}
+Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
+\begin{itemize}
+	\item $RSL$ represents a finite set of road segment \textit{labels},
+	\item $RSS/RST: RSL \rightarrow RIL$ represent their respective \textit{source} and \textit{target} road intersection labels and accounts for self-edges,
+	\item $RSC: RSL \rightarrow \mathbb{N}$ represents their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
+	\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
+\end{itemize}
+Note that the previous parameters completely determine our road segment model. Consequently, we abstract from a variety of parameters typically considered in microscopic models such as continuous elevation profiles. However, our model supports arbitrary discretization as distance between intersections and the length of edges can be chosen arbitrarily.
+%quelle
+
 
 Furthermore, we derive the road segment distance $RSD: RSL \rightarrow \mathbb{R}_0^+$ as a mapping from road segment labels to distances using the Euclidean metric $E: \mathbb{R}^3 \times \mathbb{R}^3 \rightarrow \mathbb{R}_0^+$ such that
 \[
@@ -111,14 +110,14 @@ Consequently, we - again - distinguish between static (i.e.\ the vehicles) and d
 The vehicles $V$ are modeled as a seven-tuple $(VL, VS, VME, VP_0, VC, VEE, VSOC_0)$, where
 \begin{itemize}
 	\item $VL$ represents a finite set of vehicle \textit{labels},
-	\item $VS: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{size} (i.e.\ the length of the vehicle in road segment direction),
-	\item $VME: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{mechanical efficiency} (i.e. the conversion coefficient between employed energy and driven distance similar to \cite{gao2007modeling}),
+	\item $VS: VL \rightarrow \mathbb{R}^+$ represents their \textit{size} (i.e.\ the length of the vehicle in road segment direction),
+	\item $VME: VL \rightarrow \mathbb{R}^+$ represents their \textit{mechanical efficiency} (i.e. the conversion coefficient between employed energy and driven distance similar to \cite{gao2007modeling}),
 	%(i.e.\ a constant ratio for conversion between electrical and mechanical energy),
-	\item $VP_0: VL \rightarrow RSP$ represents a mapping from vehicle labels to their initial road segment \textit{positions} (see Section~\ref{segments}),
-	\item $VC: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their battery \textit{capacities} (i.e.\ the maximum amount of energy that can be stored by the vehicle),
-	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their \textit{electrical efficiency} (i.e. the conversion coefficient between employed and stored energy),
+	\item $VP_0: VL \rightarrow RSP$ represents their initial road segment \textit{positions} (see Section~\ref{segments}),
+	\item $VC: VL \rightarrow \mathbb{R}^+$ represents their battery \textit{capacities} (i.e.\ the maximum amount of energy that can be stored by the vehicle),
+	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents their \textit{electrical efficiency} (i.e. the conversion coefficient between employed and stored energy),
 	%(i.e.\ a constant ratio for conversion between electrical and stored energy), and
-	\item $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents a mapping from vehicle labels to their initial \textit{state of charge} (i.e.\ the amount of energy stored by the vehicle initially) such that
+	\item $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents their initial \textit{state of charge} (i.e.\ the amount of energy stored by the vehicle initially) such that
 	\[
 		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
 	\]
@@ -142,7 +141,7 @@ Note that our abstraction is based on discrete time (see Section~\ref{dynamics})
 
 Similar to the transportation subsystem (see Section~\ref{transport}), we decided to model the energy subsystem in a mesoscopic fashion~\cite{Hackenberg2012}. Note that microscopic models represent the individual power lines and their physical characteristics~\cite{Dommel1968}, while macroscopic models aggregate the entire energy subsystem into a single marketplace without power line characteristics~\cite{Castronuovo2004}. Our mesoscopic model takes an intermediate approach, where only selected characteristics of the network topology are represented. In particular, we limit our representation to subnetworks of equal voltage level (i.e.\ the network \textit{regions}) and their hierarchical connectivity through transformers. Consequently, balances can be computed also for single regions rather than the entire electricity market. The \textsc{TransP-0} abstraction of the energy subsystem is illustrated in Figure~\ref{energy_illustration}.
 
-\begin{figure}[h]
+\begin{figure}[t!]
 	\begin{center}
 	\includegraphics[trim=0 10 0 15, width=0.95\columnwidth]{./gfx/energy_system.png}
 	\caption{Illustration of a energy subsystem design including an infrastructure (i.e.\ regions) and components (i.e.\ producers and consumers).}
@@ -172,9 +171,9 @@ Note that we selected a region model~\cite{Hackenberg2012} over a power flow mod
 The network regions $R$ are modeled as a four-tuple $(RL, RC, RE, RP)$, where
 \begin{itemize}
 	\item $RL$ represents a finite set of region labels,
-	\item $RC: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to their \textit{capacities} (i.e.\ the maximum amount of energy that can flow through each region in a predefined time interval),
-	\item $RE: RL \rightarrow \mathbb{R}^+$ represents a mapping from region labels to their \textit{efficiencies} (i.e.\ a constant factor determining the energy that is lost while flowing through that region), and
-	\item $RP: RL \rightarrow RP \cup \{\bot\}$ represents a mapping from region labels to their \textit{parent} regions (i.e.\ the superordinate voltage level or the start symbol $\bot$ for the root level).
+	\item $RC: RL \rightarrow \mathbb{R}^+$ represents their \textit{capacities} (i.e.\ the maximum amount of energy that can flow through each region in a predefined time interval),
+	\item $RE: RL \rightarrow \mathbb{R}^+$ represents their \textit{efficiencies} (i.e.\ a constant factor determining the energy that is lost while flowing through that region), and
+	\item $RP: RL \rightarrow RP \cup \{\bot\}$ represents their \textit{parent} regions (i.e.\ the superordinate voltage level or the start symbol $\bot$ for the root level).
 \end{itemize}
 Note that our region model represents the energy system as a tree structure. The nodes of the tree represent \textit{subnetworks} with distinct voltage levels. The edges of the tree represent \textit{transformers} connecting the subnetworks instead. The region model can be derived from existing network topologies easily.
 
@@ -206,13 +205,13 @@ Note that static load profiles associate a numeric load to each discrete time st
 Then, the energy storages $ES$ are modeled as a five-tuple $(ESL, ESCA, ESE, ESS_0, ESR)$, where
 \begin{itemize}
 	\item $ESL$ represent a finite set of energy storage \textit{labels},
-	\item $ESC: ESL \rightarrow \mathbb{R}^+$ represents a mapping from energy storage labels to energy storage \textit{capacities} (i.e.\ the maximum amount of energy that can be stored),
-	\item $ESE: ESL \rightarrow \mathbb{R}^+$ represents a mapping from energy storage labels to energy storage \textit{efficiencies} (i.e. the conversion coefficient between  and stored energy), and
-	\item $ESS_0: ESL \rightarrow \mathbb{R}_0^+$ represents a mapping from energy storage labels to initial \textit{state of charges} (i.e.\ the amount of energy stored initially) such that
+	\item $ESC: ESL \rightarrow \mathbb{R}^+$ represents their \textit{capacities} (i.e.\ the maximum amount of energy that can be stored),
+	\item $ESE: ESL \rightarrow \mathbb{R}^+$ represents their energy storage \textit{efficiencies} (i.e. the conversion coefficient between  and stored energy), and
+	\item $ESS_0: ESL \rightarrow \mathbb{R}_0^+$ represents their initial \textit{state of charges} (i.e.\ the amount of energy stored initially) such that
 	\[
 		ESS_0(esl) \leq ESC(esl) \textrm{, and}
 	\]
-	\item $ESR: ESL \rightarrow RL$ represents a mapping from energy storage labels to parent \textit{region} labels (i.e.\ the region where the energy storage is attached).
+	\item $ESR: ESL \rightarrow RL$ represents their parent \textit{regions} (i.e.\ the region where the energy storage is attached).
 \end{itemize}
 Note that the energy storage model is analogous to the electric vehicle model described in Section~\ref{vehicles}. However, electric vehicles additionally define mechanical parameters, while energy storages are attached to regions statically. Furthermore, we currently target small batteries rather than large storage facilities. Note that the latter might require additional parameters. 
 %Larger facilities require additional parameters~\cite{?}.
@@ -223,11 +222,11 @@ Note that the energy storage model is analogous to the electric vehicle model de
 Finally, the charging stations $CS$ are modeled as a four-tuple $(CSL, CSP, CSE, CSR)$, where
 \begin{itemize}
 	\item $CSL$ represents a finite set of charging station \textit{labels},
-	\item $CSE: CSL \rightarrow \mathbb{R}^+$ represents a mapping from charging station labels to charging station \textit{efficiencies} (i.e.\ a constant loss factor for respective energy flows), and
-	\item $CSP: CSL \rightarrow RSL$ represents a mapping from charging station labels to their \textit{positions}, i.e.\ road segment labels with zero road segment distance
+	\item $CSE: CSL \rightarrow \mathbb{R}^+$ represents their \textit{efficiencies} (i.e.\ a constant loss factor for respective energy flows), and
+	\item $CSP: CSL \rightarrow RSL$ represents their \textit{positions}, i.e.\ road segment labels with zero road segment distance
 	\[
 		RSD(CSP(csl)) = 0 \textrm{, and}
 	\]
-	\item $CSR: CSL \rightarrow RL$ represents a mapping from charging station labels to parent \textit{regions} (i.e.\ the region where the charging station is attached).
+	\item $CSR: CSL \rightarrow RL$ represents their parent \textit{regions} (i.e.\ the region where the charging station is attached).
 \end{itemize}
 Note that the charging station position mapping $CSP$  and the charging station region mapping $CSR$ define the static connections between the transportation subsystem and the energy subsystem. Consequently, vehicles (see Section~\ref{vehicles}) are able to interact with arbitrary regions (see Section~\ref{regions}) of the energy subsystem infrastructure at predefined zero-length road segments (see Section~\ref{segments}).
