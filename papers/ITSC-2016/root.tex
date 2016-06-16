@@ -1,0 +1,91 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%2345678901234567890123456789012345678901234567890123456789012345678901234567890
+%        1         2         3         4         5         6         7         8
+
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
+
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
+
+\IEEEoverridecommandlockouts                              % This command is only needed if 
+                                                          % you want to use the \thanks command
+
+\overrideIEEEmargins                                      % Needed to meet printer requirements.
+
+% See the \addtolength command later in the file to balance the column lengths
+% on the last page of the document
+
+% The following packages can be found on http:\\www.ctan.org
+%\usepackage{graphics} % for pdf, bitmapped graphics files
+%\usepackage{epsfig} % for postscript graphics files
+%\usepackage{mathptmx} % assumes new font selection scheme installed
+%\usepackage{times} % assumes new font selection scheme installed
+%\usepackage{amsmath} % assumes amsmath package installed
+%\usepackage{amssymb}  % assumes amsmath package installed
+
+\title{\LARGE \bf
+The \textsc{TransP-0} framework for integrated transportation and power system design
+}
+
+
+\author{
+	\IEEEauthorblockN{Dominik Ascher} \\
+	\IEEEauthorblockA{
+		Fakult\"at f\"ur Informatik\\
+		Technische Universit\"at M\"unchen\\
+		85748 Garching bei M\"unchen, Germany\\
+		Email: \href{mailto:ascher@in.tum.de}{ascher@in.tum.de}
+	}
+	\and
+	\IEEEauthorblockN{Georg Hackenberg} \\
+	\IEEEauthorblockA{
+		Fakult\"at f\"ur Informatik\\
+		Technische Universit\"at M\"unchen\\
+		85748 Garching bei M\"unchen, Germany\\
+		Email: \href{mailto:hackenbe@in.tum.de}{hackenbe@in.tum.de}
+	}
+}
+
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[colorlinks,allcolors=blue]{hyperref}
+\usepackage{dblfloatfix}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{tabulary}
+
+\newcommand{\todo}[1]{\textcolor{red}{/* #1 */}}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+	\begin{abstract}
+		%High penetration of electric vehicles (EV) and renewable energy sources (RES) will require fundamental changes to prevalent transportation and power systems. Intermittent and decentralized loads within the power system caused by RES and EV and the propagation of new transportation paradigms such as transportation electrification and mobility-on-demand will impose critical, closely interrelated changes on these systems.
+		%Intermittent and decentralized loads caused by renewable energy sources (RES) and electric vehicles (EV) as well as 
+		Increasing penetration of decentralized energy production as well as the propagation of new transportation paradigms such as transportation electrification, autonomous vehicles and mobility-on-demand will require interrelated key changes to current transportation and power systems.
+		To diminish negative environmental impacts and achieve longterm sustainability, close integration between transportation and power systems is necessary and integrated planning, operation and control strategies have to be established. In this paper, we present TRANSP-0, a system design framework for rapid 
+		%and iterative 
+		formulation and evaluation of design options within integrated transportation and power systems. Firstly, we present the TRANSP-0 design space in terms of the static parameters for integrated subsystem design. Secondly, we visit the dynamic properties of subsystem design by formulating the underlying optimal control problem. Thirdly, we establish the requirements to integrated control strategies in terms of objectives and constraints of the underlying optimal control problem. Finally, we conclude with an outlook on the future scope of the proposed system design framework.
+	\end{abstract}
+	\input{01_introduction}
+	\input{02_relatedwork}
+	%\input{03_proposedapproach}
+	\input{03_parameters}
+	\input{04_statesactionstransitions}
+	\input{05_objectivesconstraints}
+	%\input{05_demonstration}
+	%\input{06_discussion}
+	\input{07_conclusion}
+	
+	\bibliographystyle{bst/IEEEtran}
+	\bibliography{references}
+
+
+
+
+\end{document}
