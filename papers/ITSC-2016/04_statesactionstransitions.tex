@@ -199,24 +199,18 @@ Finally, we decompose the region transition function $RTF$ into three partial tr
 	\]
 	\item $RB_{t+1} = RBTF(ESB_{t+1}, CSB_{t+1})$ represents the \textit{region balance transition function} calculating the final balance from the aggregate production and consumption values such that $\forall rl \in RL:$
 	\[
-		RB_{t+1}(rl) = RE_{t+1}^< * (1 + RE(rl)) +
-	\]
-	\[
-		RE_{t+1}^> * (1 - RE(rl)) \textrm{.}
-	\]
-	where the balance indicator is then
-	\[
-		RB_{t+1} = \begin{cases}
-		RB_{t+1} * (1 + RE(rl)) & \textrm{if } RB_{t+1} \sim 0 \\
-		RB_{t+1} & \textrm{otherwise}
+		RB_{t+1}(rl) = \begin{cases}
+		RB'_{t+1}(rl) \qquad \qquad \enskip \textrm{if } RB'_{t+1}(rl) > 0 \\
+		RB'_{t+1}(rl) * (1 + RE(rl)) \enskip \quad \textrm{otherwise}
 		\end{cases}
 	\]
 	
+	where the balance indicator is then	
 	\[
-		RB_P =	RE_{t+1}^> * (1 + RE(rl)) + RE_{t+1}^< 
+		RB'_{t+1} =	RE_{t+1}^>(rl) * (1 + RE(rl)) + RE_{t+1}^<(rl) \mathrm{.}
 	\]	
-	\[
-		RB_C =	RE_{t+1}^< * (1 - RE(rl)) + RE_{t+1}^> 
-	\]	
+%	\[
+%		RB_C =	RE_{t+1}^< * (1 - RE(rl)) + RE_{t+1}^> 
+%	\]	
 \end{itemize}
 Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
