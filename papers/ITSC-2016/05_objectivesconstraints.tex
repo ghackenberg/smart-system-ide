@@ -1,52 +1,52 @@
 \section{Requirements on \textbf{TransP-0} dynamics}
 \label{requirements}
 
-While the previous section outlined the state space of \textsc{TransP-0} system designs, a specific control strategy has not been proposed. In fact, in this paper we do not want to prescribe any specific control strategy. Rather, we want to highlight requirements that control strategies must satisfy in general. Note that additional requirements might be added by transportation and power engineers while exploring the design space. We assume that such requirements are expressed in terms of the constraints and objectives of the optimal control problem introduced in Section~\ref{dynamics}. Subsequently, we discuss the constraints in Section~\ref{constraints} before elaborating on potential objectives in Section~\ref{objectives}. Note that constraints and objectives could be defined over the static design space parameters (see Section~\ref{proposed_model}) as well. Examples include maximizing average mechanical and electrical vehicle efficiency or constraining the number of road segments per area unit. However, we did not focus on static requirements in our work yet.
+While the previous section outlined the state space of \textsc{TransP-0} system designs, a specific control strategy has not been proposed. In fact, in this paper we do not want to prescribe any specific control strategy. Rather, we want to highlight requirements that control strategies must satisfy in general. Note that additional requirements might be added by transportation and power engineers while exploring the design space. We assume that such requirements are expressed in terms of the constraints and objectives of the optimal control problem introduced in Section~\ref{dynamics}. Subsequently, we first discuss the constraints in Section~\ref{constraints} before elaborating on potential objectives in Section~\ref{objectives}. Note that constraints and objectives could be defined over the static design space parameters (see Section~\ref{proposed_model}) as well. Examples include maximizing the average mechanical and electrical vehicle efficiency or constraining the number of road segments per area unit. However, we did not focus on static requirements in our work yet.
 
 \subsection{Constraints}
 \label{constraints}
 
 %In principle, one can define arbitrary constraints over the dynamic system properties presented in the previous sections. In particular, we believe that such constraints might arise from design decisions made by transportation and energy system engineers. Hence, we do not want to prescribe the constraints. Rather, we
-We provide two basic constraints, which should be part of any reasonable system design. The first constraint ensures that the road segment capacities $rs_c$ (i.e.\ the number of lanes) within the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint ensures that the region capacities $r_c$  energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
+We provide two basic constraints, which should be part of any reasonable system design. The first constraint ensures that the road segment capacities $RSC$ (i.e.\ the number of lanes) of the transportation infrastructure $TI$ are not exceeded (see Section~\ref{collisions}). The second constraint ensures that the region capacities $RC$ of the energy infrastructure $EI$ are not exceeded (see Section~\ref{capacities}).
 
 \subsubsection{Segment capacities}
 \label{collisions}
 
-The road segment capacity constraint essentially ensures that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle states $vs_t \in VS_t$ and $vs_t = (v_p^t, v_{soc}^t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RS \rightarrow V \times V$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rs \in RS:$
+The road segment capacity constraint essentially ensures that no collisions occur in the states $S_t = (VS_t, ESS_t, CSS_t, RS_t)$ with vehicle state $VS_t = (VP_t, VSOC_t)$ of the system dynamics. To derive the constraint, we first define the \textit{overlapping vehicle pair} mapping $OVP_t : RSL \rightarrow VL \times VL$, which calculates for each road segment the pairs of overlapping vehicles such that $\forall rsl \in RSL:$
 \[
-	OVP_t(rs) = \{(v_1, v_2) \in V \times V \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
+	OVP_t(rsl) = \{(vl_1, vl_2) \in VL \times VL \mid \exists d_1, d_2 \in \mathbb{R}_0^+:
 \]
 \[
-	VP_t(v_1) = (rs, d_1) \wedge VP_t(v_2) = (rs, d_2) \wedge
+	VP_t(vl_1) = (rsl, d_1) \wedge VP_t(vl_2) = (rsl, d_2) \wedge
 \]
 %\[
 %	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}	
 %\]
 \[
-(|d_1 - d_2| < \frac{({v_1}_s,+{v_2}_s)}{2} ) \} \textrm{.}	
+(|d_1 - d_2| < \frac{(VS(vl_1)+VS(vl_2))}{2} ) \} \textrm{.}	
 \]
 
 
-The definition expresses that vehicles must reside on the same road segment $rs$ and their half-sizes $v_s / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RS \times V \rightarrow \mathcal{P}(V)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rs \in RS, v \in V:$
+The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
 \[
-	OVS_t(rs,v) = \{v' \in V \mid (v, v') \in OVP_t(rs)\}
+	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
 \]
-Note that the overlapping vehicle pairs are ordered such that duplicates are avoided by the previous definition. Finally, we can derive the \textit{collision property} mapping $CP_t : RS \rightarrow \mathbb{B}$ with boolean set $\mathbb{B} = \{true, false\}$, which calculates for each road segment whether a collision occurred in state $S_t$ or not such that $\forall rs \in RS:$
+Note that the overlapping vehicle pairs are ordered such that duplicates are avoided by the previous definition. Finally, we can derive the \textit{collision property} mapping $CP_t : RSL \rightarrow \mathbb{B}$ with boolean set $\mathbb{B} = \{true, false\}$, which calculates for each road segment whether a collision occurred in state $S_t$ or not such that $\forall rsl \in RSL:$
 \[
-	CP_t(rs) \Leftrightarrow \exists v \in V : |OVS_t(rs, v)| > RSC(rs) \textrm{.}
+	CP_t(rsl) \Leftrightarrow \exists vl \in VL : |OVS_t(rsl, vl)| > RSC(rsl) \textrm{.}
 \]
 Consequently, a state is collision-free if for all road segments the collision property is $false$. Note that our constraint definition operates on state information only. However, collisions might occur in between two states, e.g.\ when one vehicle is overtaking another vehicle on a single-lane road segment within one time step. An advanced constraint definition is required to capture these cases also, but might be more difficult to compute. Alternatively, one might reduce the time step resolution such that these cases do not occur.
 
 \subsubsection{Region capacities}
 \label{capacities}
 
-In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. Hereby, we have to consider the production and the consumption values separately. In the first case, we require that the aggregate production does not exceed region capacity, i.e.\ $\forall r \in R:$
+In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. Hereby, we have to consider the production and the consumption values separately. In the first case, we require that the aggregate production does not exceed region capacity, i.e.\ $\forall rl \in RL:$
 \[
-	r_{e>}^t \leq r_c
+	RE_t^>(rl) \leq RC(rl)
 \]
-In the second case, we require that the aggregate consumption including the losses over power lines does not exceed region capacity, i.e.\ $\forall r \in R:$
+In the second case, we require that the aggregate consumption including the losses over power lines does not exceed region capacity, i.e.\ $\forall rl \in RL:$
 \[
-	- r_{e<}^t * (1 + r_e) \leq r_c
+	- RE_t^<(rl) * (1 + RE(rl)) \leq RC(rl)
 \]
 We consider losses for consumption because additional energy has to be transported through the region to cover the demand. In contrast, for the production values no additional energy has to be transported through the region, rather energy is lost while transporting it.
 
