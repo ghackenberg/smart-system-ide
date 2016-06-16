@@ -134,7 +134,7 @@ We decompose the vehicle transition function $VTF$ into two partial transition f
 	\item $VP_{t+1} = VPTF(VP_t, VR_t, VS_t)$ represents the \textit{vehicle position transition function} mapping the current position, route, and speed to the next position and
 	\item $VSOC_{t+1} = VSOCTF(VSOC_t, VP_t, VR_t, VS_t, VB_t)$ represents the \textit{vehicle state of charge transition function} mapping the current state of charge, position, route, speed, and balance to the next state of charge.
 \end{itemize}
-Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on integrating neural networks for energy consumption estimation to achieve increased estimation accuracy \cite{felipe2015energy}.
+Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on using neural networks for energy consumption estimation for increased estimation accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage transition function}
 \label{transitions_storages}
@@ -151,9 +151,9 @@ In contrast, we decompose the energy storage transition function $ESTF$ into one
 %		\textrm{, and}
 %	\]
 	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
-	\[
-	 ESS_{t+1}(esl) = ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl)
-	\]
+	\begin{equation*}
+	ESS_{t+1}(esl) = ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl)
+	\end{equation*}
 	and for $\forall esl \in ESL$ with $ESB_t(esl) \geq 0:$
 	\[
 	ESS_{t+1}(esl) = ESS_t(esl) - (1-ESE(esl)) * ESB_t(esl)
