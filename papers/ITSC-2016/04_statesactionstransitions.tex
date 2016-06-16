@@ -103,7 +103,7 @@ The energy storage actions $ESA_t$ are modeled as a one-tuple $(ESB_t)$, where
 \begin{itemize}
 	\item $ESB_t: ESL \rightarrow \mathbb{R}$ represents their current \textit{balances} (i.e.\ the amount of energy sent to or received from the parent region).
 \end{itemize}
-Note that physically one cannot control the (positive or negative) energy balance directly. Rather, for a pumped storage hydro power plant one might control a valve limiting the downhill water flow and an electric drive causing the uphill water flow~\cite{Castronuovo2004}. In fact, the actual control parameters depend on the concrete storage type. We believe that considering the energy balance directly represents the smallest common denominator and, hence, most suitable abstraction in terms of its coverage.
+Note that physically one cannot control the positive or negative energy balance directly. Rather, for a pumped storage hydro power plant one might control a valve limiting the downhill water flow and an electric drive causing the uphill water flow~\cite{Castronuovo2004}. In fact, the actual control parameters depend on the specific storage type. We believe that considering the energy balance directly represents the smallest common denominator and, hence, most suitable abstraction in terms of its coverage.
 
 \subsection{Transition function}
 \label{transitions}
@@ -134,7 +134,7 @@ We decompose the vehicle transition function $VTF$ into two partial transition f
 	\item $VP_{t+1} = VPTF(VP_t, VR_t, VS_t)$ represents the \textit{vehicle position transition function} mapping the current position, route, and speed to the next position and
 	\item $VSOC_{t+1} = VSOCTF(VSOC_t, VP_t, VR_t, VS_t, VB_t)$ represents the \textit{vehicle state of charge transition function} mapping the current state of charge, position, route, speed, and balance to the next state of charge.
 \end{itemize}
-Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on using neural networks for energy consumption estimation for increased estimation accuracy \cite{felipe2015energy}.
+Note that the position transition function requires the road segment distances $RSD$ (see Section~\ref{vehicles}) to compute the follow-up vehicle positions on their routes. Furthermore, the vehicle state of charge transition function either requires the driving information (i.e.\ the position, route, and speed) or the charging balance information (i.e.\ the energy flow through the charging station) to compute the follow-up state of charge. For future work, we plan on using neural networks for energy consumption estimation for increased accuracy \cite{felipe2015energy}.
 
 \subsubsection{Energy storage transition function}
 \label{transitions_storages}
