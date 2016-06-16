@@ -141,10 +141,10 @@ Note that our abstraction is based on discrete time (see Section~\ref{dynamics})
 
 Similar to the transportation subsystem (see Section~\ref{transport}), we decided to model the energy subsystem in a mesoscopic fashion~\cite{Hackenberg2012}. Note that microscopic models represent the individual power lines and their physical characteristics~\cite{Dommel1968}, while macroscopic models aggregate the entire energy subsystem into a single marketplace without power line characteristics~\cite{Castronuovo2004}. Our mesoscopic model takes an intermediate approach, where only selected characteristics of the network topology are represented. In particular, we limit our representation to subnetworks of equal voltage level (i.e.\ the network \textit{regions}) and their hierarchical connectivity through transformers. Consequently, balances can be computed also for single regions rather than the entire electricity market. The \textsc{TransP-0} abstraction of the energy subsystem is illustrated in Figure~\ref{energy_illustration}.
 
-\begin{figure}[t!]
+\begin{figure}[h]
 	\begin{center}
 	\includegraphics[trim=0 10 0 15, width=0.95\columnwidth]{./gfx/energy_system.png}
-	\caption{Illustration of a energy subsystem design including an infrastructure (i.e.\ regions) and components (i.e.\ producers and consumers).}
+	\caption{Illustration of an energy subsystem design including an infrastructure (i.e.\ regions) and components (i.e.\ producers and consumers).}
 	\label{energy_illustration}
 	\end{center}
 \end{figure}
