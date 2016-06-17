@@ -3,7 +3,7 @@
 \label{proposed_model}
 The \textsc{TransP-0} design framework is intended to support both transportation and power system engineers
 during early project phases 
-in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which comprises various transportation and energy subsystem parameters. Note that we focused on using a minimum number of parameters, considering potentially decreased physical accuracy. However, to capture the real-world environment and establish a well-founded terminology, it is important to establish formal definitions.
+in formulating and evaluating different design options quickly. Therefore, transportation and energy system properties - both static and dynamic - have to be captured sufficiently precise. On the other hand, the design abstraction should omit unnecessary details to enable frequent design iterations. With these requirements in mind we have developed a candidate design abstraction, which comprises various transportation and energy subsystem parameters. Note that we focused on using a minimum number of parameters, considering potentially decreased physical accuracy. However, to capture the real-world environment precisely and establish a well-founded terminology, it is important to establish formal definitions.
 
 %\begin{figure}[h!]
 %	\begin{center}
@@ -75,7 +75,7 @@ The road intersections $RI$ are modeled as a tuple $(RIL, RIC)$, where
 Instead, the road segments $RS$ are modeled as a five-tuple $(RSL, RSS, RST, RSC, RSE)$, where
 \begin{itemize}
 	\item $RSL$ represents a finite set of road segment \textit{labels},
-	\item $RSS/RST: RSL \rightarrow RIL$ represent their respective \textit{source} and \textit{target} road intersection labels and accounts for self-edges,
+	\item $RSS/RST: RSL \rightarrow RIL$ represent their respective \textit{source} and \textit{target} road intersection labels while accounting for possible self-edges,
 	\item $RSC: RSL \rightarrow \mathbb{N}$ represents their \textit{capacities} (i.e.\ the number of lanes of the road segment), and
 	\item $RSE: RSL \rightarrow \mathbb{R}^+$ represents their \textit{efficiency} (i.e.\ a friction coefficient of the road segment).
 \end{itemize}
@@ -107,17 +107,17 @@ Consequently, we - again - distinguish between static (i.e.\ the vehicles) and d
 \paragraph{Vehicles}
 \label{vehicles}
 
-The vehicles $V$ are modeled as a seven-tuple $(VL, VS, VME, VP_0, VC, VEE, VSOC_0)$, where
+The vehicles $V$ are modeled as a seven-tuple $(VL, VSE, VME, VP_0, VC, VEE, VSOC_0)$, where
 \begin{itemize}
 	\item $VL$ represents a finite set of vehicle \textit{labels},
-	\item $VS: VL \rightarrow \mathbb{R}^+$ represents their \textit{size} (i.e.\ the length of the vehicle in road segment direction),
-	\item $VME: VL \rightarrow \mathbb{R}^+$ represents their \textit{mechanical efficiency} (i.e. the conversion coefficient between employed energy and driven distance similar to \cite{gao2007modeling}),
+	\item $VSE: VL \rightarrow \mathbb{R}^+$ represents their \textit{sizes} (i.e.\ the length of the vehicle in road segment direction),
+	\item $VME: VL \rightarrow \mathbb{R}^+$ represents their \textit{mechanical efficiencies} (i.e. the conversion coefficient between employed energy and driven distance similar to \cite{gao2007modeling}),
 	%(i.e.\ a constant ratio for conversion between electrical and mechanical energy),
 	\item $VP_0: VL \rightarrow RSP$ represents their initial road segment \textit{positions} (see Section~\ref{segments}),
 	\item $VC: VL \rightarrow \mathbb{R}^+$ represents their battery \textit{capacities} (i.e.\ the maximum amount of energy that can be stored by the vehicle),
-	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents their \textit{electrical efficiency} (i.e. the conversion coefficient between employed and stored energy),
+	\item $VEE: VL \rightarrow \mathbb{R}^+$ represents their \textit{electrical efficiencies} (i.e. the conversion coefficient between employed and stored energy),
 	%(i.e.\ a constant ratio for conversion between electrical and stored energy), and
-	\item $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents their initial \textit{state of charge} (i.e.\ the amount of energy stored by the vehicle initially) such that
+	\item $VSOC_0: VL \rightarrow \mathbb{R}^+$ represents their initial \textit{state of charges} (i.e.\ the amount of energy stored by the vehicle initially) such that
 	\[
 		\forall vl \in VL : VSOC_0(vl) \leq VC(vl) \textrm{.}
 	\]
@@ -130,9 +130,9 @@ Note that we again abstract from many parameters which can be considered in micr
 Finally, the demands $D$ are modeled as a four-tuple $(DL, DV, DP, DT)$, where
 \begin{itemize}
 	\item $DL$ represents a finite set of demand \textit{labels},
-	\item $DV: DL \rightarrow VL$ represents a mapping from demand labels to \textit{vehicle} labels (i.e.\ the concerned vehicle),
-	\item $DP: DL \rightarrow RSP$ represents a mapping from demand labels to road segment \textit{positions} (i.e.\ where the concerned vehicle is expected to be), and
-	\item $DT: DL \rightarrow \mathbb{N}^+$ represents a mapping from demand labels to \textit{time} points (i.e.\ when the concerned vehicle is expected to be there).
+	\item $DV: DL \rightarrow VL$ represents the demands \textit{vehicle} labels (i.e.\ the concerned vehicle),
+	\item $DP: DL \rightarrow RSP$ represents the demands road segment \textit{positions} (i.e.\ where the concerned vehicle is expected to be), and
+	\item $DT: DL \rightarrow \mathbb{N}^+$ represents the demands \textit{time} points (i.e.\ when the concerned vehicle is expected to be there).
 \end{itemize}
 Note that our abstraction is based on discrete time (see Section~\ref{dynamics}). However, we do not prescribe the time step resolution. For long travel distances and durations more coarse resolutions can be used, while for shorter distances and durations more fine-grained resolutions are typically needed.
 
@@ -194,15 +194,15 @@ In the following, we first explain the static load design abstraction in Section
 The static loads $SL$ are modeled as a three-tuple $(SLL, SLP, SLR)$, where
 \begin{itemize}
 	\item $SLL$ represents a finite set of static load \textit{labels},
-	\item $SLP: SLL \rightarrow (\mathbb{N} \rightarrow \mathbb{R})$ represents a mapping from static load labels $SLL$ to static load \textit{profiles} (i.e.\ a predefined production and consumption curve), and
-	\item $SLR: SLL \rightarrow RL$ represents a mapping from static load labels to parent \textit{regions} (i.e.\ the region where the static load is attached).
+	\item $SLP: SLL \rightarrow (\mathbb{N} \rightarrow \mathbb{R})$ represents their static load \textit{profiles} (i.e.\ a predefined production and consumption curve), and
+	\item $SLR: SLL \rightarrow RL$ represents their parent \textit{regions} (i.e.\ the region where the static load is attached).
 \end{itemize}
 Note that static load profiles associate a numeric load to each discrete time step. Hereby positive loads represent energy production and negative loads represent energy consumption. Consequently, static loads can be used to model everything from home appliances over solar panels to conventional power generators. In particular, we assume such loads to be uncontrollable from the perspective of the engineers.
 
 \paragraph{Energy storages}
 \label{energy_storages}
 
-Then, the energy storages $ES$ are modeled as a five-tuple $(ESL, ESCA, ESE, ESS_0, ESR)$, where
+Then, the energy storages $ES$ are modeled as a five-tuple $(ESL, ESC, ESE, ESS_0, ESR)$, where
 \begin{itemize}
 	\item $ESL$ represent a finite set of energy storage \textit{labels},
 	\item $ESC: ESL \rightarrow \mathbb{R}^+$ represents their \textit{capacities} (i.e.\ the maximum amount of energy that can be stored),
@@ -219,7 +219,7 @@ Note that the energy storage model is analogous to the electric vehicle model de
 \paragraph{Charging stations}
 \label{charging_stations}
 
-Finally, the charging stations $CS$ are modeled as a four-tuple $(CSL, CSP, CSE, CSR)$, where
+Finally, the charging stations $CS$ are modeled as a four-tuple $(CSL, CSE, CSP, CSR)$, where
 \begin{itemize}
 	\item $CSL$ represents a finite set of charging station \textit{labels},
 	\item $CSE: CSL \rightarrow \mathbb{R}^+$ represents their \textit{efficiencies} (i.e.\ a constant loss factor for respective energy flows), and

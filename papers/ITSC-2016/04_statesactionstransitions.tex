@@ -81,7 +81,7 @@ The vehicle actions $VA_t$ are modeled as a three-tuple $(VR_t, VS_t, VB_t)$, wh
 		VR_t(vl)(0) = rsl \textrm{,}
 	\]
 	\item $VS_t: VL \rightarrow \mathbb{R}_0^+$ represents their current \textit{speed}, and
-	\item $VB_t: VL \rightarrow \mathbb{R}$ represents their current \textit{balances} (i.e.\ the amount of energy sent to or received from a charging station) such that
+	\item $VB_t: VL \rightarrow \mathbb{R}$ represents their current \textit{balances} (i.e.\ the amount of energy transferred from or to a charging station) such that
 	\[
 		\forall vl \in VL: VB_t(vl) \neq 0 \textrm{ only if }
 	\]
@@ -101,7 +101,7 @@ Note that the routes $VR_t$ have to cover the distances traveled by each vehicle
 
 The energy storage actions $ESA_t$ are modeled as a one-tuple $(ESB_t)$, where
 \begin{itemize}
-	\item $ESB_t: ESL \rightarrow \mathbb{R}$ represents their current \textit{balances} (i.e.\ the amount of energy sent to or received from the parent region).
+	\item $ESB_t: ESL \rightarrow \mathbb{R}$ represents their current \textit{balances} (i.e.\ the amount of energy transferred from or to the parent region).
 \end{itemize}
 Note that physically one cannot control the positive or negative energy balance directly. Rather, for a pumped storage hydro power plant one might control a valve limiting the downhill water flow and an electric drive causing the uphill water flow~\cite{Castronuovo2004}. In fact, the actual control parameters depend on the specific storage type. We believe that considering the energy balance directly represents the smallest common denominator and, hence, most suitable abstraction in terms of its coverage.
 
@@ -110,7 +110,7 @@ Note that physically one cannot control the positive or negative energy balance 
 
 Finally, the transition function $T$ of the optimal control problem is modeled as a deterministic mapping $\mathbb{S} \times \mathbb{A} \rightarrow \mathbb{S}$ with transitions $T(S_t, A_t) = S_{t+1}$ and time point $t \in \mathbb{N}$, where
 \begin{itemize}
-	\item $S_t$ represent the system \textit{state} at time point $t$,
+	\item $S_t$ represents the system \textit{state} at time point $t$,
 	\item $A_t$ represents the \textit{action} applied to state $S_t$, and
 	\item $S_{t+1}$ represents the system \textit{state} at time point $t+1$.
 \end{itemize}
@@ -152,11 +152,11 @@ In contrast, we decompose the energy storage transition function $ESTF$ into one
 %	\]
 	\item $ESS_{t+1} = ESSTF(ESS_t, ESB_t)$ represents the \textit{energy storage state of charge transition function} mapping the current state of charge and balance to the next state of charge such that $\forall esl \in ESL$ with $ESB_t(esl) < 0:$
 	\begin{equation*}
-	\hspace*{-0.4cm} ESS_{t+1}(esl) = ESS_t(esl) - (1+ESE(esl)) * ESB_t(esl)
+	\hspace*{-0.4cm} ESS_{t+1}(esl) = ESS_t(esl) - (1+\frac{ESE(esl)}{2}) * ESB_t(esl)
 	\end{equation*}
 	and for $\forall esl \in ESL$ with $ESB_t(esl) \geq 0:$
 	\begin{equation*}
-	\hspace*{-0.4cm} ESS_{t+1}(esl) = ESS_t(esl) - (1-ESE(esl)) * ESB_t(esl) \mathrm{.}
+	\hspace*{-0.4cm} ESS_{t+1}(esl) = ESS_t(esl) - (1-\frac{ESE(esl)}{2}) * ESB_t(esl) \mathrm{.}
 	\end{equation*}
 \end{itemize}
 %	\begin{equation*}
@@ -171,7 +171,7 @@ In contrast, we decompose the energy storage transition function $ESTF$ into one
 %	\end{split}
 %	\end{equation*}
 	
-Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). 
+Note that we use the energy storage efficiency $ESE$ (see Section~\ref{energy_storages}) to compute the state of charge during charging. Hereby, the efficiency factor models the energy loss during energy conversion (e.g.\ electric to potential energy). In particular, the factors models loss in both directions and applies during charging as well as discharging accordingly.
 %In particular, the factor models the combined loss in both directions. Therefore, during discharging the factor is not used.
 
 \subsubsection{Charging station transition function}
@@ -216,12 +216,13 @@ Finally, we decompose the region transition function $RTF$ into three partial tr
 		\end{cases}
 	\]
 	
-	where the balance indicator is then	
+	where the balance indicator $RB'_{t+1}(rl)$ is then	
 	\[
-		RB'_{t+1} =	RE_{t+1}^>(rl) * (1 + RE(rl)) + RE_{t+1}^<(rl) \mathrm{.}
+		RB'_{t+1}(rl) =	RE_{t+1}^>(rl) * (1 + RE(rl)) + RE_{t+1}^<(rl) \mathrm{.}
 	\]	
 %	\[
 %		RB_C =	RE_{t+1}^< * (1 - RE(rl)) + RE_{t+1}^> 
 %	\]	
 \end{itemize}
-Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
+Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, to account for losses over the power lines, the balance indicator $RB'$ first accounts for the production including losses and the consumption. Then, the final balance $RB$ accounts for the remaining consumption including losses. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
+%Note that the partial transition functions are defined recursively. Consequently, first the productions, consumptions, and balances have to be computed for the lowest-level regions (i.e.\ the regions without subregions). Then, the upper levels can be derived one after the other. Furthermore, note that the balance transition function multiplies the production and consumption values with the region efficiency factor $RE$. In particular, the consumption is increased and the production is decreased by the factor to account for losses over the power lines. Hereby, the efficiency $RE$ typically ranges in the area of a few percent only and the factor is lower for higher voltage levels.
