@@ -23,11 +23,11 @@ The road segment capacity constraint essentially ensures that no collisions occu
 %	(|d_1 - d_2| < VS(vl_1) / 2 \vee |d_1 - d_2| < VS(vl_2) / 2) \} \textrm{.}	
 %\]
 \[
-(|d_1 - d_2| < \frac{(VS(vl_1)+VS(vl_2))}{2} ) \} \textrm{.}	
+(|d_1 - d_2| < \frac{(VSE(vl_1)+VSE(vl_2))}{2} ) \} \textrm{.}	
 \]
 
 
-The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VS(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
+The definition expresses that vehicles must reside on the same road segment $rsl$ and their half-sizes $VSE(vl_{1/2}) / 2$ must be larger than their center distances $|d_1 - d_2|$. Then, we can calculate the \textit{overlapping vehicle set} mapping $OVS_t : RSL \times VL \rightarrow \mathcal{P}(VL)$ with power set $\mathcal{P}(\cdot)$, which calculates for each road segment and vehicle the overlapping vehicle pairs such that $\forall rsl \in RSL, vl \in VL:$
 \[
 	OVS_t(rsl,vl) = \{vl' \in VL \mid (vl, vl') \in OVP_t(rsl)\}
 \]
@@ -40,7 +40,7 @@ Consequently, a state is collision-free if for all road segments the collision p
 \subsubsection{Region capacities}
 \label{capacities}
 
-In contrast, the region capacity constraint makes sure that the energy flow through each region does not exceed its capacity limit. Hereby, we have to consider the production and the consumption values separately. In the first case, we require that the aggregate production does not exceed region capacity, i.e.\ $\forall rl \in RL:$
+In contrast, the region capacity constraint ensures that the energy flow through each region does not exceed its capacity limit. Hereby, we have to consider the production and the consumption values separately. In the first case, we require that the aggregate production does not exceed region capacity, i.e.\ $\forall rl \in RL:$
 \[
 	RE_t^>(rl) \leq RC(rl)
 \]
