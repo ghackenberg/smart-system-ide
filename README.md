@@ -11,4 +11,4 @@ The tool covers the following features:
 
 Here is a screenshot of the tool applied to a hydro power plant case.
 
-![](./demo/hydro/csv/Results/2011_Week_05/Screenshot.png)
+![](./screenshot.png)
